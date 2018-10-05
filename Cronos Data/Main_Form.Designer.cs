@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.panel_header = new System.Windows.Forms.Panel();
             this.label_title = new System.Windows.Forms.Label();
             this.pictureBox_minimize = new System.Windows.Forms.PictureBox();
@@ -36,16 +37,17 @@
             this.label_title_fy = new System.Windows.Forms.Label();
             this.label_title_tf = new System.Windows.Forms.Label();
             this.panel_fy = new System.Windows.Forms.Panel();
+            this.dateTimePicker_end_fy = new System.Windows.Forms.DateTimePicker();
+            this.label_end_fy = new System.Windows.Forms.Label();
+            this.label_start_fy = new System.Windows.Forms.Label();
             this.dateTimePicker_start_fy = new System.Windows.Forms.DateTimePicker();
             this.comboBox_fy = new System.Windows.Forms.ComboBox();
             this.webBrowser_fy = new System.Windows.Forms.WebBrowser();
             this.panel_tf = new System.Windows.Forms.Panel();
             this.webBrowser_tf = new System.Windows.Forms.WebBrowser();
             this.button_filelocation = new System.Windows.Forms.Button();
-            this.label_start_fy = new System.Windows.Forms.Label();
-            this.label_end_fy = new System.Windows.Forms.Label();
-            this.dateTimePicker_end_fy = new System.Windows.Forms.DateTimePicker();
             this.sPanel1 = new Cronos_Data.SPanel();
+            this.timer_stillsearhcing_fy = new System.Windows.Forms.Timer(this.components);
             this.panel_header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_minimize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_close)).BeginInit();
@@ -81,6 +83,7 @@
             // pictureBox_minimize
             // 
             this.pictureBox_minimize.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.pictureBox_minimize.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox_minimize.Image = global::Cronos_Data.Properties.Resources.minus;
             this.pictureBox_minimize.Location = new System.Drawing.Point(1065, 10);
             this.pictureBox_minimize.Name = "pictureBox_minimize";
@@ -93,6 +96,7 @@
             // pictureBox_close
             // 
             this.pictureBox_close.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.pictureBox_close.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox_close.Image = global::Cronos_Data.Properties.Resources.close;
             this.pictureBox_close.Location = new System.Drawing.Point(1104, 10);
             this.pictureBox_close.Name = "pictureBox_close";
@@ -150,6 +154,34 @@
             this.panel_fy.TabIndex = 4;
             this.panel_fy.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_fy_Paint);
             // 
+            // dateTimePicker_end_fy
+            // 
+            this.dateTimePicker_end_fy.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dateTimePicker_end_fy.Location = new System.Drawing.Point(282, 76);
+            this.dateTimePicker_end_fy.Name = "dateTimePicker_end_fy";
+            this.dateTimePicker_end_fy.Size = new System.Drawing.Size(169, 21);
+            this.dateTimePicker_end_fy.TabIndex = 11;
+            // 
+            // label_end_fy
+            // 
+            this.label_end_fy.AutoSize = true;
+            this.label_end_fy.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_end_fy.Location = new System.Drawing.Point(211, 81);
+            this.label_end_fy.Name = "label_end_fy";
+            this.label_end_fy.Size = new System.Drawing.Size(63, 15);
+            this.label_end_fy.TabIndex = 10;
+            this.label_end_fy.Text = "End Time:";
+            // 
+            // label_start_fy
+            // 
+            this.label_start_fy.AutoSize = true;
+            this.label_start_fy.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_start_fy.Location = new System.Drawing.Point(211, 52);
+            this.label_start_fy.Name = "label_start_fy";
+            this.label_start_fy.Size = new System.Drawing.Size(66, 15);
+            this.label_start_fy.TabIndex = 9;
+            this.label_start_fy.Text = "Start Time:";
+            // 
             // dateTimePicker_start_fy
             // 
             this.dateTimePicker_start_fy.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -166,7 +198,7 @@
             this.comboBox_fy.Items.AddRange(new object[] {
             "Yesterday",
             "Last week",
-            "Last Month"});
+            "Last month"});
             this.comboBox_fy.Location = new System.Drawing.Point(80, 50);
             this.comboBox_fy.Name = "comboBox_fy";
             this.comboBox_fy.Size = new System.Drawing.Size(108, 23);
@@ -181,6 +213,7 @@
             this.webBrowser_fy.ScriptErrorsSuppressed = true;
             this.webBrowser_fy.Size = new System.Drawing.Size(528, 458);
             this.webBrowser_fy.TabIndex = 0;
+            this.webBrowser_fy.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowser_fy_DocumentCompleted);
             // 
             // panel_tf
             // 
@@ -214,34 +247,6 @@
             this.button_filelocation.UseVisualStyleBackColor = false;
             this.button_filelocation.Click += new System.EventHandler(this.button_filelocation_Click);
             // 
-            // label_start_fy
-            // 
-            this.label_start_fy.AutoSize = true;
-            this.label_start_fy.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_start_fy.Location = new System.Drawing.Point(211, 52);
-            this.label_start_fy.Name = "label_start_fy";
-            this.label_start_fy.Size = new System.Drawing.Size(66, 15);
-            this.label_start_fy.TabIndex = 9;
-            this.label_start_fy.Text = "Start Time:";
-            // 
-            // label_end_fy
-            // 
-            this.label_end_fy.AutoSize = true;
-            this.label_end_fy.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_end_fy.Location = new System.Drawing.Point(211, 81);
-            this.label_end_fy.Name = "label_end_fy";
-            this.label_end_fy.Size = new System.Drawing.Size(63, 15);
-            this.label_end_fy.TabIndex = 10;
-            this.label_end_fy.Text = "End Time:";
-            // 
-            // dateTimePicker_end_fy
-            // 
-            this.dateTimePicker_end_fy.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dateTimePicker_end_fy.Location = new System.Drawing.Point(282, 76);
-            this.dateTimePicker_end_fy.Name = "dateTimePicker_end_fy";
-            this.dateTimePicker_end_fy.Size = new System.Drawing.Size(169, 21);
-            this.dateTimePicker_end_fy.TabIndex = 11;
-            // 
             // sPanel1
             // 
             this.sPanel1.BackColor = System.Drawing.Color.Transparent;
@@ -251,6 +256,11 @@
             this.sPanel1.Name = "sPanel1";
             this.sPanel1.Size = new System.Drawing.Size(44, 625);
             this.sPanel1.TabIndex = 1;
+            // 
+            // timer_stillsearhcing_fy
+            // 
+            this.timer_stillsearhcing_fy.Interval = 2000;
+            this.timer_stillsearhcing_fy.Tick += new System.EventHandler(this.timer_stillsearhcing_fy_TickAsync);
             // 
             // Main_Form
             // 
@@ -301,5 +311,6 @@
         private System.Windows.Forms.Label label_start_fy;
         private System.Windows.Forms.Label label_end_fy;
         private System.Windows.Forms.DateTimePicker dateTimePicker_end_fy;
+        private System.Windows.Forms.Timer timer_stillsearhcing_fy;
     }
 }

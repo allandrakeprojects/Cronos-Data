@@ -2,7 +2,10 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Globalization;
+using System.Net;
 using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Cronos_Data
@@ -34,16 +37,16 @@ namespace Cronos_Data
 
         private void Main_Form_Load(object sender, EventArgs e)
         {
+            // FY
             webBrowser_fy.Navigate("http://cs.ying168.bet/account/login");
-            webBrowser_tf.Navigate("http://cs.tianfa86.org/account/login");
-
             comboBox_fy.SelectedIndex = 0;
-            
             dateTimePicker_start_fy.Format = DateTimePickerFormat.Custom;
             dateTimePicker_start_fy.CustomFormat = "yyyy-MM-dd HH:mm:ss";
-               
             dateTimePicker_end_fy.Format = DateTimePickerFormat.Custom;
             dateTimePicker_end_fy.CustomFormat = "yyyy-MM-dd HH:mm:ss";
+            
+            // TF
+            webBrowser_tf.Navigate("http://cs.tianfa86.org/account/login");
         }
 
         private void Main_Form_Shown(object sender, EventArgs e)
@@ -59,6 +62,201 @@ namespace Cronos_Data
                 label_filelocation.Text = Properties.Settings.Default.filelocation;
             }
         }
+
+        // ----------------
+        // FY ----------------
+        // ----------------
+
+        // ComboBox Selected Index Changed
+        private void comboBox_fy_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBox_fy.SelectedIndex == 0)
+            {
+                // Yesterday
+                string start_fy = DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd 00:00:00");
+                DateTime datetime_start_fy = DateTime.ParseExact(start_fy, "yyyy-MM-dd 00:00:00", CultureInfo.InvariantCulture);
+                dateTimePicker_start_fy.Value = datetime_start_fy;
+
+                string end_fy = DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd 23:59:59");
+                DateTime datetime_end_fy = DateTime.ParseExact(end_fy, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+                dateTimePicker_end_fy.Value = datetime_end_fy;
+            }
+            else if (comboBox_fy.SelectedIndex == 1)
+            {
+                // Lat Week
+                DayOfWeek weekStart = DayOfWeek.Sunday;
+                DateTime startingDate = DateTime.Today;
+
+                while (startingDate.DayOfWeek != weekStart)
+                    startingDate = startingDate.AddDays(-1);
+
+                DateTime datetime_start_fy = startingDate.AddDays(-7);
+                dateTimePicker_start_fy.Value = datetime_start_fy;
+
+                string last = startingDate.AddDays(-1).ToString("yyyy-MM-dd 23:59:59");
+                DateTime datetime_end_fy = DateTime.ParseExact(last, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+                dateTimePicker_end_fy.Value = datetime_end_fy;
+            }
+            else if (comboBox_fy.SelectedIndex == 2)
+            {
+                // Last Month
+                var today = DateTime.Today;
+                var month = new DateTime(today.Year, today.Month, 1);
+                var first = month.AddMonths(-1).ToString("yyyy-MM-dd 00:00:00");
+                var last = month.AddDays(-1).ToString("yyyy-MM-dd 23:59:59");
+
+                DateTime datetime_start_fy = DateTime.ParseExact(first, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+                dateTimePicker_start_fy.Value = datetime_start_fy;
+
+                DateTime datetime_end_fy = DateTime.ParseExact(last, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+                dateTimePicker_end_fy.Value = datetime_end_fy;
+            }
+        }
+
+        // Loaded
+        private void webBrowser_fy_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        {
+            if (webBrowser_fy.ReadyState == WebBrowserReadyState.Complete)
+            {
+                if (e.Url == webBrowser_fy.Url)
+                {
+                    if (webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/account/login"))
+                    {
+                        webBrowser_fy.Document.GetElementById("csname").SetAttribute("value", "fyrain");
+                        webBrowser_fy.Document.GetElementById("cspwd").SetAttribute("value", "djrain123@@@");
+                        webBrowser_fy.Document.Window.ScrollTo(0, webBrowser_fy.Document.Window.Size.Height);
+                    }
+
+                    if (webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/player/list"))
+                    {
+                        webBrowser_fy.Navigate("http://cs.ying168.bet/flow/wagered2");
+                    }
+
+                    if (webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/flow/wagered2"))
+                    {
+                        int selected_index = comboBox_fy.SelectedIndex + 2;
+                        webBrowser_fy.Document.GetElementById("TimeFli").Children[selected_index].SetAttribute("selected", "selected");
+                        webBrowser_fy.Document.GetElementById("start").SetAttribute("value", dateTimePicker_start_fy.Text);
+                        webBrowser_fy.Document.GetElementById("end").SetAttribute("value", dateTimePicker_end_fy.Text);
+                        webBrowser_fy.Document.GetElementById("s_submit").InvokeMember("Click");
+                        timer_stillsearhcing_fy.Start();
+                    }
+                }
+            }
+        }
+
+        private async void timer_stillsearhcing_fy_TickAsync(object sender, EventArgs e)
+        {
+            //< div id = "data2_processing" class="dataTables_processing" style="visibility: hidden;">Processing...</div>
+
+            HtmlElement htmlelement = webBrowser_fy.Document.GetElementById("data2_processing");
+            if (htmlelement == null)
+            {
+                return;
+            }
+            else
+            {
+                string result = webBrowser_fy.Document.GetElementById("data2_processing").OuterHtml;
+                if (!result.Contains("visibility: visible;"))
+                {
+                    timer_stillsearhcing_fy.Stop();
+
+                    webBrowser_fy.Navigate("http://cs.ying168.bet/flow/wageredAjax2");
+                    await GetTotalDataAsync();
+                    await GetDataFYAsync();
+                    MessageBox.Show("get data");
+                }
+            }
+        }
+
+        private async Task GetTotalDataAsync()
+        {
+            var cookies = FullWebBrowserCookie.GetCookieInternal(webBrowser_fy.Url, false);
+            WebClient wc = new WebClient();
+            wc.Headers.Add("Cookie: " + cookies);
+            wc.Encoding = Encoding.UTF8;
+            wc.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
+            string result = await wc.DownloadStringTaskAsync("http://cs.ying168.bet/flow/wageredTotalAjax2");
+            MessageBox.Show(result);
+        }
+
+        private async Task GetDataFYAsync()
+        {
+            var cookies = FullWebBrowserCookie.GetCookieInternal(webBrowser_fy.Url, false);
+            WebClient wc = new WebClient();
+            wc.Headers.Add("Cookie: " + cookies);
+            wc.Encoding = Encoding.UTF8;
+            wc.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
+            string result = await wc.DownloadStringTaskAsync("http://cs.ying168.bet/flow/wageredAjax2");
+            MessageBox.Show(result);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // ----------------
+        // TF ----------------
+        // ----------------
+
+
+
+
+
 
         // Drag Header to Move
         private void panel_header_MouseDown(object sender, MouseEventArgs e)
@@ -150,52 +348,6 @@ namespace Cronos_Data
 
                 panel_fy.Enabled = true;
                 panel_tf.Enabled = true;
-            }
-        }
-        
-        // FY ComboBox Selected Index Changed
-        private void comboBox_fy_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (comboBox_fy.SelectedIndex == 0)
-            {
-                // Yesterday
-                string start_fy = DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd 00:00:00");
-                DateTime datetime_start_fy = DateTime.ParseExact(start_fy, "yyyy-MM-dd 00:00:00", CultureInfo.InvariantCulture);
-                dateTimePicker_start_fy.Value = datetime_start_fy;
-
-                string end_fy = DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd 23:59:59");
-                DateTime datetime_end_fy = DateTime.ParseExact(end_fy, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
-                dateTimePicker_end_fy.Value = datetime_end_fy;
-            }
-            else if (comboBox_fy.SelectedIndex == 1)
-            {
-                // Lat Week
-                DayOfWeek weekStart = DayOfWeek.Sunday;
-                DateTime startingDate = DateTime.Today;
-
-                while (startingDate.DayOfWeek != weekStart)
-                    startingDate = startingDate.AddDays(-1);
-
-                DateTime datetime_start_fy = startingDate.AddDays(-7);
-                dateTimePicker_start_fy.Value = datetime_start_fy;
-
-                string last = startingDate.AddDays(-1).ToString("yyyy-MM-dd 23:59:59");
-                DateTime datetime_end_fy = DateTime.ParseExact(last, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
-                dateTimePicker_end_fy.Value = datetime_end_fy;
-            }
-            else if (comboBox_fy.SelectedIndex == 2)
-            {
-                // Last Month
-                var today = DateTime.Today;
-                var month = new DateTime(today.Year, today.Month, 1);
-                var first = month.AddMonths(-1).ToString("yyyy-MM-dd 00:00:00");
-                var last = month.AddDays(-1).ToString("yyyy-MM-dd 23:59:59");
-
-                DateTime datetime_start_fy = DateTime.ParseExact(first, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
-                dateTimePicker_start_fy.Value = datetime_start_fy;
-
-                DateTime datetime_end_fy = DateTime.ParseExact(last, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
-                dateTimePicker_end_fy.Value = datetime_end_fy;
             }
         }
     }

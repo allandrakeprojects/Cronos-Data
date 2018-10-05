@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FullWebBrowserCookie.cs" />
     <Compile Include="GraphicsExtension.cs" />
     <Compile Include="Main_Form.cs">
       <SubType>Form</SubType>
