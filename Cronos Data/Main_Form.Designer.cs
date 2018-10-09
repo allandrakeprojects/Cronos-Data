@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.panel_header = new System.Windows.Forms.Panel();
             this.label_title = new System.Windows.Forms.Label();
             this.pictureBox_minimize = new System.Windows.Forms.PictureBox();
@@ -47,7 +46,6 @@
             this.webBrowser_tf = new System.Windows.Forms.WebBrowser();
             this.button_filelocation = new System.Windows.Forms.Button();
             this.sPanel1 = new Cronos_Data.SPanel();
-            this.timer_stillsearhcing_fy = new System.Windows.Forms.Timer(this.components);
             this.panel_header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_minimize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_close)).BeginInit();
@@ -213,7 +211,7 @@
             this.webBrowser_fy.ScriptErrorsSuppressed = true;
             this.webBrowser_fy.Size = new System.Drawing.Size(528, 458);
             this.webBrowser_fy.TabIndex = 0;
-            this.webBrowser_fy.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowser_fy_DocumentCompleted);
+            this.webBrowser_fy.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowser_fy_DocumentCompletedAsync);
             // 
             // panel_tf
             // 
@@ -256,11 +254,6 @@
             this.sPanel1.Name = "sPanel1";
             this.sPanel1.Size = new System.Drawing.Size(44, 625);
             this.sPanel1.TabIndex = 1;
-            // 
-            // timer_stillsearhcing_fy
-            // 
-            this.timer_stillsearhcing_fy.Interval = 2000;
-            this.timer_stillsearhcing_fy.Tick += new System.EventHandler(this.timer_stillsearhcing_fy_TickAsync);
             // 
             // Main_Form
             // 
@@ -311,6 +304,5 @@
         private System.Windows.Forms.Label label_start_fy;
         private System.Windows.Forms.Label label_end_fy;
         private System.Windows.Forms.DateTimePicker dateTimePicker_end_fy;
-        private System.Windows.Forms.Timer timer_stillsearhcing_fy;
     }
 }
