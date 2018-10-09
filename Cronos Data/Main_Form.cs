@@ -1,12 +1,9 @@
-﻿using SHDocVw;
+﻿using ChoETL;
+using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Globalization;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -23,6 +20,10 @@ namespace Cronos_Data
         public static extern bool ReleaseCapture();
         public const int WM_NCLBUTTONDOWN = 0xA1;
         public const int HT_CAPTION = 0x2;
+        private string total_records;
+        private double display_length = 5000;
+        private double limit = 250000;
+        private int total_page;
 
         // Border
         const int _ = 1;
@@ -169,27 +170,6 @@ namespace Cronos_Data
                 }
             }
         }
-
-        private class CookieAwareWebClient : WebClient
-        {
-            public CookieAwareWebClient()
-            {
-                CookieContainer = new CookieContainer();
-            }
-
-            public CookieContainer CookieContainer { get; private set; }
-
-            protected override WebRequest GetWebRequest(Uri address)
-            {
-                var request = base.GetWebRequest(address);
-                var httpRequest = request as HttpWebRequest;
-                if (httpRequest != null)
-                {
-                    httpRequest.CookieContainer = CookieContainer;
-                }
-                return request;
-            }
-        }
        
         private async Task GetDataFYAsync()
         {
@@ -232,8 +212,8 @@ namespace Cronos_Data
                 { "gpid", "0" },
                 { "wager_settle", "" },
                 { "valid_inva", "" },
-                { "start",  dateTimePicker_start_fy.Text},
-                { "end", dateTimePicker_end_fy.Text},
+                { "start",  "2018-10-08 00:00:00"},
+                { "end", "2018-10-08 23:59:59"},
                 { "skip", "0"},
                 { "ftime_188", "bettime"},
                 { "data[0][name]", "sEcho"},
@@ -251,115 +231,29 @@ namespace Cronos_Data
             byte[] result_gettotal = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/flow/wageredAjax2", "POST", reqparm_gettotal);
             string responsebody_gettotatal = Encoding.UTF8.GetString(result_gettotal);
 
-            byte[] result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/flow/wageredAjax2", "POST", reqparm);
-            string responsebody = Encoding.UTF8.GetString(result);
+            JObject o = JObject.Parse(responsebody_gettotatal);
+            JToken acme = o.SelectToken("$.iTotalRecords");
+            total_records = acme.ToString();
+
+            double result_total_records = double.Parse(total_records) / display_length;
+            MessageBox.Show(result_total_records.ToString());
+            if (result_total_records.ToString().Contains("."))
+            {
+                total_page = Convert.ToInt32(Math.Floor(result_total_records)) + 1;
+            }
+            else
+            {
+                total_page = Convert.ToInt32(Math.Floor(result_total_records));
+            }
+            
+            MessageBox.Show(total_page.ToString());
+            MessageBox.Show(total_records);
+
+            //byte[] result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/flow/wageredAjax2", "POST", reqparm);
+            //string responsebody = Encoding.UTF8.GetString(result);
 
             MessageBox.Show(Regex.Unescape(responsebody_gettotatal));
-            MessageBox.Show(Regex.Unescape(responsebody));
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            //CookieContainer cookies = new CookieContainer();
-            //HttpClientHandler handler = new HttpClientHandler();
-            //handler.CookieContainer = cookies;
-
-            //HttpClient client = new HttpClient(handler);
-            //HttpResponseMessage response = client.GetAsync("http://cs.ying168.bet/flow/wageredAjax2").Result;
-            //Uri uri = new Uri("http://cs.ying168.bet/player/list");
-            //IEnumerable<Cookie> responseCookies = cookies.GetCookies(uri).Cast<Cookie>();
-            //foreach (Cookie cookiesss in responseCookies)
-            //{
-            //    MessageBox.Show(cookiesss.Name + " -------- " + cookiesss.Value);
-            //    WebClient wc = new WebClient();
-            //    wc.Headers.Add("Cookie", "");
-            //    wc.Encoding = Encoding.UTF8;
-            //    wc.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
-            //    string result = await wc.UploadStringTaskAsync("http://cs.ying168.bet/flow/wageredAjax2", "POST");
-            //    MessageBox.Show(result);
-            //}
-
-            //var cookie = FullWebBrowserCookie.GetCookieInternal(webBrowser_fy.Url, false);
-            //WebClient wc = new WebClient();
-            ////MessageBox.Show(cookie);
-            //wc.Headers.Add("Cookie", cookie);
-            //wc.Encoding = Encoding.UTF8;
-            //wc.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
-            //string result = await wc.UploadStringTaskAsync("http://cs.ying168.bet/flow/wageredAjax2", "POST");
-            //MessageBox.Show(result);
-
-
-
-
-
-
-
-            //InternetSetCookie(webBrowser_fy.Url, "JSESSIONID", Globals.ThisDocument.sessionID);
-            //webBrowser_fy.Navigate(webBrowser_fy.Url);
-            //MessageBox.Show(webBrowser_fy.Url.ToString());
-            //Uri uri = new Uri("http://cs.ying168.bet/player/list");
-            //var cookies = FullWebBrowserCookie.GetCookieInternal(uri, false);
-            //WebClient wc = new WebClient();
-            //wc.Headers.Add("Cookie", cookies);
-            //wc.Encoding = Encoding.UTF8;
-            //wc.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
-            //string result = await wc.DownloadStringTaskAsync("http://cs.ying168.bet/flow/wageredAjax2");
-            //MessageBox.Show(result);
-
-            //using (var client = new CookieAwareWebClient())
-            //{
-
-
-            //    // If the previous call succeeded we now have a valid authentication cookie
-            //    // so we could download the protected page
-            //    string result = await client.DownloadStringTaskAsync("http://cs.ying168.bet/flow/wageredAjax2");
-            //    MessageBox.Show(result);
-            //}
-
-            //CookieContainer cookies = new CookieContainer();
-            //HttpClientHandler handler = new HttpClientHandler();
-            //handler.CookieContainer = cookies;
-
-            //HttpClient client = new HttpClient(handler);
-            //HttpResponseMessage response = client.GetAsync("http://cs.ying168.bet/player/list").Result;
-
-            //Uri uri = new Uri("http://cs.ying168.bet/player/list");
-            //IEnumerable<Cookie> responseCookies = cookies.GetCookies(uri).Cast<Cookie>();
-            //foreach (Cookie cookie in responseCookies)
-            //{
-            //    var cookiess = FullWebBrowserCookie.GetCookieInternal(webBrowser_fy.Url, false);
-            //    WebClient wc = new WebClient();
-            //    wc.Headers.Add("Cookie", cookiess);
-            //    wc.Encoding = Encoding.UTF8;
-            //    wc.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
-            //    InternetSetCookie("http://cs.ying168.bet/flow/wageredAjax2", cookie.Name, cookiess);
-            //    webBrowser_fy.Navigate("http://cs.ying168.bet/flow/wageredAjax2");
-            //    string result = await wc.DownloadStringTaskAsync("http://cs.ying168.bet/flow/wageredAjax2");
-            //    MessageBox.Show(result);
-            //}
-            //Console.WriteLine(cookie.Name + ": " + cookie.Value);
-
-            //MessageBox.Show(response.Headers.ToString());
+            //MessageBox.Show(Regex.Unescape(responsebody));
         }
 
 

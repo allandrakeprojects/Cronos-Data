@@ -32,11 +32,21 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Fiddler">
-      <HintPath>..\..\..\..\AppData\Local\Programs\Fiddler\Fiddler.exe</HintPath>
+    <Reference Include="ChoETL, Version=1.0.8.5, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ChoETL.1.0.8.5\lib\ChoETL.dll</HintPath>
     </Reference>
+    <Reference Include="ChoETL.JSON, Version=1.0.5.8, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ChoETL.JSON.1.0.5.8\lib\ChoETL.JSON.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -51,7 +61,6 @@
     <Compile Include="CookieAwareWebClient.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Fiddler.cs" />
     <Compile Include="FullWebBrowserCookie.cs" />
     <Compile Include="GraphicsExtension.cs" />
     <Compile Include="Main_Form.cs">
@@ -73,6 +82,7 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -97,19 +107,9 @@
   <ItemGroup>
     <None Include="Resources\minus.png" />
   </ItemGroup>
-  <ItemGroup>
-    <COMReference Include="SHDocVw">
-      <Guid>{EAB22AC0-30C1-11CF-A7EB-0000C05BAE0B}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>1</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy "$(TargetPath)" "%25userprofile%25\AppData\Local\Programs\Fiddler\$(TargetFilename)"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>
