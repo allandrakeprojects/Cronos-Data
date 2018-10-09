@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Drawing;
 using System.Globalization;
+using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -20,10 +21,12 @@ namespace Cronos_Data
         public static extern bool ReleaseCapture();
         public const int WM_NCLBUTTONDOWN = 0xA1;
         public const int HT_CAPTION = 0x2;
-        private string total_records;
-        private double display_length = 5000;
-        private double limit = 250000;
-        private int total_page;
+        private string _total_records_fy;
+        private double _display_length_fy = 5000;
+        private double _limit_fy = 250000;
+        private int _total_page_fy;
+        private int _result_count_json_fy;
+        private JObject jo_fy;
 
         // Border
         const int _ = 1;
@@ -164,8 +167,7 @@ namespace Cronos_Data
                     if (webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/player/list"))
                     {
                         await GetDataFYAsync();
-                        //await GetTotalDataAsync();
-                        MessageBox.Show("get data");
+                        FY();
                     }
                 }
             }
@@ -225,37 +227,88 @@ namespace Cronos_Data
                 { "data[3][name]", "iDisplayStart"},
                 { "data[3][value]", "0"},
                 { "data[4][name]", "iDisplayLength"},
-                { "data[4][value]", "100"}
+                { "data[4][value]", "2"}
             };
 
             byte[] result_gettotal = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/flow/wageredAjax2", "POST", reqparm_gettotal);
             string responsebody_gettotatal = Encoding.UTF8.GetString(result_gettotal);
 
-            JObject o = JObject.Parse(responsebody_gettotatal);
-            JToken acme = o.SelectToken("$.iTotalRecords");
-            total_records = acme.ToString();
+            JObject jo_gettotal = JObject.Parse(responsebody_gettotatal);
+            JToken jt_gettotal = jo_gettotal.SelectToken("$.iTotalRecords");
+            _total_records_fy = jt_gettotal.ToString();
 
-            double result_total_records = double.Parse(total_records) / display_length;
-            MessageBox.Show(result_total_records.ToString());
+            double result_total_records = double.Parse(_total_records_fy) / _display_length_fy;
+
             if (result_total_records.ToString().Contains("."))
             {
-                total_page = Convert.ToInt32(Math.Floor(result_total_records)) + 1;
+                _total_page_fy = Convert.ToInt32(Math.Floor(result_total_records)) + 1;
             }
             else
             {
-                total_page = Convert.ToInt32(Math.Floor(result_total_records));
+                _total_page_fy = Convert.ToInt32(Math.Floor(result_total_records));
             }
-            
-            MessageBox.Show(total_page.ToString());
-            MessageBox.Show(total_records);
 
-            //byte[] result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/flow/wageredAjax2", "POST", reqparm);
-            //string responsebody = Encoding.UTF8.GetString(result);
+            byte[] result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/flow/wageredAjax2", "POST", reqparm);
+            string responsebody = Encoding.UTF8.GetString(result);
 
-            MessageBox.Show(Regex.Unescape(responsebody_gettotatal));
-            //MessageBox.Show(Regex.Unescape(responsebody));
+            jo_fy = JObject.Parse(responsebody);
+            JToken count = jo_fy.SelectToken("$.aaData");
+            _result_count_json_fy = count.Count();
         }
+        
+        private void FY()
+        {
+            int get_i = 1;
+            for (int i = 0; i < _result_count_json_fy; i++)
+            {
+                get_i += i;
+                MessageBox.Show(get_i.ToString());
+                JToken game_provider = jo_fy.SelectToken("$.aaData[" + i + "][0]");
+                MessageBox.Show("Game Provider: " + game_provider.ToString());
 
+                JToken player_id = jo_fy.SelectToken("$.aaData[" + i + "][1][0]");
+                MessageBox.Show("Player ID: " + player_id.ToString());
+                JToken player_name = jo_fy.SelectToken("$.aaData[" + i + "][1][1]");
+                MessageBox.Show("Player Name: " + player_name.ToString());
+
+                JToken bet_no = jo_fy.SelectToken("$.aaData[" + i + "][2]");
+                MessageBox.Show("Bet No.: " + bet_no.ToString());
+
+                JToken bet_time = jo_fy.SelectToken("$.aaData[" + i + "][3]");
+                MessageBox.Show("Bet Time: " + bet_time.ToString());
+
+                JToken bet_type = jo_fy.SelectToken("$.aaData[" + i + "][4]");
+                MessageBox.Show("Bet Type: " + bet_type.ToString());
+
+                JToken bet_result = jo_fy.SelectToken("$.aaData[" + i + "][5]");
+                MessageBox.Show("Bet Result: " + bet_result.ToString());
+
+                JToken stake_amount_color = jo_fy.SelectToken("$.aaData[" + i + "][6][0]");
+                MessageBox.Show("Stake Amount Color: " + stake_amount_color.ToString());
+                JToken stake_amount = jo_fy.SelectToken("$.aaData[" + i + "][6][1]");
+                MessageBox.Show("Stake Amount: " + stake_amount.ToString());
+
+                JToken win_amount_color = jo_fy.SelectToken("$.aaData[" + i + "][7][0]");
+                MessageBox.Show("Win Amount Color: " + win_amount_color.ToString());
+                JToken win_amount = jo_fy.SelectToken("$.aaData[" + i + "][7][1]");
+                MessageBox.Show("Win Amount: " + win_amount.ToString());
+
+                JToken company_win_loss_color = jo_fy.SelectToken("$.aaData[" + i + "][8][0]");
+                MessageBox.Show("Company Win Loss Color: " + company_win_loss_color.ToString());
+                JToken company_win_loss = jo_fy.SelectToken("$.aaData[" + i + "][8][1]");
+                MessageBox.Show("Company Win Loss: " + company_win_loss.ToString());
+
+                JToken valid_bet_color = jo_fy.SelectToken("$.aaData[" + i + "][9][0]");
+                MessageBox.Show("Valid Bet Color: " + valid_bet_color.ToString());
+                JToken valid_bet = jo_fy.SelectToken("$.aaData[" + i + "][9][1]");
+                MessageBox.Show("Valid Bet: " + valid_bet.ToString());
+
+                JToken valid_invalid_id = jo_fy.SelectToken("$.aaData[" + i + "][10][0]");
+                MessageBox.Show("Valid/Invalid ID: " + valid_invalid_id.ToString());
+                JToken valid_invalid = jo_fy.SelectToken("$.aaData[" + i + "][10][1]");
+                MessageBox.Show("Valid/Invalid: " + valid_invalid.ToString());
+            }
+        }
 
 
 
