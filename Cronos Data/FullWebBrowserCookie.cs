@@ -36,8 +36,7 @@ namespace Cronos_Data
 
         #endregion
     }
-
-
+    
     public class FullWebBrowserCookie : WebBrowser
     {
         [SecurityCritical]

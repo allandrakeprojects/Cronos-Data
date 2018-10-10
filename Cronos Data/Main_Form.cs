@@ -1,15 +1,17 @@
 ﻿using ChoETL;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace Cronos_Data
 {
@@ -74,8 +76,7 @@ namespace Cronos_Data
             //            MessageBox.Show("[FLAGS] " + Flags);
             //        }
             //    });
-
-
+            
             comboBox_fy.SelectedIndex = 0;
             dateTimePicker_start_fy.Format = DateTimePickerFormat.Custom;
             dateTimePicker_start_fy.CustomFormat = "yyyy-MM-dd HH:mm:ss";
@@ -264,49 +265,24 @@ namespace Cronos_Data
                 get_i += i;
                 MessageBox.Show(get_i.ToString());
                 JToken game_provider = jo_fy.SelectToken("$.aaData[" + i + "][0]");
-                MessageBox.Show("Game Provider: " + game_provider.ToString());
-
                 JToken player_id = jo_fy.SelectToken("$.aaData[" + i + "][1][0]");
-                MessageBox.Show("Player ID: " + player_id.ToString());
                 JToken player_name = jo_fy.SelectToken("$.aaData[" + i + "][1][1]");
-                MessageBox.Show("Player Name: " + player_name.ToString());
-
                 JToken bet_no = jo_fy.SelectToken("$.aaData[" + i + "][2]");
-                MessageBox.Show("Bet No.: " + bet_no.ToString());
-
                 JToken bet_time = jo_fy.SelectToken("$.aaData[" + i + "][3]");
-                MessageBox.Show("Bet Time: " + bet_time.ToString());
-
                 JToken bet_type = jo_fy.SelectToken("$.aaData[" + i + "][4]");
-                MessageBox.Show("Bet Type: " + bet_type.ToString());
-
                 JToken bet_result = jo_fy.SelectToken("$.aaData[" + i + "][5]");
-                MessageBox.Show("Bet Result: " + bet_result.ToString());
-
                 JToken stake_amount_color = jo_fy.SelectToken("$.aaData[" + i + "][6][0]");
-                MessageBox.Show("Stake Amount Color: " + stake_amount_color.ToString());
                 JToken stake_amount = jo_fy.SelectToken("$.aaData[" + i + "][6][1]");
-                MessageBox.Show("Stake Amount: " + stake_amount.ToString());
-
                 JToken win_amount_color = jo_fy.SelectToken("$.aaData[" + i + "][7][0]");
-                MessageBox.Show("Win Amount Color: " + win_amount_color.ToString());
                 JToken win_amount = jo_fy.SelectToken("$.aaData[" + i + "][7][1]");
-                MessageBox.Show("Win Amount: " + win_amount.ToString());
-
                 JToken company_win_loss_color = jo_fy.SelectToken("$.aaData[" + i + "][8][0]");
-                MessageBox.Show("Company Win Loss Color: " + company_win_loss_color.ToString());
                 JToken company_win_loss = jo_fy.SelectToken("$.aaData[" + i + "][8][1]");
-                MessageBox.Show("Company Win Loss: " + company_win_loss.ToString());
-
                 JToken valid_bet_color = jo_fy.SelectToken("$.aaData[" + i + "][9][0]");
-                MessageBox.Show("Valid Bet Color: " + valid_bet_color.ToString());
                 JToken valid_bet = jo_fy.SelectToken("$.aaData[" + i + "][9][1]");
-                MessageBox.Show("Valid Bet: " + valid_bet.ToString());
-
                 JToken valid_invalid_id = jo_fy.SelectToken("$.aaData[" + i + "][10][0]");
-                MessageBox.Show("Valid/Invalid ID: " + valid_invalid_id.ToString());
                 JToken valid_invalid = jo_fy.SelectToken("$.aaData[" + i + "][10][1]");
-                MessageBox.Show("Valid/Invalid: " + valid_invalid.ToString());
+
+
             }
         }
 
@@ -425,7 +401,7 @@ namespace Cronos_Data
             DialogResult dr = MessageBox.Show("Exit the program？", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (dr == DialogResult.Yes)
             {
-                Environment.Exit(0);
+                Close();
             }
         }
 
@@ -468,6 +444,229 @@ namespace Cronos_Data
                 panel_fy.Enabled = true;
                 panel_tf.Enabled = true;
             }
+        }
+
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var bankAccounts = new List<FY_BetRecord> {
+                new FY_BetRecord { ID = 345678, Balance = 541.27},
+                new FY_BetRecord {ID = 1230221,Balance = -1237.44},
+                new FY_BetRecord {ID = 346777,Balance = 3532574},
+                new FY_BetRecord {ID = 235788,Balance = 1500.033333}
+                };
+
+                DisplayInExcel(bankAccounts);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                //Excel.Application oXL;
+                //Excel._Workbook oWB;
+                //Excel._Worksheet oSheet;
+                //Excel.Range oRng;
+
+
+                ////Start Excel and get Application object.
+                //oXL = new Excel.Application();
+
+                ////Get a new workbook.
+                //oWB = oXL.Workbooks.Add(Missing.Value);
+                //oSheet = (Excel._Worksheet)oWB.ActiveSheet;
+
+                ////Add table headers going cell by cell.
+                //oSheet.Cells[1, 1] = "First Name";
+                //oSheet.Cells[1, 2] = "Last Name";
+                //oSheet.Cells[1, 3] = "Full Name";
+                //oSheet.Cells[1, 4] = "Salary";
+
+                ////Format A1:D1 as bold, vertical alignment = center.
+                //oSheet.get_Range("A1", "D1").Font.Bold = true;
+                //oSheet.get_Range("A1", "D1").VerticalAlignment =
+                //Excel.XlVAlign.xlVAlignCenter;
+
+                //// Create an array to multiple values at once.
+                //string[,] saNames = new string[5, 2];
+
+                //saNames[0, 0] = "John";
+                //saNames[0, 1] = "Smith";
+                //saNames[1, 0] = "Tom";
+                //saNames[1, 1] = "Brown";
+                //saNames[2, 0] = "Sue";
+                //saNames[2, 1] = "Thomas";
+                //saNames[3, 0] = "Jane";
+                //saNames[3, 1] = "Jones";
+                //saNames[4, 0] = "Adam";
+                //saNames[4, 1] = "Johnson";
+
+                ////Fill A2:B6 with an array of values (First and Last Names).
+                //oSheet.get_Range("A2", "B6").Value2 = saNames;
+
+                ////Fill C2:C6 with a relative formula (=A2 & " " & B2).
+                //oRng = oSheet.get_Range("C2", "C6");
+                //oRng.Formula = "=A2 & \" \" & B2";
+
+                ////Fill D2:D6 with a formula(=RAND()*100000) and apply format.
+                //oRng = oSheet.get_Range("D2", "D3");
+                //oRng.Formula = "=RAND()*100000";
+                //oRng.EntireColumn.NumberFormat = "$0.00";
+
+                ////AutoFit columns A:D.
+                //oRng = oSheet.get_Range("A1", "D1");
+                //oRng.EntireColumn.AutoFit();
+
+                ////Make sure Excel is visible and give the user control
+                ////of Microsoft Excel's lifetime.
+                //oXL.Visible = true;
+                //oXL.UserControl = true;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                //Excel.Application oXL;
+                //Excel._Workbook oWB;
+                //Excel._Worksheet oSheet;
+                //Excel.Range oRng;
+
+                ////Start Excel and get Application object.
+                //oXL = new Excel.Application();
+
+                ////Get a new workbook.
+                //oWB = oXL.Workbooks.Add(Missing.Value);
+                //oSheet = (Excel._Worksheet)oWB.ActiveSheet;
+
+                ////Add table headers going cell by cell.
+                //oSheet.Cells[1, 1] = "Game Platform";
+                //oSheet.Cells[1, 2] = "Username";
+                //oSheet.Cells[1, 3] = "Bet No.";
+                //oSheet.Cells[1, 4] = "Bet Time";
+                //oSheet.Cells[1, 5] = "Bet Type";
+                //oSheet.Cells[1, 6] = "Game Result";
+                //oSheet.Cells[1, 7] = "Stake Amount";
+                //oSheet.Cells[1, 8] = "Win Amount";
+                //oSheet.Cells[1, 9] = "Company Win/Loss";
+                //oSheet.Cells[1, 10] = "Valid Bet";
+                //oSheet.Cells[1, 11] = "Valid/Invalid";
+
+                ////Format A1:D1 as bold, vertical alignment = center.
+                //oSheet.get_Range("A1", "K1").Font.Bold = true;
+                //oSheet.get_Range("A1", "K1").VerticalAlignment =
+                //Excel.XlVAlign.xlVAlignCenter;
+
+                //// Create an array to multiple values at once.
+                //string[,] saNames = new string[5, 11];
+
+                //// R, C
+                //saNames[0, 0] = "Game";
+                //saNames[0, 1] = "John Doe";
+                //saNames[0, 2] = "123456789";
+                //saNames[0, 3] = "00-00-00 00:00:00";
+                //saNames[0, 4] = "Type";
+                //saNames[0, 5] = "Result";
+                //saNames[0, 6] = "0.00";
+                //saNames[0, 7] = "0.00";
+                //saNames[0, 8] = "0.00";
+                //saNames[0, 9] = "0.00";
+                //saNames[0, 10] = "Valid";
+
+                ////Fill A2:B6 with an array of values (First and Last Names).
+                //oSheet.get_Range("A2", "K2").Value2 = saNames;
+                ////oSheet.get_Range("C2").EntireColumn.NumberFormat = "@";
+
+                ////AutoFit columns A:K.
+                //oRng = oSheet.get_Range("A1", "K1");
+                //oRng.EntireColumn.AutoFit();
+                //oRng.EntireColumn.NumberFormat = "@";
+
+                ////Excel.Range ThisRange = oSheet.get_Range("C2", Missing.Value);
+                ////ThisRange.NumberFormat = "0.00";
+                ////ThisRange.NumberFormat = "General";
+                ////ThisRange.NumberFormat = "hh:mm:ss";
+                ////ThisRange.NumberFormat = "DD/MM/YYYY";
+
+                ////Marshal.FinalReleaseComObject(ThisRange);
+
+                ////Make sure Excel is visible and give the user control
+                ////of Microsoft Excel's lifetime.
+                //oXL.Visible = true;
+                //oXL.UserControl = true;
+
+                ////StringBuilder replace_datetime_start_fy = new StringBuilder("testtest");
+                ////replace_datetime_start_fy.Replace(":", "");
+                ////replace_datetime_start_fy.Replace(" ", "_");
+
+                ////string result = label_filelocation.Text + "\\FY_" + replace_datetime_start_fy.ToString() + "_1.xlsx";
+                ////oWB.SaveAs(result, Excel.XlFileFormat.xlWorkbookDefault, Type.Missing, Type.Missing,
+                ////    false, false, Excel.XlSaveAsAccessMode.xlNoChange,
+                ////    Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                ////oWB.Close();
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show(err.ToString());
+            }         
+        }
+
+
+        public class FY_BetRecord
+        {
+            public int ID { get; set; }
+            public double Balance { get; set; }
+        }
+
+        static void DisplayInExcel(IEnumerable<FY_BetRecord> accounts)
+        {
+            var excelApp = new Excel.Application { Visible = true };
+            excelApp.Workbooks.Add();
+            Excel._Worksheet workSheet = (Excel.Worksheet)excelApp.ActiveSheet;
+            workSheet.Cells[1, "A"] = "ID Number";
+            workSheet.Cells[1, "B"] = "Current Balance";
+            var row = 1;
+            foreach (var acct in accounts)
+            {
+                row++;
+                workSheet.Cells[row, "A"] = acct.ID;
+                workSheet.Cells[row, "B"] = acct.Balance;
+
+            }
+            //workSheet.Range["B2", "B" + row].NumberFormat = "#,###.00 €";
+            workSheet.Columns[1].AutoFit();
+            workSheet.Columns[2].AutoFit();
         }
     }
 }

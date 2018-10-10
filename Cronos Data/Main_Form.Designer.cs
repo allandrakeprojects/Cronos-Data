@@ -46,6 +46,7 @@
             this.webBrowser_tf = new System.Windows.Forms.WebBrowser();
             this.button_filelocation = new System.Windows.Forms.Button();
             this.sPanel1 = new Cronos_Data.SPanel();
+            this.button1 = new System.Windows.Forms.Button();
             this.panel_header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_minimize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_close)).BeginInit();
@@ -56,6 +57,7 @@
             // panel_header
             // 
             this.panel_header.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(122)))), ((int)(((byte)(159)))));
+            this.panel_header.Controls.Add(this.button1);
             this.panel_header.Controls.Add(this.label_title);
             this.panel_header.Controls.Add(this.pictureBox_minimize);
             this.panel_header.Controls.Add(this.pictureBox_close);
@@ -255,6 +257,16 @@
             this.sPanel1.Size = new System.Drawing.Size(44, 625);
             this.sPanel1.TabIndex = 1;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(349, 16);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 4;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Main_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -304,5 +316,6 @@
         private System.Windows.Forms.Label label_start_fy;
         private System.Windows.Forms.Label label_end_fy;
         private System.Windows.Forms.DateTimePicker dateTimePicker_end_fy;
+        private System.Windows.Forms.Button button1;
     }
 }
