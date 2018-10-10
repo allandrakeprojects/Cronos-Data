@@ -10,6 +10,7 @@ using System.Net;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -169,7 +170,7 @@ namespace Cronos_Data
                     if (webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/player/list"))
                     {
                         await GetDataFYAsync();
-                        FY();
+                        FYAsync();
                     }
                 }
             }
@@ -229,7 +230,7 @@ namespace Cronos_Data
                 { "data[3][name]", "iDisplayStart"},
                 { "data[3][value]", "0"},
                 { "data[4][name]", "iDisplayLength"},
-                { "data[4][value]", "2"}
+                { "data[4][value]", "5000"}
             };
 
             byte[] result_gettotal = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/flow/wageredAjax2", "POST", reqparm_gettotal);
@@ -250,6 +251,7 @@ namespace Cronos_Data
                 _total_page_fy = Convert.ToInt32(Math.Floor(result_total_records));
             }
 
+
             byte[] result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/flow/wageredAjax2", "POST", reqparm);
             string responsebody = Encoding.UTF8.GetString(result);
 
@@ -257,79 +259,160 @@ namespace Cronos_Data
             JToken count = jo_fy.SelectToken("$.aaData");
             _result_count_json_fy = count.Count();
         }
-        
-        private void FY()
+
+        private async Task GetDataFYPagesAsync()
+        {
+            var cookie = FullWebBrowserCookie.GetCookieInternal(webBrowser_fy.Url, false);
+            WebClient wc = new WebClient();
+
+            wc.Headers.Add("Cookie", cookie);
+            wc.Encoding = Encoding.UTF8;
+            wc.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
+
+            int result_pages = (5000 * _fy_pages_count) + 1;
+
+            var reqparm = new System.Collections.Specialized.NameValueCollection
+            {
+                { "s_btype", "" },
+                { "betNo", "" },
+                { "name", "" },
+                { "gpid", "0" },
+                { "wager_settle", "" },
+                { "valid_inva", "" },
+                { "start",  "2018-10-08 00:00:00"},
+                { "end", "2018-10-08 23:59:59"},
+                { "skip", "0"},
+                { "ftime_188", "bettime"},
+                { "data[0][name]", "sEcho"},
+                { "data[0][value]", "1"},
+                { "data[1][name]", "iColumns"},
+                { "data[1][value]", "12"},
+                { "data[2][name]", "sColumns"},
+                { "data[2][value]", ""},
+                { "data[3][name]", "iDisplayStart"},
+                { "data[3][value]", result_pages.ToString()},
+                { "data[4][name]", "iDisplayLength"},
+                { "data[4][value]", "5000"}
+            };
+            
+            byte[] result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/flow/wageredAjax2", "POST", reqparm);
+            string responsebody = Encoding.UTF8.GetString(result);
+
+            jo_fy = JObject.Parse(responsebody);
+            JToken count = jo_fy.SelectToken("$.aaData");
+            _result_count_json_fy = count.Count();
+        }
+
+        int fy_i = 0;
+        int fy_ii = 0;
+
+        private async void FYAsync()
         {
             try
             {
-                var bet_records = new List<FY_BetRecord>();
-                int get_i = 1;
-                for (int i = 0; i < _result_count_json_fy; i++)
+                if (fy_inserted_in_excel)
                 {
-                    get_i += i;
-                    MessageBox.Show(get_i.ToString());
-                    JToken game_platform = jo_fy.SelectToken("$.aaData[" + i + "][0]");
-                    JToken player_id = jo_fy.SelectToken("$.aaData[" + i + "][1][0]");
-                    JToken player_name = jo_fy.SelectToken("$.aaData[" + i + "][1][1]");
-                    JToken bet_no = jo_fy.SelectToken("$.aaData[" + i + "][2]");
-                    JToken bet_time = jo_fy.SelectToken("$.aaData[" + i + "][3]");
-                    JToken bet_type = jo_fy.SelectToken("$.aaData[" + i + "][4]");
-                    JToken game_result = jo_fy.SelectToken("$.aaData[" + i + "][5]");
-                    JToken stake_amount_color = jo_fy.SelectToken("$.aaData[" + i + "][6][0]");
-                    JToken stake_amount = jo_fy.SelectToken("$.aaData[" + i + "][6][1]");
-                    JToken win_amount_color = jo_fy.SelectToken("$.aaData[" + i + "][7][0]");
-                    JToken win_amount = jo_fy.SelectToken("$.aaData[" + i + "][7][1]");
-                    JToken company_win_loss_color = jo_fy.SelectToken("$.aaData[" + i + "][8][0]");
-                    JToken company_win_loss = jo_fy.SelectToken("$.aaData[" + i + "][8][1]");
-                    JToken valid_bet_color = jo_fy.SelectToken("$.aaData[" + i + "][9][0]");
-                    JToken valid_bet = jo_fy.SelectToken("$.aaData[" + i + "][9][1]");
-                    JToken valid_invalid_id = jo_fy.SelectToken("$.aaData[" + i + "][10][0]");
-                    JToken valid_invalid = jo_fy.SelectToken("$.aaData[" + i + "][10][1]");
+                    var bet_records = new List<FY_BetRecord>();
+                    int get_ii = 1;
 
-                    //bet_records = new List<FY_BetRecord> {
-                    //    new FY_BetRecord {
-                    //        GAME_PLATFORM = game_platform.ToString(),
-                    //        USERNAME = player_name.ToString(),
-                    //        BET_NO = Convert.ToInt64(bet_no.ToString()),
-                    //        BET_TIME = bet_time.ToString(),
-                    //        BET_TYPE = bet_type.ToString(),
-                    //        GAME_RESULT = game_result.ToString(),
-                    //        STAKE_AMOUNT = Convert.ToDouble(stake_amount),
-                    //        WIN_AMOUNT = Convert.ToDouble(win_amount),
-                    //        COMPANY_WIN_LOSS = Convert.ToDouble(company_win_loss),
-                    //        VALID_BET = Convert.ToDouble(valid_bet),
-                    //        VALID_INVALID = valid_invalid.ToString()
-                    //    },
-                    //};
-
-                    bet_records.Add(new FY_BetRecord
+                    for (int i = 0; i < _total_page_fy; i++)
                     {
-                        GAME_PLATFORM = game_platform.ToString(),
-                        USERNAME = player_name.ToString(),
-                        BET_NO = Convert.ToInt64(bet_no.ToString()),
-                        BET_TIME = bet_time.ToString(),
-                        BET_TYPE = bet_type.ToString(),
-                        GAME_RESULT = game_result.ToString(),
-                        STAKE_AMOUNT = Convert.ToDouble(stake_amount),
-                        WIN_AMOUNT = Convert.ToDouble(win_amount),
-                        COMPANY_WIN_LOSS = Convert.ToDouble(company_win_loss),
-                        VALID_BET = Convert.ToDouble(valid_bet),
-                        VALID_INVALID = valid_invalid.ToString()
-                    });
-                }
+                        if (!fy_inserted_in_excel)
+                        {
+                            break;
+                        }
 
-                FY_DisplayInExcel(bet_records);
+                        //fy_i = i;
+
+                        label_fy_page_count.Text = _fy_pages_count.ToString();
+
+                        _fy_pages_count++;
+
+                        for (int ii = 0; ii < _result_count_json_fy; ii++)
+                        {
+                            //fy_ii = ii;
+
+                            label_fy_currentrecord.Text = (get_ii++).ToString();
+                            label_fy_currentrecord.Invalidate();
+                            label_fy_currentrecord.Update();
+
+                            JToken game_platform = jo_fy.SelectToken("$.aaData[" + ii + "][0]");
+                            JToken player_id = jo_fy.SelectToken("$.aaData[" + ii + "][1][0]");
+                            JToken player_name = jo_fy.SelectToken("$.aaData[" + ii + "][1][1]");
+                            JToken bet_no = jo_fy.SelectToken("$.aaData[" + ii + "][2]");
+                            JToken bet_time = jo_fy.SelectToken("$.aaData[" + ii + "][3]");
+                            JToken bet_type = jo_fy.SelectToken("$.aaData[" + ii + "][4]").ToString().Replace("<br />", Environment.NewLine).PadRight(125).Substring(0, 125);
+                            JToken game_result = jo_fy.SelectToken("$.aaData[" + ii + "][5]");
+                            JToken stake_amount_color = jo_fy.SelectToken("$.aaData[" + ii + "][6][0]");
+                            JToken stake_amount = jo_fy.SelectToken("$.aaData[" + ii + "][6][1]");
+                            JToken win_amount_color = jo_fy.SelectToken("$.aaData[" + ii + "][7][0]");
+                            JToken win_amount = jo_fy.SelectToken("$.aaData[" + ii + "][7][1]");
+                            JToken company_win_loss_color = jo_fy.SelectToken("$.aaData[" + ii + "][8][0]");
+                            JToken company_win_loss = jo_fy.SelectToken("$.aaData[" + ii + "][8][1]");
+                            JToken valid_bet_color = jo_fy.SelectToken("$.aaData[" + ii + "][9][0]");
+                            JToken valid_bet = jo_fy.SelectToken("$.aaData[" + ii + "][9][1]");
+                            JToken valid_invalid_id = jo_fy.SelectToken("$.aaData[" + ii + "][10][0]");
+                            JToken valid_invalid = jo_fy.SelectToken("$.aaData[" + ii + "][10][1]");
+
+                            bet_records.Add(new FY_BetRecord
+                            {
+                                GAME_PLATFORM = game_platform.ToString(),
+                                USERNAME = player_name.ToString(),
+                                BET_NO = bet_no.ToString(),
+                                BET_TIME = bet_time.ToString(),
+                                BET_TYPE = bet_type.ToString(),
+                                GAME_RESULT = game_result.ToString(),
+                                STAKE_AMOUNT = Convert.ToDouble(stake_amount),
+                                WIN_AMOUNT = Convert.ToDouble(win_amount),
+                                COMPANY_WIN_LOSS = Convert.ToDouble(company_win_loss),
+                                VALID_BET = Convert.ToDouble(valid_bet),
+                                VALID_INVALID = valid_invalid.ToString()
+                            });
+
+                            if ((get_ii++) == _limit_fy)
+                            {
+                                // label show list to excel
+                                // push to database
+                                label_fy_inserting_in_excel.Text = "inserting...";
+
+                                get_ii = 1;
+
+                                Thread fy_displayinexcel_thread = new Thread(delegate ()
+                                {
+                                    FY_DisplayInExcel(bet_records);
+                                });
+                                fy_displayinexcel_thread.Start();
+
+                                fy_inserted_in_excel = false;
+                                timer_fy_detect_inserted_in_excel.Start();
+
+                                break;
+                            }
+                        }
+
+                        // web client request
+                        await GetDataFYPagesAsync();
+                    }
+                }
             }
             catch (Exception err)
             {
                 MessageBox.Show(err.ToString());
             }
-
-
-
         }
+        
 
+        private void timer_fy_detect_inserted_in_excel_Tick(object sender, EventArgs e)
+        {
+            // label show list to excel
+            // push to database
 
+            if (fy_inserted_in_excel)
+            {
+                FYAsync();
+                timer_fy_detect_inserted_in_excel.Stop();
+            }
+        }
 
 
 
@@ -496,8 +579,8 @@ namespace Cronos_Data
             {
                 string test = "2018-10-08 23:59:59";
                 var bet_records = new List<FY_BetRecord> {
-                    new FY_BetRecord { GAME_PLATFORM = "Test game plaform", USERNAME = "John Doe", BET_NO = 123456789, BET_TIME = test, BET_TYPE = "ghgjh有效", GAME_RESULT = "game result", STAKE_AMOUNT = 0.00, WIN_AMOUNT = 0.00, COMPANY_WIN_LOSS = 0.60, VALID_BET = -2.43230, VALID_INVALID = "有效有效"},
-                    new FY_BetRecord { GAME_PLATFORM = "Test game plaform", USERNAME = "John Doe", BET_NO = 123456789, BET_TIME = test, BET_TYPE = "test bet type", GAME_RESULT = "game result", STAKE_AMOUNT = 0.00, WIN_AMOUNT = 3.23, COMPANY_WIN_LOSS = 0.00, VALID_BET = 0.00, VALID_INVALID = "test asdsa"},
+                    //new FY_BetRecord { GAME_PLATFORM = "Test game plaform", USERNAME = "John Doe", BET_NO = 123456789, BET_TIME = test, BET_TYPE = "ghgjh有效", GAME_RESULT = "game result", STAKE_AMOUNT = 0.00, WIN_AMOUNT = 0.00, COMPANY_WIN_LOSS = 0.60, VALID_BET = -2.43230, VALID_INVALID = "有效有效"},
+                    //new FY_BetRecord { GAME_PLATFORM = "Test game plaform", USERNAME = "John Doe", BET_NO = 123456789, BET_TIME = test, BET_TYPE = "test bet type", GAME_RESULT = "game result", STAKE_AMOUNT = 0.00, WIN_AMOUNT = 3.23, COMPANY_WIN_LOSS = 0.00, VALID_BET = 0.00, VALID_INVALID = "test asdsa"},
                 };
 
                 FY_DisplayInExcel(bet_records);
@@ -513,7 +596,7 @@ namespace Cronos_Data
         {
             public string GAME_PLATFORM { get; set; }
             public string USERNAME { get; set; }
-            public long BET_NO { get; set; }
+            public string BET_NO { get; set; }
             public string BET_TIME { get; set; }
             public string BET_TYPE { get; set; }
             public string GAME_RESULT { get; set; }
@@ -524,8 +607,14 @@ namespace Cronos_Data
             public string VALID_INVALID { get; set; }
         }
 
+        int fy_displayinexel_i = 0;
+        private int _fy_pages_count = 1;
+        private bool fy_inserted_in_excel = true;
+
         private void FY_DisplayInExcel(IEnumerable<FY_BetRecord> betRecords)
         {
+            fy_displayinexel_i++;
+
             if (Directory.Exists(label_filelocation.Text + "\\FY"))
             {
                 Directory.Delete(label_filelocation.Text + "\\FY", true);
@@ -561,21 +650,20 @@ namespace Cronos_Data
                 workSheet.Cells[row, "I"] = betRecord.COMPANY_WIN_LOSS;
                 workSheet.Cells[row, "J"] = betRecord.VALID_BET;
                 workSheet.Cells[row, "K"] = betRecord.VALID_INVALID;
-
             }
-
-            workSheet.Range["C2", "C" + row].NumberFormat = "DD/MM/YYYY hh:mm:ss";
-            workSheet.Columns[1].AutoFit();
-            workSheet.Columns[2].AutoFit();
-            workSheet.Columns[3].AutoFit();
-            workSheet.Columns[4].AutoFit();
-            workSheet.Columns[5].AutoFit();
-            workSheet.Columns[6].AutoFit();
-            workSheet.Columns[7].AutoFit();
-            workSheet.Columns[8].AutoFit();
-            workSheet.Columns[9].AutoFit();
-            workSheet.Columns[10].AutoFit();
-            workSheet.Columns[11].AutoFit();
+            
+            //workSheet.Range["D2", "D" + row].NumberFormat = "DD/MM/YYYY hh:mm:ss";
+            //workSheet.Columns[1].AutoFit();
+            //workSheet.Columns[2].AutoFit();
+            //workSheet.Columns[3].AutoFit();
+            //workSheet.Columns[4].AutoFit();
+            //workSheet.Columns[5].AutoFit();
+            //workSheet.Columns[6].AutoFit();
+            //workSheet.Columns[7].AutoFit();
+            //workSheet.Columns[8].AutoFit();
+            //workSheet.Columns[9].AutoFit();
+            //workSheet.Columns[10].AutoFit();
+            //workSheet.Columns[11].AutoFit();
 
             StringBuilder replace_datetime_start_fy = new StringBuilder(dateTimePicker_start_fy.Text.Substring(0, 10));
             replace_datetime_start_fy.Replace(" ", "_");
@@ -595,11 +683,13 @@ namespace Cronos_Data
                 Directory.CreateDirectory(label_filelocation.Text + "\\FY\\" + replace_datetime_start_fy.ToString() + "\\Bet Records");
             }
 
-            string result = label_filelocation.Text + "\\FY\\" + replace_datetime_start_fy.ToString() + "\\Bet Records\\FY_BetRecords_" + replace_datetime_start_fy.ToString() + "_1.xlsx";
+            string result = label_filelocation.Text + "\\FY\\" + replace_datetime_start_fy.ToString() + "\\Bet Records\\FY_BetRecords_" + replace_datetime_start_fy.ToString() + "_" + fy_displayinexel_i + ".xlsx";
             workSheet.SaveAs(result);
             Marshal.ReleaseComObject(workSheet);
             excelApp.Application.Quit();
             excelApp.Quit();
+
+            fy_inserted_in_excel = true;
         }
     }
 }
