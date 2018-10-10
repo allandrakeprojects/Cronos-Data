@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
@@ -451,190 +452,13 @@ namespace Cronos_Data
         {
             try
             {
+                string test = "2018-10-08 23:59:59";
                 var bankAccounts = new List<FY_BetRecord> {
-                new FY_BetRecord { ID = 345678, Balance = 541.27},
-                new FY_BetRecord {ID = 1230221,Balance = -1237.44},
-                new FY_BetRecord {ID = 346777,Balance = 3532574},
-                new FY_BetRecord {ID = 235788,Balance = 1500.033333}
+                    new FY_BetRecord { GAME_PLATFORM = "Test game plaform", USERNAME = "John Doe", BET_NO = 123456789, BET_TIME = test, BET_TYPE = "ghgjh有效", GAME_RESULT = "game result", STAKE_AMOUNT = 0.00, WIN_AMOUNT = 0.00, COMPANY_WIN_LOSS = 0.60, VALID_BET = -2.43230, VALID_INVALID = "有效有效"},
+                    new FY_BetRecord { GAME_PLATFORM = "Test game plaform", USERNAME = "John Doe", BET_NO = 123456789, BET_TIME = test, BET_TYPE = "test bet type", GAME_RESULT = "game result", STAKE_AMOUNT = 0.00, WIN_AMOUNT = 3.23, COMPANY_WIN_LOSS = 0.00, VALID_BET = 0.00, VALID_INVALID = "test asdsa"},
                 };
 
                 DisplayInExcel(bankAccounts);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                //Excel.Application oXL;
-                //Excel._Workbook oWB;
-                //Excel._Worksheet oSheet;
-                //Excel.Range oRng;
-
-
-                ////Start Excel and get Application object.
-                //oXL = new Excel.Application();
-
-                ////Get a new workbook.
-                //oWB = oXL.Workbooks.Add(Missing.Value);
-                //oSheet = (Excel._Worksheet)oWB.ActiveSheet;
-
-                ////Add table headers going cell by cell.
-                //oSheet.Cells[1, 1] = "First Name";
-                //oSheet.Cells[1, 2] = "Last Name";
-                //oSheet.Cells[1, 3] = "Full Name";
-                //oSheet.Cells[1, 4] = "Salary";
-
-                ////Format A1:D1 as bold, vertical alignment = center.
-                //oSheet.get_Range("A1", "D1").Font.Bold = true;
-                //oSheet.get_Range("A1", "D1").VerticalAlignment =
-                //Excel.XlVAlign.xlVAlignCenter;
-
-                //// Create an array to multiple values at once.
-                //string[,] saNames = new string[5, 2];
-
-                //saNames[0, 0] = "John";
-                //saNames[0, 1] = "Smith";
-                //saNames[1, 0] = "Tom";
-                //saNames[1, 1] = "Brown";
-                //saNames[2, 0] = "Sue";
-                //saNames[2, 1] = "Thomas";
-                //saNames[3, 0] = "Jane";
-                //saNames[3, 1] = "Jones";
-                //saNames[4, 0] = "Adam";
-                //saNames[4, 1] = "Johnson";
-
-                ////Fill A2:B6 with an array of values (First and Last Names).
-                //oSheet.get_Range("A2", "B6").Value2 = saNames;
-
-                ////Fill C2:C6 with a relative formula (=A2 & " " & B2).
-                //oRng = oSheet.get_Range("C2", "C6");
-                //oRng.Formula = "=A2 & \" \" & B2";
-
-                ////Fill D2:D6 with a formula(=RAND()*100000) and apply format.
-                //oRng = oSheet.get_Range("D2", "D3");
-                //oRng.Formula = "=RAND()*100000";
-                //oRng.EntireColumn.NumberFormat = "$0.00";
-
-                ////AutoFit columns A:D.
-                //oRng = oSheet.get_Range("A1", "D1");
-                //oRng.EntireColumn.AutoFit();
-
-                ////Make sure Excel is visible and give the user control
-                ////of Microsoft Excel's lifetime.
-                //oXL.Visible = true;
-                //oXL.UserControl = true;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                //Excel.Application oXL;
-                //Excel._Workbook oWB;
-                //Excel._Worksheet oSheet;
-                //Excel.Range oRng;
-
-                ////Start Excel and get Application object.
-                //oXL = new Excel.Application();
-
-                ////Get a new workbook.
-                //oWB = oXL.Workbooks.Add(Missing.Value);
-                //oSheet = (Excel._Worksheet)oWB.ActiveSheet;
-
-                ////Add table headers going cell by cell.
-                //oSheet.Cells[1, 1] = "Game Platform";
-                //oSheet.Cells[1, 2] = "Username";
-                //oSheet.Cells[1, 3] = "Bet No.";
-                //oSheet.Cells[1, 4] = "Bet Time";
-                //oSheet.Cells[1, 5] = "Bet Type";
-                //oSheet.Cells[1, 6] = "Game Result";
-                //oSheet.Cells[1, 7] = "Stake Amount";
-                //oSheet.Cells[1, 8] = "Win Amount";
-                //oSheet.Cells[1, 9] = "Company Win/Loss";
-                //oSheet.Cells[1, 10] = "Valid Bet";
-                //oSheet.Cells[1, 11] = "Valid/Invalid";
-
-                ////Format A1:D1 as bold, vertical alignment = center.
-                //oSheet.get_Range("A1", "K1").Font.Bold = true;
-                //oSheet.get_Range("A1", "K1").VerticalAlignment =
-                //Excel.XlVAlign.xlVAlignCenter;
-
-                //// Create an array to multiple values at once.
-                //string[,] saNames = new string[5, 11];
-
-                //// R, C
-                //saNames[0, 0] = "Game";
-                //saNames[0, 1] = "John Doe";
-                //saNames[0, 2] = "123456789";
-                //saNames[0, 3] = "00-00-00 00:00:00";
-                //saNames[0, 4] = "Type";
-                //saNames[0, 5] = "Result";
-                //saNames[0, 6] = "0.00";
-                //saNames[0, 7] = "0.00";
-                //saNames[0, 8] = "0.00";
-                //saNames[0, 9] = "0.00";
-                //saNames[0, 10] = "Valid";
-
-                ////Fill A2:B6 with an array of values (First and Last Names).
-                //oSheet.get_Range("A2", "K2").Value2 = saNames;
-                ////oSheet.get_Range("C2").EntireColumn.NumberFormat = "@";
-
-                ////AutoFit columns A:K.
-                //oRng = oSheet.get_Range("A1", "K1");
-                //oRng.EntireColumn.AutoFit();
-                //oRng.EntireColumn.NumberFormat = "@";
-
-                ////Excel.Range ThisRange = oSheet.get_Range("C2", Missing.Value);
-                ////ThisRange.NumberFormat = "0.00";
-                ////ThisRange.NumberFormat = "General";
-                ////ThisRange.NumberFormat = "hh:mm:ss";
-                ////ThisRange.NumberFormat = "DD/MM/YYYY";
-
-                ////Marshal.FinalReleaseComObject(ThisRange);
-
-                ////Make sure Excel is visible and give the user control
-                ////of Microsoft Excel's lifetime.
-                //oXL.Visible = true;
-                //oXL.UserControl = true;
-
-                ////StringBuilder replace_datetime_start_fy = new StringBuilder("testtest");
-                ////replace_datetime_start_fy.Replace(":", "");
-                ////replace_datetime_start_fy.Replace(" ", "_");
-
-                ////string result = label_filelocation.Text + "\\FY_" + replace_datetime_start_fy.ToString() + "_1.xlsx";
-                ////oWB.SaveAs(result, Excel.XlFileFormat.xlWorkbookDefault, Type.Missing, Type.Missing,
-                ////    false, false, Excel.XlSaveAsAccessMode.xlNoChange,
-                ////    Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-                ////oWB.Close();
             }
             catch (Exception err)
             {
@@ -645,28 +469,90 @@ namespace Cronos_Data
 
         public class FY_BetRecord
         {
-            public int ID { get; set; }
-            public double Balance { get; set; }
+            public string GAME_PLATFORM { get; set; }
+            public string USERNAME { get; set; }
+            public int BET_NO { get; set; }
+            public string BET_TIME { get; set; }
+            public string BET_TYPE { get; set; }
+            public string GAME_RESULT { get; set; }
+            public double STAKE_AMOUNT { get; set; }
+            public double WIN_AMOUNT { get; set; }
+            public double COMPANY_WIN_LOSS { get; set; }
+            public double VALID_BET { get; set; }
+            public string VALID_INVALID { get; set; }
         }
 
-        static void DisplayInExcel(IEnumerable<FY_BetRecord> accounts)
+        private void DisplayInExcel(IEnumerable<FY_BetRecord> betRecords)
         {
-            var excelApp = new Excel.Application { Visible = true };
+            var excelApp = new Excel.Application { };
             excelApp.Workbooks.Add();
             Excel._Worksheet workSheet = (Excel.Worksheet)excelApp.ActiveSheet;
-            workSheet.Cells[1, "A"] = "ID Number";
-            workSheet.Cells[1, "B"] = "Current Balance";
+            workSheet.Cells[1, "A"] = "Game Platform";
+            workSheet.Cells[1, "B"] = "Username";
+            workSheet.Cells[1, "C"] = "Bet No";
+            workSheet.Cells[1, "D"] = "Bet Time";
+            workSheet.Cells[1, "E"] = "Bet Type";
+            workSheet.Cells[1, "F"] = "Game Result";
+            workSheet.Cells[1, "G"] = "Stake Amount";
+            workSheet.Cells[1, "H"] = "Win Amount";
+            workSheet.Cells[1, "I"] = "Company Win/Loss";
+            workSheet.Cells[1, "J"] = "Valid bet";
+            workSheet.Cells[1, "K"] = "Valid/Invalid";
+
             var row = 1;
-            foreach (var acct in accounts)
+            foreach (var betRecord in betRecords)
             {
                 row++;
-                workSheet.Cells[row, "A"] = acct.ID;
-                workSheet.Cells[row, "B"] = acct.Balance;
+                workSheet.Cells[row, "A"] = betRecord.GAME_PLATFORM;
+                workSheet.Cells[row, "B"] = betRecord.USERNAME;
+                workSheet.Cells[row, "C"] = betRecord.BET_NO;
+                workSheet.Cells[row, "D"] = betRecord.BET_TIME;
+                workSheet.Cells[row, "E"] = betRecord.BET_TYPE;
+                workSheet.Cells[row, "F"] = betRecord.GAME_RESULT;
+                workSheet.Cells[row, "G"] = betRecord.STAKE_AMOUNT;
+                workSheet.Cells[row, "H"] = betRecord.WIN_AMOUNT;
+                workSheet.Cells[row, "I"] = betRecord.COMPANY_WIN_LOSS;
+                workSheet.Cells[row, "J"] = betRecord.VALID_BET;
+                workSheet.Cells[row, "K"] = betRecord.VALID_INVALID;
 
             }
-            //workSheet.Range["B2", "B" + row].NumberFormat = "#,###.00 €";
+
+            workSheet.Range["C2", "C" + row].NumberFormat = "DD/MM/YYYY hh:mm:ss";
             workSheet.Columns[1].AutoFit();
             workSheet.Columns[2].AutoFit();
+            workSheet.Columns[3].AutoFit();
+            workSheet.Columns[4].AutoFit();
+            workSheet.Columns[5].AutoFit();
+            workSheet.Columns[6].AutoFit();
+            workSheet.Columns[7].AutoFit();
+            workSheet.Columns[8].AutoFit();
+            workSheet.Columns[9].AutoFit();
+            workSheet.Columns[10].AutoFit();
+            workSheet.Columns[11].AutoFit();
+
+            StringBuilder replace_datetime_start_fy = new StringBuilder(dateTimePicker_start_fy.Text.Substring(0, 10));
+            replace_datetime_start_fy.Replace(" ", "_");
+
+            if (!Directory.Exists(label_filelocation.Text + "\\FY"))
+            {
+                Directory.CreateDirectory(label_filelocation.Text + "\\FY");
+            }
+
+            if (!Directory.Exists(label_filelocation.Text + "\\FY\\" + replace_datetime_start_fy.ToString()))
+            {
+                Directory.CreateDirectory(label_filelocation.Text + "\\FY\\" + replace_datetime_start_fy.ToString());
+            }
+
+            if (!Directory.Exists(label_filelocation.Text + "\\FY\\" + replace_datetime_start_fy.ToString() + "\\Bet Records"))
+            {
+                Directory.CreateDirectory(label_filelocation.Text + "\\FY\\" + replace_datetime_start_fy.ToString() + "\\Bet Records");
+            }
+
+            string result = label_filelocation.Text + "\\FY\\" + replace_datetime_start_fy.ToString() + "\\Bet Records\\FY_BetRecords_" + replace_datetime_start_fy.ToString() + "_1.xlsx";
+            workSheet.SaveAs(result);
+            Marshal.ReleaseComObject(workSheet);
+            excelApp.Application.Quit();
+            excelApp.Quit();
         }
     }
 }
