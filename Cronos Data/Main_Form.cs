@@ -78,13 +78,13 @@ namespace Cronos_Data
             //            MessageBox.Show("[FLAGS] " + Flags);
             //        }
             //    });
-            
+
             comboBox_fy.SelectedIndex = 0;
             dateTimePicker_start_fy.Format = DateTimePickerFormat.Custom;
             dateTimePicker_start_fy.CustomFormat = "yyyy-MM-dd HH:mm:ss";
             dateTimePicker_end_fy.Format = DateTimePickerFormat.Custom;
             dateTimePicker_end_fy.CustomFormat = "yyyy-MM-dd HH:mm:ss";
-            
+
             // TF
             webBrowser_tf.Navigate("http://cs.tianfa86.org/account/login");
         }
@@ -175,12 +175,14 @@ namespace Cronos_Data
                 }
             }
         }
-       
+
+        int _fy_secho = 0;
+
         private async Task GetDataFYAsync()
         {
             var cookie = FullWebBrowserCookie.GetCookieInternal(webBrowser_fy.Url, false);
             WebClient wc = new WebClient();
-                        
+
             wc.Headers.Add("Cookie", cookie);
             wc.Encoding = Encoding.UTF8;
             wc.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
@@ -198,7 +200,7 @@ namespace Cronos_Data
                 { "skip", "0"},
                 { "ftime_188", "bettime"},
                 { "data[0][name]", "sEcho"},
-                { "data[0][value]", "1"},
+                { "data[0][value]", _fy_secho++.ToString()},
                 { "data[1][name]", "iColumns"},
                 { "data[1][value]", "12"},
                 { "data[2][name]", "sColumns"},
@@ -217,12 +219,12 @@ namespace Cronos_Data
                 { "gpid", "0" },
                 { "wager_settle", "" },
                 { "valid_inva", "" },
-                { "start",  "2018-10-08 00:00:00"},
-                { "end", "2018-10-08 23:59:59"},
+                { "start",  dateTimePicker_start_fy.Text},
+                { "end", dateTimePicker_end_fy.Text},
                 { "skip", "0"},
                 { "ftime_188", "bettime"},
                 { "data[0][name]", "sEcho"},
-                { "data[0][value]", "1"},
+                { "data[0][value]", _fy_secho++.ToString()},
                 { "data[1][name]", "iColumns"},
                 { "data[1][value]", "12"},
                 { "data[2][name]", "sColumns"},
@@ -230,7 +232,8 @@ namespace Cronos_Data
                 { "data[3][name]", "iDisplayStart"},
                 { "data[3][value]", "0"},
                 { "data[4][name]", "iDisplayLength"},
-                { "data[4][value]", "5000"}
+                { "data[4][value]", "100"}
+                // edited 5000
             };
 
             byte[] result_gettotal = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/flow/wageredAjax2", "POST", reqparm_gettotal);
@@ -269,7 +272,8 @@ namespace Cronos_Data
             wc.Encoding = Encoding.UTF8;
             wc.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
 
-            int result_pages = (5000 * _fy_pages_count) + 1;
+            //int result_pages = (5000 * _fy_pages_count) + 1;
+            // edited uncomment
 
             var reqparm = new System.Collections.Specialized.NameValueCollection
             {
@@ -279,22 +283,23 @@ namespace Cronos_Data
                 { "gpid", "0" },
                 { "wager_settle", "" },
                 { "valid_inva", "" },
-                { "start",  "2018-10-08 00:00:00"},
-                { "end", "2018-10-08 23:59:59"},
+                { "start",  dateTimePicker_start_fy.Text},
+                { "end", dateTimePicker_end_fy.Text},
                 { "skip", "0"},
                 { "ftime_188", "bettime"},
                 { "data[0][name]", "sEcho"},
-                { "data[0][value]", "1"},
+                { "data[0][value]", _fy_secho++.ToString()},
                 { "data[1][name]", "iColumns"},
                 { "data[1][value]", "12"},
                 { "data[2][name]", "sColumns"},
                 { "data[2][value]", ""},
                 { "data[3][name]", "iDisplayStart"},
-                { "data[3][value]", result_pages.ToString()},
+                { "data[3][value]", "101"},
                 { "data[4][name]", "iDisplayLength"},
-                { "data[4][value]", "5000"}
+                { "data[4][value]", "100"}
+                // edited 100
             };
-            
+
             byte[] result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/flow/wageredAjax2", "POST", reqparm);
             string responsebody = Encoding.UTF8.GetString(result);
 
@@ -305,34 +310,36 @@ namespace Cronos_Data
 
         int fy_i = 0;
         int fy_ii = 0;
+        int _fy_get_ii = 1;
+
+        List<FY_BetRecord> bet_records = new List<FY_BetRecord>();
 
         private async void FYAsync()
         {
             try
             {
+                //var bet_records = new List<FY_BetRecord>();
+
                 if (fy_inserted_in_excel)
                 {
-                    var bet_records = new List<FY_BetRecord>();
-                    int get_ii = 1;
-
-                    for (int i = 0; i < _total_page_fy; i++)
+                    for (int i = fy_i; i < _total_page_fy; i++)
                     {
                         if (!fy_inserted_in_excel)
                         {
                             break;
                         }
 
-                        //fy_i = i;
+                        fy_i = i;
 
-                        label_fy_page_count.Text = _fy_pages_count.ToString();
+                        label_fy_page_count.Text = _fy_pages_count.ToString() + " out of " + _total_page_fy;
 
                         _fy_pages_count++;
-
+                        
                         for (int ii = 0; ii < _result_count_json_fy; ii++)
                         {
-                            //fy_ii = ii;
-
-                            label_fy_currentrecord.Text = (get_ii++).ToString();
+                            fy_ii = ii;
+                            
+                            label_fy_currentrecord.Text = (_fy_get_ii++).ToString();
                             label_fy_currentrecord.Invalidate();
                             label_fy_currentrecord.Update();
 
@@ -341,7 +348,7 @@ namespace Cronos_Data
                             JToken player_name = jo_fy.SelectToken("$.aaData[" + ii + "][1][1]");
                             JToken bet_no = jo_fy.SelectToken("$.aaData[" + ii + "][2]");
                             JToken bet_time = jo_fy.SelectToken("$.aaData[" + ii + "][3]");
-                            JToken bet_type = jo_fy.SelectToken("$.aaData[" + ii + "][4]").ToString().Replace("<br />", Environment.NewLine).PadRight(125).Substring(0, 125);
+                            JToken bet_type = jo_fy.SelectToken("$.aaData[" + ii + "][4]").ToString().Replace("<br/>", "").PadRight(225).Substring(0, 225);
                             JToken game_result = jo_fy.SelectToken("$.aaData[" + ii + "][5]");
                             JToken stake_amount_color = jo_fy.SelectToken("$.aaData[" + ii + "][6][0]");
                             JToken stake_amount = jo_fy.SelectToken("$.aaData[" + ii + "][6][1]");
@@ -369,29 +376,51 @@ namespace Cronos_Data
                                 VALID_INVALID = valid_invalid.ToString()
                             });
 
-                            if ((get_ii++) == _limit_fy)
+                            // edited
+                            if ((_fy_get_ii) == 200)
                             {
                                 // label show list to excel
                                 // push to database
                                 label_fy_inserting_in_excel.Text = "inserting...";
 
-                                get_ii = 1;
+                                _fy_get_ii = 1;
 
-                                Thread fy_displayinexcel_thread = new Thread(delegate ()
+                                Thread fy_displayinexcel_thread_limit = new Thread(delegate ()
                                 {
                                     FY_DisplayInExcel(bet_records);
                                 });
-                                fy_displayinexcel_thread.Start();
+                                fy_displayinexcel_thread_limit.Start();
 
                                 fy_inserted_in_excel = false;
+                                _fy_limit_exceed = true;
+
                                 timer_fy_detect_inserted_in_excel.Start();
 
                                 break;
                             }
                         }
 
+
+                        if (!_fy_limit_exceed)
+                        {
+
+                            Thread fy_displayinexcel_thread = new Thread(delegate ()
+                            {
+                                FY_DisplayInExcel(bet_records);
+                            });
+                            fy_displayinexcel_thread.Start();
+
+                            fy_inserted_in_excel = false;
+                            _fy_limit_exceed = false;
+
+
+                            timer_fy_detect_inserted_in_excel.Start();
+                        }
+                        
                         // web client request
                         await GetDataFYPagesAsync();
+
+                        break;
                     }
                 }
             }
@@ -401,19 +430,17 @@ namespace Cronos_Data
             }
         }
         
-
         private void timer_fy_detect_inserted_in_excel_Tick(object sender, EventArgs e)
         {
             // label show list to excel
             // push to database
-
+            
             if (fy_inserted_in_excel)
             {
                 FYAsync();
                 timer_fy_detect_inserted_in_excel.Stop();
             }
         }
-
 
 
 
@@ -554,7 +581,7 @@ namespace Cronos_Data
             rect.Height--;
             e.Graphics.DrawRectangle(Pens.LightGray, rect);
         }
-        
+
         // File Location
         private void button_filelocation_Click(object sender, EventArgs e)
         {
@@ -578,7 +605,8 @@ namespace Cronos_Data
             try
             {
                 string test = "2018-10-08 23:59:59";
-                var bet_records = new List<FY_BetRecord> {
+                var bet_records = new List<FY_BetRecord>
+                {
                     //new FY_BetRecord { GAME_PLATFORM = "Test game plaform", USERNAME = "John Doe", BET_NO = 123456789, BET_TIME = test, BET_TYPE = "ghgjh有效", GAME_RESULT = "game result", STAKE_AMOUNT = 0.00, WIN_AMOUNT = 0.00, COMPANY_WIN_LOSS = 0.60, VALID_BET = -2.43230, VALID_INVALID = "有效有效"},
                     //new FY_BetRecord { GAME_PLATFORM = "Test game plaform", USERNAME = "John Doe", BET_NO = 123456789, BET_TIME = test, BET_TYPE = "test bet type", GAME_RESULT = "game result", STAKE_AMOUNT = 0.00, WIN_AMOUNT = 3.23, COMPANY_WIN_LOSS = 0.00, VALID_BET = 0.00, VALID_INVALID = "test asdsa"},
                 };
@@ -588,7 +616,7 @@ namespace Cronos_Data
             catch (Exception err)
             {
                 MessageBox.Show(err.ToString());
-            }         
+            }
         }
 
 
@@ -610,15 +638,15 @@ namespace Cronos_Data
         int fy_displayinexel_i = 0;
         private int _fy_pages_count = 1;
         private bool fy_inserted_in_excel = true;
+        private bool _fy_limit_exceed;
+        private int _fy_row = 1;
 
         private void FY_DisplayInExcel(IEnumerable<FY_BetRecord> betRecords)
         {
-            fy_displayinexel_i++;
-
-            if (Directory.Exists(label_filelocation.Text + "\\FY"))
-            {
-                Directory.Delete(label_filelocation.Text + "\\FY", true);
-            }
+            //if (Directory.Exists(label_filelocation.Text + "\\FY"))
+            //{
+            //    Directory.Delete(label_filelocation.Text + "\\FY", true);
+            //}
 
             var excelApp = new Excel.Application { };
             excelApp.Workbooks.Add();
@@ -634,61 +662,61 @@ namespace Cronos_Data
             workSheet.Cells[1, "I"] = "Company Win/Loss";
             workSheet.Cells[1, "J"] = "Valid bet";
             workSheet.Cells[1, "K"] = "Valid/Invalid";
-
-            var row = 1;
+            
             foreach (var betRecord in betRecords)
             {
-                row++;
-                workSheet.Cells[row, "A"] = betRecord.GAME_PLATFORM;
-                workSheet.Cells[row, "B"] = betRecord.USERNAME;
-                workSheet.Cells[row, "C"] = betRecord.BET_NO;
-                workSheet.Cells[row, "D"] = betRecord.BET_TIME;
-                workSheet.Cells[row, "E"] = betRecord.BET_TYPE;
-                workSheet.Cells[row, "F"] = betRecord.GAME_RESULT;
-                workSheet.Cells[row, "G"] = betRecord.STAKE_AMOUNT;
-                workSheet.Cells[row, "H"] = betRecord.WIN_AMOUNT;
-                workSheet.Cells[row, "I"] = betRecord.COMPANY_WIN_LOSS;
-                workSheet.Cells[row, "J"] = betRecord.VALID_BET;
-                workSheet.Cells[row, "K"] = betRecord.VALID_INVALID;
+                _fy_row++;
+                workSheet.Cells[_fy_row, "A"] = betRecord.GAME_PLATFORM;
+                workSheet.Cells[_fy_row, "B"] = betRecord.USERNAME;
+                workSheet.Cells[_fy_row, "C"] = betRecord.BET_NO;
+                workSheet.Cells[_fy_row, "D"] = betRecord.BET_TIME;
+                workSheet.Cells[_fy_row, "E"] = betRecord.BET_TYPE;
+                workSheet.Cells[_fy_row, "F"] = betRecord.GAME_RESULT;
+                workSheet.Cells[_fy_row, "G"] = betRecord.STAKE_AMOUNT;
+                workSheet.Cells[_fy_row, "H"] = betRecord.WIN_AMOUNT;
+                workSheet.Cells[_fy_row, "I"] = betRecord.COMPANY_WIN_LOSS;
+                workSheet.Cells[_fy_row, "J"] = betRecord.VALID_BET;
+                workSheet.Cells[_fy_row, "K"] = betRecord.VALID_INVALID;
+
+                Invoke(new Action(() =>
+                {
+                    label_fy_inserting_count.Text = _fy_row.ToString();
+                }));
             }
             
-            //workSheet.Range["D2", "D" + row].NumberFormat = "DD/MM/YYYY hh:mm:ss";
-            //workSheet.Columns[1].AutoFit();
-            //workSheet.Columns[2].AutoFit();
-            //workSheet.Columns[3].AutoFit();
-            //workSheet.Columns[4].AutoFit();
-            //workSheet.Columns[5].AutoFit();
-            //workSheet.Columns[6].AutoFit();
-            //workSheet.Columns[7].AutoFit();
-            //workSheet.Columns[8].AutoFit();
-            //workSheet.Columns[9].AutoFit();
-            //workSheet.Columns[10].AutoFit();
-            //workSheet.Columns[11].AutoFit();
-
-            StringBuilder replace_datetime_start_fy = new StringBuilder(dateTimePicker_start_fy.Text.Substring(0, 10));
-            replace_datetime_start_fy.Replace(" ", "_");
-
-            if (!Directory.Exists(label_filelocation.Text + "\\FY"))
+            if (_fy_limit_exceed)
             {
-                Directory.CreateDirectory(label_filelocation.Text + "\\FY");
+                _fy_row = 1;
+                fy_displayinexel_i++;
+
+                _fy_limit_exceed = false;
+
+                StringBuilder replace_datetime_start_fy = new StringBuilder(dateTimePicker_start_fy.Text.Substring(0, 10));
+                replace_datetime_start_fy.Replace(" ", "_");
+
+                if (!Directory.Exists(label_filelocation.Text + "\\FY"))
+                {
+                    Directory.CreateDirectory(label_filelocation.Text + "\\FY");
+                }
+
+                if (!Directory.Exists(label_filelocation.Text + "\\FY\\" + replace_datetime_start_fy.ToString()))
+                {
+                    Directory.CreateDirectory(label_filelocation.Text + "\\FY\\" + replace_datetime_start_fy.ToString());
+                }
+
+                if (!Directory.Exists(label_filelocation.Text + "\\FY\\" + replace_datetime_start_fy.ToString() + "\\Bet Records"))
+                {
+                    Directory.CreateDirectory(label_filelocation.Text + "\\FY\\" + replace_datetime_start_fy.ToString() + "\\Bet Records");
+                }
+
+                string result = label_filelocation.Text + "\\FY\\" + replace_datetime_start_fy.ToString() + "\\Bet Records\\FY_BetRecords_" + replace_datetime_start_fy.ToString() + "_" + fy_displayinexel_i + ".xlsx";
+                workSheet.SaveAs(result);
+                Marshal.ReleaseComObject(workSheet);
+                excelApp.Application.Quit();
+                excelApp.Quit();
             }
 
-            if (!Directory.Exists(label_filelocation.Text + "\\FY\\" + replace_datetime_start_fy.ToString()))
-            {
-                Directory.CreateDirectory(label_filelocation.Text + "\\FY\\" + replace_datetime_start_fy.ToString());
-            }
-
-            if (!Directory.Exists(label_filelocation.Text + "\\FY\\" + replace_datetime_start_fy.ToString() + "\\Bet Records"))
-            {
-                Directory.CreateDirectory(label_filelocation.Text + "\\FY\\" + replace_datetime_start_fy.ToString() + "\\Bet Records");
-            }
-
-            string result = label_filelocation.Text + "\\FY\\" + replace_datetime_start_fy.ToString() + "\\Bet Records\\FY_BetRecords_" + replace_datetime_start_fy.ToString() + "_" + fy_displayinexel_i + ".xlsx";
-            workSheet.SaveAs(result);
-            Marshal.ReleaseComObject(workSheet);
-            excelApp.Application.Quit();
-            excelApp.Quit();
-
+            bet_records.Clear();
             fy_inserted_in_excel = true;
         }
     }

@@ -30,7 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             this.panel_header = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
             this.label_title = new System.Windows.Forms.Label();
             this.pictureBox_minimize = new System.Windows.Forms.PictureBox();
             this.pictureBox_close = new System.Windows.Forms.PictureBox();
@@ -38,6 +37,9 @@
             this.label_title_fy = new System.Windows.Forms.Label();
             this.label_title_tf = new System.Windows.Forms.Label();
             this.panel_fy = new System.Windows.Forms.Panel();
+            this.label_fy_inserting_in_excel = new System.Windows.Forms.Label();
+            this.label_fy_page_count = new System.Windows.Forms.Label();
+            this.label_fy_currentrecord = new System.Windows.Forms.Label();
             this.dateTimePicker_end_fy = new System.Windows.Forms.DateTimePicker();
             this.label_end_fy = new System.Windows.Forms.Label();
             this.label_start_fy = new System.Windows.Forms.Label();
@@ -47,11 +49,9 @@
             this.panel_tf = new System.Windows.Forms.Panel();
             this.webBrowser_tf = new System.Windows.Forms.WebBrowser();
             this.button_filelocation = new System.Windows.Forms.Button();
-            this.label_fy_currentrecord = new System.Windows.Forms.Label();
-            this.label_fy_page_count = new System.Windows.Forms.Label();
-            this.timer_fy_detect_inserted_in_excel = new System.Windows.Forms.Timer(this.components);
-            this.label_fy_inserting_in_excel = new System.Windows.Forms.Label();
             this.sPanel1 = new Cronos_Data.SPanel();
+            this.timer_fy_detect_inserted_in_excel = new System.Windows.Forms.Timer(this.components);
+            this.label_fy_inserting_count = new System.Windows.Forms.Label();
             this.panel_header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_minimize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_close)).BeginInit();
@@ -62,7 +62,6 @@
             // panel_header
             // 
             this.panel_header.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(122)))), ((int)(((byte)(159)))));
-            this.panel_header.Controls.Add(this.button1);
             this.panel_header.Controls.Add(this.label_title);
             this.panel_header.Controls.Add(this.pictureBox_minimize);
             this.panel_header.Controls.Add(this.pictureBox_close);
@@ -73,16 +72,6 @@
             this.panel_header.Size = new System.Drawing.Size(1140, 45);
             this.panel_header.TabIndex = 0;
             this.panel_header.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel_header_MouseDown);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(349, 16);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // label_title
             // 
@@ -156,6 +145,7 @@
             // 
             // panel_fy
             // 
+            this.panel_fy.Controls.Add(this.label_fy_inserting_count);
             this.panel_fy.Controls.Add(this.label_fy_inserting_in_excel);
             this.panel_fy.Controls.Add(this.label_fy_page_count);
             this.panel_fy.Controls.Add(this.label_fy_currentrecord);
@@ -171,6 +161,33 @@
             this.panel_fy.Size = new System.Drawing.Size(534, 570);
             this.panel_fy.TabIndex = 4;
             this.panel_fy.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_fy_Paint);
+            // 
+            // label_fy_inserting_in_excel
+            // 
+            this.label_fy_inserting_in_excel.AutoSize = true;
+            this.label_fy_inserting_in_excel.Location = new System.Drawing.Point(477, 19);
+            this.label_fy_inserting_in_excel.Name = "label_fy_inserting_in_excel";
+            this.label_fy_inserting_in_excel.Size = new System.Drawing.Size(35, 13);
+            this.label_fy_inserting_in_excel.TabIndex = 14;
+            this.label_fy_inserting_in_excel.Text = "label1";
+            // 
+            // label_fy_page_count
+            // 
+            this.label_fy_page_count.AutoSize = true;
+            this.label_fy_page_count.Location = new System.Drawing.Point(356, 20);
+            this.label_fy_page_count.Name = "label_fy_page_count";
+            this.label_fy_page_count.Size = new System.Drawing.Size(35, 13);
+            this.label_fy_page_count.TabIndex = 13;
+            this.label_fy_page_count.Text = "label1";
+            // 
+            // label_fy_currentrecord
+            // 
+            this.label_fy_currentrecord.AutoSize = true;
+            this.label_fy_currentrecord.Location = new System.Drawing.Point(418, 19);
+            this.label_fy_currentrecord.Name = "label_fy_currentrecord";
+            this.label_fy_currentrecord.Size = new System.Drawing.Size(35, 13);
+            this.label_fy_currentrecord.TabIndex = 12;
+            this.label_fy_currentrecord.Text = "label1";
             // 
             // dateTimePicker_end_fy
             // 
@@ -265,38 +282,6 @@
             this.button_filelocation.UseVisualStyleBackColor = false;
             this.button_filelocation.Click += new System.EventHandler(this.button_filelocation_Click);
             // 
-            // label_fy_currentrecord
-            // 
-            this.label_fy_currentrecord.AutoSize = true;
-            this.label_fy_currentrecord.Location = new System.Drawing.Point(418, 19);
-            this.label_fy_currentrecord.Name = "label_fy_currentrecord";
-            this.label_fy_currentrecord.Size = new System.Drawing.Size(35, 13);
-            this.label_fy_currentrecord.TabIndex = 12;
-            this.label_fy_currentrecord.Text = "label1";
-            // 
-            // label_fy_page_count
-            // 
-            this.label_fy_page_count.AutoSize = true;
-            this.label_fy_page_count.Location = new System.Drawing.Point(356, 20);
-            this.label_fy_page_count.Name = "label_fy_page_count";
-            this.label_fy_page_count.Size = new System.Drawing.Size(35, 13);
-            this.label_fy_page_count.TabIndex = 13;
-            this.label_fy_page_count.Text = "label1";
-            // 
-            // timer_fy_detect_inserted_in_excel
-            // 
-            this.timer_fy_detect_inserted_in_excel.Interval = 5000;
-            this.timer_fy_detect_inserted_in_excel.Tick += new System.EventHandler(this.timer_fy_detect_inserted_in_excel_Tick);
-            // 
-            // label_fy_inserting_in_excel
-            // 
-            this.label_fy_inserting_in_excel.AutoSize = true;
-            this.label_fy_inserting_in_excel.Location = new System.Drawing.Point(477, 19);
-            this.label_fy_inserting_in_excel.Name = "label_fy_inserting_in_excel";
-            this.label_fy_inserting_in_excel.Size = new System.Drawing.Size(35, 13);
-            this.label_fy_inserting_in_excel.TabIndex = 14;
-            this.label_fy_inserting_in_excel.Text = "label1";
-            // 
             // sPanel1
             // 
             this.sPanel1.BackColor = System.Drawing.Color.Transparent;
@@ -306,6 +291,20 @@
             this.sPanel1.Name = "sPanel1";
             this.sPanel1.Size = new System.Drawing.Size(44, 625);
             this.sPanel1.TabIndex = 1;
+            // 
+            // timer_fy_detect_inserted_in_excel
+            // 
+            this.timer_fy_detect_inserted_in_excel.Interval = 10000;
+            this.timer_fy_detect_inserted_in_excel.Tick += new System.EventHandler(this.timer_fy_detect_inserted_in_excel_Tick);
+            // 
+            // label_fy_inserting_count
+            // 
+            this.label_fy_inserting_count.AutoSize = true;
+            this.label_fy_inserting_count.Location = new System.Drawing.Point(144, 23);
+            this.label_fy_inserting_count.Name = "label_fy_inserting_count";
+            this.label_fy_inserting_count.Size = new System.Drawing.Size(35, 13);
+            this.label_fy_inserting_count.TabIndex = 15;
+            this.label_fy_inserting_count.Text = "label1";
             // 
             // Main_Form
             // 
@@ -356,10 +355,10 @@
         private System.Windows.Forms.Label label_start_fy;
         private System.Windows.Forms.Label label_end_fy;
         private System.Windows.Forms.DateTimePicker dateTimePicker_end_fy;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label_fy_currentrecord;
         private System.Windows.Forms.Label label_fy_page_count;
-        private System.Windows.Forms.Timer timer_fy_detect_inserted_in_excel;
         private System.Windows.Forms.Label label_fy_inserting_in_excel;
+        private System.Windows.Forms.Timer timer_fy_detect_inserted_in_excel;
+        private System.Windows.Forms.Label label_fy_inserting_count;
     }
 }
