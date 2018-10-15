@@ -67,6 +67,8 @@
             this.timer_fy_detect_inserted_in_excel = new System.Windows.Forms.Timer(this.components);
             this.timer_fy_start = new System.Windows.Forms.Timer(this.components);
             this.button_filelocation = new System.Windows.Forms.Button();
+            this.label_fy_elapsed_1 = new System.Windows.Forms.Label();
+            this.label_fy_elapsed = new System.Windows.Forms.Label();
             this.sPanel_separator = new Cronos_Data.SPanel();
             this.panel_header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_minimize)).BeginInit();
@@ -227,13 +229,15 @@
             // 
             // panel_datetime
             // 
+            this.panel_datetime.Controls.Add(this.label_fy_elapsed);
+            this.panel_datetime.Controls.Add(this.label_fy_elapsed_1);
             this.panel_datetime.Controls.Add(this.label_fy_start_datetime_1);
             this.panel_datetime.Controls.Add(this.label_fy_finish_datetime);
             this.panel_datetime.Controls.Add(this.label_fy_finish_datetime_1);
             this.panel_datetime.Controls.Add(this.label_fy_start_datetime);
-            this.panel_datetime.Location = new System.Drawing.Point(66, 243);
+            this.panel_datetime.Location = new System.Drawing.Point(66, 226);
             this.panel_datetime.Name = "panel_datetime";
-            this.panel_datetime.Size = new System.Drawing.Size(204, 41);
+            this.panel_datetime.Size = new System.Drawing.Size(204, 58);
             this.panel_datetime.TabIndex = 28;
             // 
             // label_fy_start_datetime_1
@@ -250,7 +254,7 @@
             // 
             this.label_fy_finish_datetime.AutoSize = true;
             this.label_fy_finish_datetime.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_fy_finish_datetime.Location = new System.Drawing.Point(48, 21);
+            this.label_fy_finish_datetime.Location = new System.Drawing.Point(66, 21);
             this.label_fy_finish_datetime.Name = "label_fy_finish_datetime";
             this.label_fy_finish_datetime.Size = new System.Drawing.Size(11, 15);
             this.label_fy_finish_datetime.TabIndex = 27;
@@ -270,7 +274,7 @@
             // 
             this.label_fy_start_datetime.AutoSize = true;
             this.label_fy_start_datetime.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_fy_start_datetime.Location = new System.Drawing.Point(48, 5);
+            this.label_fy_start_datetime.Location = new System.Drawing.Point(66, 5);
             this.label_fy_start_datetime.Name = "label_fy_start_datetime";
             this.label_fy_start_datetime.Size = new System.Drawing.Size(11, 15);
             this.label_fy_start_datetime.TabIndex = 26;
@@ -304,6 +308,7 @@
             this.label_fy_inserting_count_1.Size = new System.Drawing.Size(92, 18);
             this.label_fy_inserting_count_1.TabIndex = 21;
             this.label_fy_inserting_count_1.Text = "Insert Count:";
+            this.label_fy_inserting_count_1.Visible = false;
             // 
             // label_fy_page_count
             // 
@@ -332,6 +337,7 @@
             this.label_fy_inserting_count.Size = new System.Drawing.Size(151, 18);
             this.label_fy_inserting_count.TabIndex = 15;
             this.label_fy_inserting_count.Text = "-";
+            this.label_fy_inserting_count.Visible = false;
             // 
             // label_fy_total_records_1
             // 
@@ -492,7 +498,27 @@
             this.button_filelocation.Text = "File Location";
             this.button_filelocation.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.button_filelocation.UseVisualStyleBackColor = false;
-            this.button_filelocation.Click += new System.EventHandler(this.label_fy_locatefolder_Click);
+            this.button_filelocation.Click += new System.EventHandler(this.button_filelocation_Click);
+            // 
+            // label_fy_elapsed_1
+            // 
+            this.label_fy_elapsed_1.AutoSize = true;
+            this.label_fy_elapsed_1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_fy_elapsed_1.Location = new System.Drawing.Point(3, 36);
+            this.label_fy_elapsed_1.Name = "label_fy_elapsed_1";
+            this.label_fy_elapsed_1.Size = new System.Drawing.Size(55, 15);
+            this.label_fy_elapsed_1.TabIndex = 28;
+            this.label_fy_elapsed_1.Text = "Elapsed:";
+            // 
+            // label_fy_elapsed
+            // 
+            this.label_fy_elapsed.AutoSize = true;
+            this.label_fy_elapsed.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_fy_elapsed.Location = new System.Drawing.Point(66, 38);
+            this.label_fy_elapsed.Name = "label_fy_elapsed";
+            this.label_fy_elapsed.Size = new System.Drawing.Size(11, 15);
+            this.label_fy_elapsed.TabIndex = 29;
+            this.label_fy_elapsed.Text = "-";
             // 
             // sPanel_separator
             // 
@@ -500,7 +526,7 @@
             this.sPanel_separator.BackColor = System.Drawing.Color.Transparent;
             this.sPanel_separator.Cursor = System.Windows.Forms.Cursors.Default;
             this.sPanel_separator.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(122)))), ((int)(((byte)(159)))));
-            this.sPanel_separator.Location = new System.Drawing.Point(557, 71);
+            this.sPanel_separator.Location = new System.Drawing.Point(557, 75);
             this.sPanel_separator.Name = "sPanel_separator";
             this.sPanel_separator.Size = new System.Drawing.Size(44, 459);
             this.sPanel_separator.TabIndex = 1;
@@ -581,5 +607,7 @@
         private System.Windows.Forms.Label label_fy_locatefolder;
         private System.Windows.Forms.Button button_fy_proceed;
         private SPanel sPanel_separator;
+        private System.Windows.Forms.Label label_fy_elapsed_1;
+        private System.Windows.Forms.Label label_fy_elapsed;
     }
 }
