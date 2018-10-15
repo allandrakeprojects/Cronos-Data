@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main_Form));
             this.panel_header = new System.Windows.Forms.Panel();
             this.label_title = new System.Windows.Forms.Label();
             this.pictureBox_minimize = new System.Windows.Forms.PictureBox();
@@ -63,10 +64,10 @@
             this.button_fy_start = new System.Windows.Forms.Button();
             this.panel_tf = new System.Windows.Forms.Panel();
             this.webBrowser_tf = new System.Windows.Forms.WebBrowser();
-            this.button_filelocation = new System.Windows.Forms.Button();
             this.timer_fy_detect_inserted_in_excel = new System.Windows.Forms.Timer(this.components);
             this.timer_fy_start = new System.Windows.Forms.Timer(this.components);
-            this.sPanel1 = new Cronos_Data.SPanel();
+            this.button_filelocation = new System.Windows.Forms.Button();
+            this.sPanel_separator = new Cronos_Data.SPanel();
             this.panel_header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_minimize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_close)).BeginInit();
@@ -109,7 +110,7 @@
             this.pictureBox_minimize.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.pictureBox_minimize.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox_minimize.Image = global::Cronos_Data.Properties.Resources.minus;
-            this.pictureBox_minimize.Location = new System.Drawing.Point(1065, 10);
+            this.pictureBox_minimize.Location = new System.Drawing.Point(1052, 10);
             this.pictureBox_minimize.Name = "pictureBox_minimize";
             this.pictureBox_minimize.Size = new System.Drawing.Size(24, 24);
             this.pictureBox_minimize.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -122,7 +123,7 @@
             this.pictureBox_close.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.pictureBox_close.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox_close.Image = global::Cronos_Data.Properties.Resources.close;
-            this.pictureBox_close.Location = new System.Drawing.Point(1104, 10);
+            this.pictureBox_close.Location = new System.Drawing.Point(1091, 10);
             this.pictureBox_close.Name = "pictureBox_close";
             this.pictureBox_close.Size = new System.Drawing.Size(24, 24);
             this.pictureBox_close.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -202,9 +203,9 @@
             this.button_fy_proceed.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_fy_proceed.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_fy_proceed.ForeColor = System.Drawing.Color.White;
-            this.button_fy_proceed.Location = new System.Drawing.Point(382, 232);
+            this.button_fy_proceed.Location = new System.Drawing.Point(382, 233);
             this.button_fy_proceed.Name = "button_fy_proceed";
-            this.button_fy_proceed.Size = new System.Drawing.Size(126, 29);
+            this.button_fy_proceed.Size = new System.Drawing.Size(126, 28);
             this.button_fy_proceed.TabIndex = 23;
             this.button_fy_proceed.Text = "PROCEED";
             this.button_fy_proceed.UseVisualStyleBackColor = false;
@@ -434,11 +435,15 @@
             this.button_fy_start.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_fy_start.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_fy_start.ForeColor = System.Drawing.Color.White;
+            this.button_fy_start.Image = ((System.Drawing.Image)(resources.GetObject("button_fy_start.Image")));
+            this.button_fy_start.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.button_fy_start.Location = new System.Drawing.Point(183, 283);
             this.button_fy_start.Name = "button_fy_start";
-            this.button_fy_start.Size = new System.Drawing.Size(197, 59);
-            this.button_fy_start.TabIndex = 22;
+            this.button_fy_start.Padding = new System.Windows.Forms.Padding(15, 0, 15, 0);
+            this.button_fy_start.Size = new System.Drawing.Size(153, 59);
+            this.button_fy_start.TabIndex = 1;
             this.button_fy_start.Text = "START";
+            this.button_fy_start.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.button_fy_start.UseVisualStyleBackColor = false;
             this.button_fy_start.Visible = false;
             this.button_fy_start.Click += new System.EventHandler(this.button_fy_start_ClickAsync);
@@ -461,20 +466,6 @@
             this.webBrowser_tf.Size = new System.Drawing.Size(528, 402);
             this.webBrowser_tf.TabIndex = 0;
             // 
-            // button_filelocation
-            // 
-            this.button_filelocation.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(122)))), ((int)(((byte)(159)))));
-            this.button_filelocation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button_filelocation.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_filelocation.ForeColor = System.Drawing.Color.White;
-            this.button_filelocation.Location = new System.Drawing.Point(498, 51);
-            this.button_filelocation.Name = "button_filelocation";
-            this.button_filelocation.Size = new System.Drawing.Size(143, 24);
-            this.button_filelocation.TabIndex = 6;
-            this.button_filelocation.Text = "File Location";
-            this.button_filelocation.UseVisualStyleBackColor = false;
-            this.button_filelocation.Click += new System.EventHandler(this.button_filelocation_Click);
-            // 
             // timer_fy_detect_inserted_in_excel
             // 
             this.timer_fy_detect_inserted_in_excel.Interval = 10000;
@@ -485,16 +476,34 @@
             this.timer_fy_start.Interval = 10000;
             this.timer_fy_start.Tick += new System.EventHandler(this.timer_fy_start_Tick);
             // 
-            // sPanel1
+            // button_filelocation
             // 
-            this.sPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.sPanel1.BackColor = System.Drawing.Color.Transparent;
-            this.sPanel1.Cursor = System.Windows.Forms.Cursors.Default;
-            this.sPanel1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(122)))), ((int)(((byte)(159)))));
-            this.sPanel1.Location = new System.Drawing.Point(557, 71);
-            this.sPanel1.Name = "sPanel1";
-            this.sPanel1.Size = new System.Drawing.Size(44, 459);
-            this.sPanel1.TabIndex = 1;
+            this.button_filelocation.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(122)))), ((int)(((byte)(159)))));
+            this.button_filelocation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_filelocation.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_filelocation.ForeColor = System.Drawing.Color.White;
+            this.button_filelocation.Image = global::Cronos_Data.Properties.Resources.folder;
+            this.button_filelocation.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button_filelocation.Location = new System.Drawing.Point(498, 47);
+            this.button_filelocation.Name = "button_filelocation";
+            this.button_filelocation.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
+            this.button_filelocation.Size = new System.Drawing.Size(134, 30);
+            this.button_filelocation.TabIndex = 6;
+            this.button_filelocation.Text = "File Location";
+            this.button_filelocation.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.button_filelocation.UseVisualStyleBackColor = false;
+            this.button_filelocation.Click += new System.EventHandler(this.label_fy_locatefolder_Click);
+            // 
+            // sPanel_separator
+            // 
+            this.sPanel_separator.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.sPanel_separator.BackColor = System.Drawing.Color.Transparent;
+            this.sPanel_separator.Cursor = System.Windows.Forms.Cursors.Default;
+            this.sPanel_separator.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(122)))), ((int)(((byte)(159)))));
+            this.sPanel_separator.Location = new System.Drawing.Point(557, 71);
+            this.sPanel_separator.Name = "sPanel_separator";
+            this.sPanel_separator.Size = new System.Drawing.Size(44, 459);
+            this.sPanel_separator.TabIndex = 1;
             // 
             // Main_Form
             // 
@@ -506,7 +515,7 @@
             this.Controls.Add(this.button_filelocation);
             this.Controls.Add(this.panel_tf);
             this.Controls.Add(this.panel_fy);
-            this.Controls.Add(this.sPanel1);
+            this.Controls.Add(this.sPanel_separator);
             this.Controls.Add(this.panel_header);
             this.Controls.Add(this.label_title_tf);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -537,7 +546,6 @@
         private System.Windows.Forms.Panel panel_header;
         private System.Windows.Forms.PictureBox pictureBox_close;
         private System.Windows.Forms.PictureBox pictureBox_minimize;
-        private SPanel sPanel1;
         private System.Windows.Forms.Label label_title_fy;
         private System.Windows.Forms.Label label_title_tf;
         private System.Windows.Forms.Panel panel_fy;
@@ -572,5 +580,6 @@
         private System.Windows.Forms.Panel panel_datetime;
         private System.Windows.Forms.Label label_fy_locatefolder;
         private System.Windows.Forms.Button button_fy_proceed;
+        private SPanel sPanel_separator;
     }
 }

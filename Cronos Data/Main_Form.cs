@@ -8,7 +8,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
@@ -19,7 +18,8 @@ using Excel = Microsoft.Office.Interop.Excel;
 namespace Cronos_Data
 {
     public partial class Main_Form : Form
-    {// Drag Header to Move
+    {
+        // Drag Header to Move
         [DllImport("user32.dll")]
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
         [DllImport("user32.dll")]
@@ -37,7 +37,7 @@ namespace Cronos_Data
         private int _fy_pages_count = 0;
         private bool fy_inserted_in_excel = true;
         private int _fy_row = 1;
-        private int _fy_row_count = 0;
+        private int _fy_row_count = 1;
         private bool isDone_fy = false;
         private string _fy_folder_path_result;
         private string _fy_folder_path_result_locate;
@@ -58,9 +58,24 @@ namespace Cronos_Data
         const int WS_MINIMIZEBOX = 0x20000;
         const int CS_DBLCLKS = 0x8;
 
+        // Rounded Border Radius
+        [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
+        private static extern IntPtr CreateRoundRectRgn
+        (
+            int nLeftRect,     // x-coordinate of upper-left corner
+            int nTopRect,      // y-coordinate of upper-left corner
+            int nRightRect,    // x-coordinate of lower-right corner
+            int nBottomRect,   // y-coordinate of lower-right corner
+            int nWidthEllipse, // height of ellipse
+            int nHeightEllipse // width of ellipse
+        );
+
+
         public Main_Form()
         {
             InitializeComponent();
+            this.FormBorderStyle = FormBorderStyle.None;
+            Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
         }
 
         private void Main_Form_Load(object sender, EventArgs e)
@@ -421,13 +436,17 @@ namespace Cronos_Data
                         else
                         {
                             fy_i = i;
-                            label_fy_page_count.Text = _fy_pages_count.ToString("N0") + " of " + _total_page_fy.ToString("N0");
                             _fy_pages_count++;
                         }
-                        
+
                         for (int ii = 0; ii < _result_count_json_fy; ii++)
                         {
                             Application.DoEvents();
+
+                            if (_fy_pages_count != 0 && _fy_pages_count <= _total_page_fy)
+                            {
+                                label_fy_page_count.Text = _fy_pages_count.ToString("N0") + " of " + _total_page_fy.ToString("N0");
+                            }
 
                             fy_ii = ii;
                             JToken game_platform = jo_fy.SelectToken("$.aaData[" + ii + "][0]");
@@ -485,6 +504,8 @@ namespace Cronos_Data
                                 label_fy_currentrecord.Invalidate();
                                 label_fy_currentrecord.Update();
 
+                                _fy_get_ii_display++;
+
                                 break;
                             }
                             else
@@ -497,7 +518,7 @@ namespace Cronos_Data
                             _fy_get_ii++;
                             _fy_get_ii_display++;
                         }
-                        
+
                         // web client request
                         await GetDataFYPagesAsync();
                     }
@@ -645,13 +666,15 @@ namespace Cronos_Data
             }
         }
 
+        public object RoundedCorners { get; private set; }
+
         // Close
         private void pictureBox_close_Click(object sender, EventArgs e)
         {
             DialogResult dr = MessageBox.Show("Exit the program?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (dr == DialogResult.Yes)
             {
-                Close();
+                Application.Exit();
             }
         }
 
@@ -749,25 +772,25 @@ namespace Cronos_Data
                     {
                         label_fy_inserting_count.Text = _fy_row_count.ToString("N0") + " of " + Convert.ToInt32(_total_records_fy).ToString("N0");
                     }));
+
+                    _fy_row++;
+                    _fy_row_count++;
+                    workSheet.Cells[_fy_row, "A"] = betRecord.GAME_PLATFORM;
+                    workSheet.Cells[_fy_row, "B"] = betRecord.USERNAME;
+                    workSheet.Cells[_fy_row, "C"] = betRecord.BET_NO;
+                    workSheet.Cells[_fy_row, "D"] = betRecord.BET_TIME;
+                    workSheet.Cells[_fy_row, "E"] = betRecord.BET_TYPE;
+                    workSheet.Cells[_fy_row, "F"] = betRecord.GAME_RESULT;
+                    workSheet.Cells[_fy_row, "G"] = betRecord.STAKE_AMOUNT;
+                    workSheet.Cells[_fy_row, "H"] = betRecord.WIN_AMOUNT;
+                    workSheet.Cells[_fy_row, "I"] = betRecord.COMPANY_WIN_LOSS;
+                    workSheet.Cells[_fy_row, "J"] = betRecord.VALID_BET;
+                    workSheet.Cells[_fy_row, "K"] = betRecord.VALID_INVALID;
                 }
                 catch (Exception err)
                 {
                     // Leave blank
                 }
-
-                _fy_row++;
-                _fy_row_count++;
-                workSheet.Cells[_fy_row, "A"] = betRecord.GAME_PLATFORM;
-                workSheet.Cells[_fy_row, "B"] = betRecord.USERNAME;
-                workSheet.Cells[_fy_row, "C"] = betRecord.BET_NO;
-                workSheet.Cells[_fy_row, "D"] = betRecord.BET_TIME;
-                workSheet.Cells[_fy_row, "E"] = betRecord.BET_TYPE;
-                workSheet.Cells[_fy_row, "F"] = betRecord.GAME_RESULT;
-                workSheet.Cells[_fy_row, "G"] = betRecord.STAKE_AMOUNT;
-                workSheet.Cells[_fy_row, "H"] = betRecord.WIN_AMOUNT;
-                workSheet.Cells[_fy_row, "I"] = betRecord.COMPANY_WIN_LOSS;
-                workSheet.Cells[_fy_row, "J"] = betRecord.VALID_BET;
-                workSheet.Cells[_fy_row, "K"] = betRecord.VALID_INVALID;
             }
 
             Invoke(new Action(() =>
@@ -802,9 +825,15 @@ namespace Cronos_Data
             {
                 replace = "0" + fy_displayinexel_i;
             }
-
+            
             _fy_folder_path_result = label_filelocation.Text + "\\FY\\" + replace_datetime_start_fy.ToString() + "\\Bet Records\\FY_BetRecords_" + replace_datetime_start_fy.ToString() + "_" + replace + ".xlsx";
             _fy_folder_path_result_locate = label_filelocation.Text + "\\FY\\" + replace_datetime_start_fy.ToString() + "\\Bet Records\\";
+
+            if (File.Exists(_fy_folder_path_result))
+            {
+                File.Delete(_fy_folder_path_result);
+            }
+
             workSheet.SaveAs(_fy_folder_path_result);
             Marshal.ReleaseComObject(workSheet);
             excelApp.Application.Quit();
@@ -820,18 +849,7 @@ namespace Cronos_Data
                 //{
                 //    WindowState = FormWindowState.Normal;
                 //}
-
-                var notification = new NotifyIcon()
-                {
-                    Visible = true,
-                    Icon = SystemIcons.Information,
-                    BalloonTipIcon = ToolTipIcon.Info,
-                    BalloonTipTitle = "FY DONE!",
-                    BalloonTipText = "test",
-                };
-
-                notification.ShowBalloonTip(1000);
-
+                
                 Invoke(new Action(() =>
                 {
                     label_fy_finish_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
@@ -842,6 +860,17 @@ namespace Cronos_Data
 
                     panel_datetime.Location = new Point(5, 243);
                 }));
+                
+                var notification = new NotifyIcon()
+                {
+                    Visible = true,
+                    Icon = SystemIcons.Information,
+                    BalloonTipIcon = ToolTipIcon.Info,
+                    BalloonTipTitle = "FY BET RECORD DONE",
+                    BalloonTipText = "Filter of...\nStart Time: " + dateTimePicker_start_fy.Text + "\nEnd Time: " + dateTimePicker_end_fy.Text + "\n\nStart-Finish...\nStart Time: " + label_start_fy.Text + "\nFinish Time: " + label_end_fy.Text,
+                };
+
+                notification.ShowBalloonTip(1000);
 
                 timer_fy_start.Start();
             }
