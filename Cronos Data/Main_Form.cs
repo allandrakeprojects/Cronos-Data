@@ -907,6 +907,15 @@ namespace Cronos_Data
             }
         }
 
+        private void Main_Form_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            DialogResult dr = MessageBox.Show("Exit the program?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (dr == DialogResult.No)
+            {
+                e.Cancel = true;
+            }
+        }
+
         // Minimize
         private void pictureBox_minimize_Click(object sender, EventArgs e)
         {
