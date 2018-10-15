@@ -39,9 +39,12 @@
             this.label_title_tf = new System.Windows.Forms.Label();
             this.panel_fy = new System.Windows.Forms.Panel();
             this.panel_fy_status = new System.Windows.Forms.Panel();
+            this.button1 = new System.Windows.Forms.Button();
             this.button_fy_proceed = new System.Windows.Forms.Button();
             this.label_fy_locatefolder = new System.Windows.Forms.Label();
             this.panel_datetime = new System.Windows.Forms.Panel();
+            this.label_fy_elapsed = new System.Windows.Forms.Label();
+            this.label_fy_elapsed_1 = new System.Windows.Forms.Label();
             this.label_fy_start_datetime_1 = new System.Windows.Forms.Label();
             this.label_fy_finish_datetime = new System.Windows.Forms.Label();
             this.label_fy_finish_datetime_1 = new System.Windows.Forms.Label();
@@ -67,8 +70,7 @@
             this.timer_fy_detect_inserted_in_excel = new System.Windows.Forms.Timer(this.components);
             this.timer_fy_start = new System.Windows.Forms.Timer(this.components);
             this.button_filelocation = new System.Windows.Forms.Button();
-            this.label_fy_elapsed_1 = new System.Windows.Forms.Label();
-            this.label_fy_elapsed = new System.Windows.Forms.Label();
+            this.timer_fy = new System.Windows.Forms.Timer(this.components);
             this.sPanel_separator = new Cronos_Data.SPanel();
             this.panel_header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_minimize)).BeginInit();
@@ -181,6 +183,7 @@
             // panel_fy_status
             // 
             this.panel_fy_status.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.panel_fy_status.Controls.Add(this.button1);
             this.panel_fy_status.Controls.Add(this.button_fy_proceed);
             this.panel_fy_status.Controls.Add(this.label_fy_locatefolder);
             this.panel_fy_status.Controls.Add(this.panel_datetime);
@@ -197,6 +200,17 @@
             this.panel_fy_status.Size = new System.Drawing.Size(524, 284);
             this.panel_fy_status.TabIndex = 23;
             this.panel_fy_status.Visible = false;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(382, 180);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 30;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Visible = false;
+            this.button1.Click += new System.EventHandler(this.button1_ClickAsync);
             // 
             // button_fy_proceed
             // 
@@ -239,6 +253,26 @@
             this.panel_datetime.Name = "panel_datetime";
             this.panel_datetime.Size = new System.Drawing.Size(204, 58);
             this.panel_datetime.TabIndex = 28;
+            // 
+            // label_fy_elapsed
+            // 
+            this.label_fy_elapsed.AutoSize = true;
+            this.label_fy_elapsed.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_fy_elapsed.Location = new System.Drawing.Point(66, 38);
+            this.label_fy_elapsed.Name = "label_fy_elapsed";
+            this.label_fy_elapsed.Size = new System.Drawing.Size(11, 15);
+            this.label_fy_elapsed.TabIndex = 29;
+            this.label_fy_elapsed.Text = "-";
+            // 
+            // label_fy_elapsed_1
+            // 
+            this.label_fy_elapsed_1.AutoSize = true;
+            this.label_fy_elapsed_1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_fy_elapsed_1.Location = new System.Drawing.Point(3, 36);
+            this.label_fy_elapsed_1.Name = "label_fy_elapsed_1";
+            this.label_fy_elapsed_1.Size = new System.Drawing.Size(55, 15);
+            this.label_fy_elapsed_1.TabIndex = 28;
+            this.label_fy_elapsed_1.Text = "Elapsed:";
             // 
             // label_fy_start_datetime_1
             // 
@@ -293,7 +327,7 @@
             // label_fy_currentrecord
             // 
             this.label_fy_currentrecord.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_fy_currentrecord.Location = new System.Drawing.Point(258, 121);
+            this.label_fy_currentrecord.Location = new System.Drawing.Point(258, 116);
             this.label_fy_currentrecord.Name = "label_fy_currentrecord";
             this.label_fy_currentrecord.Size = new System.Drawing.Size(151, 18);
             this.label_fy_currentrecord.TabIndex = 12;
@@ -303,7 +337,7 @@
             // 
             this.label_fy_inserting_count_1.AutoSize = true;
             this.label_fy_inserting_count_1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_fy_inserting_count_1.Location = new System.Drawing.Point(134, 150);
+            this.label_fy_inserting_count_1.Location = new System.Drawing.Point(134, 145);
             this.label_fy_inserting_count_1.Name = "label_fy_inserting_count_1";
             this.label_fy_inserting_count_1.Size = new System.Drawing.Size(92, 18);
             this.label_fy_inserting_count_1.TabIndex = 21;
@@ -313,7 +347,7 @@
             // label_fy_page_count
             // 
             this.label_fy_page_count.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_fy_page_count.Location = new System.Drawing.Point(259, 91);
+            this.label_fy_page_count.Location = new System.Drawing.Point(259, 86);
             this.label_fy_page_count.Name = "label_fy_page_count";
             this.label_fy_page_count.Size = new System.Drawing.Size(151, 18);
             this.label_fy_page_count.TabIndex = 13;
@@ -323,7 +357,7 @@
             // 
             this.label_fy_page_count_1.AutoSize = true;
             this.label_fy_page_count_1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_fy_page_count_1.Location = new System.Drawing.Point(134, 91);
+            this.label_fy_page_count_1.Location = new System.Drawing.Point(134, 86);
             this.label_fy_page_count_1.Name = "label_fy_page_count_1";
             this.label_fy_page_count_1.Size = new System.Drawing.Size(46, 18);
             this.label_fy_page_count_1.TabIndex = 20;
@@ -332,7 +366,7 @@
             // label_fy_inserting_count
             // 
             this.label_fy_inserting_count.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_fy_inserting_count.Location = new System.Drawing.Point(258, 150);
+            this.label_fy_inserting_count.Location = new System.Drawing.Point(258, 145);
             this.label_fy_inserting_count.Name = "label_fy_inserting_count";
             this.label_fy_inserting_count.Size = new System.Drawing.Size(151, 18);
             this.label_fy_inserting_count.TabIndex = 15;
@@ -343,7 +377,7 @@
             // 
             this.label_fy_total_records_1.AutoSize = true;
             this.label_fy_total_records_1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_fy_total_records_1.Location = new System.Drawing.Point(132, 121);
+            this.label_fy_total_records_1.Location = new System.Drawing.Point(132, 116);
             this.label_fy_total_records_1.Name = "label_fy_total_records_1";
             this.label_fy_total_records_1.Size = new System.Drawing.Size(98, 18);
             this.label_fy_total_records_1.TabIndex = 18;
@@ -500,25 +534,10 @@
             this.button_filelocation.UseVisualStyleBackColor = false;
             this.button_filelocation.Click += new System.EventHandler(this.button_filelocation_Click);
             // 
-            // label_fy_elapsed_1
+            // timer_fy
             // 
-            this.label_fy_elapsed_1.AutoSize = true;
-            this.label_fy_elapsed_1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_fy_elapsed_1.Location = new System.Drawing.Point(3, 36);
-            this.label_fy_elapsed_1.Name = "label_fy_elapsed_1";
-            this.label_fy_elapsed_1.Size = new System.Drawing.Size(55, 15);
-            this.label_fy_elapsed_1.TabIndex = 28;
-            this.label_fy_elapsed_1.Text = "Elapsed:";
-            // 
-            // label_fy_elapsed
-            // 
-            this.label_fy_elapsed.AutoSize = true;
-            this.label_fy_elapsed.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_fy_elapsed.Location = new System.Drawing.Point(66, 38);
-            this.label_fy_elapsed.Name = "label_fy_elapsed";
-            this.label_fy_elapsed.Size = new System.Drawing.Size(11, 15);
-            this.label_fy_elapsed.TabIndex = 29;
-            this.label_fy_elapsed.Text = "-";
+            this.timer_fy.Interval = 1000;
+            this.timer_fy.Tick += new System.EventHandler(this.timer_fy_Tick);
             // 
             // sPanel_separator
             // 
@@ -609,5 +628,7 @@
         private SPanel sPanel_separator;
         private System.Windows.Forms.Label label_fy_elapsed_1;
         private System.Windows.Forms.Label label_fy_elapsed;
+        private System.Windows.Forms.Timer timer_fy;
+        private System.Windows.Forms.Button button1;
     }
 }

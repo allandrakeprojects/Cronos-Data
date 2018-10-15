@@ -1,4 +1,5 @@
 ﻿using ChoETL;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -216,17 +217,20 @@ namespace Cronos_Data
         
         private async Task GetDataFYAsync()
         {
-            // status
-            label_fy_status.Text = "status: doing calculation...";
+            try
+            {
+                // status
+                label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
+                label_fy_status.Text = "status: doing calculation...";
 
-            var cookie = FullWebBrowserCookie.GetCookieInternal(webBrowser_fy.Url, false);
-            WebClient wc = new WebClient();
+                var cookie = FullWebBrowserCookie.GetCookieInternal(webBrowser_fy.Url, false);
+                WebClient wc = new WebClient();
 
-            wc.Headers.Add("Cookie", cookie);
-            wc.Encoding = Encoding.UTF8;
-            wc.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
+                wc.Headers.Add("Cookie", cookie);
+                wc.Encoding = Encoding.UTF8;
+                wc.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
 
-            var reqparm_gettotal = new System.Collections.Specialized.NameValueCollection
+                var reqparm_gettotal = new System.Collections.Specialized.NameValueCollection
             {
                 { "s_btype", "" },
                 { "betNo", "" },
@@ -274,7 +278,7 @@ namespace Cronos_Data
                 { "data[16][value]", "11"}
             };
 
-            var reqparm = new System.Collections.Specialized.NameValueCollection
+                var reqparm = new System.Collections.Specialized.NameValueCollection
             {
                 { "s_btype", "" },
                 { "betNo", "" },
@@ -323,34 +327,42 @@ namespace Cronos_Data
                 { "data[16][value]", "11"}
             };
 
-            byte[] result_gettotal = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/flow/wageredAjax2", "POST", reqparm_gettotal);
-            string responsebody_gettotatal = Encoding.UTF8.GetString(result_gettotal);
+                byte[] result_gettotal = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/flow/wageredAjax2", "POST", reqparm_gettotal);
+                string responsebody_gettotatal = Encoding.UTF8.GetString(result_gettotal);
+                var deserializeObject_gettotal = JsonConvert.DeserializeObject(responsebody_gettotatal);
 
-            JObject jo_gettotal = JObject.Parse(responsebody_gettotatal);
-            JToken jt_gettotal = jo_gettotal.SelectToken("$.iTotalRecords");
-            _total_records_fy = jt_gettotal.ToString();
+                JObject jo_gettotal = JObject.Parse(deserializeObject_gettotal.ToString());
+                JToken jt_gettotal = jo_gettotal.SelectToken("$.iTotalRecords");
+                _total_records_fy = jt_gettotal.ToString();
 
-            double result_total_records = double.Parse(_total_records_fy) / _display_length_fy;
-            
-            if (result_total_records.ToString().Contains("."))
-            {
-                _total_page_fy = Convert.ToInt32(Math.Floor(result_total_records)) + 1;
+                double result_total_records = double.Parse(_total_records_fy) / _display_length_fy;
+
+                if (result_total_records.ToString().Contains("."))
+                {
+                    _total_page_fy = Convert.ToInt32(Math.Floor(result_total_records)) + 1;
+                }
+                else
+                {
+                    _total_page_fy = Convert.ToInt32(Math.Floor(result_total_records));
+                }
+
+                // status
+                label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
+                label_fy_page_count.Text = "1 of " + _total_page_fy.ToString("N0");
+                label_fy_status.Text = "status: getting data...";
+
+                byte[] result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/flow/wageredAjax2", "POST", reqparm);
+                string responsebody = Encoding.UTF8.GetString(result);
+                var deserializeObject = JsonConvert.DeserializeObject(responsebody);
+
+                jo_fy = JObject.Parse(deserializeObject.ToString());
+                JToken count = jo_fy.SelectToken("$.aaData");
+                _result_count_json_fy = count.Count();
             }
-            else
+            catch (Exception err)
             {
-                _total_page_fy = Convert.ToInt32(Math.Floor(result_total_records));
+                MessageBox.Show(err.ToString());
             }
-
-            // status
-            label_fy_page_count.Text = "1 of " + _total_page_fy.ToString("N0");
-            label_fy_status.Text = "status: getting data...";
-
-            byte[] result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/flow/wageredAjax2", "POST", reqparm);
-            string responsebody = Encoding.UTF8.GetString(result);
-
-            jo_fy = JObject.Parse(responsebody);
-            JToken count = jo_fy.SelectToken("$.aaData");
-            _result_count_json_fy = count.Count();
         }
 
         private async Task GetDataFYPagesAsync()
@@ -414,12 +426,14 @@ namespace Cronos_Data
             };
 
             // status
+            label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
             label_fy_status.Text = "status: getting data...";
 
             byte[] result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/flow/wageredAjax2", "POST", reqparm);
             string responsebody = Encoding.UTF8.GetString(result);
+            var deserializeObject = JsonConvert.DeserializeObject(responsebody);
 
-            jo_fy = JObject.Parse(responsebody);
+            jo_fy = JObject.Parse(deserializeObject.ToString());
             JToken count = jo_fy.SelectToken("$.aaData");
             _result_count_json_fy = count.Count();
         }
@@ -427,7 +441,7 @@ namespace Cronos_Data
 
         StringBuilder csv = new StringBuilder();
         private string _fy_start_datetime;
-        private string _fy_finish_datetime;
+        private string _fy_finish_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
 
         private async void FYAsync()
         {
@@ -489,7 +503,7 @@ namespace Cronos_Data
 
                             if (_fy_get_ii == 1)
                             {
-                                var header = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10}", "Game Platform", "Username", "Bet No", "Bet Type", "Bet Time", "Game Result", "Stake Amount", "Win Amount", "Company Win/Loss", "Valid Bet", "Valid/Invalid");
+                                var header = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10}", "Game Platform", "Username", "Bet No.", "Bet Time", "Bet Type", "Game Result", "Stake Amount", "Win Amount", "Company Win/Loss", "Valid Bet", "Valid/Invalid");
                                 csv.AppendLine(header);
                             }
 
@@ -519,6 +533,7 @@ namespace Cronos_Data
                             if ((_fy_get_ii) == 250000)
                             {
                                 // status
+                                label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
                                 label_fy_status.Text = "status: saving excel...";
 
                                 // label show list to excel
@@ -628,7 +643,7 @@ namespace Cronos_Data
             catch (Exception err)
             {
                 MessageBox.Show(err.ToString());
-
+                button1.Visible = true;
                 // web client request
                 await GetDataFYPagesAsync();
             }
@@ -683,36 +698,38 @@ namespace Cronos_Data
             Invoke(new Action(() =>
             {
                 label_fy_finish_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
-                _fy_finish_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+                timer_fy.Stop();
+                //_fy_finish_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
 
-                string start_datetime = _fy_start_datetime;
-                DateTime start = DateTime.ParseExact(start_datetime, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                //string start_datetime = _fy_start_datetime;
+                //DateTime start = DateTime.ParseExact(start_datetime, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
 
-                string finish_datetime = _fy_finish_datetime;
-                DateTime finish = DateTime.ParseExact(finish_datetime, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                //string finish_datetime = _fy_finish_datetime;
+                //DateTime finish = DateTime.ParseExact(finish_datetime, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
 
-                TimeSpan span = finish.Subtract(start);
+                //TimeSpan span = finish.Subtract(start);
 
-                if (span.Hours == 0 && span.Minutes == 0)
-                {
-                    label_fy_elapsed.Text = span.Seconds + " sec(s)";
-                }
-                else if (span.Hours != 0)
-                {
-                    label_fy_elapsed.Text = span.Hours + " hr(s) " + span.Minutes + " min(s) " + span.Seconds + " sec(s)";
-                }
-                else if (span.Minutes != 0)
-                {
-                    label_fy_elapsed.Text = span.Minutes + " min(s) " + span.Seconds + " sec(s)";
-                }
-                else
-                {
-                    label_fy_elapsed.Text = span.Seconds + " sec(s)";
-                }
+                //if (span.Hours == 0 && span.Minutes == 0)
+                //{
+                //    label_fy_elapsed.Text = span.Seconds + " sec(s)";
+                //}
+                //else if (span.Hours != 0)
+                //{
+                //    label_fy_elapsed.Text = span.Hours + " hr(s) " + span.Minutes + " min(s) " + span.Seconds + " sec(s)";
+                //}
+                //else if (span.Minutes != 0)
+                //{
+                //    label_fy_elapsed.Text = span.Minutes + " min(s) " + span.Seconds + " sec(s)";
+                //}
+                //else
+                //{
+                //    label_fy_elapsed.Text = span.Seconds + " sec(s)";
+                //}
 
                 pictureBox_fy_loader.Visible = false;
                 button_fy_proceed.Visible = true;
                 label_fy_locatefolder.Visible = true;
+                label_fy_status.ForeColor = Color.FromArgb(34, 139, 34);
                 label_fy_status.Text = "status: done";
 
                 panel_datetime.Location = new Point(5, 226);
@@ -731,7 +748,35 @@ namespace Cronos_Data
 
             timer_fy_start.Start();
         }
-        
+
+        private void timer_fy_Tick(object sender, EventArgs e)
+        {
+            string start_datetime = _fy_start_datetime;
+            DateTime start = DateTime.ParseExact(start_datetime, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+
+            string finish_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+            DateTime finish = DateTime.ParseExact(finish_datetime, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+
+            TimeSpan span = finish.Subtract(start);
+
+            if (span.Hours == 0 && span.Minutes == 0)
+            {
+                label_fy_elapsed.Text = span.Seconds + " sec(s)";
+            }
+            else if (span.Hours != 0)
+            {
+                label_fy_elapsed.Text = span.Hours + " hr(s) " + span.Minutes + " min(s) " + span.Seconds + " sec(s)";
+            }
+            else if (span.Minutes != 0)
+            {
+                label_fy_elapsed.Text = span.Minutes + " min(s) " + span.Seconds + " sec(s)";
+            }
+            else
+            {
+                label_fy_elapsed.Text = span.Seconds + " sec(s)";
+            }
+        }
+
         private void timer_fy_detect_inserted_in_excel_Tick(object sender, EventArgs e)
         {
             // label show list to excel
@@ -928,6 +973,7 @@ namespace Cronos_Data
             Invoke(new Action(() =>
             {
                 // status
+                label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
                 label_fy_status.Text = "status: inserting data to excel...";
             }));
 
@@ -980,6 +1026,7 @@ namespace Cronos_Data
             Invoke(new Action(() =>
             {
                 // status
+                label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
                 label_fy_status.Text = "status: saving excel...";
             }));
 
@@ -1040,6 +1087,7 @@ namespace Cronos_Data
                     pictureBox_fy_loader.Visible = false;
                     button_fy_proceed.Visible = true;
                     label_fy_locatefolder.Visible = true;
+                    label_fy_status.ForeColor = Color.FromArgb(34, 139, 34);
                     label_fy_status.Text = "status: done";
 
                     panel_datetime.Location = new Point(5, 226);
@@ -1070,6 +1118,7 @@ namespace Cronos_Data
         {
             label_fy_start_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
             _fy_start_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+            timer_fy.Start();
             timer_fy_start.Stop();
             button_fy_start.Visible = false;
             pictureBox_fy_loader.Visible = true;
@@ -1140,6 +1189,11 @@ namespace Cronos_Data
             {
                 MessageBox.Show("Can't locate folder.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+        }
+
+        private async void button1_ClickAsync(object sender, EventArgs e)
+        {
+            await GetDataFYPagesAsync();
         }
     }
 }
