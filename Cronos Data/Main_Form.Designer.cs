@@ -437,7 +437,7 @@
             this.button_fy_start.ForeColor = System.Drawing.Color.White;
             this.button_fy_start.Image = ((System.Drawing.Image)(resources.GetObject("button_fy_start.Image")));
             this.button_fy_start.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button_fy_start.Location = new System.Drawing.Point(183, 283);
+            this.button_fy_start.Location = new System.Drawing.Point(204, 275);
             this.button_fy_start.Name = "button_fy_start";
             this.button_fy_start.Padding = new System.Windows.Forms.Padding(15, 0, 15, 0);
             this.button_fy_start.Size = new System.Drawing.Size(153, 59);
