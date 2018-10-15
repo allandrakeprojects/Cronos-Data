@@ -930,7 +930,7 @@ namespace Cronos_Data
             _fy_pages_count = 0;
             fy_inserted_in_excel = true;
             _fy_row = 1;
-            _fy_row_count = 0;
+            _fy_row_count = 1;
             isDone_fy = false;
             //_fy_folder_path_result;
             //_fy_folder_path_result_locate;
