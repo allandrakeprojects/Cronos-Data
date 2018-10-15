@@ -78,8 +78,11 @@ namespace Cronos_Data
         public Main_Form()
         {
             InitializeComponent();
-            this.FormBorderStyle = FormBorderStyle.None;
-            Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
+            FormBorderStyle = FormBorderStyle.None;
+
+            Region = new Region(RoundedRectangle.Create(new Rectangle(0, 0, Size.Width, Size.Height), 8, RoundedRectangle.RectangleCorners.TopRight | RoundedRectangle.RectangleCorners.TopLeft | RoundedRectangle.RectangleCorners.BottomLeft | RoundedRectangle.RectangleCorners.BottomRight));
+            //TopLeftPath = Cronos_Data.RoundedRectangle.Create(new Rectangle(0, 0, Size.Width, Size.Height), 8, Cronos_Data.RoundedRectangle.RectangleCorners.TopRight | Cronos_Data.RoundedRectangle.RectangleCorners.TopLeft, Cronos_Data.RoundedRectangle.WhichHalf.TopLeft);
+            //BottomRightPath = Cronos_Data.RoundedRectangle.Create(new Rectangle(0, 0, Size.Width - 1, Size.Height - 1), 8, Cronos_Data.RoundedRectangle.RectangleCorners.TopRight | Cronos_Data.RoundedRectangle.RectangleCorners.TopLeft, Cronos_Data.RoundedRectangle.WhichHalf.BottomRight);
         }
 
         private void Main_Form_Load(object sender, EventArgs e)
@@ -231,101 +234,101 @@ namespace Cronos_Data
                 wc.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
 
                 var reqparm_gettotal = new System.Collections.Specialized.NameValueCollection
-            {
-                { "s_btype", "" },
-                { "betNo", "" },
-                { "name", "" },
-                { "gpid", "0" },
-                { "wager_settle", "0" },
-                { "valid_inva", "" },
-                { "start",  dateTimePicker_start_fy.Text},
-                { "end", dateTimePicker_end_fy.Text},
-                { "skip", "0"},
-                { "ftime_188", "bettime"},
-                { "data[0][name]", "sEcho"},
-                { "data[0][value]", _fy_secho++.ToString()},
-                { "data[1][name]", "iColumns"},
-                { "data[1][value]", "12"},
-                { "data[2][name]", "sColumns"},
-                { "data[2][value]", ""},
-                { "data[3][name]", "iDisplayStart"},
-                { "data[3][value]", "0"},
-                { "data[4][name]", "iDisplayLength"},
-                { "data[4][value]", "1"},
-                { "data[5][name]", "mDataProp_0"},
-                { "data[5][value]", "0"},
-                { "data[6][name]", "mDataProp_1"},
-                { "data[6][value]", "1"},
-                { "data[7][name]", "mDataProp_2"},
-                { "data[7][value]", "2"},
-                { "data[8][name]", "mDataProp_3"},
-                { "data[8][value]", "3"},
-                { "data[9][name]", "mDataProp_4"},
-                { "data[9][value]", "4"},
-                { "data[10][name]", "mDataProp_5"},
-                { "data[10][value]", "5"},
-                { "data[11][name]", "mDataProp_6"},
-                { "data[11][value]", "6"},
-                { "data[12][name]", "mDataProp_7"},
-                { "data[12][value]", "7"},
-                { "data[13][name]", "mDataProp_8"},
-                { "data[13][value]", "8"},
-                { "data[14][name]", "mDataProp_9"},
-                { "data[14][value]", "9"},
-                { "data[15][name]", "mDataProp_10"},
-                { "data[15][value]", "10"},
-                { "data[16][name]", "mDataProp_11"},
-                { "data[16][value]", "11"}
-            };
+                {
+                    { "s_btype", "" },
+                    { "betNo", "" },
+                    { "name", "" },
+                    { "gpid", "0" },
+                    { "wager_settle", "0" },
+                    { "valid_inva", "" },
+                    { "start",  dateTimePicker_start_fy.Text},
+                    { "end", dateTimePicker_end_fy.Text},
+                    { "skip", "0"},
+                    { "ftime_188", "bettime"},
+                    { "data[0][name]", "sEcho"},
+                    { "data[0][value]", _fy_secho++.ToString()},
+                    { "data[1][name]", "iColumns"},
+                    { "data[1][value]", "12"},
+                    { "data[2][name]", "sColumns"},
+                    { "data[2][value]", ""},
+                    { "data[3][name]", "iDisplayStart"},
+                    { "data[3][value]", "0"},
+                    { "data[4][name]", "iDisplayLength"},
+                    { "data[4][value]", "1"},
+                    { "data[5][name]", "mDataProp_0"},
+                    { "data[5][value]", "0"},
+                    { "data[6][name]", "mDataProp_1"},
+                    { "data[6][value]", "1"},
+                    { "data[7][name]", "mDataProp_2"},
+                    { "data[7][value]", "2"},
+                    { "data[8][name]", "mDataProp_3"},
+                    { "data[8][value]", "3"},
+                    { "data[9][name]", "mDataProp_4"},
+                    { "data[9][value]", "4"},
+                    { "data[10][name]", "mDataProp_5"},
+                    { "data[10][value]", "5"},
+                    { "data[11][name]", "mDataProp_6"},
+                    { "data[11][value]", "6"},
+                    { "data[12][name]", "mDataProp_7"},
+                    { "data[12][value]", "7"},
+                    { "data[13][name]", "mDataProp_8"},
+                    { "data[13][value]", "8"},
+                    { "data[14][name]", "mDataProp_9"},
+                    { "data[14][value]", "9"},
+                    { "data[15][name]", "mDataProp_10"},
+                    { "data[15][value]", "10"},
+                    { "data[16][name]", "mDataProp_11"},
+                    { "data[16][value]", "11"}
+                };
 
                 var reqparm = new System.Collections.Specialized.NameValueCollection
-            {
-                { "s_btype", "" },
-                { "betNo", "" },
-                { "name", "" },
-                { "gpid", "0" },
-                { "wager_settle", "0" },
-                { "valid_inva", "" },
-                { "start",  dateTimePicker_start_fy.Text},
-                { "end", dateTimePicker_end_fy.Text},
-                { "skip", "0"},
-                { "ftime_188", "bettime"},
-                { "data[0][name]", "sEcho"},
-                { "data[0][value]", _fy_secho++.ToString()},
-                { "data[1][name]", "iColumns"},
-                { "data[1][value]", "12"},
-                { "data[2][name]", "sColumns"},
-                { "data[2][value]", ""},
-                { "data[3][name]", "iDisplayStart"},
-                { "data[3][value]", "0"},
-                { "data[4][name]", "iDisplayLength"},
-                { "data[4][value]", "5000"},
-                // edited 5000
-                { "data[5][name]", "mDataProp_0"},
-                { "data[5][value]", "0"},
-                { "data[6][name]", "mDataProp_1"},
-                { "data[6][value]", "1"},
-                { "data[7][name]", "mDataProp_2"},
-                { "data[7][value]", "2"},
-                { "data[8][name]", "mDataProp_3"},
-                { "data[8][value]", "3"},
-                { "data[9][name]", "mDataProp_4"},
-                { "data[9][value]", "4"},
-                { "data[10][name]", "mDataProp_5"},
-                { "data[10][value]", "5"},
-                { "data[11][name]", "mDataProp_6"},
-                { "data[11][value]", "6"},
-                { "data[12][name]", "mDataProp_7"},
-                { "data[12][value]", "7"},
-                { "data[13][name]", "mDataProp_8"},
-                { "data[13][value]", "8"},
-                { "data[14][name]", "mDataProp_9"},
-                { "data[14][value]", "9"},
-                { "data[15][name]", "mDataProp_10"},
-                { "data[15][value]", "10"},
-                { "data[16][name]", "mDataProp_11"},
-                { "data[16][value]", "11"}
-            };
+                {
+                    { "s_btype", "" },
+                    { "betNo", "" },
+                    { "name", "" },
+                    { "gpid", "0" },
+                    { "wager_settle", "0" },
+                    { "valid_inva", "" },
+                    { "start",  dateTimePicker_start_fy.Text},
+                    { "end", dateTimePicker_end_fy.Text},
+                    { "skip", "0"},
+                    { "ftime_188", "bettime"},
+                    { "data[0][name]", "sEcho"},
+                    { "data[0][value]", _fy_secho++.ToString()},
+                    { "data[1][name]", "iColumns"},
+                    { "data[1][value]", "12"},
+                    { "data[2][name]", "sColumns"},
+                    { "data[2][value]", ""},
+                    { "data[3][name]", "iDisplayStart"},
+                    { "data[3][value]", "0"},
+                    { "data[4][name]", "iDisplayLength"},
+                    { "data[4][value]", "5000"},
+                    // edited 5000
+                    { "data[5][name]", "mDataProp_0"},
+                    { "data[5][value]", "0"},
+                    { "data[6][name]", "mDataProp_1"},
+                    { "data[6][value]", "1"},
+                    { "data[7][name]", "mDataProp_2"},
+                    { "data[7][value]", "2"},
+                    { "data[8][name]", "mDataProp_3"},
+                    { "data[8][value]", "3"},
+                    { "data[9][name]", "mDataProp_4"},
+                    { "data[9][value]", "4"},
+                    { "data[10][name]", "mDataProp_5"},
+                    { "data[10][value]", "5"},
+                    { "data[11][name]", "mDataProp_6"},
+                    { "data[11][value]", "6"},
+                    { "data[12][name]", "mDataProp_7"},
+                    { "data[12][value]", "7"},
+                    { "data[13][name]", "mDataProp_8"},
+                    { "data[13][value]", "8"},
+                    { "data[14][name]", "mDataProp_9"},
+                    { "data[14][value]", "9"},
+                    { "data[15][name]", "mDataProp_10"},
+                    { "data[15][value]", "10"},
+                    { "data[16][name]", "mDataProp_11"},
+                    { "data[16][value]", "11"}
+                };
 
                 byte[] result_gettotal = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/flow/wageredAjax2", "POST", reqparm_gettotal);
                 string responsebody_gettotatal = Encoding.UTF8.GetString(result_gettotal);
@@ -442,6 +445,7 @@ namespace Cronos_Data
         StringBuilder csv = new StringBuilder();
         private string _fy_start_datetime;
         private string _fy_finish_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+        private bool isClose;
 
         private async void FYAsync()
         {
@@ -483,11 +487,11 @@ namespace Cronos_Data
                             JToken game_platform = jo_fy.SelectToken("$.aaData[" + ii + "][0]");
                             JToken player_id = jo_fy.SelectToken("$.aaData[" + ii + "][1][0]");
                             JToken player_name = jo_fy.SelectToken("$.aaData[" + ii + "][1][1]");
-                            JToken bet_no = jo_fy.SelectToken("$.aaData[" + ii + "][2]");
+                            JToken bet_no = jo_fy.SelectToken("$.aaData[" + ii + "][2]").ToString().Replace("BetTransaction:", "");
                             JToken bet_time = jo_fy.SelectToken("$.aaData[" + ii + "][3]");
                             JToken bet_type = jo_fy.SelectToken("$.aaData[" + ii + "][4]").ToString().Replace("<br/>", "").PadRight(225).Substring(0, 225).Trim();
                             String result_bet_type = Regex.Replace(bet_type.ToString(), @"<[^>]*>", String.Empty);
-                            JToken game_result = jo_fy.SelectToken("$.aaData[" + ii + "][5]");
+                            JToken game_result = jo_fy.SelectToken("$.aaData[" + ii + "][5]").ToString().Replace("<br>", "");
                             JToken stake_amount_color = jo_fy.SelectToken("$.aaData[" + ii + "][6][0]");
                             JToken stake_amount = jo_fy.SelectToken("$.aaData[" + ii + "][6][1]");
                             JToken win_amount_color = jo_fy.SelectToken("$.aaData[" + ii + "][7][0]");
@@ -903,16 +907,20 @@ namespace Cronos_Data
             DialogResult dr = MessageBox.Show("Exit the program?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (dr == DialogResult.Yes)
             {
+                isClose = true;
                 Application.Exit();
             }
         }
 
         private void Main_Form_FormClosing(object sender, FormClosingEventArgs e)
         {
-            DialogResult dr = MessageBox.Show("Exit the program?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (dr == DialogResult.No)
+            if (!isClose)
             {
-                e.Cancel = true;
+                DialogResult dr = MessageBox.Show("Exit the program?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (dr == DialogResult.No)
+                {
+                    e.Cancel = true;
+                }
             }
         }
 
