@@ -28,8 +28,9 @@ namespace Cronos_Data
         public static extern bool ReleaseCapture();
         public const int WM_NCLBUTTONDOWN = 0xA1;
         public const int HT_CAPTION = 0x2;
-        List<FY_BetRecord> bet_records = new List<FY_BetRecord>();
-        private string _total_records_fy;
+        List<FY_BetRecord> fy_bet_records = new List<FY_BetRecord>();
+        List<String> fy_datetime = new List<String>();
+        private double _total_records_fy;
         private double _display_length_fy = 5000;
         private double _limit_fy = 250000;
         private int _total_page_fy;
@@ -219,14 +220,100 @@ namespace Cronos_Data
                 }
             }
         }
+
+        private async Task FY_GetTotal(string start_datetime, string end_datetime)
+        {
+            // status
+            label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
+            label_fy_status.Text = "status: doing calculation...";
+
+            var cookie = FullWebBrowserCookie.GetCookieInternal(webBrowser_fy.Url, false);
+            WebClient wc = new WebClient();
+
+            wc.Headers.Add("Cookie", cookie);
+            wc.Encoding = Encoding.UTF8;
+            wc.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
+
+            var reqparm_gettotal = new System.Collections.Specialized.NameValueCollection
+            {
+                { "s_btype", "" },
+                { "betNo", "" },
+                { "name", "" },
+                { "gpid", "0" },
+                { "wager_settle", "0" },
+                { "valid_inva", "" },
+                { "start",  start_datetime},
+                { "end", end_datetime},
+                { "skip", "0"},
+                { "ftime_188", "bettime"},
+                { "data[0][name]", "sEcho"},
+                { "data[0][value]", _fy_secho++.ToString()},
+                { "data[1][name]", "iColumns"},
+                { "data[1][value]", "1"},
+                { "data[2][name]", "sColumns"},
+                { "data[2][value]", ""},
+                { "data[3][name]", "iDisplayStart"},
+                { "data[3][value]", "0"},
+                { "data[4][name]", "iDisplayLength"},
+                { "data[4][value]", "1"}
+            };
+
+            byte[] result_gettotal = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/flow/wageredAjax2", "POST", reqparm_gettotal);
+            string responsebody_gettotatal = Encoding.UTF8.GetString(result_gettotal);
+            var deserializeObject_gettotal = JsonConvert.DeserializeObject(responsebody_gettotatal);
+
+            JObject jo_gettotal = JObject.Parse(deserializeObject_gettotal.ToString());
+            JToken jt_gettotal = jo_gettotal.SelectToken("$.iTotalRecords");
+            _total_records_fy += double.Parse(jt_gettotal.ToString());
+
+            double result_total_records = _total_records_fy / _display_length_fy;
+
+            if (result_total_records.ToString().Contains("."))
+            {
+                _total_page_fy += Convert.ToInt32(Math.Floor(result_total_records)) + 1;
+            }
+            else
+            {
+                _total_page_fy += Convert.ToInt32(Math.Floor(result_total_records));
+            }
+        }
         
         private async Task GetDataFYAsync()
         {
             try
             {
+                // loop datetime
+                foreach (var datetime in fy_datetime)
+                {
+                    string[] datetime_results = datetime.Split("*|*");
+                    int i = 0;
+                    string get_start_datetime = "";
+                    string get_end_datetime = "";
+
+                    foreach (string datetime_result in datetime_results)
+                    {
+                        i++;
+                        if (i == 1)
+                        {
+                            get_start_datetime = datetime_result;
+                        }
+                        else if (i == 2)
+                        {
+                            get_end_datetime = datetime_result;
+                        }
+                    }
+
+                    //MessageBox.Show(get_start_datetime + "--" + get_end_datetime);
+                    await FY_GetTotal(get_start_datetime, get_end_datetime);
+                }
+
+                MessageBox.Show("gfdgfdgf");
                 // status
                 label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
-                label_fy_status.Text = "status: doing calculation...";
+                label_fy_page_count.Text = "1 of " + _total_page_fy.ToString("N0");
+                label_fy_currentrecord.Text = "0 of " + Convert.ToInt32(_total_records_fy).ToString("N0");
+
+                fy_datetime.Clear();
 
                 var cookie = FullWebBrowserCookie.GetCookieInternal(webBrowser_fy.Url, false);
                 WebClient wc = new WebClient();
@@ -234,31 +321,7 @@ namespace Cronos_Data
                 wc.Headers.Add("Cookie", cookie);
                 wc.Encoding = Encoding.UTF8;
                 wc.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
-
-                var reqparm_gettotal = new System.Collections.Specialized.NameValueCollection
-                {
-                    { "s_btype", "" },
-                    { "betNo", "" },
-                    { "name", "" },
-                    { "gpid", "0" },
-                    { "wager_settle", "0" },
-                    { "valid_inva", "" },
-                    { "start",  dateTimePicker_start_fy.Text},
-                    { "end", dateTimePicker_end_fy.Text},
-                    { "skip", "0"},
-                    { "ftime_188", "bettime"},
-                    { "data[0][name]", "sEcho"},
-                    { "data[0][value]", _fy_secho++.ToString()},
-                    { "data[1][name]", "iColumns"},
-                    { "data[1][value]", "1"},
-                    { "data[2][name]", "sColumns"},
-                    { "data[2][value]", ""},
-                    { "data[3][name]", "iDisplayStart"},
-                    { "data[3][value]", "0"},
-                    { "data[4][name]", "iDisplayLength"},
-                    { "data[4][value]", "1"}
-                };
-
+                
                 var reqparm = new System.Collections.Specialized.NameValueCollection
                 {
                     { "s_btype", "" },
@@ -282,30 +345,7 @@ namespace Cronos_Data
                     { "data[4][name]", "iDisplayLength"},
                     { "data[4][value]", _display_length_fy.ToString()}
                 };
-
-                byte[] result_gettotal = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/flow/wageredAjax2", "POST", reqparm_gettotal);
-                string responsebody_gettotatal = Encoding.UTF8.GetString(result_gettotal);
-                var deserializeObject_gettotal = JsonConvert.DeserializeObject(responsebody_gettotatal);
-
-                JObject jo_gettotal = JObject.Parse(deserializeObject_gettotal.ToString());
-                JToken jt_gettotal = jo_gettotal.SelectToken("$.iTotalRecords");
-                _total_records_fy = jt_gettotal.ToString();
-
-                double result_total_records = double.Parse(_total_records_fy) / _display_length_fy;
-
-                if (result_total_records.ToString().Contains("."))
-                {
-                    _total_page_fy = Convert.ToInt32(Math.Floor(result_total_records)) + 1;
-                }
-                else
-                {
-                    _total_page_fy = Convert.ToInt32(Math.Floor(result_total_records));
-                }
-
-                // status
-                label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
-                label_fy_page_count.Text = "1 of " + _total_page_fy.ToString("N0");
-                label_fy_currentrecord.Text = "0 of " + Convert.ToInt32(_total_records_fy).ToString("N0");
+                                
                 label_fy_status.Text = "status: getting data...";
 
                 byte[] result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/flow/wageredAjax2", "POST", reqparm);
@@ -322,8 +362,7 @@ namespace Cronos_Data
                 //MessageBox.Show(err.ToString());
             }
         }
-
-        int ads = 0;
+        
         private async Task GetDataFYPagesAsync()
         {
             var cookie = FullWebBrowserCookie.GetCookieInternal(webBrowser_fy.Url, false);
@@ -365,19 +404,13 @@ namespace Cronos_Data
 
             byte[] result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/flow/wageredAjax2", "POST", reqparm);
             responsebody_test = Encoding.UTF8.GetString(result);
-            //string asd = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\test_" + (ads++) + ".txt";
-            //StreamWriter sw = new StreamWriter(asd, true, Encoding.UTF8);
-            //sw.WriteLine(responsebody_test);
-            //sw.Close();
-            //MessageBox.Show(responsebody_test);
             var deserializeObject = JsonConvert.DeserializeObject(responsebody_test);
 
             jo_fy = JObject.Parse(deserializeObject.ToString());
             JToken count = jo_fy.SelectToken("$.aaData");
             _result_count_json_fy = count.Count();
         }
-
-
+        
         StringBuilder csv = new StringBuilder();
         private string _fy_start_datetime;
         private string _fy_finish_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
@@ -388,7 +421,7 @@ namespace Cronos_Data
         {
             try
             {
-                //var bet_records = new List<FY_BetRecord>();
+                //var fy_bet_records = new List<FY_BetRecord>();
 
                 if (fy_inserted_in_excel)
                 {
@@ -455,7 +488,7 @@ namespace Cronos_Data
                             //sw.WriteLine(game_platform + "*|*" + player_name + "*|*" + bet_no + "*|*" + bet_time + "*|*" + bet_type + "*|*" + game_result + "*|*" + stake_amount + "*|*" + win_amount + "*|*" + company_win_loss + "*|*" + valid_bet + "*|*" + valid_invalid);
                             //sw.Close();
 
-                            //bet_records.Add(new FY_BetRecord
+                            //fy_bet_records.Add(new FY_BetRecord
                             //{
                             //    GAME_PLATFORM = game_platform.ToString(),
                             //    USERNAME = player_name.ToString(),
@@ -530,7 +563,7 @@ namespace Cronos_Data
 
                                 //Thread fy_displayinexcel_thread_limit = new Thread(delegate ()
                                 //{
-                                //    FY_DisplayInExcel(bet_records);
+                                //    FY_DisplayInExcel(fy_bet_records);
                                 //});
                                 //fy_displayinexcel_thread_limit.Start();
 
@@ -574,7 +607,7 @@ namespace Cronos_Data
 
                         //Thread fy_displayinexcel_thread = new Thread(delegate ()
                         //{
-                        //    FY_DisplayInExcel(bet_records);
+                        //    FY_DisplayInExcel(fy_bet_records);
                         //});
                         //fy_displayinexcel_thread.Start();
                     }
@@ -1026,7 +1059,7 @@ namespace Cronos_Data
             excelApp.Application.Quit();
             excelApp.Quit();
 
-            bet_records.Clear();
+            fy_bet_records.Clear();
 
             fy_inserted_in_excel = true;
 
@@ -1072,6 +1105,56 @@ namespace Cronos_Data
 
         private async void button_fy_start_ClickAsync(object sender, EventArgs e)
         {
+            string start_datetime = dateTimePicker_start_fy.Text;
+            DateTime start = DateTime.Parse(start_datetime);
+
+            string end_datetime = dateTimePicker_end_fy.Text;
+            DateTime end = DateTime.Parse(end_datetime);
+
+            string result_start = start.ToString("yyyy-MM-dd");
+            string result_end = end.ToString("yyyy-MM-dd");
+            string result_start_time = start.ToString("HH:mm:ss");
+            string result_end_time = end.ToString("HH:mm:ss");
+
+            if (result_start != result_end)
+            {
+                string end_get = "";
+                int i = 0;
+                while (result_start != result_end)
+                {
+                    end_get = end.AddDays(-i).ToString("yyyy-MM-dd");
+                    if (result_start == end_get)
+                    {
+                        string start_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd ") + result_start_time;
+                        string end_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd 23:59:59");
+                        fy_datetime.Add(start_get_to_list + "*|*" + end_get_to_list);
+
+                        break;
+                    }
+                    else
+                    {
+                        if (i == 0)
+                        {
+                            string start_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd 00:00:00");
+                            string end_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd ") + result_end_time;
+                            fy_datetime.Add(start_get_to_list + "*|*" + end_get_to_list);
+                        }
+                        else
+                        {
+                            string start_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd 00:00:00");
+                            string end_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd 23:59:59");
+                            fy_datetime.Add(start_get_to_list + "*|*" + end_get_to_list);
+                        }
+                    }
+
+                    i++;
+                }
+            }
+            else
+            {
+                fy_datetime.Add(start_datetime + "*|*" + end_datetime);
+            }
+
             label_fy_start_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
             _fy_start_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
             timer_fy.Start();
@@ -1113,7 +1196,7 @@ namespace Cronos_Data
             panel_datetime.Location = new Point(66, 226);
 
             // set default variables
-            bet_records.Clear();
+            fy_bet_records.Clear();
             //_total_records_fy;
              //_display_length_fy = 5000;
             //_limit_fy = 250000;
@@ -1171,8 +1254,8 @@ namespace Cronos_Data
                     {
                         string start_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd ") + result_start_time;
                         string end_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd 23:59:59");
-                        MessageBox.Show("Start: " + start_get_to_list + "\nEnd: " + end_get_to_list);
-                        MessageBox.Show("done");
+                        fy_datetime.Add(start_get_to_list + "*|*" + end_get_to_list);
+
                         break;
                     }
                     else
@@ -1181,13 +1264,13 @@ namespace Cronos_Data
                         {
                             string start_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd 00:00:00");
                             string end_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd ") + result_end_time;
-                            MessageBox.Show("Start: " + start_get_to_list + "\nEnd: " + end_get_to_list);
+                            fy_datetime.Add(start_get_to_list + "*|*" + end_get_to_list);
                         }
                         else
                         {
                             string start_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd 00:00:00");
                             string end_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd 23:59:59");
-                            MessageBox.Show("Start: " + start_get_to_list + "\nEnd: " + end_get_to_list);
+                            fy_datetime.Add(start_get_to_list + "*|*" + end_get_to_list);
                         }
                     }
 
@@ -1196,11 +1279,9 @@ namespace Cronos_Data
             }
             else
             {
-                MessageBox.Show("start");
-                MessageBox.Show(result_start);
-                MessageBox.Show(result_end);
+                fy_datetime.Add(start_datetime + "*|*" + end_datetime);
             }
-
+            
             //DateTime startingDate = DateTime.Today;
 
             //while (startingDate.DayOfWeek != weekStart)
