@@ -71,8 +71,9 @@
             this.button_filelocation = new System.Windows.Forms.Button();
             this.timer_fy = new System.Windows.Forms.Timer(this.components);
             this.panel_footer = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
             this.sPanel_separator = new Cronos_Data.SPanel();
+            this.button1 = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.panel_header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_minimize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_close)).BeginInit();
@@ -172,9 +173,9 @@
             // panel_fy
             // 
             this.panel_fy.Controls.Add(this.panel_fy_status);
-            this.panel_fy.Controls.Add(this.panel);
             this.panel_fy.Controls.Add(this.label_title_fy);
             this.panel_fy.Controls.Add(this.webBrowser_fy);
+            this.panel_fy.Controls.Add(this.panel);
             this.panel_fy.Location = new System.Drawing.Point(16, 84);
             this.panel_fy.Name = "panel_fy";
             this.panel_fy.Size = new System.Drawing.Size(534, 408);
@@ -537,16 +538,6 @@
             this.panel_footer.Size = new System.Drawing.Size(1140, 12);
             this.panel_footer.TabIndex = 4;
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(377, 60);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 7;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // sPanel_separator
             // 
             this.sPanel_separator.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
@@ -558,12 +549,32 @@
             this.sPanel_separator.Size = new System.Drawing.Size(44, 455);
             this.sPanel_separator.TabIndex = 1;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(416, 62);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 7;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(31, 55);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "label1";
+            // 
             // Main_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1140, 511);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.panel_footer);
             this.Controls.Add(this.button_fy_start);
@@ -594,6 +605,7 @@
             this.panel.PerformLayout();
             this.panel_tf.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -642,5 +654,6 @@
         private System.Windows.Forms.Label label_filelocation;
         private System.Windows.Forms.Panel panel_footer;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label label1;
     }
 }
