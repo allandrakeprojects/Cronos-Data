@@ -56,13 +56,13 @@
             this.label_fy_inserting_count = new System.Windows.Forms.Label();
             this.label_fy_total_records_1 = new System.Windows.Forms.Label();
             this.label_fy_status = new System.Windows.Forms.Label();
-            this.webBrowser_fy = new System.Windows.Forms.WebBrowser();
             this.panel = new System.Windows.Forms.Panel();
             this.comboBox_fy = new System.Windows.Forms.ComboBox();
             this.dateTimePicker_end_fy = new System.Windows.Forms.DateTimePicker();
             this.dateTimePicker_start_fy = new System.Windows.Forms.DateTimePicker();
             this.label_start_fy = new System.Windows.Forms.Label();
             this.label_end_fy = new System.Windows.Forms.Label();
+            this.webBrowser_fy = new System.Windows.Forms.WebBrowser();
             this.button_fy_start = new System.Windows.Forms.Button();
             this.panel_tf = new System.Windows.Forms.Panel();
             this.webBrowser_tf = new System.Windows.Forms.WebBrowser();
@@ -71,8 +71,8 @@
             this.button_filelocation = new System.Windows.Forms.Button();
             this.timer_fy = new System.Windows.Forms.Timer(this.components);
             this.panel_footer = new System.Windows.Forms.Panel();
-            this.sPanel_separator = new Cronos_Data.SPanel();
             this.button1 = new System.Windows.Forms.Button();
+            this.sPanel_separator = new Cronos_Data.SPanel();
             this.panel_header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_minimize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_close)).BeginInit();
@@ -139,9 +139,9 @@
             // label_filelocation
             // 
             this.label_filelocation.ForeColor = System.Drawing.Color.White;
-            this.label_filelocation.Location = new System.Drawing.Point(0, 16);
+            this.label_filelocation.Location = new System.Drawing.Point(-3, 16);
             this.label_filelocation.Name = "label_filelocation";
-            this.label_filelocation.Size = new System.Drawing.Size(1140, 13);
+            this.label_filelocation.Size = new System.Drawing.Size(1147, 13);
             this.label_filelocation.TabIndex = 3;
             this.label_filelocation.Text = "-";
             this.label_filelocation.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -383,17 +383,6 @@
             this.label_fy_status.Text = "-";
             this.label_fy_status.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // webBrowser_fy
-            // 
-            this.webBrowser_fy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.webBrowser_fy.Location = new System.Drawing.Point(6, 35);
-            this.webBrowser_fy.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webBrowser_fy.Name = "webBrowser_fy";
-            this.webBrowser_fy.ScriptErrorsSuppressed = true;
-            this.webBrowser_fy.Size = new System.Drawing.Size(522, 367);
-            this.webBrowser_fy.TabIndex = 0;
-            this.webBrowser_fy.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowser_fy_DocumentCompletedAsync);
-            // 
             // panel
             // 
             this.panel.Controls.Add(this.comboBox_fy);
@@ -456,6 +445,17 @@
             this.label_end_fy.Size = new System.Drawing.Size(63, 15);
             this.label_end_fy.TabIndex = 10;
             this.label_end_fy.Text = "End Time:";
+            // 
+            // webBrowser_fy
+            // 
+            this.webBrowser_fy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.webBrowser_fy.Location = new System.Drawing.Point(6, 35);
+            this.webBrowser_fy.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webBrowser_fy.Name = "webBrowser_fy";
+            this.webBrowser_fy.ScriptErrorsSuppressed = true;
+            this.webBrowser_fy.Size = new System.Drawing.Size(522, 367);
+            this.webBrowser_fy.TabIndex = 0;
+            this.webBrowser_fy.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowser_fy_DocumentCompletedAsync);
             // 
             // button_fy_start
             // 
@@ -537,6 +537,16 @@
             this.panel_footer.Size = new System.Drawing.Size(1140, 12);
             this.panel_footer.TabIndex = 4;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(377, 60);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 7;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // sPanel_separator
             // 
             this.sPanel_separator.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
@@ -547,16 +557,6 @@
             this.sPanel_separator.Name = "sPanel_separator";
             this.sPanel_separator.Size = new System.Drawing.Size(44, 455);
             this.sPanel_separator.TabIndex = 1;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(377, 60);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 7;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // Main_Form
             // 
