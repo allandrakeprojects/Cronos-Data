@@ -272,17 +272,20 @@ namespace Cronos_Data
 
             JObject jo_gettotal = JObject.Parse(deserializeObject_gettotal.ToString());
             JToken jt_gettotal = jo_gettotal.SelectToken("$.iTotalRecords");
+
             _total_records_fy += double.Parse(jt_gettotal.ToString());
-                        
-            double result_total_records = _total_records_fy / _display_length_fy;
+            double get_total_records_fy = 0;
+            get_total_records_fy = double.Parse(jt_gettotal.ToString());
+
+            double result_total_records = get_total_records_fy / _display_length_fy;
 
             if (result_total_records.ToString().Contains("."))
             {
-                _total_page_fy = Convert.ToInt32(Math.Floor(result_total_records)) + 1;
+                _total_page_fy += Convert.ToInt32(Math.Floor(result_total_records)) + 1;
             }
             else
             {
-                _total_page_fy = Convert.ToInt32(Math.Floor(result_total_records));
+                _total_page_fy += Convert.ToInt32(Math.Floor(result_total_records));
             }
             
             fy_gettotal.Add(_total_page_fy.ToString());
@@ -517,7 +520,6 @@ namespace Cronos_Data
                 {
                     _detect_fy = false;
                     result_pages = (Convert.ToInt32(_display_length_fy) * _fy_pages_count);
-                    _fy_pages_count++;
                 }
                 else
                 {
