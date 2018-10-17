@@ -278,11 +278,11 @@ namespace Cronos_Data
 
             if (result_total_records.ToString().Contains("."))
             {
-                _total_page_fy += Convert.ToInt32(Math.Floor(result_total_records)) + 1;
+                _total_page_fy = Convert.ToInt32(Math.Floor(result_total_records)) + 1;
             }
             else
             {
-                _total_page_fy += Convert.ToInt32(Math.Floor(result_total_records));
+                _total_page_fy = Convert.ToInt32(Math.Floor(result_total_records));
             }
             
             fy_gettotal.Add(_total_page_fy.ToString());
@@ -397,12 +397,13 @@ namespace Cronos_Data
                     //MessageBox.Show(get_start_datetime + "--" + get_end_datetime);
                     await FY_GetTotal(get_start_datetime, get_end_datetime);
                 }
-                                
+
                 // status
                 //label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
                 //label_fy_page_count.Text = "1 of " + _total_page_fy.ToString("N0");
                 //label_fy_currentrecord.Text = "0 of " + Convert.ToInt32(_total_records_fy).ToString("N0");
-                
+
+                label1.Text = gettotal_start_datetime + " ----- ghghg " + gettotal_end_datetime;
                 var cookie = FullWebBrowserCookie.GetCookieInternal(webBrowser_fy.Url, false);
                 WebClient wc = new WebClient();
 
@@ -1117,58 +1118,67 @@ namespace Cronos_Data
             string result_start_time = start.ToString("HH:mm:ss");
             string result_end_time = end.ToString("HH:mm:ss");
 
-            if (result_start != result_end)
+            if (start < end)
             {
-                string end_get = "";
-                int i = 0;
-                while (result_start != result_end)
+                if (result_start != result_end)
                 {
-                    end_get = end.AddDays(-i).ToString("yyyy-MM-dd");
-                    if (result_start == end_get)
+                    string end_get = "";
+                    int i = 0;
+                    while (result_start != result_end)
                     {
-                        string start_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd ") + result_start_time;
-                        string end_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd 23:59:59");
-                        fy_datetime.Add(start_get_to_list + "*|*" + end_get_to_list);
-
-                        break;
-                    }
-                    else
-                    {
-                        if (i == 0)
+                        end_get = end.AddDays(-i).ToString("yyyy-MM-dd");
+                        if (result_start == end_get)
                         {
-                            string start_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd 00:00:00");
-                            string end_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd ") + result_end_time;
+                            string start_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd ") + result_start_time;
+                            string end_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd 23:59:59");
                             fy_datetime.Add(start_get_to_list + "*|*" + end_get_to_list);
+
+                            break;
                         }
                         else
                         {
-                            string start_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd 00:00:00");
-                            string end_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd 23:59:59");
-                            fy_datetime.Add(start_get_to_list + "*|*" + end_get_to_list);
+                            if (i == 0)
+                            {
+                                string start_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd 00:00:00");
+                                string end_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd ") + result_end_time;
+                                fy_datetime.Add(start_get_to_list + "*|*" + end_get_to_list);
+                            }
+                            else
+                            {
+                                string start_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd 00:00:00");
+                                string end_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd 23:59:59");
+                                fy_datetime.Add(start_get_to_list + "*|*" + end_get_to_list);
+                            }
                         }
-                    }
 
-                    i++;
+                        i++;
+                    }
+                }
+                else
+                {
+                    fy_datetime.Add(start_datetime + "*|*" + end_datetime);
+                }
+                                
+                label_fy_start_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
+                _fy_start_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+                timer_fy.Start();
+                timer_fy_start.Stop();
+                button_fy_start.Visible = false;
+                pictureBox_fy_loader.Visible = true;
+                panel.Enabled = false;
+                panel_fy_status.Visible = true;
+
+                await GetDataFYAsync();
+                
+                if (!_fy_no_result)
+                {
+                    FYAsync();
                 }
             }
             else
             {
-                fy_datetime.Add(start_datetime + "*|*" + end_datetime);
-            }
-
-            label_fy_start_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
-            _fy_start_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
-            timer_fy.Start();
-            timer_fy_start.Stop();
-            button_fy_start.Visible = false;
-            pictureBox_fy_loader.Visible = true;
-            panel.Enabled = false;
-            panel_fy_status.Visible = true;
-            await GetDataFYAsync();
-
-            if (!_fy_no_result)
-            {
-                FYAsync();
+                _fy_no_result = true;
+                MessageBox.Show("No data found.");
             }
         }
 
@@ -1248,6 +1258,8 @@ namespace Cronos_Data
         {
             var message = string.Join(Environment.NewLine, fy_gettotal.ToArray());
             MessageBox.Show(message);
+            var last_item = fy_gettotal[fy_gettotal.Count - 1];
+            MessageBox.Show(last_item);
         }
     }
 }
