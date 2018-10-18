@@ -41,7 +41,7 @@
             this.panel_fy_status = new System.Windows.Forms.Panel();
             this.button_fy_proceed = new System.Windows.Forms.Button();
             this.label_fy_locatefolder = new System.Windows.Forms.Label();
-            this.panel_datetime = new System.Windows.Forms.Panel();
+            this.panel_fy_datetime = new System.Windows.Forms.Panel();
             this.label_fy_elapsed = new System.Windows.Forms.Label();
             this.label_fy_elapsed_1 = new System.Windows.Forms.Label();
             this.label_fy_start_datetime_1 = new System.Windows.Forms.Label();
@@ -57,7 +57,7 @@
             this.label_fy_total_records_1 = new System.Windows.Forms.Label();
             this.label_fy_status = new System.Windows.Forms.Label();
             this.webBrowser_fy = new System.Windows.Forms.WebBrowser();
-            this.panel = new System.Windows.Forms.Panel();
+            this.panel_fy_filter = new System.Windows.Forms.Panel();
             this.comboBox_fy = new System.Windows.Forms.ComboBox();
             this.dateTimePicker_end_fy = new System.Windows.Forms.DateTimePicker();
             this.dateTimePicker_start_fy = new System.Windows.Forms.DateTimePicker();
@@ -73,23 +73,28 @@
             this.panel_footer = new System.Windows.Forms.Panel();
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.sPanel_separator = new Cronos_Data.SPanel();
             this.button2 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.button3 = new System.Windows.Forms.Button();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.sPanel_separator = new Cronos_Data.SPanel();
             this.panel_header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_minimize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_close)).BeginInit();
             this.panel_fy.SuspendLayout();
             this.panel_fy_status.SuspendLayout();
-            this.panel_datetime.SuspendLayout();
+            this.panel_fy_datetime.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_fy_loader)).BeginInit();
-            this.panel.SuspendLayout();
+            this.panel_fy_filter.SuspendLayout();
             this.panel_tf.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // panel_header
             // 
             this.panel_header.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(122)))), ((int)(((byte)(159)))));
+            this.panel_header.Controls.Add(this.button3);
             this.panel_header.Controls.Add(this.textBox1);
             this.panel_header.Controls.Add(this.button2);
             this.panel_header.Controls.Add(this.label_title);
@@ -179,7 +184,7 @@
             this.panel_fy.Controls.Add(this.panel_fy_status);
             this.panel_fy.Controls.Add(this.label_title_fy);
             this.panel_fy.Controls.Add(this.webBrowser_fy);
-            this.panel_fy.Controls.Add(this.panel);
+            this.panel_fy.Controls.Add(this.panel_fy_filter);
             this.panel_fy.Location = new System.Drawing.Point(16, 84);
             this.panel_fy.Name = "panel_fy";
             this.panel_fy.Size = new System.Drawing.Size(534, 408);
@@ -191,7 +196,7 @@
             this.panel_fy_status.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.panel_fy_status.Controls.Add(this.button_fy_proceed);
             this.panel_fy_status.Controls.Add(this.label_fy_locatefolder);
-            this.panel_fy_status.Controls.Add(this.panel_datetime);
+            this.panel_fy_status.Controls.Add(this.panel_fy_datetime);
             this.panel_fy_status.Controls.Add(this.pictureBox_fy_loader);
             this.panel_fy_status.Controls.Add(this.label_fy_currentrecord);
             this.panel_fy_status.Controls.Add(this.label_fy_inserting_count_1);
@@ -235,18 +240,18 @@
             this.label_fy_locatefolder.Visible = false;
             this.label_fy_locatefolder.Click += new System.EventHandler(this.label_fy_locatefolder_Click);
             // 
-            // panel_datetime
+            // panel_fy_datetime
             // 
-            this.panel_datetime.Controls.Add(this.label_fy_elapsed);
-            this.panel_datetime.Controls.Add(this.label_fy_elapsed_1);
-            this.panel_datetime.Controls.Add(this.label_fy_start_datetime_1);
-            this.panel_datetime.Controls.Add(this.label_fy_finish_datetime);
-            this.panel_datetime.Controls.Add(this.label_fy_finish_datetime_1);
-            this.panel_datetime.Controls.Add(this.label_fy_start_datetime);
-            this.panel_datetime.Location = new System.Drawing.Point(66, 226);
-            this.panel_datetime.Name = "panel_datetime";
-            this.panel_datetime.Size = new System.Drawing.Size(287, 58);
-            this.panel_datetime.TabIndex = 28;
+            this.panel_fy_datetime.Controls.Add(this.label_fy_elapsed);
+            this.panel_fy_datetime.Controls.Add(this.label_fy_elapsed_1);
+            this.panel_fy_datetime.Controls.Add(this.label_fy_start_datetime_1);
+            this.panel_fy_datetime.Controls.Add(this.label_fy_finish_datetime);
+            this.panel_fy_datetime.Controls.Add(this.label_fy_finish_datetime_1);
+            this.panel_fy_datetime.Controls.Add(this.label_fy_start_datetime);
+            this.panel_fy_datetime.Location = new System.Drawing.Point(66, 226);
+            this.panel_fy_datetime.Name = "panel_fy_datetime";
+            this.panel_fy_datetime.Size = new System.Drawing.Size(287, 58);
+            this.panel_fy_datetime.TabIndex = 28;
             // 
             // label_fy_elapsed
             // 
@@ -399,17 +404,17 @@
             this.webBrowser_fy.TabIndex = 0;
             this.webBrowser_fy.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowser_fy_DocumentCompletedAsync);
             // 
-            // panel
+            // panel_fy_filter
             // 
-            this.panel.Controls.Add(this.comboBox_fy);
-            this.panel.Controls.Add(this.dateTimePicker_end_fy);
-            this.panel.Controls.Add(this.dateTimePicker_start_fy);
-            this.panel.Controls.Add(this.label_start_fy);
-            this.panel.Controls.Add(this.label_end_fy);
-            this.panel.Location = new System.Drawing.Point(3, 35);
-            this.panel.Name = "panel";
-            this.panel.Size = new System.Drawing.Size(528, 80);
-            this.panel.TabIndex = 24;
+            this.panel_fy_filter.Controls.Add(this.comboBox_fy);
+            this.panel_fy_filter.Controls.Add(this.dateTimePicker_end_fy);
+            this.panel_fy_filter.Controls.Add(this.dateTimePicker_start_fy);
+            this.panel_fy_filter.Controls.Add(this.label_start_fy);
+            this.panel_fy_filter.Controls.Add(this.label_end_fy);
+            this.panel_fy_filter.Location = new System.Drawing.Point(3, 35);
+            this.panel_fy_filter.Name = "panel_fy_filter";
+            this.panel_fy_filter.Size = new System.Drawing.Size(528, 80);
+            this.panel_fy_filter.TabIndex = 24;
             // 
             // comboBox_fy
             // 
@@ -485,19 +490,19 @@
             // panel_tf
             // 
             this.panel_tf.Controls.Add(this.webBrowser_tf);
-            this.panel_tf.Location = new System.Drawing.Point(588, 84);
+            this.panel_tf.Location = new System.Drawing.Point(865, 84);
             this.panel_tf.Name = "panel_tf";
-            this.panel_tf.Size = new System.Drawing.Size(534, 408);
+            this.panel_tf.Size = new System.Drawing.Size(257, 408);
             this.panel_tf.TabIndex = 5;
             this.panel_tf.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_tf_Paint);
             // 
             // webBrowser_tf
             // 
-            this.webBrowser_tf.Location = new System.Drawing.Point(4, 3);
+            this.webBrowser_tf.Location = new System.Drawing.Point(19, 3);
             this.webBrowser_tf.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowser_tf.Name = "webBrowser_tf";
             this.webBrowser_tf.ScriptErrorsSuppressed = true;
-            this.webBrowser_tf.Size = new System.Drawing.Size(528, 402);
+            this.webBrowser_tf.Size = new System.Drawing.Size(513, 402);
             this.webBrowser_tf.TabIndex = 0;
             // 
             // timer_fy_detect_inserted_in_excel
@@ -561,17 +566,6 @@
             this.label1.TabIndex = 8;
             this.label1.Text = "label1";
             // 
-            // sPanel_separator
-            // 
-            this.sPanel_separator.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.sPanel_separator.BackColor = System.Drawing.Color.Transparent;
-            this.sPanel_separator.Cursor = System.Windows.Forms.Cursors.Default;
-            this.sPanel_separator.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(122)))), ((int)(((byte)(159)))));
-            this.sPanel_separator.Location = new System.Drawing.Point(557, 79);
-            this.sPanel_separator.Name = "sPanel_separator";
-            this.sPanel_separator.Size = new System.Drawing.Size(44, 455);
-            this.sPanel_separator.TabIndex = 1;
-            // 
             // button2
             // 
             this.button2.Location = new System.Drawing.Point(754, 24);
@@ -589,12 +583,49 @@
             this.textBox1.Size = new System.Drawing.Size(100, 20);
             this.textBox1.TabIndex = 5;
             // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column1});
+            this.dataGridView1.Location = new System.Drawing.Point(617, 139);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(242, 170);
+            this.dataGridView1.TabIndex = 30;
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(675, 17);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 6;
+            this.button3.Text = "button3";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "Column1";
+            this.Column1.Name = "Column1";
+            // 
+            // sPanel_separator
+            // 
+            this.sPanel_separator.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.sPanel_separator.BackColor = System.Drawing.Color.Transparent;
+            this.sPanel_separator.Cursor = System.Windows.Forms.Cursors.Default;
+            this.sPanel_separator.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(122)))), ((int)(((byte)(159)))));
+            this.sPanel_separator.Location = new System.Drawing.Point(557, 79);
+            this.sPanel_separator.Name = "sPanel_separator";
+            this.sPanel_separator.Size = new System.Drawing.Size(44, 455);
+            this.sPanel_separator.TabIndex = 1;
+            // 
             // Main_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1140, 511);
+            this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.panel_footer);
@@ -620,12 +651,13 @@
             this.panel_fy.ResumeLayout(false);
             this.panel_fy_status.ResumeLayout(false);
             this.panel_fy_status.PerformLayout();
-            this.panel_datetime.ResumeLayout(false);
-            this.panel_datetime.PerformLayout();
+            this.panel_fy_datetime.ResumeLayout(false);
+            this.panel_fy_datetime.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_fy_loader)).EndInit();
-            this.panel.ResumeLayout(false);
-            this.panel.PerformLayout();
+            this.panel_fy_filter.ResumeLayout(false);
+            this.panel_fy_filter.PerformLayout();
             this.panel_tf.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -658,13 +690,13 @@
         private System.Windows.Forms.Button button_fy_start;
         private System.Windows.Forms.Timer timer_fy_start;
         private System.Windows.Forms.Panel panel_fy_status;
-        private System.Windows.Forms.Panel panel;
+        private System.Windows.Forms.Panel panel_fy_filter;
         private System.Windows.Forms.PictureBox pictureBox_fy_loader;
         private System.Windows.Forms.Label label_fy_finish_datetime_1;
         private System.Windows.Forms.Label label_fy_start_datetime_1;
         private System.Windows.Forms.Label label_fy_start_datetime;
         private System.Windows.Forms.Label label_fy_finish_datetime;
-        private System.Windows.Forms.Panel panel_datetime;
+        private System.Windows.Forms.Panel panel_fy_datetime;
         private System.Windows.Forms.Label label_fy_locatefolder;
         private System.Windows.Forms.Button button_fy_proceed;
         private SPanel sPanel_separator;
@@ -679,5 +711,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
     }
 }
