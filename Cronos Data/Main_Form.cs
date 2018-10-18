@@ -63,6 +63,7 @@ namespace Cronos_Data
         private bool isClose;
         private bool _fy_no_result;
         private string _fy_current_datetime;
+        private int _test_fy_gettotal_count_record;
 
         // Border
         const int _ = 1;
@@ -477,6 +478,13 @@ namespace Cronos_Data
                 {
                     if (gettotal == _fy_pages_count_display.ToString())
                     {
+                        DataGridViewRow row = (DataGridViewRow)dataGridView1.Rows[0].Clone();
+
+                        row.Cells[0].Value = gettotal + " --" + _test_fy_gettotal_count_record;
+
+                        _test_fy_gettotal_count_record = 0;
+                        dataGridView1.Rows.Add(row);
+
                         _fy_current_index++;
                         _fy_pages_count_last = _fy_pages_count;
                         _fy_pages_count = 0;
@@ -697,6 +705,8 @@ namespace Cronos_Data
                         for (int ii = 0; ii < _result_count_json_fy; ii++)
                         {
                             Application.DoEvents();
+
+                            _test_fy_gettotal_count_record++;
 
                             if (_fy_pages_count_display != 0 && _fy_pages_count_display <= _total_page_fy)
                             {
@@ -1317,7 +1327,8 @@ namespace Cronos_Data
         {
             fy_datetime.Clear();
             fy_gettotal.Clear();
-            
+            fy_gettotal_test.Clear();
+
             string start_datetime = dateTimePicker_start_fy.Text;
             DateTime start = DateTime.Parse(start_datetime);
 
