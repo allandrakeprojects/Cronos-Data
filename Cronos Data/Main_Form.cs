@@ -31,6 +31,7 @@ namespace Cronos_Data
         List<FY_BetRecord> _fy_bet_records = new List<FY_BetRecord>();
         List<String> fy_datetime = new List<String>();
         List<String> fy_gettotal = new List<String>();
+        List<String> fy_gettotal_test = new List<String>();
         private double _total_records_fy;
         private double _display_length_fy = 5000;
         private double _limit_fy = 250000;
@@ -277,10 +278,12 @@ namespace Cronos_Data
             double get_total_records_fy = 0;
             get_total_records_fy = double.Parse(jt_gettotal.ToString());
 
+            fy_gettotal_test.Add(get_total_records_fy.ToString());
             double result_total_records = get_total_records_fy / _display_length_fy;
-
+            
             if (result_total_records.ToString().Contains("."))
             {
+                // edited
                 _total_page_fy += Convert.ToInt32(Math.Floor(result_total_records)) + 1;
             }
             else
@@ -289,7 +292,7 @@ namespace Cronos_Data
             }
             
             fy_gettotal.Add(_total_page_fy.ToString());
-            
+
             if (_total_records_fy > 0)
             {
                 // status
@@ -661,7 +664,7 @@ namespace Cronos_Data
                                 // label show list to excel
                                 // push to database
 
-                                _fy_get_ii = 1;
+                                _fy_get_ii = 0;
 
                                 // text file to excel
 
@@ -707,7 +710,8 @@ namespace Cronos_Data
                                 //after your loop
                                 File.WriteAllText(_fy_folder_path_result, _fy_csv.ToString(), Encoding.UTF8);
 
-                                _fy_csv = new StringBuilder();
+                                _fy_csv.Clear();
+                                //_fy_csv = new StringBuilder();
 
                                 //Thread fy_displayinexcel_thread_limit = new Thread(delegate ()
                                 //{
@@ -723,9 +727,9 @@ namespace Cronos_Data
                                 label_fy_currentrecord.Invalidate();
                                 label_fy_currentrecord.Update();
 
-                                _fy_get_ii_display++;
+                                //_fy_get_ii_display++;
 
-                                break;
+                                //break;
                             }
                             else
                             {
@@ -738,6 +742,7 @@ namespace Cronos_Data
                             _fy_get_ii_display++;
                         }
 
+                        _result_count_json_fy = 0;
                         // web client request
                         await GetDataFYPagesAsync();
                     }
@@ -812,11 +817,11 @@ namespace Cronos_Data
             {
                 File.Delete(_fy_folder_path_result);
             }
-
-            //after your loop
+            
             File.WriteAllText(_fy_folder_path_result, _fy_csv.ToString(), Encoding.UTF8);
 
-            _fy_csv = new StringBuilder();
+            _fy_csv.Clear();
+            //_fy_csv = new StringBuilder();
 
             Invoke(new Action(() =>
             {
@@ -1258,10 +1263,26 @@ namespace Cronos_Data
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var message = string.Join(Environment.NewLine, fy_gettotal.ToArray());
-            MessageBox.Show(message);
-            var last_item = fy_gettotal[fy_gettotal.Count - 1];
-            MessageBox.Show(last_item);
+            try
+            {
+                var message = string.Join(Environment.NewLine, fy_gettotal.ToArray());
+                MessageBox.Show(message);
+
+                var messagesds = string.Join(Environment.NewLine, fy_gettotal_test.ToArray());
+                MessageBox.Show(messagesds);
+
+                var last_item = fy_gettotal[fy_gettotal.Count - 1];
+                MessageBox.Show(last_item);
+            }
+            catch (Exception err)
+            {
+                // Leave blank
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            label_fy_page_count.Text = textBox1.Text;
         }
     }
 }
