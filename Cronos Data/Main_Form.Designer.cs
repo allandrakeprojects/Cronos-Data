@@ -284,7 +284,7 @@
             this.panel_fy.Controls.Add(this.label_title_fy);
             this.panel_fy.Controls.Add(this.webBrowser_fy);
             this.panel_fy.Controls.Add(this.panel_fy_filter);
-            this.panel_fy.Location = new System.Drawing.Point(16, 84);
+            this.panel_fy.Location = new System.Drawing.Point(17, 88);
             this.panel_fy.Name = "panel_fy";
             this.panel_fy.Size = new System.Drawing.Size(534, 408);
             this.panel_fy.TabIndex = 4;
@@ -604,7 +604,7 @@
             this.button_filelocation.ForeColor = System.Drawing.Color.White;
             this.button_filelocation.Image = global::Cronos_Data.Properties.Resources.folder;
             this.button_filelocation.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button_filelocation.Location = new System.Drawing.Point(498, 49);
+            this.button_filelocation.Location = new System.Drawing.Point(498, 52);
             this.button_filelocation.Name = "button_filelocation";
             this.button_filelocation.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
             this.button_filelocation.Size = new System.Drawing.Size(134, 30);
@@ -699,7 +699,7 @@
             this.panel_tf.Controls.Add(this.label_title_tf);
             this.panel_tf.Controls.Add(this.webBrowser_tf);
             this.panel_tf.Controls.Add(this.panel_tf_filter);
-            this.panel_tf.Location = new System.Drawing.Point(588, 85);
+            this.panel_tf.Location = new System.Drawing.Point(588, 89);
             this.panel_tf.Name = "panel_tf";
             this.panel_tf.Size = new System.Drawing.Size(534, 408);
             this.panel_tf.TabIndex = 25;
@@ -1055,7 +1055,7 @@
             this.sPanel_separator.BackColor = System.Drawing.Color.Transparent;
             this.sPanel_separator.Cursor = System.Windows.Forms.Cursors.Default;
             this.sPanel_separator.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(122)))), ((int)(((byte)(159)))));
-            this.sPanel_separator.Location = new System.Drawing.Point(557, 84);
+            this.sPanel_separator.Location = new System.Drawing.Point(558, 84);
             this.sPanel_separator.Name = "sPanel_separator";
             this.sPanel_separator.Size = new System.Drawing.Size(44, 446);
             this.sPanel_separator.TabIndex = 1;
