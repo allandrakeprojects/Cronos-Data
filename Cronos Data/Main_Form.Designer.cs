@@ -106,10 +106,12 @@
             this.label_start_tf = new System.Windows.Forms.Label();
             this.label_end_tf = new System.Windows.Forms.Label();
             this.webBrowser_tf = new System.Windows.Forms.WebBrowser();
-            this.sPanel_separator = new Cronos_Data.SPanel();
             this.timer_tf_detect_inserted_in_excel = new System.Windows.Forms.Timer(this.components);
             this.timer_tf_start = new System.Windows.Forms.Timer(this.components);
             this.timer_tf = new System.Windows.Forms.Timer(this.components);
+            this.label_updates = new System.Windows.Forms.Label();
+            this.label_version = new System.Windows.Forms.Label();
+            this.sPanel_separator = new Cronos_Data.SPanel();
             this.panel_header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_minimize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_close)).BeginInit();
@@ -118,6 +120,7 @@
             this.panel_fy_datetime.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_fy_loader)).BeginInit();
             this.panel_fy_filter.SuspendLayout();
+            this.panel_footer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel_tf.SuspendLayout();
             this.panel_tf_status.SuspendLayout();
@@ -270,8 +273,8 @@
             // 
             this.panel_fy.Controls.Add(this.panel_fy_status);
             this.panel_fy.Controls.Add(this.label_title_fy);
-            this.panel_fy.Controls.Add(this.panel_fy_filter);
             this.panel_fy.Controls.Add(this.webBrowser_fy);
+            this.panel_fy.Controls.Add(this.panel_fy_filter);
             this.panel_fy.Location = new System.Drawing.Point(16, 84);
             this.panel_fy.Name = "panel_fy";
             this.panel_fy.Size = new System.Drawing.Size(534, 408);
@@ -610,10 +613,12 @@
             // panel_footer
             // 
             this.panel_footer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(122)))), ((int)(((byte)(159)))));
+            this.panel_footer.Controls.Add(this.label_version);
+            this.panel_footer.Controls.Add(this.label_updates);
             this.panel_footer.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel_footer.Location = new System.Drawing.Point(0, 499);
+            this.panel_footer.Location = new System.Drawing.Point(0, 505);
             this.panel_footer.Name = "panel_footer";
-            this.panel_footer.Size = new System.Drawing.Size(1140, 12);
+            this.panel_footer.Size = new System.Drawing.Size(1140, 20);
             this.panel_footer.TabIndex = 4;
             // 
             // button1
@@ -657,8 +662,8 @@
             this.panel_tf.Controls.Add(this.button_tf_start);
             this.panel_tf.Controls.Add(this.panel_tf_status);
             this.panel_tf.Controls.Add(this.label_title_tf);
-            this.panel_tf.Controls.Add(this.panel_tf_filter);
             this.panel_tf.Controls.Add(this.webBrowser_tf);
+            this.panel_tf.Controls.Add(this.panel_tf_filter);
             this.panel_tf.Location = new System.Drawing.Point(588, 85);
             this.panel_tf.Name = "panel_tf";
             this.panel_tf.Size = new System.Drawing.Size(534, 408);
@@ -972,17 +977,6 @@
             this.webBrowser_tf.TabIndex = 0;
             this.webBrowser_tf.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowser_tf_DocumentCompleted);
             // 
-            // sPanel_separator
-            // 
-            this.sPanel_separator.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.sPanel_separator.BackColor = System.Drawing.Color.Transparent;
-            this.sPanel_separator.Cursor = System.Windows.Forms.Cursors.Default;
-            this.sPanel_separator.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(122)))), ((int)(((byte)(159)))));
-            this.sPanel_separator.Location = new System.Drawing.Point(557, 79);
-            this.sPanel_separator.Name = "sPanel_separator";
-            this.sPanel_separator.Size = new System.Drawing.Size(44, 455);
-            this.sPanel_separator.TabIndex = 1;
-            // 
             // timer_tf_detect_inserted_in_excel
             // 
             this.timer_tf_detect_inserted_in_excel.Interval = 10000;
@@ -998,12 +992,47 @@
             this.timer_tf.Interval = 1000;
             this.timer_tf.Tick += new System.EventHandler(this.timer_tf_Tick);
             // 
+            // label_updates
+            // 
+            this.label_updates.AutoSize = true;
+            this.label_updates.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_updates.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_updates.ForeColor = System.Drawing.Color.White;
+            this.label_updates.Location = new System.Drawing.Point(977, 3);
+            this.label_updates.Name = "label_updates";
+            this.label_updates.Size = new System.Drawing.Size(99, 13);
+            this.label_updates.TabIndex = 0;
+            this.label_updates.Text = "Check for Updates.";
+            this.label_updates.Click += new System.EventHandler(this.label_updates_Click);
+            // 
+            // label_version
+            // 
+            this.label_version.AutoSize = true;
+            this.label_version.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_version.ForeColor = System.Drawing.Color.White;
+            this.label_version.Location = new System.Drawing.Point(1080, 4);
+            this.label_version.Name = "label_version";
+            this.label_version.Size = new System.Drawing.Size(36, 13);
+            this.label_version.TabIndex = 1;
+            this.label_version.Text = "1.0.0";
+            // 
+            // sPanel_separator
+            // 
+            this.sPanel_separator.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.sPanel_separator.BackColor = System.Drawing.Color.Transparent;
+            this.sPanel_separator.Cursor = System.Windows.Forms.Cursors.Default;
+            this.sPanel_separator.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(122)))), ((int)(((byte)(159)))));
+            this.sPanel_separator.Location = new System.Drawing.Point(557, 84);
+            this.sPanel_separator.Name = "sPanel_separator";
+            this.sPanel_separator.Size = new System.Drawing.Size(44, 446);
+            this.sPanel_separator.TabIndex = 1;
+            // 
             // Main_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1140, 511);
+            this.ClientSize = new System.Drawing.Size(1140, 525);
             this.Controls.Add(this.panel_tf);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.label1);
@@ -1034,6 +1063,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_fy_loader)).EndInit();
             this.panel_fy_filter.ResumeLayout(false);
             this.panel_fy_filter.PerformLayout();
+            this.panel_footer.ResumeLayout(false);
+            this.panel_footer.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.panel_tf.ResumeLayout(false);
             this.panel_tf_status.ResumeLayout(false);
@@ -1130,5 +1161,7 @@
         private System.Windows.Forms.Timer timer_tf_detect_inserted_in_excel;
         private System.Windows.Forms.Timer timer_tf_start;
         private System.Windows.Forms.Timer timer_tf;
+        private System.Windows.Forms.Label label_updates;
+        private System.Windows.Forms.Label label_version;
     }
 }

@@ -3,12 +3,14 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Deployment.Application;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -1865,19 +1867,19 @@ namespace Cronos_Data
                                 Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data");
                             }
 
-                            if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\tf"))
+                            if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\TF"))
                             {
-                                Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\tf");
+                                Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\TF");
                             }
 
-                            if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\tf\\" + _tf_current_datetime))
+                            if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\TF\\" + _tf_current_datetime))
                             {
                                 Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\tf\\" + _tf_current_datetime);
                             }
 
-                            if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\tf\\" + _tf_current_datetime + "\\Bet Records"))
+                            if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\TF\\" + _tf_current_datetime + "\\Bet Records"))
                             {
-                                Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\tf\\" + _tf_current_datetime + "\\Bet Records");
+                                Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\TF\\" + _tf_current_datetime + "\\Bet Records");
                             }
 
                             string replace = _tf_displayinexel_i.ToString();
@@ -1887,9 +1889,9 @@ namespace Cronos_Data
                                 replace = "0" + _tf_displayinexel_i;
                             }
 
-                            _tf_folder_path_result = label_filelocation.Text + "\\Cronos Data\\tf\\" + _tf_current_datetime + "\\Bet Records\\tf_BetRecords_" + replace_datetime_tf.ToString() + "_" + replace + ".csv";
-                            _tf_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\tf\\" + _tf_current_datetime + "\\Bet Records\\tf_BetRecords_" + replace_datetime_tf.ToString() + "_" + replace + ".xlsx";
-                            _tf_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\tf\\" + _tf_current_datetime + "\\Bet Records\\";
+                            _tf_folder_path_result = label_filelocation.Text + "\\Cronos Data\\TF\\" + _tf_current_datetime + "\\Bet Records\\TF_BetRecords_" + replace_datetime_tf.ToString() + "_" + replace + ".csv";
+                            _tf_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\TF\\" + _tf_current_datetime + "\\Bet Records\\TF_BetRecords_" + replace_datetime_tf.ToString() + "_" + replace + ".xlsx";
+                            _tf_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\TF\\" + _tf_current_datetime + "\\Bet Records\\";
 
                             if (File.Exists(_tf_folder_path_result))
                             {
@@ -2008,19 +2010,19 @@ namespace Cronos_Data
                 Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data");
             }
 
-            if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\tf"))
+            if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\TF"))
             {
-                Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\tf");
+                Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\TF");
             }
 
-            if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\tf\\" + _tf_current_datetime))
+            if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\TF\\" + _tf_current_datetime))
             {
                 Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\tf\\" + _tf_current_datetime);
             }
 
-            if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\tf\\" + _tf_current_datetime + "\\Bet Records"))
+            if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\TF\\" + _tf_current_datetime + "\\Bet Records"))
             {
-                Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\tf\\" + _tf_current_datetime + "\\Bet Records");
+                Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\TF\\" + _tf_current_datetime + "\\Bet Records");
             }
 
             string replace = _tf_displayinexel_i.ToString();
@@ -2030,9 +2032,9 @@ namespace Cronos_Data
                 replace = "0" + _tf_displayinexel_i;
             }
 
-            _tf_folder_path_result = label_filelocation.Text + "\\Cronos Data\\tf\\" + _tf_current_datetime + "\\Bet Records\\tf_BetRecords_" + replace_datetime_tf.ToString() + "_" + replace + ".csv";
-            _tf_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\tf\\" + _tf_current_datetime + "\\Bet Records\\tf_BetRecords_" + replace_datetime_tf.ToString() + "_" + replace + ".xlsx";
-            _tf_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\tf\\" + _tf_current_datetime + "\\Bet Records\\";
+            _tf_folder_path_result = label_filelocation.Text + "\\Cronos Data\\TF\\" + _tf_current_datetime + "\\Bet Records\\TF_BetRecords_" + replace_datetime_tf.ToString() + "_" + replace + ".csv";
+            _tf_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\TF\\" + _tf_current_datetime + "\\Bet Records\\TF_BetRecords_" + replace_datetime_tf.ToString() + "_" + replace + ".xlsx";
+            _tf_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\TF\\" + _tf_current_datetime + "\\Bet Records\\";
 
             if (File.Exists(_tf_folder_path_result))
             {
@@ -2043,8 +2045,7 @@ namespace Cronos_Data
             {
                 File.Delete(_tf_folder_path_result_xlsx);
             }
-
-
+            
             //after your loop
             File.WriteAllText(_tf_folder_path_result, _tf_csv.ToString(), Encoding.UTF8);
 
@@ -2366,67 +2367,7 @@ namespace Cronos_Data
                 MessageBox.Show("Can't locate folder.", "TF", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        
 
 
 
@@ -2548,6 +2489,18 @@ namespace Cronos_Data
 
                 panel_fy.Enabled = true;
                 panel_tf.Enabled = true;
+            }
+        }
+
+        private void label_updates_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Process.Start(@"updater.exe");
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show(err.ToString());
             }
         }
     }
