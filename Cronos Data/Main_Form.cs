@@ -304,7 +304,6 @@ namespace Cronos_Data
             
             if (result_total_records.ToString().Contains("."))
             {
-                // edited
                 _total_page_fy += Convert.ToInt32(Math.Floor(result_total_records)) + 1;
             }
             else
@@ -348,11 +347,7 @@ namespace Cronos_Data
                 fy_datetime.Clear();
                 fy_gettotal.Clear();
                 _total_records_fy = 0;
-                //_display_length_fy = 5000;
-                //_limit_fy = 250000;
                 _total_page_fy = 0;
-                //_result_count_json_fy;
-
                 _fy_displayinexel_i = 0;
                 _fy_pages_count_display = 0;
                 _fy_pages_count = 0;
@@ -361,14 +356,11 @@ namespace Cronos_Data
                 _fy_row = 1;
                 _fy_row_count = 1;
                 _isDone_fy = false;
-                //_fy_folder_path_result;
-                //_fy_folder_path_result_locate;
                 _fy_secho = 0;
                 _fy_i = 0;
                 _fy_ii = 0;
                 _fy_get_ii = 1;
                 _fy_get_ii_display = 1;
-
                 _fy_folder_path_result = "";
                 _fy_folder_path_result_locate = "";
                 _fy_current_index = 1;
@@ -387,7 +379,7 @@ namespace Cronos_Data
                 string gettotal_end_datetime = "";
 
                 fy_datetime.Reverse();
-                // loop datetime
+
                 int i = 0;
                 foreach (var datetime in fy_datetime)
                 {
@@ -421,15 +413,9 @@ namespace Cronos_Data
                             get_end_datetime = datetime_result;
                         }
                     }
-
-                    //MessageBox.Show(get_start_datetime + "--" + get_end_datetime);
+                    
                     await FY_GetTotal(get_start_datetime, get_end_datetime);
                 }
-
-                // status
-                //label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
-                //label_fy_page_count.Text = "1 of " + _total_page_fy.ToString("N0");
-                //label_fy_currentrecord.Text = "0 of " + Convert.ToInt32(_total_records_fy).ToString("N0");
 
                 label1.Text = gettotal_start_datetime + " ----- ghghg " + gettotal_end_datetime;
                 var cookie = FullWebBrowserCookie.GetCookieInternal(webBrowser_fy.Url, false);
@@ -475,10 +461,9 @@ namespace Cronos_Data
             }
             catch (Exception err)
             {
-                detect++;
-                label2.Text = "detect ghghghghg" + detect;
+                detect_fy++;
+                label2.Text = "detect ghghghghg" + detect_fy;
                 await GetDataFYAsync();
-                //MessageBox.Show(err.ToString());
             }
         }
         
@@ -488,7 +473,6 @@ namespace Cronos_Data
             {
                 string gettotal_start_datetime = "";
                 string gettotal_end_datetime = "";
-                //MessageBox.Show(_fy_pages_count_display.ToString());
 
                 var last_item = fy_gettotal[fy_gettotal.Count - 1];
 
@@ -499,23 +483,14 @@ namespace Cronos_Data
                     {
                         if (gettotal == _fy_pages_count_display.ToString())
                         {
-                            //DataGridViewRow row = (DataGridViewRow)dataGridView1.Rows[0].Clone();
-
-                            //row.Cells[0].Value = gettotal + " -- " + _test_fy_gettotal_count_record;
-
-                            //_test_fy_gettotal_count_record = 0;
-                            //dataGridView1.Rows.Add(row);
-
                             _fy_current_index++;
                             _fy_pages_count_last = _fy_pages_count;
                             _fy_pages_count = 0;
                             _detect_fy = true;
-                            //MessageBox.Show("detect");
                             break;
                         }
                     }
-
-                    // loop datetime
+                    
                     int i = 0;
                     foreach (var datetime in fy_datetime)
                     {
@@ -543,7 +518,6 @@ namespace Cronos_Data
                     }
 
                     label1.Text = gettotal_start_datetime + " ----- dsadsadas " + gettotal_end_datetime;
-                    //MessageBox.Show(gettotal_start_datetime + " ----- dsadsadas " + gettotal_end_datetime);
 
                     var cookie = FullWebBrowserCookie.GetCookieInternal(webBrowser_fy.Url, false);
                     WebClient wc = new WebClient();
@@ -607,18 +581,11 @@ namespace Cronos_Data
                     {
                         if (gettotal == _fy_pages_count_display.ToString())
                         {
-                            //DataGridViewRow row = (DataGridViewRow)dataGridView1.Rows[0].Clone();
-
-                            //row.Cells[0].Value = gettotal + " -- " + _test_fy_gettotal_count_record;
-
-                            //_test_fy_gettotal_count_record = 0;
-                            //dataGridView1.Rows.Add(row);
-
                             _fy_current_index++;
                             _fy_pages_count_last = _fy_pages_count;
                             _fy_pages_count = 0;
                             _detect_fy = true;
-                            //MessageBox.Show("detect");
+                            
                             break;
                         }
                     }
@@ -630,9 +597,9 @@ namespace Cronos_Data
                 {
                     _fy_pages_count--;
                 }
-                
-                detect++;
-                label4.Text = "detect ghghghghghghg " + detect;
+
+                detect_fy++;
+                label4.Text = "detect ghghghghghghg " + detect_fy;
 
                 await GetDataFYPagesAsync();
             }
@@ -645,12 +612,7 @@ namespace Cronos_Data
                 for (int i = _fy_i; i < _total_page_fy; i++)
                 {
                     button_fy_start.Visible = false;
-
-                    //if (File.Exists(_fy_path))
-                    //{
-                    //    File.Delete(_fy_path);
-                    //}
-
+                    
                     if (!_fy_inserted_in_excel)
                     {
                         break;
@@ -691,9 +653,7 @@ namespace Cronos_Data
                         JToken valid_bet = jo_fy.SelectToken("$.aaData[" + ii + "][9][1]");
                         JToken valid_invalid_id = jo_fy.SelectToken("$.aaData[" + ii + "][10][0]");
                         JToken valid_invalid = jo_fy.SelectToken("$.aaData[" + ii + "][10][1]");
-
-                        // insert to text file
-
+                        
                         if (_fy_get_ii == 1)
                         {
                             var header = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10}", "Game Platform", "Username", "Bet No.", "Bet Time", "Bet Type", "Game Result", "Stake Amount", "Win Amount", "Company Win/Loss", "Valid Bet", "Valid/Invalid");
@@ -702,40 +662,15 @@ namespace Cronos_Data
 
                         var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10}", game_platform, "\"" + player_name + "\"", "\"" + bet_no + "\"", "\"" + bet_time + "\"", "\"" + result_bet_type.ToString().Replace(";", "") + "\"", "\"" + game_result + "\"", "\"" + stake_amount + "\"", "\"" + win_amount + "\"", "\"" + company_win_loss + "\"", "\"" + valid_bet + "\"", "\"" + valid_invalid + "\"");
                         _fy_csv.AppendLine(newLine);
-
-                        //StreamWriter sw = new StreamWriter(_fy_path, true, Encoding.UTF8);
-                        //sw.WriteLine(game_platform + "*|*" + player_name + "*|*" + bet_no + "*|*" + bet_time + "*|*" + bet_type + "*|*" + game_result + "*|*" + stake_amount + "*|*" + win_amount + "*|*" + company_win_loss + "*|*" + valid_bet + "*|*" + valid_invalid);
-                        //sw.Close();
-
-                        //_fy_bet_records.Add(new FY_BetRecord
-                        //{
-                        //    GAME_PLATFORM = game_platform.ToString(),
-                        //    USERNAME = player_name.ToString(),
-                        //    BET_NO = bet_no.ToString(),
-                        //    BET_TIME = bet_time.ToString(),
-                        //    BET_TYPE = bet_type.ToString(),
-                        //    GAME_RESULT = game_result.ToString(),
-                        //    STAKE_AMOUNT = Convert.ToDouble(stake_amount),
-                        //    WIN_AMOUNT = Convert.ToDouble(win_amount),
-                        //    COMPANY_WIN_LOSS = Convert.ToDouble(company_win_loss),
-                        //    VALID_BET = Convert.ToDouble(valid_bet),
-                        //    VALID_INVALID = valid_invalid.ToString()
-                        //});
-
-                        // edited
+                        
                         if ((_fy_get_ii) == _limit_fy)
                         {
                             // status
                             label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
                             label_fy_status.Text = "status: saving excel...";
-
-                            // label show list to excel
-                            // push to database
-
+                            
                             _fy_get_ii = 0;
-
-                            // text file to excel
-
+                            
                             _fy_displayinexel_i++;
                             StringBuilder replace_datetime_fy = new StringBuilder(dateTimePicker_start_fy.Text.Substring(0, 10) + "__" + dateTimePicker_end_fy.Text.Substring(0, 10));
                             replace_datetime_fy.Replace(" ", "_");
@@ -785,8 +720,7 @@ namespace Cronos_Data
                             {
                                 File.Delete(_fy_folder_path_result_xlsx);
                             }
-
-                            //after your loop
+                            
                             File.WriteAllText(_fy_folder_path_result, _fy_csv.ToString(), Encoding.UTF8);
 
                             Application.DoEvents();
@@ -803,25 +737,10 @@ namespace Cronos_Data
                             }
 
                             _fy_csv.Clear();
-                            //_fy_csv = new StringBuilder();
-
-                            //Thread fy_displayinexcel_thread_limit = new Thread(delegate ()
-                            //{
-                            //    FY_DisplayInExcel(_fy_bet_records);
-                            //});
-                            //fy_displayinexcel_thread_limit.Start();
-
-                            //_fy_inserted_in_excel = false;
-
-                            //timer_fy_detect_inserted_in_excel.Start();
 
                             label_fy_currentrecord.Text = (_fy_get_ii_display).ToString("N0") + " of " + Convert.ToInt32(_total_records_fy).ToString("N0");
                             label_fy_currentrecord.Invalidate();
                             label_fy_currentrecord.Update();
-
-                            //_fy_get_ii_display++;
-
-                            //break;
                         }
                         else
                         {
@@ -835,6 +754,7 @@ namespace Cronos_Data
                     }
 
                     _result_count_json_fy = 0;
+                    
                     // web client request
                     await GetDataFYPagesAsync();
                 }
@@ -844,23 +764,12 @@ namespace Cronos_Data
                 if (_fy_inserted_in_excel)
                 {
                     _isDone_fy = true;
-
-                    // done
-
-                    // text file to excel
-
-
-                    //Thread fy_displayinexcel_thread = new Thread(delegate ()
-                    //{
-                    //    FY_DisplayInExcel(_fy_bet_records);
-                    //});
-                    //fy_displayinexcel_thread.Start();
                 }
 
             }
         }
 
-        int detect = 0;
+        int detect_fy = 0;
 
         private void FY_InsertDone()
         {
@@ -913,9 +822,7 @@ namespace Cronos_Data
             {
                 File.Delete(_fy_folder_path_result_xlsx);
             }
-
-
-            //after your loop
+            
             File.WriteAllText(_fy_folder_path_result, _fy_csv.ToString(), Encoding.UTF8);
 
             Application.DoEvents();
@@ -933,54 +840,18 @@ namespace Cronos_Data
             }
 
             _fy_csv.Clear();
-
-            // FY Header Change Color
-
-            Thread thread = new Thread(delegate ()
-            {
-                FYHeader();
-            });
-            thread.Start();
-
-            //_fy_csv = new StringBuilder();
-
+            
+            FYHeader();
+            
             Invoke(new Action(() =>
             {
                 label_fy_finish_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
                 timer_fy.Stop();
-                //_fy_finish_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
-
-                //string start_datetime = _fy_start_datetime;
-                //DateTime start = DateTime.ParseExact(start_datetime, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
-
-                //string finish_datetime = _fy_finish_datetime;
-                //DateTime finish = DateTime.ParseExact(finish_datetime, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
-
-                //TimeSpan span = finish.Subtract(start);
-
-                //if (span.Hours == 0 && span.Minutes == 0)
-                //{
-                //    label_fy_elapsed.Text = span.Seconds + " sec(s)";
-                //}
-                //else if (span.Hours != 0)
-                //{
-                //    label_fy_elapsed.Text = span.Hours + " hr(s) " + span.Minutes + " min(s) " + span.Seconds + " sec(s)";
-                //}
-                //else if (span.Minutes != 0)
-                //{
-                //    label_fy_elapsed.Text = span.Minutes + " min(s) " + span.Seconds + " sec(s)";
-                //}
-                //else
-                //{
-                //    label_fy_elapsed.Text = span.Seconds + " sec(s)";
-                //}
-
                 pictureBox_fy_loader.Visible = false;
                 button_fy_proceed.Visible = true;
                 label_fy_locatefolder.Visible = true;
                 label_fy_status.ForeColor = Color.FromArgb(34, 139, 34);
                 label_fy_status.Text = "status: done";
-
                 panel_fy_datetime.Location = new Point(5, 226);
             }));
 
@@ -1074,9 +945,6 @@ namespace Cronos_Data
 
         private void timer_fy_detect_inserted_in_excel_Tick(object sender, EventArgs e)
         {
-            // label show list to excel
-            // push to database
-            
             // status
             label_fy_status.Text = "status: inserting data to excel...";
             
@@ -1216,11 +1084,7 @@ namespace Cronos_Data
             fy_datetime.Clear();
             fy_gettotal.Clear();
             _total_records_fy = 0;
-            //_display_length_fy = 5000;
-            //_limit_fy = 250000;
             _total_page_fy = 0;
-            //_result_count_json_fy;
-
             _fy_displayinexel_i = 0;
             _fy_pages_count_display = 0;
             _fy_pages_count = 0;
@@ -1229,14 +1093,11 @@ namespace Cronos_Data
             _fy_row = 1;
             _fy_row_count = 1;
             _isDone_fy = false;
-            //_fy_folder_path_result;
-            //_fy_folder_path_result_locate;
             _fy_secho = 0;
             _fy_i = 0;
             _fy_ii = 0;
             _fy_get_ii = 1;
             _fy_get_ii_display = 1;
-
             _fy_folder_path_result = "";
             _fy_folder_path_result_locate = "";
             _fy_current_index = 1;
@@ -1253,37 +1114,6 @@ namespace Cronos_Data
             {
                 MessageBox.Show("Can't locate folder.", "FY", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                var message = string.Join(Environment.NewLine, fy_gettotal.ToArray());
-                MessageBox.Show(message);
-
-                var messagesds = string.Join(Environment.NewLine, fy_gettotal_test.ToArray());
-                MessageBox.Show(messagesds);
-
-                var last_item = fy_gettotal[fy_gettotal.Count - 1];
-                MessageBox.Show(last_item);
-            }
-            catch (Exception err)
-            {
-                // Leave blank
-            }
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            label_fy_page_count.Text = textBox1.Text;
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            DataGridViewRow row = (DataGridViewRow)dataGridView1.Rows[0].Clone();
-            row.Cells[0].Value = "XYZ";
-            dataGridView1.Rows.Add(row);
         }
         
 
@@ -1421,7 +1251,6 @@ namespace Cronos_Data
 
             if (result_total_records.ToString().Contains("."))
             {
-                // edited
                 _total_page_tf += Convert.ToInt32(Math.Floor(result_total_records)) + 1;
             }
             else
@@ -1465,11 +1294,7 @@ namespace Cronos_Data
                 tf_datetime.Clear();
                 tf_gettotal.Clear();
                 _total_records_tf = 0;
-                //_display_length_tf = 5000;
-                //_limit_tf = 250000;
                 _total_page_tf = 0;
-                //_result_count_json_tf;
-
                 _tf_displayinexel_i = 0;
                 _tf_pages_count_display = 0;
                 _tf_pages_count = 0;
@@ -1478,8 +1303,6 @@ namespace Cronos_Data
                 _tf_row = 1;
                 _tf_row_count = 1;
                 _isDone_tf = false;
-                //_tf_folder_path_result;
-                //_tf_folder_path_result_locate;
                 _tf_secho = 0;
                 _tf_i = 0;
                 _tf_ii = 0;
@@ -1504,7 +1327,7 @@ namespace Cronos_Data
                 string gettotal_end_datetime = "";
 
                 tf_datetime.Reverse();
-                // loop datetime
+
                 int i = 0;
                 foreach (var datetime in tf_datetime)
                 {
@@ -1538,15 +1361,9 @@ namespace Cronos_Data
                             get_end_datetime = datetime_result;
                         }
                     }
-
-                    //MessageBox.Show(get_start_datetime + "--" + get_end_datetime);
+                    
                     await TF_GetTotal(get_start_datetime, get_end_datetime);
                 }
-
-                // status
-                //label_tf_status.ForeColor = Color.FromArgb(78, 122, 159);
-                //label_tf_page_count.Text = "1 of " + _total_page_tf.ToString("N0");
-                //label_tf_currentrecord.Text = "0 of " + Convert.ToInt32(_total_records_tf).ToString("N0");
 
                 label1.Text = gettotal_start_datetime + " ----- ghghg " + gettotal_end_datetime;
                 var cookie = FullWebBrowserCookie.GetCookieInternal(webBrowser_tf.Url, false);
@@ -1595,7 +1412,6 @@ namespace Cronos_Data
                 detect_tf++;
                 label2.Text = "detect ghghghghg" + detect;
                 await GetDataTFAsync();
-                //MessageBox.Show(err.ToString());
             }
         }
 
@@ -1605,7 +1421,6 @@ namespace Cronos_Data
             {
                 string gettotal_start_datetime = "";
                 string gettotal_end_datetime = "";
-                //MessageBox.Show(_tf_pages_count_display.ToString());
 
                 var last_item = tf_gettotal[tf_gettotal.Count - 1];
 
@@ -1616,23 +1431,14 @@ namespace Cronos_Data
                     {
                         if (gettotal == _tf_pages_count_display.ToString())
                         {
-                            //DataGridViewRow row = (DataGridViewRow)dataGridView1.Rows[0].Clone();
-
-                            //row.Cells[0].Value = gettotal + " -- " + _test_tf_gettotal_count_record;
-
-                            //_test_tf_gettotal_count_record = 0;
-                            //dataGridView1.Rows.Add(row);
-
                             _tf_current_index++;
                             _tf_pages_count_last = _tf_pages_count;
                             _tf_pages_count = 0;
                             _detect_tf = true;
-                            //MessageBox.Show("detect");
                             break;
                         }
                     }
-
-                    // loop datetime
+                    
                     int i = 0;
                     foreach (var datetime in tf_datetime)
                     {
@@ -1660,7 +1466,6 @@ namespace Cronos_Data
                     }
 
                     label1.Text = gettotal_start_datetime + " ----- dsadsadas " + gettotal_end_datetime;
-                    //MessageBox.Show(gettotal_start_datetime + " ----- dsadsadas " + gettotal_end_datetime);
 
                     var cookie = FullWebBrowserCookie.GetCookieInternal(webBrowser_tf.Url, false);
                     WebClient wc = new WebClient();
@@ -1724,18 +1529,11 @@ namespace Cronos_Data
                     {
                         if (gettotal == _tf_pages_count_display.ToString())
                         {
-                            //DataGridViewRow row = (DataGridViewRow)dataGridView1.Rows[0].Clone();
-
-                            //row.Cells[0].Value = gettotal + " -- " + _test_tf_gettotal_count_record;
-
-                            //_test_tf_gettotal_count_record = 0;
-                            //dataGridView1.Rows.Add(row);
-
                             _tf_current_index++;
                             _tf_pages_count_last = _tf_pages_count;
                             _tf_pages_count = 0;
                             _detect_tf = true;
-                            //MessageBox.Show("detect");
+                            
                             break;
                         }
                     }
@@ -1762,12 +1560,7 @@ namespace Cronos_Data
                 for (int i = _tf_i; i < _total_page_tf; i++)
                 {
                     button_tf_start.Visible = false;
-
-                    //if (File.Exists(_tf_path))
-                    //{
-                    //    File.Delete(_tf_path);
-                    //}
-
+                    
                     if (!_tf_inserted_in_excel)
                     {
                         break;
@@ -1808,9 +1601,7 @@ namespace Cronos_Data
                         JToken valid_bet = jo_tf.SelectToken("$.aaData[" + ii + "][9][1]");
                         JToken valid_invalid_id = jo_tf.SelectToken("$.aaData[" + ii + "][10][0]");
                         JToken valid_invalid = jo_tf.SelectToken("$.aaData[" + ii + "][10][1]");
-
-                        // insert to text file
-
+                        
                         if (_tf_get_ii == 1)
                         {
                             var header = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10}", "Game Platform", "Username", "Bet No.", "Bet Time", "Bet Type", "Game Result", "Stake Amount", "Win Amount", "Company Win/Loss", "Valid Bet", "Valid/Invalid");
@@ -1819,39 +1610,14 @@ namespace Cronos_Data
 
                         var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10}", game_platform, "\"" + player_name + "\"", "\"" + bet_no + "\"", "\"" + bet_time + "\"", "\"" + result_bet_type.ToString().Replace(";", "") + "\"", "\"" + game_result + "\"", "\"" + stake_amount + "\"", "\"" + win_amount + "\"", "\"" + company_win_loss + "\"", "\"" + valid_bet + "\"", "\"" + valid_invalid + "\"");
                         _tf_csv.AppendLine(newLine);
-
-                        //StreamWriter sw = new StreamWriter(_tf_path, true, Encoding.UTF8);
-                        //sw.WriteLine(game_platform + "*|*" + player_name + "*|*" + bet_no + "*|*" + bet_time + "*|*" + bet_type + "*|*" + game_result + "*|*" + stake_amount + "*|*" + win_amount + "*|*" + company_win_loss + "*|*" + valid_bet + "*|*" + valid_invalid);
-                        //sw.Close();
-
-                        //_tf_bet_records.Add(new tf_BetRecord
-                        //{
-                        //    GAME_PLATFORM = game_platform.ToString(),
-                        //    USERNAME = player_name.ToString(),
-                        //    BET_NO = bet_no.ToString(),
-                        //    BET_TIME = bet_time.ToString(),
-                        //    BET_TYPE = bet_type.ToString(),
-                        //    GAME_RESULT = game_result.ToString(),
-                        //    STAKE_AMOUNT = Convert.ToDouble(stake_amount),
-                        //    WIN_AMOUNT = Convert.ToDouble(win_amount),
-                        //    COMPANY_WIN_LOSS = Convert.ToDouble(company_win_loss),
-                        //    VALID_BET = Convert.ToDouble(valid_bet),
-                        //    VALID_INVALID = valid_invalid.ToString()
-                        //});
-
-                        // edited
+                        
                         if ((_tf_get_ii) == _limit_tf)
                         {
                             // status
                             label_tf_status.ForeColor = Color.FromArgb(78, 122, 159);
                             label_tf_status.Text = "status: saving excel...";
 
-                            // label show list to excel
-                            // push to database
-
                             _tf_get_ii = 0;
-
-                            // text file to excel
 
                             _tf_displayinexel_i++;
                             StringBuilder replace_datetime_tf = new StringBuilder(dateTimePicker_start_tf.Text.Substring(0, 10) + "__" + dateTimePicker_end_tf.Text.Substring(0, 10));
@@ -1902,8 +1668,7 @@ namespace Cronos_Data
                             {
                                 File.Delete(_tf_folder_path_result_xlsx);
                             }
-
-                            //after your loop
+                            
                             File.WriteAllText(_tf_folder_path_result, _tf_csv.ToString(), Encoding.UTF8);
 
                             Application.DoEvents();
@@ -1920,25 +1685,10 @@ namespace Cronos_Data
                             }
 
                             _tf_csv.Clear();
-                            //_tf_csv = new StringBuilder();
-
-                            //Thread tf_displayinexcel_thread_limit = new Thread(delegate ()
-                            //{
-                            //    tf_DisplayInExcel(_tf_bet_records);
-                            //});
-                            //tf_displayinexcel_thread_limit.Start();
-
-                            //_tf_inserted_in_excel = false;
-
-                            //timer_tf_detect_inserted_in_excel.Start();
 
                             label_tf_currentrecord.Text = (_tf_get_ii_display).ToString("N0") + " of " + Convert.ToInt32(_total_records_tf).ToString("N0");
                             label_tf_currentrecord.Invalidate();
                             label_tf_currentrecord.Update();
-
-                            //_tf_get_ii_display++;
-
-                            //break;
                         }
                         else
                         {
@@ -1952,6 +1702,7 @@ namespace Cronos_Data
                     }
 
                     _result_count_json_tf = 0;
+                    
                     // web client request
                     await GetDataTFPagesAsync();
                 }
@@ -1961,17 +1712,6 @@ namespace Cronos_Data
                 if (_tf_inserted_in_excel)
                 {
                     _isDone_tf = true;
-
-                    // done
-
-                    // text file to excel
-
-
-                    //Thread tf_displayinexcel_thread = new Thread(delegate ()
-                    //{
-                    //    tf_DisplayInExcel(_tf_bet_records);
-                    //});
-                    //tf_displayinexcel_thread.Start();
                 }
 
             }
@@ -2046,7 +1786,6 @@ namespace Cronos_Data
                 File.Delete(_tf_folder_path_result_xlsx);
             }
             
-            //after your loop
             File.WriteAllText(_tf_folder_path_result, _tf_csv.ToString(), Encoding.UTF8);
 
             Application.DoEvents();
@@ -2065,53 +1804,17 @@ namespace Cronos_Data
 
             _tf_csv.Clear();
 
-            // tf Header Change Color
-
-            Thread thread = new Thread(delegate ()
-            {
-                TFHeader();
-            });
-            thread.Start();
-
-            //_tf_csv = new StringBuilder();
+            TFHeader();
 
             Invoke(new Action(() =>
             {
                 label_tf_finish_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
                 timer_tf.Stop();
-                //_tf_finish_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
-
-                //string start_datetime = _tf_start_datetime;
-                //DateTime start = DateTime.ParseExact(start_datetime, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
-
-                //string finish_datetime = _tf_finish_datetime;
-                //DateTime finish = DateTime.ParseExact(finish_datetime, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
-
-                //TimeSpan span = finish.Subtract(start);
-
-                //if (span.Hours == 0 && span.Minutes == 0)
-                //{
-                //    label_tf_elapsed.Text = span.Seconds + " sec(s)";
-                //}
-                //else if (span.Hours != 0)
-                //{
-                //    label_tf_elapsed.Text = span.Hours + " hr(s) " + span.Minutes + " min(s) " + span.Seconds + " sec(s)";
-                //}
-                //else if (span.Minutes != 0)
-                //{
-                //    label_tf_elapsed.Text = span.Minutes + " min(s) " + span.Seconds + " sec(s)";
-                //}
-                //else
-                //{
-                //    label_tf_elapsed.Text = span.Seconds + " sec(s)";
-                //}
-
                 pictureBox_tf_loader.Visible = false;
                 button_tf_proceed.Visible = true;
                 label_tf_locatefolder.Visible = true;
                 label_tf_status.ForeColor = Color.FromArgb(34, 139, 34);
                 label_tf_status.Text = "status: done";
-
                 panel_tf_datetime.Location = new Point(5, 226);
             }));
 
@@ -2329,11 +2032,7 @@ namespace Cronos_Data
             tf_datetime.Clear();
             tf_gettotal.Clear();
             _total_records_tf = 0;
-            //_display_length_tf = 5000;
-            //_limit_tf = 250000;
             _total_page_tf = 0;
-            //_result_count_json_tf;
-
             _tf_displayinexel_i = 0;
             _tf_pages_count_display = 0;
             _tf_pages_count = 0;
@@ -2342,8 +2041,6 @@ namespace Cronos_Data
             _tf_row = 1;
             _tf_row_count = 1;
             _isDone_tf = false;
-            //_tf_folder_path_result;
-            //_tf_folder_path_result_locate;
             _tf_secho = 0;
             _tf_i = 0;
             _tf_ii = 0;
@@ -2502,6 +2199,37 @@ namespace Cronos_Data
             {
                 MessageBox.Show(err.ToString());
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var message = string.Join(Environment.NewLine, fy_gettotal.ToArray());
+                MessageBox.Show(message);
+
+                var messagesds = string.Join(Environment.NewLine, fy_gettotal_test.ToArray());
+                MessageBox.Show(messagesds);
+
+                var last_item = fy_gettotal[fy_gettotal.Count - 1];
+                MessageBox.Show(last_item);
+            }
+            catch (Exception err)
+            {
+                // Leave blank
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            label_fy_page_count.Text = textBox1.Text;
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            DataGridViewRow row = (DataGridViewRow)dataGridView1.Rows[0].Clone();
+            row.Cells[0].Value = "XYZ";
+            dataGridView1.Rows.Add(row);
         }
     }
 }
