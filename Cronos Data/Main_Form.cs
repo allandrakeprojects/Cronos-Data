@@ -31,6 +31,7 @@ namespace Cronos_Data
         public const int WM_NCLBUTTONDOWN = 0xA1;
         public const int HT_CAPTION = 0x2;
         private bool isClose;
+        System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
 
         // FY ---
         List<FY_BetRecord> _fy_bet_records = new List<FY_BetRecord>();
@@ -106,7 +107,6 @@ namespace Cronos_Data
         private string _tf_current_datetime;
         private int _test_tf_gettotal_count_record;
 
-
         // Border
         const int _ = 1;
         new Rectangle Top { get { return new Rectangle(0, 0, this.ClientSize.Width, _); } }
@@ -134,8 +134,24 @@ namespace Cronos_Data
         public Main_Form()
         {
             InitializeComponent();
-            FormBorderStyle = FormBorderStyle.None;
             Region = new Region(RoundedRectangle.Create(new Rectangle(0, 0, Size.Width, Size.Height), 8, RoundedRectangle.RectangleCorners.TopRight | RoundedRectangle.RectangleCorners.TopLeft | RoundedRectangle.RectangleCorners.BottomLeft | RoundedRectangle.RectangleCorners.BottomRight));
+
+            Opacity = 0;
+            timer.Interval = 20;
+            timer.Tick += new EventHandler(FadeIn);
+            timer.Start();
+        }
+        
+        private void FadeIn(object sender, EventArgs e)
+        {
+            if (Opacity >= 1)
+            {
+                timer_landing.Start();
+            }
+            else
+            {
+                Opacity += 0.05;
+            }
         }
 
         private void Main_Form_Load(object sender, EventArgs e)
@@ -1192,7 +1208,7 @@ namespace Cronos_Data
                         }
 
                         webBrowser_tf.Visible = false;
-                        timer_fy_start.Start();
+                        timer_tf_start.Start();
                     }
                 }
             }
@@ -2230,6 +2246,18 @@ namespace Cronos_Data
             DataGridViewRow row = (DataGridViewRow)dataGridView1.Rows[0].Clone();
             row.Cells[0].Value = "XYZ";
             dataGridView1.Rows.Add(row);
+        }
+
+        private void timer_landing_Tick(object sender, EventArgs e)
+        {
+            panel_landing.Visible = false;
+            label_title.Visible = true;
+            label_filelocation.Visible = true;
+            pictureBox_minimize.Visible = true;
+            pictureBox_close.Visible = true;
+            label_updates.Visible = true;
+            label_version.Visible = true;
+            timer_landing.Stop();
         }
     }
 }

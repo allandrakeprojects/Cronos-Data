@@ -61,19 +61,21 @@
             this.label_fy_inserting_count = new System.Windows.Forms.Label();
             this.label_fy_total_records_1 = new System.Windows.Forms.Label();
             this.label_fy_status = new System.Windows.Forms.Label();
+            this.webBrowser_fy = new System.Windows.Forms.WebBrowser();
             this.panel_fy_filter = new System.Windows.Forms.Panel();
             this.comboBox_fy = new System.Windows.Forms.ComboBox();
             this.dateTimePicker_end_fy = new System.Windows.Forms.DateTimePicker();
             this.dateTimePicker_start_fy = new System.Windows.Forms.DateTimePicker();
             this.label_start_fy = new System.Windows.Forms.Label();
             this.label_end_fy = new System.Windows.Forms.Label();
-            this.webBrowser_fy = new System.Windows.Forms.WebBrowser();
             this.button_fy_start = new System.Windows.Forms.Button();
             this.timer_fy_detect_inserted_in_excel = new System.Windows.Forms.Timer(this.components);
             this.timer_fy_start = new System.Windows.Forms.Timer(this.components);
             this.button_filelocation = new System.Windows.Forms.Button();
             this.timer_fy = new System.Windows.Forms.Timer(this.components);
             this.panel_footer = new System.Windows.Forms.Panel();
+            this.label_version = new System.Windows.Forms.Label();
+            this.label_updates = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
@@ -99,18 +101,19 @@
             this.label_tf_total_records_1 = new System.Windows.Forms.Label();
             this.label_tf_status = new System.Windows.Forms.Label();
             this.label_title_tf = new System.Windows.Forms.Label();
+            this.webBrowser_tf = new System.Windows.Forms.WebBrowser();
             this.panel_tf_filter = new System.Windows.Forms.Panel();
             this.comboBox_tf = new System.Windows.Forms.ComboBox();
             this.dateTimePicker_end_tf = new System.Windows.Forms.DateTimePicker();
             this.dateTimePicker_start_tf = new System.Windows.Forms.DateTimePicker();
             this.label_start_tf = new System.Windows.Forms.Label();
             this.label_end_tf = new System.Windows.Forms.Label();
-            this.webBrowser_tf = new System.Windows.Forms.WebBrowser();
             this.timer_tf_detect_inserted_in_excel = new System.Windows.Forms.Timer(this.components);
             this.timer_tf_start = new System.Windows.Forms.Timer(this.components);
             this.timer_tf = new System.Windows.Forms.Timer(this.components);
-            this.label_updates = new System.Windows.Forms.Label();
-            this.label_version = new System.Windows.Forms.Label();
+            this.panel_landing = new System.Windows.Forms.Panel();
+            this.pictureBox_landing = new System.Windows.Forms.PictureBox();
+            this.timer_landing = new System.Windows.Forms.Timer(this.components);
             this.sPanel_separator = new Cronos_Data.SPanel();
             this.panel_header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_minimize)).BeginInit();
@@ -127,6 +130,8 @@
             this.panel_tf_datetime.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_tf_loader)).BeginInit();
             this.panel_tf_filter.SuspendLayout();
+            this.panel_landing.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_landing)).BeginInit();
             this.SuspendLayout();
             // 
             // panel_header
@@ -219,6 +224,7 @@
             this.label_title.TabIndex = 2;
             this.label_title.Text = "Cronos Data";
             this.label_title.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label_title.Visible = false;
             this.label_title.MouseDown += new System.Windows.Forms.MouseEventHandler(this.label_title_MouseDown);
             // 
             // pictureBox_minimize
@@ -232,6 +238,7 @@
             this.pictureBox_minimize.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureBox_minimize.TabIndex = 1;
             this.pictureBox_minimize.TabStop = false;
+            this.pictureBox_minimize.Visible = false;
             this.pictureBox_minimize.Click += new System.EventHandler(this.pictureBox_minimize_Click);
             // 
             // pictureBox_close
@@ -245,6 +252,7 @@
             this.pictureBox_close.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureBox_close.TabIndex = 0;
             this.pictureBox_close.TabStop = false;
+            this.pictureBox_close.Visible = false;
             this.pictureBox_close.Click += new System.EventHandler(this.pictureBox_close_Click);
             // 
             // label_filelocation
@@ -256,6 +264,7 @@
             this.label_filelocation.TabIndex = 3;
             this.label_filelocation.Text = "-";
             this.label_filelocation.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label_filelocation.Visible = false;
             this.label_filelocation.MouseDown += new System.Windows.Forms.MouseEventHandler(this.label_filelocation_MouseDown);
             // 
             // label_title_fy
@@ -483,6 +492,17 @@
             this.label_fy_status.Text = "-";
             this.label_fy_status.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // webBrowser_fy
+            // 
+            this.webBrowser_fy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.webBrowser_fy.Location = new System.Drawing.Point(6, 35);
+            this.webBrowser_fy.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webBrowser_fy.Name = "webBrowser_fy";
+            this.webBrowser_fy.ScriptErrorsSuppressed = true;
+            this.webBrowser_fy.Size = new System.Drawing.Size(522, 367);
+            this.webBrowser_fy.TabIndex = 0;
+            this.webBrowser_fy.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowser_fy_DocumentCompletedAsync);
+            // 
             // panel_fy_filter
             // 
             this.panel_fy_filter.Controls.Add(this.comboBox_fy);
@@ -545,17 +565,6 @@
             this.label_end_fy.Size = new System.Drawing.Size(63, 15);
             this.label_end_fy.TabIndex = 10;
             this.label_end_fy.Text = "End Time:";
-            // 
-            // webBrowser_fy
-            // 
-            this.webBrowser_fy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.webBrowser_fy.Location = new System.Drawing.Point(6, 35);
-            this.webBrowser_fy.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webBrowser_fy.Name = "webBrowser_fy";
-            this.webBrowser_fy.ScriptErrorsSuppressed = true;
-            this.webBrowser_fy.Size = new System.Drawing.Size(522, 367);
-            this.webBrowser_fy.TabIndex = 0;
-            this.webBrowser_fy.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowser_fy_DocumentCompletedAsync);
             // 
             // button_fy_start
             // 
@@ -620,6 +629,32 @@
             this.panel_footer.Name = "panel_footer";
             this.panel_footer.Size = new System.Drawing.Size(1140, 20);
             this.panel_footer.TabIndex = 4;
+            // 
+            // label_version
+            // 
+            this.label_version.AutoSize = true;
+            this.label_version.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_version.ForeColor = System.Drawing.Color.White;
+            this.label_version.Location = new System.Drawing.Point(1080, 4);
+            this.label_version.Name = "label_version";
+            this.label_version.Size = new System.Drawing.Size(36, 13);
+            this.label_version.TabIndex = 1;
+            this.label_version.Text = "1.0.0";
+            this.label_version.Visible = false;
+            // 
+            // label_updates
+            // 
+            this.label_updates.AutoSize = true;
+            this.label_updates.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_updates.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_updates.ForeColor = System.Drawing.Color.White;
+            this.label_updates.Location = new System.Drawing.Point(977, 3);
+            this.label_updates.Name = "label_updates";
+            this.label_updates.Size = new System.Drawing.Size(99, 13);
+            this.label_updates.TabIndex = 0;
+            this.label_updates.Text = "Check for Updates.";
+            this.label_updates.Visible = false;
+            this.label_updates.Click += new System.EventHandler(this.label_updates_Click);
             // 
             // button1
             // 
@@ -900,8 +935,19 @@
             this.label_title_tf.Name = "label_title_tf";
             this.label_title_tf.Size = new System.Drawing.Size(528, 30);
             this.label_title_tf.TabIndex = 2;
-            this.label_title_tf.Text = "Feng Ying";
+            this.label_title_tf.Text = "Tian Fa";
             this.label_title_tf.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // webBrowser_tf
+            // 
+            this.webBrowser_tf.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.webBrowser_tf.Location = new System.Drawing.Point(6, 35);
+            this.webBrowser_tf.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webBrowser_tf.Name = "webBrowser_tf";
+            this.webBrowser_tf.ScriptErrorsSuppressed = true;
+            this.webBrowser_tf.Size = new System.Drawing.Size(522, 367);
+            this.webBrowser_tf.TabIndex = 0;
+            this.webBrowser_tf.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowser_tf_DocumentCompleted);
             // 
             // panel_tf_filter
             // 
@@ -966,17 +1012,6 @@
             this.label_end_tf.TabIndex = 10;
             this.label_end_tf.Text = "End Time:";
             // 
-            // webBrowser_tf
-            // 
-            this.webBrowser_tf.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.webBrowser_tf.Location = new System.Drawing.Point(6, 35);
-            this.webBrowser_tf.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webBrowser_tf.Name = "webBrowser_tf";
-            this.webBrowser_tf.ScriptErrorsSuppressed = true;
-            this.webBrowser_tf.Size = new System.Drawing.Size(522, 367);
-            this.webBrowser_tf.TabIndex = 0;
-            this.webBrowser_tf.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowser_tf_DocumentCompleted);
-            // 
             // timer_tf_detect_inserted_in_excel
             // 
             this.timer_tf_detect_inserted_in_excel.Interval = 10000;
@@ -992,29 +1027,27 @@
             this.timer_tf.Interval = 1000;
             this.timer_tf.Tick += new System.EventHandler(this.timer_tf_Tick);
             // 
-            // label_updates
+            // panel_landing
             // 
-            this.label_updates.AutoSize = true;
-            this.label_updates.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.label_updates.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_updates.ForeColor = System.Drawing.Color.White;
-            this.label_updates.Location = new System.Drawing.Point(977, 3);
-            this.label_updates.Name = "label_updates";
-            this.label_updates.Size = new System.Drawing.Size(99, 13);
-            this.label_updates.TabIndex = 0;
-            this.label_updates.Text = "Check for Updates.";
-            this.label_updates.Click += new System.EventHandler(this.label_updates_Click);
+            this.panel_landing.Controls.Add(this.pictureBox_landing);
+            this.panel_landing.Location = new System.Drawing.Point(1, 22);
+            this.panel_landing.Name = "panel_landing";
+            this.panel_landing.Size = new System.Drawing.Size(1138, 485);
+            this.panel_landing.TabIndex = 31;
             // 
-            // label_version
+            // pictureBox_landing
             // 
-            this.label_version.AutoSize = true;
-            this.label_version.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_version.ForeColor = System.Drawing.Color.White;
-            this.label_version.Location = new System.Drawing.Point(1080, 4);
-            this.label_version.Name = "label_version";
-            this.label_version.Size = new System.Drawing.Size(36, 13);
-            this.label_version.TabIndex = 1;
-            this.label_version.Text = "1.0.0";
+            this.pictureBox_landing.Image = global::Cronos_Data.Properties.Resources.icon;
+            this.pictureBox_landing.Location = new System.Drawing.Point(498, 184);
+            this.pictureBox_landing.Name = "pictureBox_landing";
+            this.pictureBox_landing.Size = new System.Drawing.Size(135, 134);
+            this.pictureBox_landing.TabIndex = 0;
+            this.pictureBox_landing.TabStop = false;
+            // 
+            // timer_landing
+            // 
+            this.timer_landing.Interval = 1000;
+            this.timer_landing.Tick += new System.EventHandler(this.timer_landing_Tick);
             // 
             // sPanel_separator
             // 
@@ -1033,6 +1066,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1140, 525);
+            this.Controls.Add(this.panel_landing);
             this.Controls.Add(this.panel_tf);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.label1);
@@ -1074,6 +1108,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_tf_loader)).EndInit();
             this.panel_tf_filter.ResumeLayout(false);
             this.panel_tf_filter.PerformLayout();
+            this.panel_landing.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_landing)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1163,5 +1199,8 @@
         private System.Windows.Forms.Timer timer_tf;
         private System.Windows.Forms.Label label_updates;
         private System.Windows.Forms.Label label_version;
+        private System.Windows.Forms.Panel panel_landing;
+        private System.Windows.Forms.PictureBox pictureBox_landing;
+        private System.Windows.Forms.Timer timer_landing;
     }
 }
