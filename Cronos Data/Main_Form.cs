@@ -1410,7 +1410,7 @@ namespace Cronos_Data
             catch (Exception err)
             {
                 detect_tf++;
-                label2.Text = "detect ghghghghg" + detect;
+                label2.Text = "detect ghghghghg" + detect_tf;
                 await GetDataTFAsync();
             }
         }
@@ -1547,7 +1547,7 @@ namespace Cronos_Data
                 }
 
                 detect_tf++;
-                label4.Text = "detect ghghghghghghg " + detect;
+                label4.Text = "detect ghghghghghghg " + detect_tf;
 
                 await GetDataTFPagesAsync();
             }
