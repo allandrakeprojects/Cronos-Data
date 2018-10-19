@@ -857,7 +857,7 @@ namespace Cronos_Data
 
             _fy_csv.Clear();
             
-            FYHeader();
+            //FYHeader();
             
             Invoke(new Action(() =>
             {
@@ -1820,7 +1820,7 @@ namespace Cronos_Data
 
             _tf_csv.Clear();
 
-            TFHeader();
+            //TFHeader();
 
             Invoke(new Action(() =>
             {
