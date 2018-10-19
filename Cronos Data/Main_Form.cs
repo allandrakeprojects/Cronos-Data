@@ -482,12 +482,12 @@ namespace Cronos_Data
                     {
                         if (gettotal == _fy_pages_count_display.ToString())
                         {
-                            DataGridViewRow row = (DataGridViewRow)dataGridView1.Rows[0].Clone();
+                            //DataGridViewRow row = (DataGridViewRow)dataGridView1.Rows[0].Clone();
 
-                            row.Cells[0].Value = gettotal + " -- " + _test_fy_gettotal_count_record;
+                            //row.Cells[0].Value = gettotal + " -- " + _test_fy_gettotal_count_record;
 
-                            _test_fy_gettotal_count_record = 0;
-                            dataGridView1.Rows.Add(row);
+                            //_test_fy_gettotal_count_record = 0;
+                            //dataGridView1.Rows.Add(row);
 
                             _fy_current_index++;
                             _fy_pages_count_last = _fy_pages_count;
@@ -590,12 +590,12 @@ namespace Cronos_Data
                     {
                         if (gettotal == _fy_pages_count_display.ToString())
                         {
-                            DataGridViewRow row = (DataGridViewRow)dataGridView1.Rows[0].Clone();
+                            //DataGridViewRow row = (DataGridViewRow)dataGridView1.Rows[0].Clone();
 
-                            row.Cells[0].Value = gettotal + " -- " + _test_fy_gettotal_count_record;
+                            //row.Cells[0].Value = gettotal + " -- " + _test_fy_gettotal_count_record;
 
-                            _test_fy_gettotal_count_record = 0;
-                            dataGridView1.Rows.Add(row);
+                            //_test_fy_gettotal_count_record = 0;
+                            //dataGridView1.Rows.Add(row);
 
                             _fy_current_index++;
                             _fy_pages_count_last = _fy_pages_count;
