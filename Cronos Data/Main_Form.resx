@@ -142,6 +142,30 @@
   <metadata name="Column1.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
+  <metadata name="Column1.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="button_tf_start.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6
+        JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAA3XAAAN1wFCKJt4AAAAB3RJ
+        TUUH4goPAwUCFLQz7gAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAESSURBVFhH
+        5Zc9DoJAEIUheABras+hN7CmtDLhHnoYS2NBa+sxrDiAtcH32NkCwb8A+zR+ySvYnZ15wPCzkaeqqhjK
+        oQIqoaFhTuZmjdjKOjCQQkcoFKyV+uI885DFPawZ0wAviYqcBnhfVBQ00NVweygbWMx5T0kDXWR1gwwI
+        c7rUTX7HAMYS6ACxexc2/DbMCbX4xMDSTdVcoS00semXILa3ga4EJ2hmIU9B3CgGyAVaWdhDEDOaAc8O
+        mlp4C8yNboCcobktaYDxIAYIG3QDJba0BsfBDHjWtrQGx/9jQHoLpE0oewylL6Kgr2L5x0j7Oe4Lc7rU
+        Tb7CgPynVP5bLt+YaLdm1iC6zakHA4LteRTdAFJvXaygOOK0AAAAAElFTkSuQmCC
+</value>
+  </data>
+  <metadata name="timer_tf_detect_inserted_in_excel.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>467, 17</value>
+  </metadata>
+  <metadata name="timer_tf_start.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>696, 17</value>
+  </metadata>
+  <metadata name="timer_tf.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>819, 17</value>
+  </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>67</value>
   </metadata>
