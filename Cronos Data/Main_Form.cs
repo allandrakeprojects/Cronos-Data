@@ -253,7 +253,7 @@ namespace Cronos_Data
                         //webBrowser_fy.Document.GetElementById("cspwd").SetAttribute("value", "djrain123@@@");
                     }
 
-                    if (webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/player/list"))
+                    if (webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/player/list") || webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/site/index") || webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/player/online"))
                     {
                         if (panel_fy_status.Visible != true)
                         {
@@ -1200,7 +1200,7 @@ namespace Cronos_Data
                         //webBrowser_tf.Document.GetElementById("cspwd").SetAttribute("value", "djrain123$$");
                     }
 
-                    if (webBrowser_tf.Url.ToString().Equals("http://cs.tianfa86.org/player/list"))
+                    if (webBrowser_tf.Url.ToString().Equals("http://cs.tianfa86.org/player/list") || webBrowser_tf.Url.ToString().Equals("http://cs.tianfa86.org/site/index") || webBrowser_tf.Url.ToString().Equals("http://cs.tianfa86.org/player/online"))
                     {
                         if (panel_tf_status.Visible != true)
                         {
