@@ -249,8 +249,8 @@ namespace Cronos_Data
                     if (webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/account/login"))
                     {
                         webBrowser_fy.Document.Window.ScrollTo(0, 180);
-                        webBrowser_fy.Document.GetElementById("csname").SetAttribute("value", "fyrain");
-                        webBrowser_fy.Document.GetElementById("cspwd").SetAttribute("value", "djrain123@@@");
+                        //webBrowser_fy.Document.GetElementById("csname").SetAttribute("value", "fyrain");
+                        //webBrowser_fy.Document.GetElementById("cspwd").SetAttribute("value", "djrain123@@@");
                     }
 
                     if (webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/player/list"))
@@ -332,7 +332,7 @@ namespace Cronos_Data
             if (_total_records_fy > 0)
             {
                 // status
-                label_fy_page_count.Text = "1 of " + _total_page_fy.ToString("N0");
+                label_fy_page_count.Text = "0 of " + _total_page_fy.ToString("N0");
                 label_fy_currentrecord.Text = "0 of " + Convert.ToInt32(_total_records_fy).ToString("N0");
                 _fy_no_result = false;
             }
@@ -1196,8 +1196,8 @@ namespace Cronos_Data
                     if (webBrowser_tf.Url.ToString().Equals("http://cs.tianfa86.org/account/login"))
                     {
                         webBrowser_tf.Document.Window.ScrollTo(0, 180);
-                        webBrowser_tf.Document.GetElementById("csname").SetAttribute("value", "tfrain");
-                        webBrowser_tf.Document.GetElementById("cspwd").SetAttribute("value", "djrain123$$");
+                        //webBrowser_tf.Document.GetElementById("csname").SetAttribute("value", "tfrain");
+                        //webBrowser_tf.Document.GetElementById("cspwd").SetAttribute("value", "djrain123$$");
                     }
 
                     if (webBrowser_tf.Url.ToString().Equals("http://cs.tianfa86.org/player/list"))
@@ -1279,7 +1279,7 @@ namespace Cronos_Data
             if (_total_records_tf > 0)
             {
                 // status
-                label_tf_page_count.Text = "1 of " + _total_page_tf.ToString("N0");
+                label_tf_page_count.Text = "0 of " + _total_page_tf.ToString("N0");
                 label_tf_currentrecord.Text = "0 of " + Convert.ToInt32(_total_records_tf).ToString("N0");
                 _tf_no_result = false;
             }
@@ -2255,7 +2255,7 @@ namespace Cronos_Data
             label_filelocation.Visible = true;
             pictureBox_minimize.Visible = true;
             pictureBox_close.Visible = true;
-            label_updates.Visible = true;
+            //label_updates.Visible = true;
             label_version.Visible = true;
             timer_landing.Stop();
         }

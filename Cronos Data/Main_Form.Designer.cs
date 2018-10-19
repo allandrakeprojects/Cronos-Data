@@ -637,9 +637,9 @@
             this.label_version.ForeColor = System.Drawing.Color.White;
             this.label_version.Location = new System.Drawing.Point(1080, 4);
             this.label_version.Name = "label_version";
-            this.label_version.Size = new System.Drawing.Size(36, 13);
+            this.label_version.Size = new System.Drawing.Size(43, 13);
             this.label_version.TabIndex = 1;
-            this.label_version.Text = "1.0.0";
+            this.label_version.Text = "v1.0.0";
             this.label_version.Visible = false;
             // 
             // label_updates
@@ -1055,7 +1055,7 @@
             this.sPanel_separator.BackColor = System.Drawing.Color.Transparent;
             this.sPanel_separator.Cursor = System.Windows.Forms.Cursors.Default;
             this.sPanel_separator.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(122)))), ((int)(((byte)(159)))));
-            this.sPanel_separator.Location = new System.Drawing.Point(558, 84);
+            this.sPanel_separator.Location = new System.Drawing.Point(557, 87);
             this.sPanel_separator.Name = "sPanel_separator";
             this.sPanel_separator.Size = new System.Drawing.Size(44, 446);
             this.sPanel_separator.TabIndex = 1;
