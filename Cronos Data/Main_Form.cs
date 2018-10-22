@@ -62,7 +62,7 @@ namespace Cronos_Data
         int _fy_get_ii = 1;
         int _fy_get_ii_display = 1;
         int _fy_current_index = 1;
-        string _fy_path = Path.Combine(Path.GetTempPath(), "cd_fy.csv");
+        string _fy_path = Path.Combine(Path.GetTempPath(), "cd_fy.txt");
         StringBuilder _fy_csv = new StringBuilder();
         private string _fy_start_datetime;
         private string _fy_finish_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
@@ -99,7 +99,7 @@ namespace Cronos_Data
         int _tf_get_ii = 1;
         int _tf_get_ii_display = 1;
         int _tf_current_index = 1;
-        string _tf_path = Path.Combine(Path.GetTempPath(), "cd_tf.csv");
+        string _tf_path = Path.Combine(Path.GetTempPath(), "cd_tf.txt");
         StringBuilder _tf_csv = new StringBuilder();
         private string _tf_start_datetime;
         private string _tf_finish_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
@@ -249,8 +249,8 @@ namespace Cronos_Data
                     if (webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/account/login"))
                     {
                         webBrowser_fy.Document.Window.ScrollTo(0, 180);
-                        //webBrowser_fy.Document.GetElementById("csname").SetAttribute("value", "fyrain");
-                        //webBrowser_fy.Document.GetElementById("cspwd").SetAttribute("value", "djrain123@@@");
+                        webBrowser_fy.Document.GetElementById("csname").SetAttribute("value", "fyrain");
+                        webBrowser_fy.Document.GetElementById("cspwd").SetAttribute("value", "djrain123@@@");
                     }
 
                     if (webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/player/list") || webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/site/index") || webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/player/online"))
@@ -669,7 +669,7 @@ namespace Cronos_Data
                         JToken valid_bet = jo_fy.SelectToken("$.aaData[" + ii + "][9][1]");
                         JToken valid_invalid_id = jo_fy.SelectToken("$.aaData[" + ii + "][10][0]");
                         JToken valid_invalid = jo_fy.SelectToken("$.aaData[" + ii + "][10][1]");
-                        
+
                         if (_fy_get_ii == 1)
                         {
                             var header = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10}", "Game Platform", "Username", "Bet No.", "Bet Time", "Bet Type", "Game Result", "Stake Amount", "Win Amount", "Company Win/Loss", "Valid Bet", "Valid/Invalid");
@@ -723,7 +723,7 @@ namespace Cronos_Data
                                 replace = "0" + _fy_displayinexel_i;
                             }
 
-                            _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bet Records\\FY_BetRecords_" + replace_datetime_fy.ToString() + "_" + replace + ".csv";
+                            _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bet Records\\FY_BetRecords_" + replace_datetime_fy.ToString() + "_" + replace + ".txt";
                             _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bet Records\\FY_BetRecords_" + replace_datetime_fy.ToString() + "_" + replace + ".xlsx";
                             _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bet Records\\";
 
@@ -825,7 +825,7 @@ namespace Cronos_Data
                 replace = "0" + _fy_displayinexel_i;
             }
 
-            _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bet Records\\FY_BetRecords_" + replace_datetime_fy.ToString() + "_" + replace + ".csv";
+            _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bet Records\\FY_BetRecords_" + replace_datetime_fy.ToString() + "_" + replace + ".txt";
             _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bet Records\\FY_BetRecords_" + replace_datetime_fy.ToString() + "_" + replace + ".xlsx";
             _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bet Records\\";
 
@@ -1671,7 +1671,7 @@ namespace Cronos_Data
                                 replace = "0" + _tf_displayinexel_i;
                             }
 
-                            _tf_folder_path_result = label_filelocation.Text + "\\Cronos Data\\TF\\" + _tf_current_datetime + "\\Bet Records\\TF_BetRecords_" + replace_datetime_tf.ToString() + "_" + replace + ".csv";
+                            _tf_folder_path_result = label_filelocation.Text + "\\Cronos Data\\TF\\" + _tf_current_datetime + "\\Bet Records\\TF_BetRecords_" + replace_datetime_tf.ToString() + "_" + replace + ".txt";
                             _tf_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\TF\\" + _tf_current_datetime + "\\Bet Records\\TF_BetRecords_" + replace_datetime_tf.ToString() + "_" + replace + ".xlsx";
                             _tf_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\TF\\" + _tf_current_datetime + "\\Bet Records\\";
 
@@ -1788,7 +1788,7 @@ namespace Cronos_Data
                 replace = "0" + _tf_displayinexel_i;
             }
 
-            _tf_folder_path_result = label_filelocation.Text + "\\Cronos Data\\TF\\" + _tf_current_datetime + "\\Bet Records\\TF_BetRecords_" + replace_datetime_tf.ToString() + "_" + replace + ".csv";
+            _tf_folder_path_result = label_filelocation.Text + "\\Cronos Data\\TF\\" + _tf_current_datetime + "\\Bet Records\\TF_BetRecords_" + replace_datetime_tf.ToString() + "_" + replace + ".txt";
             _tf_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\TF\\" + _tf_current_datetime + "\\Bet Records\\TF_BetRecords_" + replace_datetime_tf.ToString() + "_" + replace + ".xlsx";
             _tf_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\TF\\" + _tf_current_datetime + "\\Bet Records\\";
 
