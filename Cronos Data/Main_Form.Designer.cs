@@ -74,6 +74,8 @@
             this.button_filelocation = new System.Windows.Forms.Button();
             this.timer_fy = new System.Windows.Forms.Timer(this.components);
             this.panel_footer = new System.Windows.Forms.Panel();
+            this.panel_landing = new System.Windows.Forms.Panel();
+            this.pictureBox_landing = new System.Windows.Forms.PictureBox();
             this.label_version = new System.Windows.Forms.Label();
             this.label_updates = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
@@ -111,10 +113,9 @@
             this.timer_tf_detect_inserted_in_excel = new System.Windows.Forms.Timer(this.components);
             this.timer_tf_start = new System.Windows.Forms.Timer(this.components);
             this.timer_tf = new System.Windows.Forms.Timer(this.components);
-            this.panel_landing = new System.Windows.Forms.Panel();
-            this.pictureBox_landing = new System.Windows.Forms.PictureBox();
             this.timer_landing = new System.Windows.Forms.Timer(this.components);
             this.sPanel_separator = new Cronos_Data.SPanel();
+            this.textBox2 = new System.Windows.Forms.TextBox();
             this.panel_header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_minimize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_close)).BeginInit();
@@ -124,14 +125,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_fy_loader)).BeginInit();
             this.panel_fy_filter.SuspendLayout();
             this.panel_footer.SuspendLayout();
+            this.panel_landing.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_landing)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel_tf.SuspendLayout();
             this.panel_tf_status.SuspendLayout();
             this.panel_tf_datetime.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_tf_loader)).BeginInit();
             this.panel_tf_filter.SuspendLayout();
-            this.panel_landing.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_landing)).BeginInit();
             this.SuspendLayout();
             // 
             // panel_header
@@ -351,6 +352,7 @@
             this.panel_fy_datetime.Name = "panel_fy_datetime";
             this.panel_fy_datetime.Size = new System.Drawing.Size(287, 58);
             this.panel_fy_datetime.TabIndex = 28;
+            this.panel_fy_datetime.Visible = false;
             // 
             // label_fy_elapsed
             // 
@@ -514,6 +516,7 @@
             this.panel_fy_filter.Name = "panel_fy_filter";
             this.panel_fy_filter.Size = new System.Drawing.Size(528, 80);
             this.panel_fy_filter.TabIndex = 24;
+            this.panel_fy_filter.Visible = false;
             // 
             // comboBox_fy
             // 
@@ -622,6 +625,7 @@
             // panel_footer
             // 
             this.panel_footer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(122)))), ((int)(((byte)(159)))));
+            this.panel_footer.Controls.Add(this.panel_landing);
             this.panel_footer.Controls.Add(this.label_version);
             this.panel_footer.Controls.Add(this.label_updates);
             this.panel_footer.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -629,6 +633,23 @@
             this.panel_footer.Name = "panel_footer";
             this.panel_footer.Size = new System.Drawing.Size(1140, 20);
             this.panel_footer.TabIndex = 4;
+            // 
+            // panel_landing
+            // 
+            this.panel_landing.Controls.Add(this.pictureBox_landing);
+            this.panel_landing.Location = new System.Drawing.Point(23, -4);
+            this.panel_landing.Name = "panel_landing";
+            this.panel_landing.Size = new System.Drawing.Size(1138, 485);
+            this.panel_landing.TabIndex = 31;
+            // 
+            // pictureBox_landing
+            // 
+            this.pictureBox_landing.Image = global::Cronos_Data.Properties.Resources.icon;
+            this.pictureBox_landing.Location = new System.Drawing.Point(497, 173);
+            this.pictureBox_landing.Name = "pictureBox_landing";
+            this.pictureBox_landing.Size = new System.Drawing.Size(135, 134);
+            this.pictureBox_landing.TabIndex = 0;
+            this.pictureBox_landing.TabStop = false;
             // 
             // label_version
             // 
@@ -1027,23 +1048,6 @@
             this.timer_tf.Interval = 1000;
             this.timer_tf.Tick += new System.EventHandler(this.timer_tf_Tick);
             // 
-            // panel_landing
-            // 
-            this.panel_landing.Controls.Add(this.pictureBox_landing);
-            this.panel_landing.Location = new System.Drawing.Point(1, 22);
-            this.panel_landing.Name = "panel_landing";
-            this.panel_landing.Size = new System.Drawing.Size(1138, 485);
-            this.panel_landing.TabIndex = 31;
-            // 
-            // pictureBox_landing
-            // 
-            this.pictureBox_landing.Image = global::Cronos_Data.Properties.Resources.icon;
-            this.pictureBox_landing.Location = new System.Drawing.Point(498, 184);
-            this.pictureBox_landing.Name = "pictureBox_landing";
-            this.pictureBox_landing.Size = new System.Drawing.Size(135, 134);
-            this.pictureBox_landing.TabIndex = 0;
-            this.pictureBox_landing.TabStop = false;
-            // 
             // timer_landing
             // 
             this.timer_landing.Interval = 1000;
@@ -1060,13 +1064,20 @@
             this.sPanel_separator.Size = new System.Drawing.Size(44, 446);
             this.sPanel_separator.TabIndex = 1;
             // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(618, 55);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(100, 20);
+            this.textBox2.TabIndex = 31;
+            // 
             // Main_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1140, 525);
-            this.Controls.Add(this.panel_landing);
+            this.Controls.Add(this.textBox2);
             this.Controls.Add(this.panel_tf);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.label1);
@@ -1099,6 +1110,8 @@
             this.panel_fy_filter.PerformLayout();
             this.panel_footer.ResumeLayout(false);
             this.panel_footer.PerformLayout();
+            this.panel_landing.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_landing)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.panel_tf.ResumeLayout(false);
             this.panel_tf_status.ResumeLayout(false);
@@ -1108,8 +1121,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_tf_loader)).EndInit();
             this.panel_tf_filter.ResumeLayout(false);
             this.panel_tf_filter.PerformLayout();
-            this.panel_landing.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_landing)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1202,5 +1213,6 @@
         private System.Windows.Forms.Panel panel_landing;
         private System.Windows.Forms.PictureBox pictureBox_landing;
         private System.Windows.Forms.Timer timer_landing;
+        private System.Windows.Forms.TextBox textBox2;
     }
 }
