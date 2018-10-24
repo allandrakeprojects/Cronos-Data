@@ -114,8 +114,9 @@
             this.timer_tf_start = new System.Windows.Forms.Timer(this.components);
             this.timer_tf = new System.Windows.Forms.Timer(this.components);
             this.timer_landing = new System.Windows.Forms.Timer(this.components);
-            this.sPanel_separator = new Cronos_Data.SPanel();
             this.textBox2 = new System.Windows.Forms.TextBox();
+            this.button4 = new System.Windows.Forms.Button();
+            this.sPanel_separator = new Cronos_Data.SPanel();
             this.panel_header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_minimize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_close)).BeginInit();
@@ -352,7 +353,6 @@
             this.panel_fy_datetime.Name = "panel_fy_datetime";
             this.panel_fy_datetime.Size = new System.Drawing.Size(287, 58);
             this.panel_fy_datetime.TabIndex = 28;
-            this.panel_fy_datetime.Visible = false;
             // 
             // label_fy_elapsed
             // 
@@ -1053,6 +1053,23 @@
             this.timer_landing.Interval = 1000;
             this.timer_landing.Tick += new System.EventHandler(this.timer_landing_Tick);
             // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(618, 55);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(100, 20);
+            this.textBox2.TabIndex = 31;
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(275, 59);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.TabIndex = 32;
+            this.button4.Text = "button4";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
             // sPanel_separator
             // 
             this.sPanel_separator.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
@@ -1064,19 +1081,13 @@
             this.sPanel_separator.Size = new System.Drawing.Size(44, 446);
             this.sPanel_separator.TabIndex = 1;
             // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(618, 55);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(100, 20);
-            this.textBox2.TabIndex = 31;
-            // 
             // Main_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1140, 525);
+            this.Controls.Add(this.button4);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.panel_tf);
             this.Controls.Add(this.dataGridView1);
@@ -1214,5 +1225,6 @@
         private System.Windows.Forms.PictureBox pictureBox_landing;
         private System.Windows.Forms.Timer timer_landing;
         private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.Button button4;
     }
 }
