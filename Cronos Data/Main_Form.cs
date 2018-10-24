@@ -1479,6 +1479,7 @@ namespace Cronos_Data
 
         private void FY_InsertDone()
         {
+            panel_fy_status.Visible = true;
             _fy_displayinexel_i++;
             StringBuilder replace_datetime_fy = new StringBuilder(dateTimePicker_start_fy.Text.Substring(0, 10) + "__" + dateTimePicker_end_fy.Text.Substring(0, 10));
             replace_datetime_fy.Replace(" ", "_");
@@ -1561,17 +1562,16 @@ namespace Cronos_Data
                 panel_fy_datetime.Location = new Point(5, 226);
             }));
 
-            var notification = new NotifyIcon()
-            {
-                Visible = true,
-                Icon = SystemIcons.Information,
-                BalloonTipIcon = ToolTipIcon.Info,
-                BalloonTipTitle = "FY BET RECORD DONE",
-                BalloonTipText = "Filter of...\nStart Time: " + dateTimePicker_start_fy.Text + "\nEnd Time: " + dateTimePicker_end_fy.Text + "\n\nStart-Finish...\nStart Time: " + label_start_fy.Text + "\nFinish Time: " + label_end_fy.Text,
-            };
+            //var notification = new NotifyIcon()
+            //{
+            //    Visible = true,
+            //    Icon = SystemIcons.Information,
+            //    BalloonTipIcon = ToolTipIcon.Info,
+            //    BalloonTipTitle = "FY BET RECORD DONE",
+            //    BalloonTipText = "Filter of...\nStart Time: " + dateTimePicker_start_fy.Text + "\nEnd Time: " + dateTimePicker_end_fy.Text + "\n\nStart-Finish...\nStart Time: " + label_start_fy.Text + "\nFinish Time: " + label_end_fy.Text,
+            //};
 
-            notification.ShowBalloonTip(1000);
-
+            //notification.ShowBalloonTip(1000);
             timer_fy_start.Start();
         }
 
