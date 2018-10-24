@@ -116,6 +116,7 @@
             this.timer_landing = new System.Windows.Forms.Timer(this.components);
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.button4 = new System.Windows.Forms.Button();
+            this.comboBox_fy_list = new System.Windows.Forms.ComboBox();
             this.sPanel_separator = new Cronos_Data.SPanel();
             this.panel_header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_minimize)).BeginInit();
@@ -282,10 +283,10 @@
             // 
             // panel_fy
             // 
+            this.panel_fy.Controls.Add(this.panel_fy_filter);
             this.panel_fy.Controls.Add(this.panel_fy_status);
             this.panel_fy.Controls.Add(this.label_title_fy);
             this.panel_fy.Controls.Add(this.webBrowser_fy);
-            this.panel_fy.Controls.Add(this.panel_fy_filter);
             this.panel_fy.Location = new System.Drawing.Point(17, 88);
             this.panel_fy.Name = "panel_fy";
             this.panel_fy.Size = new System.Drawing.Size(534, 408);
@@ -507,6 +508,7 @@
             // 
             // panel_fy_filter
             // 
+            this.panel_fy_filter.Controls.Add(this.comboBox_fy_list);
             this.panel_fy_filter.Controls.Add(this.comboBox_fy);
             this.panel_fy_filter.Controls.Add(this.dateTimePicker_end_fy);
             this.panel_fy_filter.Controls.Add(this.dateTimePicker_start_fy);
@@ -527,16 +529,16 @@
             "Yesterday",
             "Last week",
             "Last month"});
-            this.comboBox_fy.Location = new System.Drawing.Point(76, 18);
+            this.comboBox_fy.Location = new System.Drawing.Point(69, 15);
             this.comboBox_fy.Name = "comboBox_fy";
-            this.comboBox_fy.Size = new System.Drawing.Size(108, 23);
+            this.comboBox_fy.Size = new System.Drawing.Size(133, 23);
             this.comboBox_fy.TabIndex = 7;
             this.comboBox_fy.SelectedIndexChanged += new System.EventHandler(this.comboBox_fy_SelectedIndexChanged);
             // 
             // dateTimePicker_end_fy
             // 
             this.dateTimePicker_end_fy.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dateTimePicker_end_fy.Location = new System.Drawing.Point(278, 44);
+            this.dateTimePicker_end_fy.Location = new System.Drawing.Point(296, 44);
             this.dateTimePicker_end_fy.Name = "dateTimePicker_end_fy";
             this.dateTimePicker_end_fy.Size = new System.Drawing.Size(169, 21);
             this.dateTimePicker_end_fy.TabIndex = 11;
@@ -544,7 +546,7 @@
             // dateTimePicker_start_fy
             // 
             this.dateTimePicker_start_fy.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dateTimePicker_start_fy.Location = new System.Drawing.Point(278, 16);
+            this.dateTimePicker_start_fy.Location = new System.Drawing.Point(296, 16);
             this.dateTimePicker_start_fy.Name = "dateTimePicker_start_fy";
             this.dateTimePicker_start_fy.Size = new System.Drawing.Size(169, 21);
             this.dateTimePicker_start_fy.TabIndex = 8;
@@ -553,7 +555,7 @@
             // 
             this.label_start_fy.AutoSize = true;
             this.label_start_fy.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_start_fy.Location = new System.Drawing.Point(207, 20);
+            this.label_start_fy.Location = new System.Drawing.Point(225, 20);
             this.label_start_fy.Name = "label_start_fy";
             this.label_start_fy.Size = new System.Drawing.Size(66, 15);
             this.label_start_fy.TabIndex = 9;
@@ -563,7 +565,7 @@
             // 
             this.label_end_fy.AutoSize = true;
             this.label_end_fy.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_end_fy.Location = new System.Drawing.Point(207, 49);
+            this.label_end_fy.Location = new System.Drawing.Point(225, 49);
             this.label_end_fy.Name = "label_end_fy";
             this.label_end_fy.Size = new System.Drawing.Size(63, 15);
             this.label_end_fy.TabIndex = 10;
@@ -1059,6 +1061,7 @@
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(100, 20);
             this.textBox2.TabIndex = 31;
+            this.textBox2.WordWrap = false;
             // 
             // button4
             // 
@@ -1068,7 +1071,24 @@
             this.button4.TabIndex = 32;
             this.button4.Text = "button4";
             this.button4.UseVisualStyleBackColor = true;
+            this.button4.Visible = false;
             this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // comboBox_fy_list
+            // 
+            this.comboBox_fy_list.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox_fy_list.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboBox_fy_list.FormattingEnabled = true;
+            this.comboBox_fy_list.Items.AddRange(new object[] {
+            "Deposit Record",
+            "Withdrawal Record",
+            "Bonus Record",
+            "Bet Record",
+            "Member List"});
+            this.comboBox_fy_list.Location = new System.Drawing.Point(69, 47);
+            this.comboBox_fy_list.Name = "comboBox_fy_list";
+            this.comboBox_fy_list.Size = new System.Drawing.Size(133, 23);
+            this.comboBox_fy_list.TabIndex = 12;
             // 
             // sPanel_separator
             // 
@@ -1226,5 +1246,6 @@
         private System.Windows.Forms.Timer timer_landing;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.ComboBox comboBox_fy_list;
     }
 }
