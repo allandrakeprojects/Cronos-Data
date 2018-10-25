@@ -468,6 +468,8 @@ namespace Cronos_Data
 
                         DateTime month_registration = Convert.ToDateTime(date_register);
 
+                        //MessageBox.Show(date_register + "----" + date_t);
+
                         ////get contact number and email
 
                         if (_fy_get_ii == 1)
@@ -475,6 +477,7 @@ namespace Cronos_Data
                             var header = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16}", "Brand", "Username", "Name", "Status", "Date Register", "Last Login Date", "Last Deposit Date", "Contact Number", "Email", "VIP Level", "Registration Time", "Month Register", "FD Date", "FD Month", "Source", "IP Address", "Register Domain");
                             _fy_csv.AppendLine(header);
                         }
+
                         var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16}", "FY", "\"" + username + "\"", "\"" + name + "\"", "\"" + status + "\"", "\"" + date_register + " " + date_time_register + "\"", "\"" + last_login_date + "\"", "\"" + "" + "\"", "\"" + _fy_playerlist_cn + "\"", "\"" + _fy_playerlist_ea + "\"", "\"" + vip_level + "\"", "\"" + date_register + "\"", "\"" + month_registration.ToString("MM/01/yyyy") + "\"", "\"" + "" + "\"", "\"" + "" + "\"", "\"" + source + "\"", "\"" + ip + "\"", "\"" + register_domain + "\"");
                         _fy_csv.AppendLine(newLine);
 
@@ -510,6 +513,7 @@ namespace Cronos_Data
                                 File.Delete(_fy_folder_path_result_xlsx);
                             }
 
+                            //_fy_csv.ToString().Reverse();
                             File.WriteAllText(_fy_folder_path_result, _fy_csv.ToString(), Encoding.UTF8);
 
                             Excel.Application app = new Excel.Application();
@@ -540,7 +544,7 @@ namespace Cronos_Data
                             int i_excel;
                             for (i_excel = 1; i_excel <= 17; i_excel++)
                             {
-                                worksheet.Columns[i_excel].ColumnWidth = 15;
+                                worksheet.Columns[i_excel].ColumnWidth = 18;
                             }
                             wb.SaveAs(_fy_folder_path_result_xlsx, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
                             wb.Close();
@@ -661,7 +665,7 @@ namespace Cronos_Data
 
                     if (i_span == cn)
                     {
-                        _fy_playerlist_cn = ItemMatch.Groups[1].Value;
+                        _fy_playerlist_cn = "86" + ItemMatch.Groups[1].Value;
                     }
                     else if (i_span == ea)
                     {
@@ -824,6 +828,7 @@ namespace Cronos_Data
                 File.Delete(_fy_folder_path_result_xlsx);
             }
 
+            _fy_csv.ToString().Reverse();
             File.WriteAllText(_fy_folder_path_result, _fy_csv.ToString(), Encoding.UTF8);
 
             Excel.Application app = new Excel.Application();
@@ -854,7 +859,7 @@ namespace Cronos_Data
             int i;
             for (i = 1; i <= 17; i++)
             {
-                worksheet.Columns[i].ColumnWidth = 15;
+                worksheet.Columns[i].ColumnWidth = 18;
             }
             wb.SaveAs(_fy_folder_path_result_xlsx, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
             wb.Close();
@@ -953,43 +958,99 @@ namespace Cronos_Data
 
         private async Task FY_GetTotal(string start_datetime, string end_datetime)
         {
-            // status
-            label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
-            label_fy_status.Text = "status: doing calculation...";
-
             var cookie = FullWebBrowserCookie.GetCookieInternal(webBrowser_fy.Url, false);
             WebClient wc = new WebClient();
 
             wc.Headers.Add("Cookie", cookie);
             wc.Encoding = Encoding.UTF8;
             wc.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
+            
+            byte[] result_gettotal = null;
+            string responsebody_gettotatal = "";
 
-            var reqparm_gettotal = new System.Collections.Specialized.NameValueCollection
+            int selected_index = comboBox_fy_list.SelectedIndex;
+            if (selected_index == 0)
             {
-                { "s_btype", "" },
-                { "betNo", "" },
-                { "name", "" },
-                { "gpid", "0" },
-                { "wager_settle", "0" },
-                { "valid_inva", "" },
-                { "start",  start_datetime},
-                { "end", end_datetime},
-                { "skip", "0"},
-                { "ftime_188", "bettime"},
-                { "data[0][name]", "sEcho"},
-                { "data[0][value]", _fy_secho++.ToString()},
-                { "data[1][name]", "iColumns"},
-                { "data[1][value]", "1"},
-                { "data[2][name]", "sColumns"},
-                { "data[2][value]", ""},
-                { "data[3][name]", "iDisplayStart"},
-                { "data[3][value]", "0"},
-                { "data[4][name]", "iDisplayLength"},
-                { "data[4][value]", "1"}
-            };
+                // Deposit Record
+                var reqparm = new NameValueCollection
+                {
+                    { "s_btype", ""},
+                    { "s_StartTime", start_datetime},
+                    { "s_EndTime", end_datetime},
+                    { "dno", "" },
+                    { "s_dpttype", "0"},
+                    { "s_type", "1" },
+                    { "s_transtype", "0"},
+                    { "s_ppid", "0"},
+                    { "s_payoption", "0"},
+                    { "groupid", "0"},
+                    { "s_keyword", ""},
+                    { "s_playercurrency", "ALL"},
+                    { "skip", "0"},
+                    { "data[0][name]", "sEcho"},
+                    { "data[0][value]", _fy_secho++.ToString()},
+                    { "data[1][name]", "iColumns"},
+                    { "data[1][value]", "17"},
+                    { "data[2][name]", "sColumns"},
+                    { "data[2][value]", ""},
+                    { "data[3][name]", "iDisplayStart"},
+                    { "data[3][value]", "0"},
+                    { "data[4][name]", "iDisplayLength"},
+                    { "data[4][value]", "1"}
+                };
 
-            byte[] result_gettotal = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/flow/wageredAjax2", "POST", reqparm_gettotal);
-            string responsebody_gettotatal = Encoding.UTF8.GetString(result_gettotal);
+                // status
+                label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
+                label_fy_status.Text = "status: doing calculation... DEPOSIT RECORD";
+
+                result_gettotal = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/dptHistoryAjax", "POST", reqparm);
+                responsebody_gettotatal = Encoding.UTF8.GetString(result_gettotal).Remove(0, 1); ;
+            }
+            else if (selected_index == 1)
+            {
+                // Withdrawal Record
+
+            }
+            else if (selected_index == 2)
+            {
+                // Bonus Record
+
+            }
+            else if (selected_index == 3)
+            {
+                // Bet Record
+                var reqparm = new NameValueCollection
+                {
+                    { "s_btype", ""},
+                    { "betNo", ""},
+                    { "name", ""},
+                    { "gpid", "0" },
+                    { "wager_settle", "0"},
+                    { "valid_inva", ""},
+                    { "start",  start_datetime},
+                    { "end", end_datetime},
+                    { "skip", "0"},
+                    { "ftime_188", "bettime"},
+                    { "data[0][name]", "sEcho"},
+                    { "data[0][value]", _fy_secho++.ToString()},
+                    { "data[1][name]", "iColumns"},
+                    { "data[1][value]", "12"},
+                    { "data[2][name]", "sColumns"},
+                    { "data[2][value]", ""},
+                    { "data[3][name]", "iDisplayStart"},
+                    { "data[3][value]", "0"},
+                    { "data[4][name]", "iDisplayLength"},
+                    { "data[4][value]", "1"}
+                };
+
+                // status
+                label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
+                label_fy_status.Text = "status: doing calculation... BET RECORD";
+
+                result_gettotal = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/flow/wageredAjax2", "POST", reqparm);
+                responsebody_gettotatal = Encoding.UTF8.GetString(result_gettotal);
+            }
+
             var deserializeObject_gettotal = JsonConvert.DeserializeObject(responsebody_gettotatal);
 
             JObject jo_gettotal = JObject.Parse(deserializeObject_gettotal.ToString());
@@ -1129,35 +1190,89 @@ namespace Cronos_Data
                 wc.Headers.Add("Cookie", cookie);
                 wc.Encoding = Encoding.UTF8;
                 wc.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
-                
-                var reqparm = new NameValueCollection
-                {
-                    { "s_btype", "" },
-                    { "betNo", "" },
-                    { "name", "" },
-                    { "gpid", "0" },
-                    { "wager_settle", "0" },
-                    { "valid_inva", "" },
-                    { "start",  gettotal_start_datetime},
-                    { "end", gettotal_end_datetime},
-                    { "skip", "0"},
-                    { "ftime_188", "bettime"},
-                    { "data[0][name]", "sEcho"},
-                    { "data[0][value]", _fy_secho++.ToString()},
-                    { "data[1][name]", "iColumns"},
-                    { "data[1][value]", "12"},
-                    { "data[2][name]", "sColumns"},
-                    { "data[2][value]", ""},
-                    { "data[3][name]", "iDisplayStart"},
-                    { "data[3][value]", "0"},
-                    { "data[4][name]", "iDisplayLength"},
-                    { "data[4][value]", _display_length_fy.ToString()}
-                };
-                                
-                label_fy_status.Text = "status: getting data...";
 
-                byte[] result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/flow/wageredAjax2", "POST", reqparm);
-                string responsebody = Encoding.UTF8.GetString(result);
+                byte[] result = null;
+                string responsebody = null;
+
+                int selected_index = comboBox_fy_list.SelectedIndex;
+                if (selected_index == 0)
+                {
+                    // Deposit Record
+                    var reqparm = new NameValueCollection
+                    {
+                        { "s_btype", "" },
+                        { "s_StartTime", gettotal_start_datetime},
+                        { "s_EndTime", gettotal_end_datetime},
+                        { "dno", "" },
+                        { "s_dpttype", "0"},
+                        { "s_type", "1" },
+                        { "s_transtype", "0"},
+                        { "s_ppid", "0"},
+                        { "s_payoption", "0"},
+                        { "groupid", "0"},
+                        { "s_keyword", ""},
+                        { "s_playercurrency", "ALL"},
+                        { "skip", "0"},
+                        { "data[0][name]", "sEcho"},
+                        { "data[0][value]", _fy_secho++.ToString()},
+                        { "data[1][name]", "iColumns"},
+                        { "data[1][value]", "17"},
+                        { "data[2][name]", "sColumns"},
+                        { "data[2][value]", ""},
+                        { "data[3][name]", "iDisplayStart"},
+                        { "data[3][value]", "0"},
+                        { "data[4][name]", "iDisplayLength"},
+                        { "data[4][value]", _display_length_fy.ToString()}
+                    };
+                    
+                    label_fy_status.Text = "status: getting data... DEPOSIT RECORD";
+
+                    result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/dptHistoryAjax", "POST", reqparm);
+                    responsebody = Encoding.UTF8.GetString(result).Remove(0, 1);
+                }
+                else if (selected_index == 1)
+                {
+                    // Withdrawal Record
+
+                }
+                else if (selected_index == 2)
+                {
+                    // Bonus Record
+
+                }
+                else if (selected_index == 3)
+                {
+                    // Bet Record
+                    var reqparm = new NameValueCollection
+                    {
+                        { "s_btype", ""},
+                        { "betNo", ""},
+                        { "name", ""},
+                        { "gpid", "0" },
+                        { "wager_settle", "0"},
+                        { "valid_inva", ""},
+                        { "start",  gettotal_start_datetime},
+                        { "end", gettotal_end_datetime},
+                        { "skip", "0"},
+                        { "ftime_188", "bettime"},
+                        { "data[0][name]", "sEcho"},
+                        { "data[0][value]", _fy_secho++.ToString()},
+                        { "data[1][name]", "iColumns"},
+                        { "data[1][value]", "12"},
+                        { "data[2][name]", "sColumns"},
+                        { "data[2][value]", ""},
+                        { "data[3][name]", "iDisplayStart"},
+                        { "data[3][value]", "0"},
+                        { "data[4][name]", "iDisplayLength"},
+                        { "data[4][value]", _display_length_fy.ToString()}
+                    };
+
+                    label_fy_status.Text = "status: getting data... BET RECORD";
+
+                    result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/flow/wageredAjax2", "POST", reqparm);
+                    responsebody = Encoding.UTF8.GetString(result);
+                }
+
                 var deserializeObject = JsonConvert.DeserializeObject(responsebody);
 
                 jo_fy = JObject.Parse(deserializeObject.ToString());
@@ -1244,36 +1359,88 @@ namespace Cronos_Data
                         result_pages = (Convert.ToInt32(_display_length_fy) * _fy_pages_count);
                     }
 
-                    var reqparm = new System.Collections.Specialized.NameValueCollection
+                    byte[] result = null;
+                    string responsebody = null;
+
+                    int selected_index = comboBox_fy_list.SelectedIndex;
+                    if (selected_index == 0)
                     {
-                        { "s_btype", "" },
-                        { "betNo", "" },
-                        { "name", "" },
-                        { "gpid", "0" },
-                        { "wager_settle", "0" },
-                        { "valid_inva", "" },
-                        { "start",  gettotal_start_datetime},
-                        { "end", gettotal_end_datetime},
-                        { "skip", "0"},
-                        { "ftime_188", "bettime"},
-                        { "data[0][name]", "sEcho"},
-                        { "data[0][value]", _fy_secho++.ToString()},
-                        { "data[1][name]", "iColumns"},
-                        { "data[1][value]", "12"},
-                        { "data[2][name]", "sColumns"},
-                        { "data[2][value]", ""},
-                        { "data[3][name]", "iDisplayStart"},
-                        { "data[3][value]", result_pages.ToString()},
-                        { "data[4][name]", "iDisplayLength"},
-                        { "data[4][value]", _display_length_fy.ToString()}
-                    };
+                        // Deposit Record
+                        var reqparm = new NameValueCollection
+                        {
+                            { "s_btype", "" },
+                            { "s_StartTime", gettotal_start_datetime},
+                            { "s_EndTime", gettotal_end_datetime},
+                            { "dno", "" },
+                            { "s_dpttype", "0"},
+                            { "s_type", "1" },
+                            { "s_transtype", "0"},
+                            { "s_ppid", "0"},
+                            { "s_payoption", "0"},
+                            { "groupid", "0"},
+                            { "s_keyword", ""},
+                            { "s_playercurrency", "ALL"},
+                            { "skip", "0"},
+                            { "data[0][name]", "sEcho"},
+                            { "data[0][value]", _fy_secho++.ToString()},
+                            { "data[1][name]", "iColumns"},
+                            { "data[1][value]", "17"},
+                            { "data[2][name]", "sColumns"},
+                            { "data[2][value]", ""},
+                            { "data[3][name]", "iDisplayStart"},
+                            { "data[3][value]", "0"},
+                            { "data[4][name]", "iDisplayLength"},
+                            { "data[4][value]", _display_length_fy.ToString()}
+                        };
 
-                    // status
-                    label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
-                    label_fy_status.Text = "status: getting data...";
+                        label_fy_status.Text = "status: getting data... DEPOSIT RECORD";
 
-                    byte[] result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/flow/wageredAjax2", "POST", reqparm);
-                    string responsebody = Encoding.UTF8.GetString(result);
+                        result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/dptHistoryAjax", "POST", reqparm);
+                        responsebody = Encoding.UTF8.GetString(result).Remove(0, 1);
+                    }
+                    else if (selected_index == 1)
+                    {
+                        // Withdrawal Record
+
+                    }
+                    else if (selected_index == 2)
+                    {
+                        // Bonus Record
+
+                    }
+                    else if (selected_index == 3)
+                    {
+                        // Bet Record
+                        var reqparm = new NameValueCollection
+                        {
+                            { "s_btype", ""},
+                            { "betNo", ""},
+                            { "name", ""},
+                            { "gpid", "0" },
+                            { "wager_settle", "0"},
+                            { "valid_inva", ""},
+                            { "start",  gettotal_start_datetime},
+                            { "end", gettotal_end_datetime},
+                            { "skip", "0"},
+                            { "ftime_188", "bettime"},
+                            { "data[0][name]", "sEcho"},
+                            { "data[0][value]", _fy_secho++.ToString()},
+                            { "data[1][name]", "iColumns"},
+                            { "data[1][value]", "12"},
+                            { "data[2][name]", "sColumns"},
+                            { "data[2][value]", ""},
+                            { "data[3][name]", "iDisplayStart"},
+                            { "data[3][value]", "0"},
+                            { "data[4][name]", "iDisplayLength"},
+                            { "data[4][value]", _display_length_fy.ToString()}
+                        };
+
+                        label_fy_status.Text = "status: getting data... BET RECORD";
+
+                        result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/flow/wageredAjax2", "POST", reqparm);
+                        responsebody = Encoding.UTF8.GetString(result);
+                    }
+
                     var deserializeObject = JsonConvert.DeserializeObject(responsebody);
 
                     jo_fy = JObject.Parse(deserializeObject.ToString());
@@ -1340,34 +1507,112 @@ namespace Cronos_Data
                         }
 
                         _fy_ii = ii;
-                        JToken game_platform = jo_fy.SelectToken("$.aaData[" + ii + "][0]");
-                        JToken player_id = jo_fy.SelectToken("$.aaData[" + ii + "][1][0]");
-                        JToken player_name = jo_fy.SelectToken("$.aaData[" + ii + "][1][1]");
-                        JToken bet_no = jo_fy.SelectToken("$.aaData[" + ii + "][2]").ToString().Replace("BetTransaction:", "");
-                        JToken bet_time = jo_fy.SelectToken("$.aaData[" + ii + "][3]");
-                        JToken bet_type = jo_fy.SelectToken("$.aaData[" + ii + "][4]").ToString().Replace("<br/>", "").PadRight(225).Substring(0, 225).Trim();
-                        String result_bet_type = Regex.Replace(bet_type.ToString(), @"<[^>]*>", String.Empty);
-                        JToken game_result = jo_fy.SelectToken("$.aaData[" + ii + "][5]").ToString().Replace("<br>", "");
-                        JToken stake_amount_color = jo_fy.SelectToken("$.aaData[" + ii + "][6][0]");
-                        JToken stake_amount = jo_fy.SelectToken("$.aaData[" + ii + "][6][1]");
-                        JToken win_amount_color = jo_fy.SelectToken("$.aaData[" + ii + "][7][0]");
-                        JToken win_amount = jo_fy.SelectToken("$.aaData[" + ii + "][7][1]");
-                        JToken company_win_loss_color = jo_fy.SelectToken("$.aaData[" + ii + "][8][0]");
-                        JToken company_win_loss = jo_fy.SelectToken("$.aaData[" + ii + "][8][1]");
-                        JToken valid_bet_color = jo_fy.SelectToken("$.aaData[" + ii + "][9][0]");
-                        JToken valid_bet = jo_fy.SelectToken("$.aaData[" + ii + "][9][1]");
-                        JToken valid_invalid_id = jo_fy.SelectToken("$.aaData[" + ii + "][10][0]");
-                        JToken valid_invalid = jo_fy.SelectToken("$.aaData[" + ii + "][10][1]");
-
-                        if (_fy_get_ii == 1)
-                        {
-                            var header = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10}", "Game Platform", "Username", "Bet No.", "Bet Time", "Bet Type", "Game Result", "Stake Amount", "Win Amount", "Company Win/Loss", "Valid Bet", "Valid/Invalid");
-                            _fy_csv.AppendLine(header);
-                        }
-
-                        var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10}", game_platform, "\"" + player_name + "\"", "\"" + bet_no + "\"", "\"" + bet_time + "\"", "\"" + result_bet_type.ToString().Replace(";", "") + "\"", "\"" + game_result + "\"", "\"" + stake_amount + "\"", "\"" + win_amount + "\"", "\"" + company_win_loss + "\"", "\"" + valid_bet + "\"", "\"" + valid_invalid + "\"");
-                        _fy_csv.AppendLine(newLine);
                         
+                        int selected_index = comboBox_fy_list.SelectedIndex;
+
+                        if (selected_index == 0)
+                        {
+                            // Deposit Record
+                            JToken submitted_date__transaction_id = jo_fy.SelectToken("$.aaData[" + ii + "][0]");
+                            string submitted_date = submitted_date__transaction_id.ToString().Substring(0, 19);
+                            string transaction_id = submitted_date__transaction_id.ToString().Substring(23);
+                            string date = submitted_date__transaction_id.ToString().Substring(0, 10);
+
+                            JToken member_get = jo_fy.SelectToken("$.aaData[" + ii + "][1]");
+                            string member = Regex.Match(member_get.ToString(), "<span(.*?)>(.*?)</span>").Groups[2].Value;
+
+                            JToken vip = jo_fy.SelectToken("$.aaData[" + ii + "][3]").ToString().Replace("\"", "");
+
+                            JToken amount = jo_fy.SelectToken("$.aaData[" + ii + "][5]").ToString().Replace("\"", "");
+
+                            JToken payment_type = jo_fy.SelectToken("$.aaData[" + ii + "][10]");
+                            payment_type = payment_type.ToString().Replace(":<br>", "");
+                            payment_type = payment_type.ToString().Replace("<br>", "");
+
+                            JToken status_get = jo_fy.SelectToken("$.aaData[" + ii + "][12]").ToString().Replace("\"", "");
+                            string status = Regex.Match(status_get.ToString(), "<font(.*?)>(.*?)</font>").Groups[2].Value;
+
+                            JToken updated_date__updated_time = jo_fy.SelectToken("$.aaData[" + ii + "][13]").ToString().Replace("\"", "");
+                            string updated_date = updated_date__updated_time.ToString().Substring(0, 10);
+                            string updated_time = updated_date__updated_time.ToString().Substring(15);
+
+                            //MessageBox.Show("submited date: " + submitted_date);
+                            //MessageBox.Show("transaction_id: " + transaction_id);
+                            //MessageBox.Show("member: " + member);
+                            //MessageBox.Show("vip: " + vip);
+                            //MessageBox.Show("amount: " + amount);
+                            //MessageBox.Show("status: " + status);
+                            //MessageBox.Show("updated_date: " + updated_date);
+                            //MessageBox.Show("updated_time: " + updated_time);
+
+                            int asd = transaction_id.Length / 2;
+                            string asd1 = transaction_id.Substring(0, asd);
+                            string asd2 = transaction_id.Substring(asd);
+                            string asdsadsa = "'" + asd1 + " " + asd2;
+
+                            //asd123
+
+                            string month = DateTime.Now.ToString("MM/01/yyyy");
+
+                            if (_fy_get_ii == 1)
+                            {
+                                var header = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19}", "Brand", "Month", "Date", "Submitted Date", "Updated Date", "Member", "Payment Type", "PG Company", "PG Type", "Transaction ID", "Amount", "Transaction Time", "Transaction Type", "Duration Time", "VIP", "Status", "Retained", "FD Date", "New", "Reactivated");
+                                _fy_csv.AppendLine(header);
+                            }
+
+                            var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19}", "FY", "\"" + month + "\"", "\"" + date + "\"", "\"" + submitted_date + "\"", "\"" + updated_date + " " + updated_time + "\"", "\"" + member + "\"", "\"" + payment_type + "\"", "\"" + "pg company" + "\"", "\"" + "pg type" + "\"", "\"" + asdsadsa + "\"", "\"" + amount + "\"", "\"" + "transaction time" + "\"", "\"" + "Deposit" + "\"", "\"" + "duration time" + "\"", "\"" + vip + "\"", "\"" + status + "\"", "\"" + "retained" + "\"", "\"" + "fd date" + "\"", "\"" + "new" + "\"", "\"" + "reactivated" + "\"");
+                            _fy_csv.AppendLine(newLine);
+                        }
+                        else if (selected_index == 1)
+                        {
+                            // Withdrawal Record
+
+                        }
+                        else if (selected_index == 2)
+                        {
+                            // Bonus Record
+
+                        }
+                        else if (selected_index == 3)
+                        {
+                            // Bet Record
+                            JToken game_platform = jo_fy.SelectToken("$.aaData[" + ii + "][0]");
+                            JToken player_id = jo_fy.SelectToken("$.aaData[" + ii + "][1][0]");
+                            JToken player_name = jo_fy.SelectToken("$.aaData[" + ii + "][1][1]");
+                            JToken bet_no = jo_fy.SelectToken("$.aaData[" + ii + "][2]").ToString().Replace("BetTransaction:", "");
+                            JToken bet_time = jo_fy.SelectToken("$.aaData[" + ii + "][3]");
+                            JToken bet_type = jo_fy.SelectToken("$.aaData[" + ii + "][4]").ToString().Replace("<br/>", "").PadRight(225).Substring(0, 225).Trim();
+                            String result_bet_type = Regex.Replace(bet_type.ToString(), @"<[^>]*>", String.Empty);
+                            JToken game_result = jo_fy.SelectToken("$.aaData[" + ii + "][5]").ToString().Replace("<br>", "");
+                            JToken stake_amount_color = jo_fy.SelectToken("$.aaData[" + ii + "][6][0]");
+                            JToken stake_amount = jo_fy.SelectToken("$.aaData[" + ii + "][6][1]");
+                            JToken win_amount_color = jo_fy.SelectToken("$.aaData[" + ii + "][7][0]");
+                            JToken win_amount = jo_fy.SelectToken("$.aaData[" + ii + "][7][1]");
+                            JToken company_win_loss_color = jo_fy.SelectToken("$.aaData[" + ii + "][8][0]");
+                            JToken company_win_loss = jo_fy.SelectToken("$.aaData[" + ii + "][8][1]");
+                            JToken valid_bet_color = jo_fy.SelectToken("$.aaData[" + ii + "][9][0]");
+                            JToken valid_bet = jo_fy.SelectToken("$.aaData[" + ii + "][9][1]");
+                            JToken valid_invalid_id = jo_fy.SelectToken("$.aaData[" + ii + "][10][0]");
+                            JToken valid_invalid = jo_fy.SelectToken("$.aaData[" + ii + "][10][1]");
+
+                            if (_fy_get_ii == 1)
+                            {
+                                var header = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10}", "Game Platform", "Username", "Bet No.", "Bet Time", "Bet Type", "Game Result", "Stake Amount", "Win Amount", "Company Win/Loss", "Valid Bet", "Valid/Invalid");
+                                _fy_csv.AppendLine(header);
+                            }
+
+                            var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10}", game_platform, "\"" + player_name + "\"", "\"" + bet_no + "\"", "\"" + bet_time + "\"", "\"" + result_bet_type.ToString().Replace(";", "") + "\"", "\"" + game_result + "\"", "\"" + stake_amount + "\"", "\"" + win_amount + "\"", "\"" + company_win_loss + "\"", "\"" + valid_bet + "\"", "\"" + valid_invalid + "\"");
+                            _fy_csv.AppendLine(newLine);
+                        }
+                        
+
+
+
+
+
+
+
+
                         if ((_fy_get_ii) == _limit_fy)
                         {
                             // status
@@ -1400,68 +1645,146 @@ namespace Cronos_Data
                                 Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime);
                             }
 
-                            if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bet Records"))
-                            {
-                                Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bet Records");
-                            }
-
                             string replace = _fy_displayinexel_i.ToString();
 
                             if (_fy_displayinexel_i.ToString().Length == 1)
                             {
                                 replace = "0" + _fy_displayinexel_i;
                             }
-
-                            _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bet Records\\FY_BetRecords_" + replace_datetime_fy.ToString() + "_" + replace + ".txt";
-                            _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bet Records\\FY_BetRecords_" + replace_datetime_fy.ToString() + "_" + replace + ".xlsx";
-                            _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bet Records\\";
-
-                            if (File.Exists(_fy_folder_path_result))
-                            {
-                                File.Delete(_fy_folder_path_result);
-                            }
-
-                            if (File.Exists(_fy_folder_path_result_xlsx))
-                            {
-                                File.Delete(_fy_folder_path_result_xlsx);
-                            }
                             
-                            File.WriteAllText(_fy_folder_path_result, _fy_csv.ToString(), Encoding.UTF8);
-
-                            Excel.Application app = new Excel.Application();
-                            Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-                            Excel.Worksheet worksheet = wb.ActiveSheet;
-                            Excel.Range usedRange = worksheet.UsedRange;
-                            Excel.Range rows = usedRange.Rows;
-                            int count = 0;
-                            foreach (Excel.Range row in rows)
+                            if (selected_index == 0)
                             {
-                                if (count == 0)
+                                // Deposit Record
+                                if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Deposit Record"))
                                 {
-                                    Excel.Range firstCell = row.Cells[1];
-
-                                    string firstCellValue = firstCell.Value as String;
-
-                                    if (!string.IsNullOrEmpty(firstCellValue))
-                                    {
-                                        row.Interior.Color = Color.FromArgb(222, 30, 112);
-                                        row.Font.Color = Color.FromArgb(255, 255, 255);
-                                    }
-
-                                    break;
+                                    Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Deposit Record");
                                 }
 
-                                count++;
+                                _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Deposit Record\\FY_DepositRecord_" + replace_datetime_fy.ToString() + "_" + replace + ".txt";
+                                _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Deposit Record\\FY_DepositRecord_" + replace_datetime_fy.ToString() + "_" + replace + ".xlsx";
+                                _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Deposit Record\\";
+                                
+                                if (File.Exists(_fy_folder_path_result))
+                                {
+                                    File.Delete(_fy_folder_path_result);
+                                }
+
+                                if (File.Exists(_fy_folder_path_result_xlsx))
+                                {
+                                    File.Delete(_fy_folder_path_result_xlsx);
+                                }
+
+                                _fy_csv.ToString().Reverse();
+                                File.WriteAllText(_fy_folder_path_result, _fy_csv.ToString(), Encoding.UTF8);
+
+                                Excel.Application app = new Excel.Application();
+                                Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                                Excel.Worksheet worksheet = wb.ActiveSheet;
+                                Excel.Range usedRange = worksheet.UsedRange;
+                                Excel.Range rows = usedRange.Rows;
+                                int count = 0;
+                                foreach (Excel.Range row in rows)
+                                {
+                                    if (count == 0)
+                                    {
+                                        Excel.Range firstCell = row.Cells[1];
+
+                                        string firstCellValue = firstCell.Value as String;
+
+                                        if (!string.IsNullOrEmpty(firstCellValue))
+                                        {
+                                            row.Interior.Color = Color.FromArgb(222, 30, 112);
+                                            row.Font.Color = Color.FromArgb(255, 255, 255);
+                                        }
+
+                                        break;
+                                    }
+
+                                    count++;
+                                }
+                                int i_excel;
+                                for (i_excel = 1; i_excel <= 20; i_excel++)
+                                {
+                                    worksheet.Columns[i_excel].ColumnWidth = 18;
+                                }
+                                wb.SaveAs(_fy_folder_path_result_xlsx, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                                wb.Close();
+                                app.Quit();
+                                Marshal.ReleaseComObject(app);
                             }
-                            int i_excel;
-                            for (i_excel = 1; i_excel <= 17; i_excel++)
+                            else if (selected_index == 1)
                             {
-                                worksheet.Columns[i_excel].ColumnWidth = 15;
+                                // Withdrawal Record
+
                             }
-                            wb.SaveAs(_fy_folder_path_result_xlsx, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-                            wb.Close();
-                            app.Quit();
-                            Marshal.ReleaseComObject(app);
+                            else if (selected_index == 2)
+                            {
+                                // Bonus Record
+
+                            }
+                            else if (selected_index == 3)
+                            {
+                                // Bet Record
+                                if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bet Record"))
+                                {
+                                    Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bet Record");
+                                }
+
+                                _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bet Record\\FY_BetRecord_" + replace_datetime_fy.ToString() + "_" + replace + ".txt";
+                                _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bet Record\\FY_BetRecord_" + replace_datetime_fy.ToString() + "_" + replace + ".xlsx";
+                                _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bet Record\\";
+                                                                
+                                if (File.Exists(_fy_folder_path_result))
+                                {
+                                    File.Delete(_fy_folder_path_result);
+                                }
+
+                                if (File.Exists(_fy_folder_path_result_xlsx))
+                                {
+                                    File.Delete(_fy_folder_path_result_xlsx);
+                                }
+
+                                _fy_csv.ToString().Reverse();
+                                File.WriteAllText(_fy_folder_path_result, _fy_csv.ToString(), Encoding.UTF8);
+
+                                Excel.Application app = new Excel.Application();
+                                Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                                Excel.Worksheet worksheet = wb.ActiveSheet;
+                                Excel.Range usedRange = worksheet.UsedRange;
+                                Excel.Range rows = usedRange.Rows;
+                                int count = 0;
+                                foreach (Excel.Range row in rows)
+                                {
+                                    if (count == 0)
+                                    {
+                                        Excel.Range firstCell = row.Cells[1];
+
+                                        string firstCellValue = firstCell.Value as String;
+
+                                        if (!string.IsNullOrEmpty(firstCellValue))
+                                        {
+                                            row.Interior.Color = Color.FromArgb(222, 30, 112);
+                                            row.Font.Color = Color.FromArgb(255, 255, 255);
+                                        }
+
+                                        break;
+                                    }
+
+                                    count++;
+                                }
+                                int i_excel;
+                                for (i_excel = 1; i_excel <= 17; i_excel++)
+                                {
+                                    worksheet.Columns[i_excel].ColumnWidth = 18;
+                                }
+
+                                wb.SaveAs(_fy_folder_path_result_xlsx, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                                wb.Close();
+                                app.Quit();
+                                Marshal.ReleaseComObject(app);
+                            }
+                            
+
 
                             _fy_csv.Clear();
 
@@ -1524,68 +1847,158 @@ namespace Cronos_Data
                 Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime);
             }
 
-            if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bet Records"))
-            {
-                Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bet Records");
-            }
-
             string replace = _fy_displayinexel_i.ToString();
 
             if (_fy_displayinexel_i.ToString().Length == 1)
             {
                 replace = "0" + _fy_displayinexel_i;
             }
-
-            _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bet Records\\FY_BetRecords_" + replace_datetime_fy.ToString() + "_" + replace + ".txt";
-            _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bet Records\\FY_BetRecords_" + replace_datetime_fy.ToString() + "_" + replace + ".xlsx";
-            _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bet Records\\";
-
-            if (File.Exists(_fy_folder_path_result))
-            {
-                File.Delete(_fy_folder_path_result);
-            }
-
-            if (File.Exists(_fy_folder_path_result_xlsx))
-            {
-                File.Delete(_fy_folder_path_result_xlsx);
-            }
             
-            File.WriteAllText(_fy_folder_path_result, _fy_csv.ToString(), Encoding.UTF8);
+            int selected_index = comboBox_fy_list.SelectedIndex;
 
-            Excel.Application app = new Excel.Application();
-            Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-            Excel.Worksheet worksheet = wb.ActiveSheet;
-            Excel.Range usedRange = worksheet.UsedRange;
-            Excel.Range rows = usedRange.Rows;
-            int count = 0;
-            foreach (Excel.Range row in rows)
+            if (selected_index == 0)
             {
-                if (count == 0)
+                // Deposit Record
+                if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Deposit Record"))
                 {
-                    Excel.Range firstCell = row.Cells[1];
-
-                    string firstCellValue = firstCell.Value as String;
-
-                    if (!string.IsNullOrEmpty(firstCellValue))
-                    {
-                        row.Interior.Color = Color.FromArgb(222, 30, 112);
-                        row.Font.Color = Color.FromArgb(255, 255, 255);
-                    }
-
-                    break;
+                    Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Deposit Record");
                 }
 
-                count++;
+                _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Deposit Record\\FY_DepositRecord_" + replace_datetime_fy.ToString() + "_" + replace + ".txt";
+                _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Deposit Record\\FY_DepositRecord_" + replace_datetime_fy.ToString() + "_" + replace + ".xlsx";
+                _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Deposit Record\\";
+
+                if (File.Exists(_fy_folder_path_result))
+                {
+                    File.Delete(_fy_folder_path_result);
+                }
+
+                if (File.Exists(_fy_folder_path_result_xlsx))
+                {
+                    File.Delete(_fy_folder_path_result_xlsx);
+                }
+
+                _fy_csv.ToString().Reverse();
+                File.WriteAllText(_fy_folder_path_result, _fy_csv.ToString(), Encoding.UTF8);
+
+                Excel.Application app = new Excel.Application();
+                Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                Excel.Worksheet worksheet = wb.ActiveSheet;
+                worksheet.Columns[2].NumberFormat = "MMM-dd";
+                //worksheet.Columns[10].NumberFormat.ToString().Replace("'", "");
+                //worksheet.Columns[10].NumberFormat = "General";
+                //worksheet.Columns[10].Formula = "=SUBSTITUTE(J1, \" \", \"\")";
+                worksheet.Columns[10].Replace(" ", "");
+                //worksheet.Columns[10].Replace("'", "");
+                worksheet.Columns[10].NumberFormat = "@";
+                //asd123
+                Excel.Range usedRange = worksheet.UsedRange;
+                Excel.Range rows = usedRange.Rows;
+                int count = 0;
+                foreach (Excel.Range row in rows)
+                {
+                    if (count == 0)
+                    {
+                        Excel.Range firstCell = row.Cells[1];
+
+                        string firstCellValue = firstCell.Value as String;
+
+                        if (!string.IsNullOrEmpty(firstCellValue))
+                        {
+                            row.Interior.Color = Color.FromArgb(222, 30, 112);
+                            row.Font.Color = Color.FromArgb(255, 255, 255);
+                            row.Font.Bold = true;
+                            row.Font.Size = 12;
+                        }
+
+                        break;
+                    }
+
+                    count++;
+                }
+                int i_excel;
+                for (i_excel = 1; i_excel <= 20; i_excel++)
+                {
+                    worksheet.Columns[i_excel].ColumnWidth = 20;
+                }
+                wb.SaveAs(_fy_folder_path_result_xlsx, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                wb.Close();
+                app.Quit();
+                Marshal.ReleaseComObject(app);
             }
-            int i_excel;
-            for (i_excel = 1; i_excel <= 17; i_excel++)
+            else if (selected_index == 1)
             {
-                worksheet.Columns[i_excel].ColumnWidth = 15;
+                // Withdrawal Record
+
             }
-            wb.SaveAs(_fy_folder_path_result_xlsx, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-            wb.Close();
-            app.Quit();
-            Marshal.ReleaseComObject(app);
+            else if (selected_index == 2)
+            {
+                // Bonus Record
+
+            }
+            else if (selected_index == 3)
+            {
+                // Bet Record
+                if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bet Record"))
+                {
+                    Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bet Record");
+                }
+
+                _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bet Record\\FY_BetRecord_" + replace_datetime_fy.ToString() + "_" + replace + ".txt";
+                _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bet Record\\FY_BetRecord_" + replace_datetime_fy.ToString() + "_" + replace + ".xlsx";
+                _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bet Record\\";
+                
+                if (File.Exists(_fy_folder_path_result))
+                {
+                    File.Delete(_fy_folder_path_result);
+                }
+
+                if (File.Exists(_fy_folder_path_result_xlsx))
+                {
+                    File.Delete(_fy_folder_path_result_xlsx);
+                }
+
+                _fy_csv.ToString().Reverse();
+                File.WriteAllText(_fy_folder_path_result, _fy_csv.ToString(), Encoding.UTF8);
+
+                Excel.Application app = new Excel.Application();
+                Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                Excel.Worksheet worksheet = wb.ActiveSheet;
+                Excel.Range usedRange = worksheet.UsedRange;
+                Excel.Range rows = usedRange.Rows;
+                int count = 0;
+                foreach (Excel.Range row in rows)
+                {
+                    if (count == 0)
+                    {
+                        Excel.Range firstCell = row.Cells[1];
+
+                        string firstCellValue = firstCell.Value as String;
+
+                        if (!string.IsNullOrEmpty(firstCellValue))
+                        {
+                            row.Interior.Color = Color.FromArgb(222, 30, 112);
+                            row.Font.Color = Color.FromArgb(255, 255, 255);
+                        }
+
+                        break;
+                    }
+
+                    count++;
+                }
+                int i_excel;
+                for (i_excel = 1; i_excel <= 17; i_excel++)
+                {
+                    worksheet.Columns[i_excel].ColumnWidth = 18;
+                }
+
+                wb.SaveAs(_fy_folder_path_result_xlsx, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                wb.Close();
+                app.Quit();
+                Marshal.ReleaseComObject(app);
+            }
+
+
 
             //if (File.Exists(_fy_folder_path_result))
             //{
@@ -1604,7 +2017,26 @@ namespace Cronos_Data
                 button_fy_proceed.Visible = true;
                 label_fy_locatefolder.Visible = true;
                 label_fy_status.ForeColor = Color.FromArgb(34, 139, 34);
-                label_fy_status.Text = "status: done";
+                if (selected_index == 0)
+                {
+                    // Deposit Record
+                    label_fy_status.Text = "status: done --- DEPOSIT RECORD";
+                }
+                else if (selected_index == 1)
+                {
+                    // Withdrawal Record
+                    label_fy_status.Text = "status: done --- WITHDRAWAL RECORD";
+                }
+                else if (selected_index == 2)
+                {
+                    // Bonus Record
+                    label_fy_status.Text = "status: done --- BONUS RECORD";
+                }
+                else if (selected_index == 3)
+                {
+                    // Bet Record
+                    label_fy_status.Text = "status: done --- BET RECORD";
+                }
                 panel_fy_datetime.Location = new Point(5, 226);
             }));
 
@@ -1630,7 +2062,7 @@ namespace Cronos_Data
             //int i;
             //for (i = 1; i <= 11; i++) // this will aply it form col 1 to 10
             //{
-            //    worksheet.Columns[i].ColumnWidth = 15;
+            //    worksheet.Columns[i].ColumnWidth = 18;
             //}   
 
             Excel.Range usedRange = worksheet.UsedRange;
@@ -1747,11 +2179,66 @@ namespace Cronos_Data
             if (start < end)
             {
                 int selected_index = comboBox_fy_list.SelectedIndex;
-                
                 if (selected_index == 0)
                 {
                     // Deposit Record
+                    if (result_start != result_end)
+                    {
+                        string end_get = "";
+                        int i = 0;
+                        while (result_start != result_end)
+                        {
+                            end_get = end.AddDays(-i).ToString("yyyy-MM-dd");
+                            if (result_start == end_get)
+                            {
+                                string start_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd ") + result_start_time;
+                                string end_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd 23:59:59");
+                                fy_datetime.Add(start_get_to_list + "*|*" + end_get_to_list);
 
+                                break;
+                            }
+                            else
+                            {
+                                if (i == 0)
+                                {
+                                    string start_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd 00:00:00");
+                                    string end_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd ") + result_end_time;
+                                    fy_datetime.Add(start_get_to_list + "*|*" + end_get_to_list);
+                                }
+                                else
+                                {
+                                    string start_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd 00:00:00");
+                                    string end_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd 23:59:59");
+                                    fy_datetime.Add(start_get_to_list + "*|*" + end_get_to_list);
+                                }
+                            }
+
+                            i++;
+                        }
+                    }
+                    else
+                    {
+                        fy_datetime.Add(start_datetime + "*|*" + end_datetime);
+                    }
+
+                    _fy_current_datetime = "";
+                    label_fy_start_datetime.Text = DateTime.Now.ToString("ddd, dd mmm HH:mm:ss");
+                    _fy_start_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+                    timer_fy.Start();
+                    webBrowser_fy.Stop();
+                    timer_fy_start.Stop();
+                    button_fy_start.Visible = false;
+                    pictureBox_fy_loader.Visible = true;
+                    panel_fy_filter.Enabled = false;
+                    button_filelocation.Enabled = false;
+                    panel_fy_status.Visible = true;
+
+                    await GetDataFYAsync();
+
+                    if (!_fy_no_result)
+                    {
+                        FYAsync();
+                    }
                 }
                 else if (selected_index == 1)
                 {
@@ -2485,9 +2972,9 @@ namespace Cronos_Data
                                 Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\tf\\" + _tf_current_datetime);
                             }
 
-                            if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\TF\\" + _tf_current_datetime + "\\Bet Records"))
+                            if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\TF\\" + _tf_current_datetime + "\\Bet Record"))
                             {
-                                Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\TF\\" + _tf_current_datetime + "\\Bet Records");
+                                Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\TF\\" + _tf_current_datetime + "\\Bet Record");
                             }
 
                             string replace = _tf_displayinexel_i.ToString();
@@ -2497,9 +2984,9 @@ namespace Cronos_Data
                                 replace = "0" + _tf_displayinexel_i;
                             }
 
-                            _tf_folder_path_result = label_filelocation.Text + "\\Cronos Data\\TF\\" + _tf_current_datetime + "\\Bet Records\\TF_BetRecords_" + replace_datetime_tf.ToString() + "_" + replace + ".txt";
-                            _tf_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\TF\\" + _tf_current_datetime + "\\Bet Records\\TF_BetRecords_" + replace_datetime_tf.ToString() + "_" + replace + ".xlsx";
-                            _tf_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\TF\\" + _tf_current_datetime + "\\Bet Records\\";
+                            _tf_folder_path_result = label_filelocation.Text + "\\Cronos Data\\TF\\" + _tf_current_datetime + "\\Bet Record\\TF_BetRecord_" + replace_datetime_tf.ToString() + "_" + replace + ".txt";
+                            _tf_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\TF\\" + _tf_current_datetime + "\\Bet Record\\TF_BetRecord_" + replace_datetime_tf.ToString() + "_" + replace + ".xlsx";
+                            _tf_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\TF\\" + _tf_current_datetime + "\\Bet Record\\";
 
                             if (File.Exists(_tf_folder_path_result))
                             {
@@ -2510,7 +2997,8 @@ namespace Cronos_Data
                             {
                                 File.Delete(_tf_folder_path_result_xlsx);
                             }
-                            
+
+                            _fy_csv.ToString().Reverse();
                             File.WriteAllText(_tf_folder_path_result, _tf_csv.ToString(), Encoding.UTF8);
 
                             Excel.Application app = new Excel.Application();
@@ -2541,7 +3029,7 @@ namespace Cronos_Data
                             int i_excel;
                             for (i_excel = 1; i_excel <= 17; i_excel++)
                             {
-                                worksheet.Columns[i_excel].ColumnWidth = 15;
+                                worksheet.Columns[i_excel].ColumnWidth = 18;
                             }
                             wb.SaveAs(_fy_folder_path_result_xlsx, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
                             wb.Close();
@@ -2625,9 +3113,9 @@ namespace Cronos_Data
                 Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\tf\\" + _tf_current_datetime);
             }
 
-            if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\TF\\" + _tf_current_datetime + "\\Bet Records"))
+            if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\TF\\" + _tf_current_datetime + "\\Bet Record"))
             {
-                Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\TF\\" + _tf_current_datetime + "\\Bet Records");
+                Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\TF\\" + _tf_current_datetime + "\\Bet Record");
             }
 
             string replace = _tf_displayinexel_i.ToString();
@@ -2637,9 +3125,9 @@ namespace Cronos_Data
                 replace = "0" + _tf_displayinexel_i;
             }
 
-            _tf_folder_path_result = label_filelocation.Text + "\\Cronos Data\\TF\\" + _tf_current_datetime + "\\Bet Records\\TF_BetRecords_" + replace_datetime_tf.ToString() + "_" + replace + ".txt";
-            _tf_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\TF\\" + _tf_current_datetime + "\\Bet Records\\TF_BetRecords_" + replace_datetime_tf.ToString() + "_" + replace + ".xlsx";
-            _tf_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\TF\\" + _tf_current_datetime + "\\Bet Records\\";
+            _tf_folder_path_result = label_filelocation.Text + "\\Cronos Data\\TF\\" + _tf_current_datetime + "\\Bet Record\\TF_BetRecord_" + replace_datetime_tf.ToString() + "_" + replace + ".txt";
+            _tf_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\TF\\" + _tf_current_datetime + "\\Bet Record\\TF_BetRecord_" + replace_datetime_tf.ToString() + "_" + replace + ".xlsx";
+            _tf_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\TF\\" + _tf_current_datetime + "\\Bet Record\\";
 
             if (File.Exists(_tf_folder_path_result))
             {
@@ -2650,7 +3138,8 @@ namespace Cronos_Data
             {
                 File.Delete(_tf_folder_path_result_xlsx);
             }
-            
+
+            _fy_csv.ToString().Reverse();
             File.WriteAllText(_tf_folder_path_result, _tf_csv.ToString(), Encoding.UTF8);
 
             Excel.Application app = new Excel.Application();
@@ -2681,7 +3170,7 @@ namespace Cronos_Data
             int i_excel;
             for (i_excel = 1; i_excel <= 17; i_excel++)
             {
-                worksheet.Columns[i_excel].ColumnWidth = 15;
+                worksheet.Columns[i_excel].ColumnWidth = 18;
             }
             wb.SaveAs(_fy_folder_path_result_xlsx, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
             wb.Close();
@@ -2727,7 +3216,7 @@ namespace Cronos_Data
             //int i;
             //for (i = 1; i <= 11; i++) // this will aply it form col 1 to 10
             //{
-            //    worksheet.Columns[i].ColumnWidth = 15;
+            //    worksheet.Columns[i].ColumnWidth = 18;
             //}   
 
             Excel.Range usedRange = worksheet.UsedRange;
