@@ -275,17 +275,20 @@ namespace Cronos_Data
                         }
                         else
                         {
-                            button_fy_start.Visible = true;
-                            panel_fy_filter.Visible = true;
-                            panel_fy_status.Visible = false;
-
-                            if (panel_fy_status.Visible != true)
+                            if (label_fy_status.Text == "-")
                             {
                                 button_fy_start.Visible = true;
-                            }
+                                panel_fy_filter.Visible = true;
+                                panel_fy_status.Visible = false;
 
-                            webBrowser_fy.Visible = false;
-                            timer_fy_start.Start();
+                                if (panel_fy_status.Visible != true)
+                                {
+                                    button_fy_start.Visible = true;
+                                }
+
+                                webBrowser_fy.Visible = false;
+                                timer_fy_start.Start();
+                            }
                         }
                     }
                 }
@@ -508,8 +511,6 @@ namespace Cronos_Data
                             }
 
                             File.WriteAllText(_fy_folder_path_result, _fy_csv.ToString(), Encoding.UTF8);
-
-                            //Application.DoEvents();
 
                             Excel.Application app = new Excel.Application();
                             Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
@@ -825,8 +826,6 @@ namespace Cronos_Data
 
             File.WriteAllText(_fy_folder_path_result, _fy_csv.ToString(), Encoding.UTF8);
 
-            //Application.DoEvents();
-
             Excel.Application app = new Excel.Application();
             Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
             Excel.Worksheet worksheet = wb.ActiveSheet;
@@ -1131,7 +1130,7 @@ namespace Cronos_Data
                 wc.Encoding = Encoding.UTF8;
                 wc.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
                 
-                var reqparm = new System.Collections.Specialized.NameValueCollection
+                var reqparm = new NameValueCollection
                 {
                     { "s_btype", "" },
                     { "betNo", "" },
@@ -1429,18 +1428,40 @@ namespace Cronos_Data
                             
                             File.WriteAllText(_fy_folder_path_result, _fy_csv.ToString(), Encoding.UTF8);
 
-                            //Application.DoEvents();
+                            Excel.Application app = new Excel.Application();
+                            Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                            Excel.Worksheet worksheet = wb.ActiveSheet;
+                            Excel.Range usedRange = worksheet.UsedRange;
+                            Excel.Range rows = usedRange.Rows;
+                            int count = 0;
+                            foreach (Excel.Range row in rows)
+                            {
+                                if (count == 0)
+                                {
+                                    Excel.Range firstCell = row.Cells[1];
 
-                            //Excel.Application app = new Excel.Application();
-                            //Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-                            //wb.SaveAs(_fy_folder_path_result_xlsx, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-                            //wb.Close();
-                            //app.Quit();
+                                    string firstCellValue = firstCell.Value as String;
 
-                            //if (File.Exists(_fy_folder_path_result))
-                            //{
-                            //    File.Delete(_fy_folder_path_result);
-                            //}
+                                    if (!string.IsNullOrEmpty(firstCellValue))
+                                    {
+                                        row.Interior.Color = Color.FromArgb(222, 30, 112);
+                                        row.Font.Color = Color.FromArgb(255, 255, 255);
+                                    }
+
+                                    break;
+                                }
+
+                                count++;
+                            }
+                            int i_excel;
+                            for (i_excel = 1; i_excel <= 17; i_excel++)
+                            {
+                                worksheet.Columns[i_excel].ColumnWidth = 15;
+                            }
+                            wb.SaveAs(_fy_folder_path_result_xlsx, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                            wb.Close();
+                            app.Quit();
+                            Marshal.ReleaseComObject(app);
 
                             _fy_csv.Clear();
 
@@ -1479,7 +1500,6 @@ namespace Cronos_Data
 
         private void FY_InsertDone()
         {
-            panel_fy_status.Visible = true;
             _fy_displayinexel_i++;
             StringBuilder replace_datetime_fy = new StringBuilder(dateTimePicker_start_fy.Text.Substring(0, 10) + "__" + dateTimePicker_end_fy.Text.Substring(0, 10));
             replace_datetime_fy.Replace(" ", "_");
@@ -1532,14 +1552,40 @@ namespace Cronos_Data
             
             File.WriteAllText(_fy_folder_path_result, _fy_csv.ToString(), Encoding.UTF8);
 
-            //Application.DoEvents();
+            Excel.Application app = new Excel.Application();
+            Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+            Excel.Worksheet worksheet = wb.ActiveSheet;
+            Excel.Range usedRange = worksheet.UsedRange;
+            Excel.Range rows = usedRange.Rows;
+            int count = 0;
+            foreach (Excel.Range row in rows)
+            {
+                if (count == 0)
+                {
+                    Excel.Range firstCell = row.Cells[1];
 
-            //Excel.Application app = new Excel.Application();
-            //Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-            //wb.SaveAs(_fy_folder_path_result_xlsx, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-            //wb.Close();
-            //app.Quit();
-            //Marshal.ReleaseComObject(app);
+                    string firstCellValue = firstCell.Value as String;
+
+                    if (!string.IsNullOrEmpty(firstCellValue))
+                    {
+                        row.Interior.Color = Color.FromArgb(222, 30, 112);
+                        row.Font.Color = Color.FromArgb(255, 255, 255);
+                    }
+
+                    break;
+                }
+
+                count++;
+            }
+            int i_excel;
+            for (i_excel = 1; i_excel <= 17; i_excel++)
+            {
+                worksheet.Columns[i_excel].ColumnWidth = 15;
+            }
+            wb.SaveAs(_fy_folder_path_result_xlsx, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+            wb.Close();
+            app.Quit();
+            Marshal.ReleaseComObject(app);
 
             //if (File.Exists(_fy_folder_path_result))
             //{
@@ -1781,10 +1827,14 @@ namespace Cronos_Data
                 else if (selected_index == 4)
                 {
                     // Member List
-                    DialogResult dr = MessageBox.Show("Include cellphone number and e-mail address?", "FY", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    DialogResult dr = MessageBox.Show("Include cellphone number and e-mail address?", "FY", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
                     if (dr == DialogResult.Yes)
                     {
                         _fy_cn_ea = true;
+                    }
+                    else if (dr == DialogResult.Cancel)
+                    {
+                        // Leave blank
                     }
                     else
                     {
@@ -2463,18 +2513,40 @@ namespace Cronos_Data
                             
                             File.WriteAllText(_tf_folder_path_result, _tf_csv.ToString(), Encoding.UTF8);
 
-                            //Application.DoEvents();
+                            Excel.Application app = new Excel.Application();
+                            Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                            Excel.Worksheet worksheet = wb.ActiveSheet;
+                            Excel.Range usedRange = worksheet.UsedRange;
+                            Excel.Range rows = usedRange.Rows;
+                            int count = 0;
+                            foreach (Excel.Range row in rows)
+                            {
+                                if (count == 0)
+                                {
+                                    Excel.Range firstCell = row.Cells[1];
 
-                            //Excel.Application app = new Excel.Application();
-                            //Excel.Workbook wb = app.Workbooks.Open(_tf_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-                            //wb.SaveAs(_tf_folder_path_result_xlsx, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-                            //wb.Close();
-                            //app.Quit();
+                                    string firstCellValue = firstCell.Value as String;
 
-                            //if (File.Exists(_tf_folder_path_result))
-                            //{
-                            //    File.Delete(_tf_folder_path_result);
-                            //}
+                                    if (!string.IsNullOrEmpty(firstCellValue))
+                                    {
+                                        row.Interior.Color = Color.FromArgb(222, 30, 112);
+                                        row.Font.Color = Color.FromArgb(255, 255, 255);
+                                    }
+
+                                    break;
+                                }
+
+                                count++;
+                            }
+                            int i_excel;
+                            for (i_excel = 1; i_excel <= 17; i_excel++)
+                            {
+                                worksheet.Columns[i_excel].ColumnWidth = 15;
+                            }
+                            wb.SaveAs(_fy_folder_path_result_xlsx, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                            wb.Close();
+                            app.Quit();
+                            Marshal.ReleaseComObject(app);
 
                             _tf_csv.Clear();
 
@@ -2581,19 +2653,40 @@ namespace Cronos_Data
             
             File.WriteAllText(_tf_folder_path_result, _tf_csv.ToString(), Encoding.UTF8);
 
-            //Application.DoEvents();
+            Excel.Application app = new Excel.Application();
+            Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+            Excel.Worksheet worksheet = wb.ActiveSheet;
+            Excel.Range usedRange = worksheet.UsedRange;
+            Excel.Range rows = usedRange.Rows;
+            int count = 0;
+            foreach (Excel.Range row in rows)
+            {
+                if (count == 0)
+                {
+                    Excel.Range firstCell = row.Cells[1];
 
-            //Excel.Application app = new Excel.Application();
-            //Excel.Workbook wb = app.Workbooks.Open(_tf_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-            //wb.SaveAs(_tf_folder_path_result_xlsx, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-            //wb.Close();
-            //app.Quit();
-            //Marshal.ReleaseComObject(app);
+                    string firstCellValue = firstCell.Value as String;
 
-            //if (File.Exists(_tf_folder_path_result))
-            //{
-            //    File.Delete(_tf_folder_path_result);
-            //}
+                    if (!string.IsNullOrEmpty(firstCellValue))
+                    {
+                        row.Interior.Color = Color.FromArgb(222, 30, 112);
+                        row.Font.Color = Color.FromArgb(255, 255, 255);
+                    }
+
+                    break;
+                }
+
+                count++;
+            }
+            int i_excel;
+            for (i_excel = 1; i_excel <= 17; i_excel++)
+            {
+                worksheet.Columns[i_excel].ColumnWidth = 15;
+            }
+            wb.SaveAs(_fy_folder_path_result_xlsx, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+            wb.Close();
+            app.Quit();
+            Marshal.ReleaseComObject(app);
 
             _tf_csv.Clear();
 
