@@ -43,6 +43,13 @@
             this.label_filelocation = new System.Windows.Forms.Label();
             this.label_title_fy = new System.Windows.Forms.Label();
             this.panel_fy = new System.Windows.Forms.Panel();
+            this.panel_fy_filter = new System.Windows.Forms.Panel();
+            this.comboBox_fy_list = new System.Windows.Forms.ComboBox();
+            this.comboBox_fy = new System.Windows.Forms.ComboBox();
+            this.dateTimePicker_end_fy = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePicker_start_fy = new System.Windows.Forms.DateTimePicker();
+            this.label_start_fy = new System.Windows.Forms.Label();
+            this.label_end_fy = new System.Windows.Forms.Label();
             this.panel_fy_status = new System.Windows.Forms.Panel();
             this.button_fy_proceed = new System.Windows.Forms.Button();
             this.label_fy_locatefolder = new System.Windows.Forms.Label();
@@ -62,12 +69,7 @@
             this.label_fy_total_records_1 = new System.Windows.Forms.Label();
             this.label_fy_status = new System.Windows.Forms.Label();
             this.webBrowser_fy = new System.Windows.Forms.WebBrowser();
-            this.panel_fy_filter = new System.Windows.Forms.Panel();
-            this.comboBox_fy = new System.Windows.Forms.ComboBox();
-            this.dateTimePicker_end_fy = new System.Windows.Forms.DateTimePicker();
-            this.dateTimePicker_start_fy = new System.Windows.Forms.DateTimePicker();
-            this.label_start_fy = new System.Windows.Forms.Label();
-            this.label_end_fy = new System.Windows.Forms.Label();
+            this.button_fy_stop = new System.Windows.Forms.Button();
             this.button_fy_start = new System.Windows.Forms.Button();
             this.timer_fy_detect_inserted_in_excel = new System.Windows.Forms.Timer(this.components);
             this.timer_fy_start = new System.Windows.Forms.Timer(this.components);
@@ -116,16 +118,17 @@
             this.timer_landing = new System.Windows.Forms.Timer(this.components);
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.button4 = new System.Windows.Forms.Button();
-            this.comboBox_fy_list = new System.Windows.Forms.ComboBox();
+            this.timer_fy_start_button = new System.Windows.Forms.Timer(this.components);
+            this.label_fy_count = new System.Windows.Forms.Label();
             this.sPanel_separator = new Cronos_Data.SPanel();
             this.panel_header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_minimize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_close)).BeginInit();
             this.panel_fy.SuspendLayout();
+            this.panel_fy_filter.SuspendLayout();
             this.panel_fy_status.SuspendLayout();
             this.panel_fy_datetime.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_fy_loader)).BeginInit();
-            this.panel_fy_filter.SuspendLayout();
             this.panel_footer.SuspendLayout();
             this.panel_landing.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_landing)).BeginInit();
@@ -292,6 +295,87 @@
             this.panel_fy.Size = new System.Drawing.Size(534, 408);
             this.panel_fy.TabIndex = 4;
             this.panel_fy.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_fy_Paint);
+            // 
+            // panel_fy_filter
+            // 
+            this.panel_fy_filter.Controls.Add(this.comboBox_fy_list);
+            this.panel_fy_filter.Controls.Add(this.comboBox_fy);
+            this.panel_fy_filter.Controls.Add(this.dateTimePicker_end_fy);
+            this.panel_fy_filter.Controls.Add(this.dateTimePicker_start_fy);
+            this.panel_fy_filter.Controls.Add(this.label_start_fy);
+            this.panel_fy_filter.Controls.Add(this.label_end_fy);
+            this.panel_fy_filter.Location = new System.Drawing.Point(3, 35);
+            this.panel_fy_filter.Name = "panel_fy_filter";
+            this.panel_fy_filter.Size = new System.Drawing.Size(528, 80);
+            this.panel_fy_filter.TabIndex = 24;
+            this.panel_fy_filter.Visible = false;
+            // 
+            // comboBox_fy_list
+            // 
+            this.comboBox_fy_list.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox_fy_list.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboBox_fy_list.FormattingEnabled = true;
+            this.comboBox_fy_list.Items.AddRange(new object[] {
+            "Deposit Record",
+            "Withdrawal Record",
+            "Bonus Record",
+            "Bet Record",
+            "Member List"});
+            this.comboBox_fy_list.Location = new System.Drawing.Point(69, 47);
+            this.comboBox_fy_list.Name = "comboBox_fy_list";
+            this.comboBox_fy_list.Size = new System.Drawing.Size(133, 23);
+            this.comboBox_fy_list.TabIndex = 12;
+            // 
+            // comboBox_fy
+            // 
+            this.comboBox_fy.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox_fy.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboBox_fy.FormattingEnabled = true;
+            this.comboBox_fy.Items.AddRange(new object[] {
+            "Yesterday",
+            "Last week",
+            "Last month"});
+            this.comboBox_fy.Location = new System.Drawing.Point(69, 15);
+            this.comboBox_fy.Name = "comboBox_fy";
+            this.comboBox_fy.Size = new System.Drawing.Size(133, 23);
+            this.comboBox_fy.TabIndex = 7;
+            this.comboBox_fy.SelectedIndexChanged += new System.EventHandler(this.comboBox_fy_SelectedIndexChanged);
+            // 
+            // dateTimePicker_end_fy
+            // 
+            this.dateTimePicker_end_fy.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dateTimePicker_end_fy.Location = new System.Drawing.Point(296, 44);
+            this.dateTimePicker_end_fy.Name = "dateTimePicker_end_fy";
+            this.dateTimePicker_end_fy.Size = new System.Drawing.Size(169, 21);
+            this.dateTimePicker_end_fy.TabIndex = 11;
+            // 
+            // dateTimePicker_start_fy
+            // 
+            this.dateTimePicker_start_fy.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dateTimePicker_start_fy.Location = new System.Drawing.Point(296, 16);
+            this.dateTimePicker_start_fy.Name = "dateTimePicker_start_fy";
+            this.dateTimePicker_start_fy.Size = new System.Drawing.Size(169, 21);
+            this.dateTimePicker_start_fy.TabIndex = 8;
+            // 
+            // label_start_fy
+            // 
+            this.label_start_fy.AutoSize = true;
+            this.label_start_fy.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_start_fy.Location = new System.Drawing.Point(225, 20);
+            this.label_start_fy.Name = "label_start_fy";
+            this.label_start_fy.Size = new System.Drawing.Size(66, 15);
+            this.label_start_fy.TabIndex = 9;
+            this.label_start_fy.Text = "Start Time:";
+            // 
+            // label_end_fy
+            // 
+            this.label_end_fy.AutoSize = true;
+            this.label_end_fy.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_end_fy.Location = new System.Drawing.Point(225, 49);
+            this.label_end_fy.Name = "label_end_fy";
+            this.label_end_fy.Size = new System.Drawing.Size(63, 15);
+            this.label_end_fy.TabIndex = 10;
+            this.label_end_fy.Text = "End Time:";
             // 
             // panel_fy_status
             // 
@@ -506,70 +590,25 @@
             this.webBrowser_fy.TabIndex = 0;
             this.webBrowser_fy.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowser_fy_DocumentCompletedAsync);
             // 
-            // panel_fy_filter
+            // button_fy_stop
             // 
-            this.panel_fy_filter.Controls.Add(this.comboBox_fy_list);
-            this.panel_fy_filter.Controls.Add(this.comboBox_fy);
-            this.panel_fy_filter.Controls.Add(this.dateTimePicker_end_fy);
-            this.panel_fy_filter.Controls.Add(this.dateTimePicker_start_fy);
-            this.panel_fy_filter.Controls.Add(this.label_start_fy);
-            this.panel_fy_filter.Controls.Add(this.label_end_fy);
-            this.panel_fy_filter.Location = new System.Drawing.Point(3, 35);
-            this.panel_fy_filter.Name = "panel_fy_filter";
-            this.panel_fy_filter.Size = new System.Drawing.Size(528, 80);
-            this.panel_fy_filter.TabIndex = 24;
-            this.panel_fy_filter.Visible = false;
-            // 
-            // comboBox_fy
-            // 
-            this.comboBox_fy.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox_fy.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.comboBox_fy.FormattingEnabled = true;
-            this.comboBox_fy.Items.AddRange(new object[] {
-            "Yesterday",
-            "Last week",
-            "Last month"});
-            this.comboBox_fy.Location = new System.Drawing.Point(69, 15);
-            this.comboBox_fy.Name = "comboBox_fy";
-            this.comboBox_fy.Size = new System.Drawing.Size(133, 23);
-            this.comboBox_fy.TabIndex = 7;
-            this.comboBox_fy.SelectedIndexChanged += new System.EventHandler(this.comboBox_fy_SelectedIndexChanged);
-            // 
-            // dateTimePicker_end_fy
-            // 
-            this.dateTimePicker_end_fy.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dateTimePicker_end_fy.Location = new System.Drawing.Point(296, 44);
-            this.dateTimePicker_end_fy.Name = "dateTimePicker_end_fy";
-            this.dateTimePicker_end_fy.Size = new System.Drawing.Size(169, 21);
-            this.dateTimePicker_end_fy.TabIndex = 11;
-            // 
-            // dateTimePicker_start_fy
-            // 
-            this.dateTimePicker_start_fy.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dateTimePicker_start_fy.Location = new System.Drawing.Point(296, 16);
-            this.dateTimePicker_start_fy.Name = "dateTimePicker_start_fy";
-            this.dateTimePicker_start_fy.Size = new System.Drawing.Size(169, 21);
-            this.dateTimePicker_start_fy.TabIndex = 8;
-            // 
-            // label_start_fy
-            // 
-            this.label_start_fy.AutoSize = true;
-            this.label_start_fy.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_start_fy.Location = new System.Drawing.Point(225, 20);
-            this.label_start_fy.Name = "label_start_fy";
-            this.label_start_fy.Size = new System.Drawing.Size(66, 15);
-            this.label_start_fy.TabIndex = 9;
-            this.label_start_fy.Text = "Start Time:";
-            // 
-            // label_end_fy
-            // 
-            this.label_end_fy.AutoSize = true;
-            this.label_end_fy.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_end_fy.Location = new System.Drawing.Point(225, 49);
-            this.label_end_fy.Name = "label_end_fy";
-            this.label_end_fy.Size = new System.Drawing.Size(63, 15);
-            this.label_end_fy.TabIndex = 10;
-            this.label_end_fy.Text = "End Time:";
+            this.button_fy_stop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(122)))), ((int)(((byte)(159)))));
+            this.button_fy_stop.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button_fy_stop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_fy_stop.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_fy_stop.ForeColor = System.Drawing.Color.White;
+            this.button_fy_stop.Image = ((System.Drawing.Image)(resources.GetObject("button_fy_stop.Image")));
+            this.button_fy_stop.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button_fy_stop.Location = new System.Drawing.Point(204, 290);
+            this.button_fy_stop.Name = "button_fy_stop";
+            this.button_fy_stop.Padding = new System.Windows.Forms.Padding(15, 0, 22, 0);
+            this.button_fy_stop.Size = new System.Drawing.Size(153, 59);
+            this.button_fy_stop.TabIndex = 33;
+            this.button_fy_stop.Text = "STOP";
+            this.button_fy_stop.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.button_fy_stop.UseVisualStyleBackColor = false;
+            this.button_fy_stop.Visible = false;
+            this.button_fy_stop.Click += new System.EventHandler(this.button_fy_stop_Click);
             // 
             // button_fy_start
             // 
@@ -1074,21 +1113,22 @@
             this.button4.Visible = false;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
-            // comboBox_fy_list
+            // timer_fy_start_button
             // 
-            this.comboBox_fy_list.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox_fy_list.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.comboBox_fy_list.FormattingEnabled = true;
-            this.comboBox_fy_list.Items.AddRange(new object[] {
-            "Deposit Record",
-            "Withdrawal Record",
-            "Bonus Record",
-            "Bet Record",
-            "Member List"});
-            this.comboBox_fy_list.Location = new System.Drawing.Point(69, 47);
-            this.comboBox_fy_list.Name = "comboBox_fy_list";
-            this.comboBox_fy_list.Size = new System.Drawing.Size(133, 23);
-            this.comboBox_fy_list.TabIndex = 12;
+            this.timer_fy_start_button.Interval = 1000;
+            this.timer_fy_start_button.Tick += new System.EventHandler(this.timer_fy_start_button_TickAsync);
+            // 
+            // label_fy_count
+            // 
+            this.label_fy_count.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_fy_count.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(122)))), ((int)(((byte)(159)))));
+            this.label_fy_count.Location = new System.Drawing.Point(38, 350);
+            this.label_fy_count.Name = "label_fy_count";
+            this.label_fy_count.Size = new System.Drawing.Size(498, 38);
+            this.label_fy_count.TabIndex = 0;
+            this.label_fy_count.Text = "-";
+            this.label_fy_count.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label_fy_count.Visible = false;
             // 
             // sPanel_separator
             // 
@@ -1107,6 +1147,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1140, 525);
+            this.Controls.Add(this.button_fy_start);
+            this.Controls.Add(this.label_fy_count);
+            this.Controls.Add(this.button_fy_stop);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.panel_tf);
@@ -1114,7 +1157,6 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.panel_footer);
-            this.Controls.Add(this.button_fy_start);
             this.Controls.Add(this.button_filelocation);
             this.Controls.Add(this.panel_fy);
             this.Controls.Add(this.sPanel_separator);
@@ -1132,13 +1174,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_minimize)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_close)).EndInit();
             this.panel_fy.ResumeLayout(false);
+            this.panel_fy_filter.ResumeLayout(false);
+            this.panel_fy_filter.PerformLayout();
             this.panel_fy_status.ResumeLayout(false);
             this.panel_fy_status.PerformLayout();
             this.panel_fy_datetime.ResumeLayout(false);
             this.panel_fy_datetime.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_fy_loader)).EndInit();
-            this.panel_fy_filter.ResumeLayout(false);
-            this.panel_fy_filter.PerformLayout();
             this.panel_footer.ResumeLayout(false);
             this.panel_footer.PerformLayout();
             this.panel_landing.ResumeLayout(false);
@@ -1247,5 +1289,8 @@
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.ComboBox comboBox_fy_list;
+        private System.Windows.Forms.Timer timer_fy_start_button;
+        private System.Windows.Forms.Button button_fy_stop;
+        private System.Windows.Forms.Label label_fy_count;
     }
 }

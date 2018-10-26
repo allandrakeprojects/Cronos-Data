@@ -29,7 +29,7 @@ namespace Cronos_Data
         public const int WM_NCLBUTTONDOWN = 0xA1;
         public const int HT_CAPTION = 0x2;
         private bool isClose;
-        System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+        Timer timer = new Timer();
 
         // FY ---
         List<FY_BetRecord> _fy_bet_records = new List<FY_BetRecord>();
@@ -259,8 +259,11 @@ namespace Cronos_Data
 
                     if (webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/player/list") || webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/site/index") || webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/player/online"))
                     {
-                        webBrowser_fy.Visible = false;
-                        panel_fy_status.Visible = true;
+                        if (!isButtonStart_fy)
+                        {
+                            webBrowser_fy.Visible = false;
+                            panel_fy_status.Visible = true;
+                        }
 
                         //if (label_fy_status.Text == "-")
                         //{
@@ -291,19 +294,22 @@ namespace Cronos_Data
                         }
                         else
                         {
-                            if (label_fy_status.Text == "-")
+                            if (!isButtonStart_fy)
                             {
-                                button_fy_start.Visible = true;
-                                panel_fy_filter.Visible = true;
-                                panel_fy_status.Visible = false;
-
-                                if (panel_fy_status.Visible != true)
+                                if (label_fy_status.Text == "-")
                                 {
                                     button_fy_start.Visible = true;
-                                }
+                                    panel_fy_filter.Visible = true;
+                                    panel_fy_status.Visible = false;
 
-                                webBrowser_fy.Visible = false;
-                                timer_fy_start.Start();
+                                    if (panel_fy_status.Visible != true)
+                                    {
+                                        button_fy_start.Visible = true;
+                                    }
+
+                                    webBrowser_fy.Visible = false;
+                                    timer_fy_start.Start();
+                                }
                             }
                         }
                     }
@@ -4087,6 +4093,7 @@ namespace Cronos_Data
 
         private async void button_fy_start_ClickAsync(object sender, EventArgs e)
         {
+            isButtonStart_fy = true;
             fy_datetime.Clear();
             fy_gettotal.Clear();
             fy_gettotal_test.Clear();
@@ -4104,6 +4111,56 @@ namespace Cronos_Data
 
             if (start < end)
             {
+                button_fy_stop.Visible = true;
+                button_fy_start.Visible = false;
+                timer_fy_count = 10;
+                label_fy_count.Text = timer_fy_count.ToString();
+                timer_fy_count = 9;
+                label_fy_count.Visible = true;
+                timer_fy_start_button.Start();
+            }
+            else
+            {
+                _fy_no_result = true;
+                MessageBox.Show("No data found.");
+            }
+        }
+
+
+        private void button_fy_stop_Click(object sender, EventArgs e)
+        {
+            button_fy_stop.Visible = false;
+            button_fy_start.Visible = true;
+            timer_fy_count = 10;
+            label_fy_count.Visible = false;
+            timer_fy_start_button.Stop();
+        }
+
+        int timer_fy_count = 10;
+        private async void timer_fy_start_button_TickAsync(object sender, EventArgs e)
+        {
+            label_fy_count.Text = timer_fy_count--.ToString();
+            if (label_fy_count.Text == "0")
+            {
+                timer_fy_start_button.Stop();
+                label_fy_count.Visible = false;
+                button_fy_stop.Visible = false;
+
+                fy_datetime.Clear();
+                fy_gettotal.Clear();
+                fy_gettotal_test.Clear();
+
+                string start_datetime = dateTimePicker_start_fy.Text;
+                DateTime start = DateTime.Parse(start_datetime);
+
+                string end_datetime = dateTimePicker_end_fy.Text;
+                DateTime end = DateTime.Parse(end_datetime);
+
+                string result_start = start.ToString("yyyy-MM-dd");
+                string result_end = end.ToString("yyyy-MM-dd");
+                string result_start_time = start.ToString("HH:mm:ss");
+                string result_end_time = end.ToString("HH:mm:ss");
+
                 int selected_index = comboBox_fy_list.SelectedIndex;
                 if (selected_index == 0)
                 {
@@ -4368,13 +4425,8 @@ namespace Cronos_Data
                     FY_GetPlayerListsAsync();
                 }
             }
-            else
-            {
-                _fy_no_result = true;
-                MessageBox.Show("No data found.");
-            }
         }
-        
+
         private void button_fy_proceed_Click(object sender, EventArgs e)
         {
             if (label_fy_status.Text == "status: done --- MEMBER LIST")
@@ -5117,6 +5169,7 @@ namespace Cronos_Data
         private bool _fy_cn_ea;
         private bool isInsertMemberRegister = false;
         private bool _isSecondRequest_fy = false;
+        private bool isButtonStart_fy = false;
 
         private void TF_InsertDone()
         {
