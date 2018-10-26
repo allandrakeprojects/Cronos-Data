@@ -1081,16 +1081,9 @@
             this.comboBox_fy_list.FormattingEnabled = true;
             this.comboBox_fy_list.Items.AddRange(new object[] {
             "Deposit Record",
-            "Manual Deposit",
-            "--------------------",
             "Withdrawal Record",
-            "Manual Withdrawal",
-            "--------------------",
-            "Manual Bonus",
-            "Generated Bonus",
-            "--------------------",
+            "Bonus Record",
             "Bet Record",
-            "--------------------",
             "Member List"});
             this.comboBox_fy_list.Location = new System.Drawing.Point(69, 47);
             this.comboBox_fy_list.Name = "comboBox_fy_list";
