@@ -34,5 +34,29 @@ namespace Cronos_Data.Properties {
                 this["filelocation"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string fy_memberregister {
+            get {
+                return ((string)(this["fy_memberregister"]));
+            }
+            set {
+                this["fy_memberregister"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string tf_bettime {
+            get {
+                return ((string)(this["tf_bettime"]));
+            }
+            set {
+                this["tf_bettime"] = value;
+            }
+        }
     }
 }
