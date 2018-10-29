@@ -280,17 +280,21 @@ namespace Cronos_Data
                         //    timer_fy_start.Start();
                         //}
 
-                        string get_path = label_filelocation.Text + "\\Cronos Data\\FY\\FY Daily Registration.xlsx";
-                        if (!File.Exists(get_path))
+                        string current_date = DateTime.Now.ToString("yyyy-MM-dd");
+                        string get_path = label_filelocation.Text + "\\Cronos Data\\FY\\" + current_date;
+                        if (!Directory.Exists(get_path))
                         {
-                            button_filelocation.Enabled = false;
+                            if (!isButtonStart_fy)
+                            {
+                                button_filelocation.Enabled = false;
 
-                            label_fy_start_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
-                            _fy_start_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
-                            timer_fy.Start();
+                                label_fy_start_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
+                                _fy_start_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+                                timer_fy.Start();
 
-                            // Get MEMBER LIST
-                            FY_GetPlayerListsAsync();
+                                // Get MEMBER LIST
+                                FY_GetPlayerListsAsync();
+                            }
                         }
                         else
                         {
@@ -480,65 +484,171 @@ namespace Cronos_Data
                         //{
                         //    await FY_PlayerListContactNumberEmailAsync(_fy_id_playerlist);
                         //}
-                        
+
                         //MessageBox.Show(_fy_playerlist_cn);
                         //MessageBox.Show(_fy_playerlist_ea);
 
                         //string registration_time = date
 
-                        DateTime month_registration = Convert.ToDateTime(date_register);
-
                         //MessageBox.Show(date_register + "----" + date_t);
 
                         ////get contact number and email
+
+                        //if (_fy_get_ii == 1)
+                        //{
+                        //    var header = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16}", "Brand", "Username", "Name", "Status", "Date Register", "Last Login Date", "Last Deposit Date", "Contact Number", "Email", "VIP Level", "Registration Time", "Month Register", "FD Date", "FD Month", "Source", "IP Address", "Register Domain");
+                        //    _fy_csv.AppendLine(header);
+
+                        //    var header_custom = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16}", "Brand", "Username", "Name", "Status", "Date Register", "Last Login Date", "Last Deposit Date", "Contact Number", "Email", "VIP Level", "Registration Time", "Month Register", "FD Date", "FD Month", "Source", "IP Address", "Register Domain");
+                        //    _fy_csv_memberrregister_custom.AppendLine(header_custom);
+
+                        //    //date_register date_time_register
+                        //    Properties.Settings.Default.fy_memberregister = date_register + " " + date_time_register;
+                        //    Properties.Settings.Default.Save();
+
+                        //    //MessageBox.Show(Properties.Settings.Default.fy_memberregister);
+                        //}
+
+                        //// get yesterday
+                        //DateTime datetime_memmberregister = DateTime.ParseExact(date_register + " " + date_time_register, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+                        //DateTime datetime_start_fy = DateTime.ParseExact(dateTimePicker_start_fy.Text, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+                        //DateTime datetime_end_fy = DateTime.ParseExact(dateTimePicker_end_fy.Text, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+
+                        //if (datetime_memmberregister >= datetime_start_fy && datetime_memmberregister <= datetime_end_fy)
+                        //{
+                        //    isInsertMemberRegister = true;
+                        //    await FY_PlayerListContactNumberEmailAsync(_fy_id_playerlist);
+
+                        //    var newLine_custom = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16}", "FY", "\"" + username + "\"", "\"" + name + "\"", "\"" + status + "\"", "\"" + date_register + " " + date_time_register + "\"", "\"" + last_login_date + "\"", "\"" + "" + "\"", "\"" + _fy_playerlist_cn + "\"", "\"" + _fy_playerlist_ea + "\"", "\"" + vip + "\"", "\"" + date_register + "\"", "\"" + month_registration.ToString("MM/01/yyyy") + "\"", "\"" + "" + "\"", "\"" + "" + "\"", "\"" + source + "\"", "\"" + ip + "\"", "\"" + register_domain + "\"");
+                        //    _fy_csv_memberrregister_custom.AppendLine(newLine_custom);
+
+                        //    // insert folder 
+
+                        //    //MessageBox.Show(date_register + " " + date_time_register);
+                        //}
+
+                        //var newLine = "";
+                        //if (_fy_playerlist_cn != "" || _fy_playerlist_ea != "")
+                        //{
+                        //    newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16}", "FY", "\"" + username + "\"", "\"" + name + "\"", "\"" + status + "\"", "\"" + date_register + " " + date_time_register + "\"", "\"" + last_login_date + "\"", "\"" + "" + "\"", "\"" + _fy_playerlist_cn + "\"", "\"" + _fy_playerlist_ea + "\"", "\"" + vip + "\"", "\"" + date_register + "\"", "\"" + month_registration.ToString("MM/01/yyyy") + "\"", "\"" + "" + "\"", "\"" + "" + "\"", "\"" + source + "\"", "\"" + ip + "\"", "\"" + register_domain + "\"");
+                        //}
+                        //else
+                        //{
+                        //    newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16}", "FY", "\"" + username + "\"", "\"" + name + "\"", "\"" + status + "\"", "\"" + date_register + " " + date_time_register + "\"", "\"" + last_login_date + "\"", "\"" + "" + "\"", "\"" + "" + "\"", "\"" + "" + "\"", "\"" + vip + "\"", "\"" + date_register + "\"", "\"" + month_registration.ToString("MM/01/yyyy") + "\"", "\"" + "" + "\"", "\"" + "" + "\"", "\"" + source + "\"", "\"" + ip + "\"", "\"" + register_domain + "\"");
+                        //}
+
+                        //_fy_playerlist_cn = "";
+                        //_fy_playerlist_ea = "";
+
+                        //_fy_csv.AppendLine(newLine);
+
+                        
+                        await FY_PlayerListContactNumberEmailAsync(_fy_id_playerlist);
+                        await FY_PlayerListLastDeposit(_fy_id_playerlist);
+                        
+                        string fy_first_deposit = "";
+
+                        string memberlist_temp = Path.Combine(Path.GetTempPath(), "FY Daily Registration.txt");
+                        if (File.Exists(memberlist_temp))
+                        {
+                            using (StreamReader sr = File.OpenText(memberlist_temp))
+                            {
+                                string s = String.Empty;
+                                while ((s = sr.ReadLine()) != null)
+                                {
+                                    int memberlist_i = 0;
+                                    string[] results = s.Split("\",\"");
+                                    foreach (string result in results)
+                                    {
+                                        memberlist_i++;
+
+                                        if (memberlist_i == 1)
+                                        {
+                                            // Username
+                                            //MessageBox.Show(username + " " + result.Replace("FY,\"", ""));
+                                            if (username == result.Replace("FY,\"", ""))
+                                            {
+                                                int memberlist_i_inner = 0;
+                                                string[] results_inner = s.Split("\",\"");
+                                                string first_deposit = "";
+                                                foreach (string result_inner in results_inner)
+                                                {
+                                                    memberlist_i_inner++;
+                                                    if (memberlist_i_inner == 12)
+                                                    {
+                                                        // FD Date
+                                                        //MessageBox.Show(result_inner + " FD Date " + result);
+                                                        first_deposit = result_inner;
+
+                                                        if (first_deposit == "")
+                                                        {
+                                                            fy_first_deposit = _fy_ld;
+                                                        } else
+                                                        {
+                                                            fy_first_deposit = first_deposit;
+                                                        }
+                                                    }
+                                                    else if (memberlist_i_inner == 13)
+                                                    {
+                                                        // FD Month
+                                                        //MessageBox.Show(result_inner + " FD Month " + result);
+                                                    }
+                                                    else if (memberlist_i_inner == 15)
+                                                    {
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        string result_month_first_deposit = "";
+                        if (fy_first_deposit != "" && fy_first_deposit != "-")
+                        {
+                            DateTime month_first_deposit = Convert.ToDateTime(fy_first_deposit);
+                            result_month_first_deposit = month_first_deposit.ToString("MM/01/yyyy");
+                        }
+                        else
+                        {
+                            result_month_first_deposit = "-";
+                        }
+
+                        DateTime month_registration = Convert.ToDateTime(date_register);
 
                         if (_fy_get_ii == 1)
                         {
                             var header = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16}", "Brand", "Username", "Name", "Status", "Date Register", "Last Login Date", "Last Deposit Date", "Contact Number", "Email", "VIP Level", "Registration Time", "Month Register", "FD Date", "FD Month", "Source", "IP Address", "Register Domain");
                             _fy_csv.AppendLine(header);
-
-                            var header_custom = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16}", "Brand", "Username", "Name", "Status", "Date Register", "Last Login Date", "Last Deposit Date", "Contact Number", "Email", "VIP Level", "Registration Time", "Month Register", "FD Date", "FD Month", "Source", "IP Address", "Register Domain");
-                            _fy_csv_memberrregister_custom.AppendLine(header_custom);
-
-                            //date_register date_time_register
-                            Properties.Settings.Default.fy_memberregister = date_register + " " + date_time_register;
-                            Properties.Settings.Default.Save();
-
-                            //MessageBox.Show(Properties.Settings.Default.fy_memberregister);
                         }
-
-                        // get yesterday
-                        DateTime datetime_memmberregister = DateTime.ParseExact(date_register + " " + date_time_register, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
-                        DateTime datetime_start_fy = DateTime.ParseExact(dateTimePicker_start_fy.Text, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
-                        DateTime datetime_end_fy = DateTime.ParseExact(dateTimePicker_end_fy.Text, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
                         
-                        if (datetime_memmberregister >= datetime_start_fy && datetime_memmberregister <= datetime_end_fy)
-                        {
-                            isInsertMemberRegister = true;
-                            await FY_PlayerListContactNumberEmailAsync(_fy_id_playerlist);
-
-                            var newLine_custom = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16}", "FY", "\"" + username + "\"", "\"" + name + "\"", "\"" + status + "\"", "\"" + date_register + " " + date_time_register + "\"", "\"" + last_login_date + "\"", "\"" + "" + "\"", "\"" + _fy_playerlist_cn + "\"", "\"" + _fy_playerlist_ea + "\"", "\"" + vip + "\"", "\"" + date_register + "\"", "\"" + month_registration.ToString("MM/01/yyyy") + "\"", "\"" + "" + "\"", "\"" + "" + "\"", "\"" + source + "\"", "\"" + ip + "\"", "\"" + register_domain + "\"");
-                            _fy_csv_memberrregister_custom.AppendLine(newLine_custom);
-
-                            // insert folder 
-
-                            //MessageBox.Show(date_register + " " + date_time_register);
-                        }
-
-                        var newLine = "";
-                        if (_fy_playerlist_cn != "" || _fy_playerlist_ea != "")
-                        {
-                            newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16}", "FY", "\"" + username + "\"", "\"" + name + "\"", "\"" + status + "\"", "\"" + date_register + " " + date_time_register + "\"", "\"" + last_login_date + "\"", "\"" + "" + "\"", "\"" + _fy_playerlist_cn + "\"", "\"" + _fy_playerlist_ea + "\"", "\"" + vip + "\"", "\"" + date_register + "\"", "\"" + month_registration.ToString("MM/01/yyyy") + "\"", "\"" + "" + "\"", "\"" + "" + "\"", "\"" + source + "\"", "\"" + ip + "\"", "\"" + register_domain + "\"");
-                        }
-                        else
-                        {
-                            newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16}", "FY", "\"" + username + "\"", "\"" + name + "\"", "\"" + status + "\"", "\"" + date_register + " " + date_time_register + "\"", "\"" + last_login_date + "\"", "\"" + "" + "\"", "\"" + "" + "\"", "\"" + "" + "\"", "\"" + vip + "\"", "\"" + date_register + "\"", "\"" + month_registration.ToString("MM/01/yyyy") + "\"", "\"" + "" + "\"", "\"" + "" + "\"", "\"" + source + "\"", "\"" + ip + "\"", "\"" + register_domain + "\"");
-                        }
-
-                        _fy_playerlist_cn = "";
-                        _fy_playerlist_ea = "";
-
+                        var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16}", "FY", "\"" + username + "\"", "\"" + name + "\"", "\"" + status + "\"", "\"" + date_register + " " + date_time_register + "\"", "\"" + last_login_date + "\"", "\"" + _fy_ld + "\"", "\"" + _fy_playerlist_cn + "\"", "\"" + _fy_playerlist_ea + "\"", "\"" + vip + "\"", "\"" + date_register + "\"", "\"" + month_registration.ToString("MM/01/yyyy") + "\"", "\"" + fy_first_deposit + "\"", "\"" + result_month_first_deposit + "\"", "\"" + source + "\"", "\"" + ip + "\"", "\"" + register_domain + "\"");
                         _fy_csv.AppendLine(newLine);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                         if ((_fy_get_ii) == _limit_fy)
                         {
@@ -864,28 +974,22 @@ namespace Cronos_Data
                         _fy_playerlist_ea = ItemMatch.Groups[1].Value;
                     }
                 }
+
+                //string last_deposit = Regex.Match(result_gettotal_responsebody.ToString(), "<td id=\"tdp_deplast\">(.*?)</td>").Groups[1].Value;
+                //MessageBox.Show(last_deposit);
+                //asdsadsa
+
+                //Regex ItemRegex_lastdeposit = new Regex("<td id=\"tdp_deplast\">(.*?)</td>", RegexOptions.Compiled);
+                //foreach (Match ItemMatch in ItemRegex_lastdeposit.Matches(result_gettotal_responsebody))
+                //{
+                //    string item = ItemMatch.Groups[1].Value;
+                //    MessageBox.Show(item);
+                //}
             }
             catch (Exception err)
             {
                 await FY_PlayerListContactNumberEmailAsync(_fy_id_playerlist);
             }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
             //while (ghghgh != null)
             //{
@@ -914,6 +1018,57 @@ namespace Cronos_Data
             //HtmlAgilityPack.HtmlNode table = doc.GetElementbyId("box_playerdetail");
             //var rows = table.get("tr");
         }
+        
+        private async Task FY_PlayerListLastDeposit(string id)
+        {
+            try
+            {
+                var cookie = FullWebBrowserCookie.GetCookieInternal(webBrowser_fy.Url, false);
+                WebClient wc = new WebClient();
+
+                wc.Headers.Add("Cookie", cookie);
+                wc.Encoding = Encoding.UTF8;
+                wc.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
+                string current_date = DateTime.Now.ToString("yyyy-MM-dd");
+                string result_gettotal_responsebody = await wc.DownloadStringTaskAsync("http://cs.ying168.bet/player/playerDeposit?uid=" + id + "&start=2016-06-15&end=" + current_date);
+
+                var deserializeObject = JsonConvert.DeserializeObject(result_gettotal_responsebody);
+
+                JObject jo_fy_last_deposit = JObject.Parse(deserializeObject.ToString());
+                JToken last_deposit = jo_fy_last_deposit.SelectToken("$.last");
+                _fy_ld = last_deposit.ToString();
+            }
+            catch (Exception err)
+            {
+                await FY_PlayerListLastDeposit(_fy_id_playerlist);
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         private async Task GetDataFYPagesPlayerListAsync()
         {
@@ -1067,6 +1222,19 @@ namespace Cronos_Data
             app.Quit();
             Marshal.ReleaseComObject(app);
 
+            string memberlist_temp = Path.Combine(Path.GetTempPath(), "FY Daily Registration.txt");
+            if (!File.Exists(memberlist_temp))
+            {
+                string text = File.ReadAllText(_fy_folder_path_result);
+                File.WriteAllText(memberlist_temp, text);
+            }
+            else
+            {
+                File.Delete(memberlist_temp);
+                string text = File.ReadAllText(_fy_folder_path_result);
+                File.WriteAllText(memberlist_temp, text);
+            }
+
             if (File.Exists(_fy_folder_path_result))
             {
                 File.Delete(_fy_folder_path_result);
@@ -1074,10 +1242,10 @@ namespace Cronos_Data
 
             _fy_csv.Clear();
 
-            if (isInsertMemberRegister)
-            {
-                InsertMemberRegister();
-            }
+            //if (isInsertMemberRegister)
+            //{
+            //    InsertMemberRegister();
+            //}
 
             //FYHeader();
 
@@ -5332,6 +5500,7 @@ namespace Cronos_Data
         private bool isInsertMemberRegister = false;
         private bool _isSecondRequest_fy = false;
         private bool isButtonStart_fy = false;
+        private string _fy_ld;
 
         private void TF_InsertDone()
         {
@@ -5889,6 +6058,20 @@ namespace Cronos_Data
             catch (Exception err)
             {
                 MessageBox.Show(err.ToString());
+            }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            string memberlist_temp = Path.Combine(Path.GetTempPath(), "FY Daily Registration.txt");
+            if (!File.Exists(memberlist_temp))
+            {
+                MessageBox.Show("not exist");
+                File.WriteAllText(memberlist_temp, "test");
+            }
+            else
+            {
+                MessageBox.Show("exist");
             }
         }
     }

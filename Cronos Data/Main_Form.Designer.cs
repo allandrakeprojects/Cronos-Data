@@ -121,6 +121,7 @@
             this.timer_fy_start_button = new System.Windows.Forms.Timer(this.components);
             this.label_fy_count = new System.Windows.Forms.Label();
             this.sPanel_separator = new Cronos_Data.SPanel();
+            this.button5 = new System.Windows.Forms.Button();
             this.panel_header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_minimize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_close)).BeginInit();
@@ -143,6 +144,7 @@
             // panel_header
             // 
             this.panel_header.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(122)))), ((int)(((byte)(159)))));
+            this.panel_header.Controls.Add(this.button5);
             this.panel_header.Controls.Add(this.label4);
             this.panel_header.Controls.Add(this.button3);
             this.panel_header.Controls.Add(this.label3);
@@ -1141,6 +1143,16 @@
             this.sPanel_separator.Size = new System.Drawing.Size(44, 446);
             this.sPanel_separator.TabIndex = 1;
             // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(1002, 17);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(47, 23);
+            this.button5.TabIndex = 34;
+            this.button5.Text = "button5";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
             // Main_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1292,5 +1304,6 @@
         private System.Windows.Forms.Timer timer_fy_start_button;
         private System.Windows.Forms.Button button_fy_stop;
         private System.Windows.Forms.Label label_fy_count;
+        private System.Windows.Forms.Button button5;
     }
 }
