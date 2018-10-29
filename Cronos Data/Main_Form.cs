@@ -578,6 +578,15 @@ namespace Cronos_Data
                             Excel.Application app = new Excel.Application();
                             Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
                             Excel.Worksheet worksheet = wb.ActiveSheet;
+                            worksheet.Activate();
+                            worksheet.Application.ActiveWindow.SplitRow = 1;
+                            worksheet.Application.ActiveWindow.FreezePanes = true;
+                            Excel.Range firstRow = (Excel.Range)worksheet.Rows[1];
+                            firstRow.AutoFilter(1,
+                                                Type.Missing,
+                                                Excel.XlAutoFilterOperator.xlAnd,
+                                                Type.Missing,
+                                                true);
                             Excel.Range usedRange = worksheet.UsedRange;
                             Excel.Range rows = usedRange.Rows;
                             int count = 0;
@@ -693,6 +702,15 @@ namespace Cronos_Data
             Excel.Application app = new Excel.Application();
             Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result_memberlist, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
             Excel.Worksheet worksheet = wb.ActiveSheet;
+            worksheet.Activate();
+            worksheet.Application.ActiveWindow.SplitRow = 1;
+            worksheet.Application.ActiveWindow.FreezePanes = true;
+            Excel.Range firstRow = (Excel.Range)worksheet.Rows[1];
+            firstRow.AutoFilter(1,
+                                Type.Missing,
+                                Excel.XlAutoFilterOperator.xlAnd,
+                                Type.Missing,
+                                true);
             Excel.Range usedRange = worksheet.UsedRange;
             Excel.Range rows = usedRange.Rows;
             int count = 0;
@@ -1008,6 +1026,15 @@ namespace Cronos_Data
             Excel.Application app = new Excel.Application();
             Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
             Excel.Worksheet worksheet = wb.ActiveSheet;
+            worksheet.Activate();
+            worksheet.Application.ActiveWindow.SplitRow = 1;
+            worksheet.Application.ActiveWindow.FreezePanes = true;
+            Excel.Range firstRow = (Excel.Range)worksheet.Rows[1];
+            firstRow.AutoFilter(1,
+                                Type.Missing,
+                                Excel.XlAutoFilterOperator.xlAnd,
+                                Type.Missing,
+                                true);
             Excel.Range usedRange = worksheet.UsedRange;
             Excel.Range rows = usedRange.Rows;
             int count = 0;
@@ -1940,7 +1967,7 @@ namespace Cronos_Data
                                 { "data[2][name]", "sColumns"},
                                 { "data[2][value]", ""},
                                 { "data[3][name]", "iDisplayStart"},
-                                { "data[3][value]", "0"},
+                                { "data[3][value]", result_pages.ToString()},
                                 { "data[4][name]", "iDisplayLength"},
                                 { "data[4][value]", _display_length_fy.ToString()}
                             };
@@ -2007,7 +2034,7 @@ namespace Cronos_Data
                                 { "data[2][name]", "sColumns"},
                                 { "data[2][value]", ""},
                                 { "data[3][name]", "iDisplayStart"},
-                                { "data[3][value]", "0"},
+                                { "data[3][value]", result_pages.ToString()},
                                 { "data[4][name]", "iDisplayLength"},
                                 { "data[4][value]", _display_length_fy.ToString()}
                             };
@@ -2076,7 +2103,7 @@ namespace Cronos_Data
                                 { "data[2][name]", "sColumns"},
                                 { "data[2][value]", ""},
                                 { "data[3][name]", "iDisplayStart"},
-                                { "data[3][value]", "0"},
+                                { "data[3][value]", result_pages.ToString()},
                                 { "data[4][name]", "iDisplayLength"},
                                 { "data[4][value]", _display_length_fy.ToString()}
                             };
@@ -2141,7 +2168,7 @@ namespace Cronos_Data
                             { "data[2][name]", "sColumns"},
                             { "data[2][value]", ""},
                             { "data[3][name]", "iDisplayStart"},
-                            { "data[3][value]", "0"},
+                            { "data[3][value]", result_pages.ToString()},
                             { "data[4][name]", "iDisplayLength"},
                             { "data[4][value]", _display_length_fy.ToString()}
                         };
@@ -2514,7 +2541,7 @@ namespace Cronos_Data
                         {
                             // status
                             label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
-                            label_fy_status.Text = "status: saving excel...";
+                            label_fy_status.Text = "status: saving excel... --- BET RECORD";
                             
                             _fy_get_ii = 0;
                             
@@ -2579,6 +2606,15 @@ namespace Cronos_Data
                                     Excel.Application app = new Excel.Application();
                                     Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
                                     Excel.Worksheet worksheet = wb.ActiveSheet;
+                                    worksheet.Activate();
+                                    worksheet.Application.ActiveWindow.SplitRow = 1;
+                                    worksheet.Application.ActiveWindow.FreezePanes = true;
+                                    Excel.Range firstRow = (Excel.Range)worksheet.Rows[1];
+                                    firstRow.AutoFilter(1,
+                                                        Type.Missing,
+                                                        Excel.XlAutoFilterOperator.xlAnd,
+                                                        Type.Missing,
+                                                        true);
                                     worksheet.Columns[2].NumberFormat = "MMM-yy";
                                     worksheet.Columns[4].NumberFormat = "hh:mm:ss AM/PM";
                                     worksheet.Columns[5].NumberFormat = "hh:mm:ss AM/PM";
@@ -2656,6 +2692,15 @@ namespace Cronos_Data
                                     Excel.Application app = new Excel.Application();
                                     Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
                                     Excel.Worksheet worksheet = wb.ActiveSheet;
+                                    worksheet.Activate();
+                                    worksheet.Application.ActiveWindow.SplitRow = 1;
+                                    worksheet.Application.ActiveWindow.FreezePanes = true;
+                                    Excel.Range firstRow = (Excel.Range)worksheet.Rows[1];
+                                    firstRow.AutoFilter(1,
+                                                        Type.Missing,
+                                                        Excel.XlAutoFilterOperator.xlAnd,
+                                                        Type.Missing,
+                                                        true);
                                     worksheet.Columns[2].NumberFormat = "MMM-yy";
                                     worksheet.Columns[4].NumberFormat = "hh:mm:ss AM/PM";
                                     worksheet.Columns[5].NumberFormat = "hh:mm:ss AM/PM";
@@ -2731,6 +2776,15 @@ namespace Cronos_Data
                                     Excel.Application app = new Excel.Application();
                                     Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
                                     Excel.Worksheet worksheet = wb.ActiveSheet;
+                                    worksheet.Activate();
+                                    worksheet.Application.ActiveWindow.SplitRow = 1;
+                                    worksheet.Application.ActiveWindow.FreezePanes = true;
+                                    Excel.Range firstRow = (Excel.Range)worksheet.Rows[1];
+                                    firstRow.AutoFilter(1,
+                                                        Type.Missing,
+                                                        Excel.XlAutoFilterOperator.xlAnd,
+                                                        Type.Missing,
+                                                        true);
                                     worksheet.Columns[2].NumberFormat = "MMM-yy";
                                     worksheet.Columns[4].NumberFormat = "hh:mm:ss AM/PM";
                                     worksheet.Columns[5].NumberFormat = "hh:mm:ss AM/PM";
@@ -2807,6 +2861,15 @@ namespace Cronos_Data
                                     Excel.Application app = new Excel.Application();
                                     Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
                                     Excel.Worksheet worksheet = wb.ActiveSheet;
+                                    worksheet.Activate();
+                                    worksheet.Application.ActiveWindow.SplitRow = 1;
+                                    worksheet.Application.ActiveWindow.FreezePanes = true;
+                                    Excel.Range firstRow = (Excel.Range)worksheet.Rows[1];
+                                    firstRow.AutoFilter(1,
+                                                        Type.Missing,
+                                                        Excel.XlAutoFilterOperator.xlAnd,
+                                                        Type.Missing,
+                                                        true);
                                     worksheet.Columns[2].NumberFormat = "MMM-yy";
                                     worksheet.Columns[4].NumberFormat = "hh:mm:ss AM/PM";
                                     worksheet.Columns[5].NumberFormat = "hh:mm:ss AM/PM";
@@ -2883,6 +2946,15 @@ namespace Cronos_Data
                                     Excel.Application app = new Excel.Application();
                                     Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
                                     Excel.Worksheet worksheet = wb.ActiveSheet;
+                                    worksheet.Activate();
+                                    worksheet.Application.ActiveWindow.SplitRow = 1;
+                                    worksheet.Application.ActiveWindow.FreezePanes = true;
+                                    Excel.Range firstRow = (Excel.Range)worksheet.Rows[1];
+                                    firstRow.AutoFilter(1,
+                                                        Type.Missing,
+                                                        Excel.XlAutoFilterOperator.xlAnd,
+                                                        Type.Missing,
+                                                        true);
                                     //worksheet.Columns[2].NumberFormat = "MMM-yy";
                                     //worksheet.Columns[4].NumberFormat = "hh:mm:ss AM/PM";
                                     //worksheet.Columns[5].NumberFormat = "hh:mm:ss AM/PM";
@@ -2959,6 +3031,15 @@ namespace Cronos_Data
                                     Excel.Application app = new Excel.Application();
                                     Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
                                     Excel.Worksheet worksheet = wb.ActiveSheet;
+                                    worksheet.Activate();
+                                    worksheet.Application.ActiveWindow.SplitRow = 1;
+                                    worksheet.Application.ActiveWindow.FreezePanes = true;
+                                    Excel.Range firstRow = (Excel.Range)worksheet.Rows[1];
+                                    firstRow.AutoFilter(1,
+                                                        Type.Missing,
+                                                        Excel.XlAutoFilterOperator.xlAnd,
+                                                        Type.Missing,
+                                                        true);
                                     //worksheet.Columns[2].NumberFormat = "MMM-yy";
                                     //worksheet.Columns[4].NumberFormat = "hh:mm:ss AM/PM";
                                     //worksheet.Columns[5].NumberFormat = "hh:mm:ss AM/PM";
@@ -3032,6 +3113,15 @@ namespace Cronos_Data
                                 Excel.Application app = new Excel.Application();
                                 Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
                                 Excel.Worksheet worksheet = wb.ActiveSheet;
+                                worksheet.Activate();
+                                worksheet.Application.ActiveWindow.SplitRow = 1;
+                                worksheet.Application.ActiveWindow.FreezePanes = true;
+                                Excel.Range firstRow = (Excel.Range)worksheet.Rows[1];
+                                firstRow.AutoFilter(1,
+                                                    Type.Missing,
+                                                    Excel.XlAutoFilterOperator.xlAnd,
+                                                    Type.Missing,
+                                                    true);
                                 worksheet.Columns[3].Replace(" ", "");
                                 worksheet.Columns[3].NumberFormat = "@";
                                 //worksheet.Columns[2].NumberFormat = "MMM-yy";
@@ -3176,6 +3266,15 @@ namespace Cronos_Data
                     Excel.Application app = new Excel.Application();
                     Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
                     Excel.Worksheet worksheet = wb.ActiveSheet;
+                    worksheet.Activate();
+                    worksheet.Application.ActiveWindow.SplitRow = 1;
+                    worksheet.Application.ActiveWindow.FreezePanes = true;
+                    Excel.Range firstRow = (Excel.Range)worksheet.Rows[1];
+                    firstRow.AutoFilter(1,
+                                        Type.Missing,
+                                        Excel.XlAutoFilterOperator.xlAnd,
+                                        Type.Missing,
+                                        true);
                     worksheet.Columns[2].NumberFormat = "MMM-yy";
                     worksheet.Columns[4].NumberFormat = "hh:mm:ss AM/PM";
                     worksheet.Columns[5].NumberFormat = "hh:mm:ss AM/PM";
@@ -3253,6 +3352,15 @@ namespace Cronos_Data
                     Excel.Application app = new Excel.Application();
                     Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
                     Excel.Worksheet worksheet = wb.ActiveSheet;
+                    worksheet.Activate();
+                    worksheet.Application.ActiveWindow.SplitRow = 1;
+                    worksheet.Application.ActiveWindow.FreezePanes = true;
+                    Excel.Range firstRow = (Excel.Range)worksheet.Rows[1];
+                    firstRow.AutoFilter(1,
+                                        Type.Missing,
+                                        Excel.XlAutoFilterOperator.xlAnd,
+                                        Type.Missing,
+                                        true);
                     worksheet.Columns[2].NumberFormat = "MMM-yy";
                     worksheet.Columns[4].NumberFormat = "hh:mm:ss AM/PM";
                     worksheet.Columns[5].NumberFormat = "hh:mm:ss AM/PM";
@@ -3328,6 +3436,15 @@ namespace Cronos_Data
                     Excel.Application app = new Excel.Application();
                     Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
                     Excel.Worksheet worksheet = wb.ActiveSheet;
+                    worksheet.Activate();
+                    worksheet.Application.ActiveWindow.SplitRow = 1;
+                    worksheet.Application.ActiveWindow.FreezePanes = true;
+                    Excel.Range firstRow = (Excel.Range)worksheet.Rows[1];
+                    firstRow.AutoFilter(1,
+                                        Type.Missing,
+                                        Excel.XlAutoFilterOperator.xlAnd,
+                                        Type.Missing,
+                                        true);
                     worksheet.Columns[2].NumberFormat = "MMM-yy";
                     worksheet.Columns[4].NumberFormat = "hh:mm:ss AM/PM";
                     worksheet.Columns[5].NumberFormat = "hh:mm:ss AM/PM";
@@ -3404,6 +3521,15 @@ namespace Cronos_Data
                     Excel.Application app = new Excel.Application();
                     Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
                     Excel.Worksheet worksheet = wb.ActiveSheet;
+                    worksheet.Activate();
+                    worksheet.Application.ActiveWindow.SplitRow = 1;
+                    worksheet.Application.ActiveWindow.FreezePanes = true;
+                    Excel.Range firstRow = (Excel.Range)worksheet.Rows[1];
+                    firstRow.AutoFilter(1,
+                                        Type.Missing,
+                                        Excel.XlAutoFilterOperator.xlAnd,
+                                        Type.Missing,
+                                        true);
                     worksheet.Columns[2].NumberFormat = "MMM-yy";
                     worksheet.Columns[4].NumberFormat = "hh:mm:ss AM/PM";
                     worksheet.Columns[5].NumberFormat = "hh:mm:ss AM/PM";
@@ -3480,6 +3606,15 @@ namespace Cronos_Data
                     Excel.Application app = new Excel.Application();
                     Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
                     Excel.Worksheet worksheet = wb.ActiveSheet;
+                    worksheet.Activate();
+                    worksheet.Application.ActiveWindow.SplitRow = 1;
+                    worksheet.Application.ActiveWindow.FreezePanes = true;
+                    Excel.Range firstRow = (Excel.Range)worksheet.Rows[1];
+                    firstRow.AutoFilter(1,
+                                        Type.Missing,
+                                        Excel.XlAutoFilterOperator.xlAnd,
+                                        Type.Missing,
+                                        true);
                     //worksheet.Columns[2].NumberFormat = "MMM-yy";
                     //worksheet.Columns[4].NumberFormat = "hh:mm:ss AM/PM";
                     //worksheet.Columns[5].NumberFormat = "hh:mm:ss AM/PM";
@@ -3556,6 +3691,15 @@ namespace Cronos_Data
                     Excel.Application app = new Excel.Application();
                     Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
                     Excel.Worksheet worksheet = wb.ActiveSheet;
+                    worksheet.Activate();
+                    worksheet.Application.ActiveWindow.SplitRow = 1;
+                    worksheet.Application.ActiveWindow.FreezePanes = true;
+                    Excel.Range firstRow = (Excel.Range)worksheet.Rows[1];
+                    firstRow.AutoFilter(1,
+                                        Type.Missing,
+                                        Excel.XlAutoFilterOperator.xlAnd,
+                                        Type.Missing,
+                                        true);
                     //worksheet.Columns[2].NumberFormat = "MMM-yy";
                     //worksheet.Columns[4].NumberFormat = "hh:mm:ss AM/PM";
                     //worksheet.Columns[5].NumberFormat = "hh:mm:ss AM/PM";
@@ -3629,6 +3773,15 @@ namespace Cronos_Data
                 Excel.Application app = new Excel.Application();
                 Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
                 Excel.Worksheet worksheet = wb.ActiveSheet;
+                worksheet.Activate();
+                worksheet.Application.ActiveWindow.SplitRow = 1;
+                worksheet.Application.ActiveWindow.FreezePanes = true;
+                Excel.Range firstRow = (Excel.Range)worksheet.Rows[1];
+                firstRow.AutoFilter(1,
+                                    Type.Missing,
+                                    Excel.XlAutoFilterOperator.xlAnd,
+                                    Type.Missing,
+                                    true);
                 worksheet.Columns[3].Replace(" ", "");
                 worksheet.Columns[3].NumberFormat = "@";
                 //worksheet.Columns[2].NumberFormat = "MMM-yy";
@@ -5080,6 +5233,15 @@ namespace Cronos_Data
                             Excel.Application app = new Excel.Application();
                             Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
                             Excel.Worksheet worksheet = wb.ActiveSheet;
+                            worksheet.Activate();
+                            worksheet.Application.ActiveWindow.SplitRow = 1;
+                            worksheet.Application.ActiveWindow.FreezePanes = true;
+                            Excel.Range firstRow = (Excel.Range)worksheet.Rows[1];
+                            firstRow.AutoFilter(1,
+                                                Type.Missing,
+                                                Excel.XlAutoFilterOperator.xlAnd,
+                                                Type.Missing,
+                                                true);
                             Excel.Range usedRange = worksheet.UsedRange;
                             Excel.Range rows = usedRange.Rows;
                             int count = 0;
@@ -5229,6 +5391,15 @@ namespace Cronos_Data
             Excel.Application app = new Excel.Application();
             Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
             Excel.Worksheet worksheet = wb.ActiveSheet;
+            worksheet.Activate();
+            worksheet.Application.ActiveWindow.SplitRow = 1;
+            worksheet.Application.ActiveWindow.FreezePanes = true;
+            Excel.Range firstRow = (Excel.Range)worksheet.Rows[1];
+            firstRow.AutoFilter(1,
+                                Type.Missing,
+                                Excel.XlAutoFilterOperator.xlAnd,
+                                Type.Missing,
+                                true);
             Excel.Range usedRange = worksheet.UsedRange;
             Excel.Range rows = usedRange.Rows;
             int count = 0;
