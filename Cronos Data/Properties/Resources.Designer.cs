@@ -81,6 +81,26 @@ namespace Cronos_Data.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] FY_Bonus_Code {
+            get {
+                object obj = ResourceManager.GetObject("FY_Bonus_Code", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] FY_Payment_Code {
+            get {
+                object obj = ResourceManager.GetObject("FY_Payment_Code", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap icon {

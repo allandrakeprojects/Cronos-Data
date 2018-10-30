@@ -4,6 +4,8 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Data;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
@@ -13,6 +15,7 @@ using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -188,6 +191,66 @@ namespace Cronos_Data
             else
             {
                 label_filelocation.Text = Properties.Settings.Default.filelocation;
+                
+                var path_payment_code_parent = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "FY Payment Code.xlsx");
+                string path_payment_code = label_filelocation.Text + "\\Cronos Data\\FY\\FY Payment Code.xlsx";
+                var path_bonus_code_parent = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "FY Bonus Code.xlsx");
+                string path_bonus_code = label_filelocation.Text + "\\Cronos Data\\FY\\FY Bonus Code.xlsx";
+                if (!File.Exists(path_payment_code))
+                {
+                    if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data"))
+                    {
+                        Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data");
+                    }
+
+                    if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY"))
+                    {
+                        Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY");
+                    }
+
+                    File.Copy(path_payment_code_parent, path_payment_code);
+                }
+
+                if (!File.Exists(path_bonus_code))
+                {
+                    if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data"))
+                    {
+                        Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data");
+                    }
+
+                    if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY"))
+                    {
+                        Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY");
+                    }
+
+                    File.Copy(path_bonus_code_parent, path_bonus_code);
+                }
+
+                string bank_account_fy = label_filelocation.Text + "\\Cronos Data\\FY\\FY Payment Code.xlsx";
+                string bank_account_fy_temp = Path.Combine(Path.GetTempPath(), "FY Payment Code.txt"); ;
+
+                Excel.Application app = new Excel.Application();
+                Excel.Workbook wb = app.Workbooks.Open(bank_account_fy, Type.Missing, true);
+                wb.Application.DisplayAlerts = false;
+                wb.SaveAs(bank_account_fy_temp, Excel.XlFileFormat.xlUnicodeText);
+                wb.Close();
+                app.Quit();
+                app.Application.DisplayAlerts = true;
+                Marshal.ReleaseComObject(wb);
+                Marshal.ReleaseComObject(app);
+
+                string bonus_code_fy = label_filelocation.Text + "\\Cronos Data\\FY\\FY Bonus Code.xlsx";
+                string bonus_code_fy_temp = Path.Combine(Path.GetTempPath(), "FY Bonus Code.txt"); ;
+
+                Excel.Application app_bonus = new Excel.Application();
+                Excel.Workbook wb_bonus = app_bonus.Workbooks.Open(bonus_code_fy, Type.Missing, true);
+                wb_bonus.Application.DisplayAlerts = false;
+                wb_bonus.SaveAs(bonus_code_fy_temp, Excel.XlFileFormat.xlUnicodeText);
+                wb_bonus.Close();
+                app_bonus.Quit();
+                app_bonus.Application.DisplayAlerts = true;
+                Marshal.ReleaseComObject(app_bonus);
+                Marshal.ReleaseComObject(app_bonus);
             }
         }
 
@@ -250,72 +313,79 @@ namespace Cronos_Data
             {
                 if (e.Url == webBrowser_fy.Url)
                 {
-                    if (webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/account/login"))
+                    try
                     {
-                        webBrowser_fy.Document.Window.ScrollTo(0, 180);
-                        webBrowser_fy.Document.GetElementById("csname").SetAttribute("value", "central12");
-                        webBrowser_fy.Document.GetElementById("cspwd").SetAttribute("value", "abc123");
-                    }
-
-                    if (webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/player/list") || webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/site/index") || webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/player/online"))
-                    {
-                        if (!isButtonStart_fy)
+                        if (webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/account/login"))
                         {
-                            webBrowser_fy.Visible = false;
-                            panel_fy_status.Visible = true;
+                            webBrowser_fy.Document.Window.ScrollTo(0, 180);
+                            webBrowser_fy.Document.GetElementById("csname").SetAttribute("value", "central12");
+                            webBrowser_fy.Document.GetElementById("cspwd").SetAttribute("value", "abc123");
                         }
 
-                        //if (label_fy_status.Text == "-")
-                        //{
-                        //    button_fy_start.Visible = true;
-                        //    panel_fy_filter.Visible = true;
-                        //    panel_fy_status.Visible = false;
-
-                        //    if (panel_fy_status.Visible != true)
-                        //    {
-                        //        button_fy_start.Visible = true;
-                        //    }
-
-                        //    webBrowser_fy.Visible = false;
-                        //    timer_fy_start.Start();
-                        //}
-
-                        string current_date = DateTime.Now.ToString("yyyy-MM-dd");
-                        string get_path = label_filelocation.Text + "\\Cronos Data\\FY\\" + current_date;
-                        if (!Directory.Exists(get_path))
+                        if (webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/player/list") || webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/site/index") || webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/player/online"))
                         {
                             if (!isButtonStart_fy)
                             {
-                                button_filelocation.Enabled = false;
-
-                                label_fy_start_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
-                                _fy_start_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
-                                timer_fy.Start();
-
-                                // Get MEMBER LIST
-                                FY_GetPlayerListsAsync();
+                                webBrowser_fy.Visible = false;
+                                panel_fy_status.Visible = true;
                             }
-                        }
-                        else
-                        {
-                            if (!isButtonStart_fy)
-                            {
-                                if (label_fy_status.Text == "-")
-                                {
-                                    button_fy_start.Visible = true;
-                                    panel_fy_filter.Visible = true;
-                                    panel_fy_status.Visible = false;
 
-                                    if (panel_fy_status.Visible != true)
+                            //if (label_fy_status.Text == "-")
+                            //{
+                            //    button_fy_start.Visible = true;
+                            //    panel_fy_filter.Visible = true;
+                            //    panel_fy_status.Visible = false;
+
+                            //    if (panel_fy_status.Visible != true)
+                            //    {
+                            //        button_fy_start.Visible = true;
+                            //    }
+
+                            //    webBrowser_fy.Visible = false;
+                            //    timer_fy_start.Start();
+                            //}
+
+                            string current_date = DateTime.Now.ToString("yyyy-MM-dd");
+                            string get_path = label_filelocation.Text + "\\Cronos Data\\FY\\" + current_date;
+                            if (!Directory.Exists(get_path))
+                            {
+                                if (!isButtonStart_fy)
+                                {
+                                    button_filelocation.Enabled = false;
+
+                                    label_fy_start_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
+                                    _fy_start_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+                                    timer_fy.Start();
+
+                                    // Get MEMBER LIST
+                                    FY_GetPlayerListsAsync();
+                                }
+                            }
+                            else
+                            {
+                                if (!isButtonStart_fy)
+                                {
+                                    if (label_fy_status.Text == "-")
                                     {
                                         button_fy_start.Visible = true;
-                                    }
+                                        panel_fy_filter.Visible = true;
+                                        panel_fy_status.Visible = false;
 
-                                    webBrowser_fy.Visible = false;
-                                    timer_fy_start.Start();
+                                        if (panel_fy_status.Visible != true)
+                                        {
+                                            button_fy_start.Visible = true;
+                                        }
+
+                                        webBrowser_fy.Visible = false;
+                                        timer_fy_start.Start();
+                                    }
                                 }
                             }
                         }
+                    }
+                    catch (Exception err)
+                    {
+                        MessageBox.Show("No internet connection detected. Please call IT Support, thank you!");
                     }
                 }
             }
@@ -416,7 +486,12 @@ namespace Cronos_Data
                 JToken count = jo_fy.SelectToken("$.aaData");
                 _result_count_json_fy = count.Count();
 
-                FY_PlayerListAsync();
+                // added
+                Thread t = new Thread(delegate () {
+                    FY_PlayerListAsync();
+                });
+                t.Start();
+
             }
             catch (Exception err)
             {
@@ -541,14 +616,13 @@ namespace Cronos_Data
                         //_fy_playerlist_ea = "";
 
                         //_fy_csv.AppendLine(newLine);
-
                         
                         await FY_PlayerListContactNumberEmailAsync(_fy_id_playerlist);
                         await FY_PlayerListLastDeposit(_fy_id_playerlist);
-                        
+
                         string fy_first_deposit = "";
 
-                        string memberlist_temp = Path.Combine(Path.GetTempPath(), "FY Daily Registration.txt");
+                        string memberlist_temp = Path.Combine(Path.GetTempPath(), "FY Registration.txt");
                         if (File.Exists(memberlist_temp))
                         {
                             using (StreamReader sr = File.OpenText(memberlist_temp))
@@ -583,7 +657,8 @@ namespace Cronos_Data
                                                         if (first_deposit == "")
                                                         {
                                                             fy_first_deposit = _fy_ld;
-                                                        } else
+                                                        }
+                                                        else
                                                         {
                                                             fy_first_deposit = first_deposit;
                                                         }
@@ -604,6 +679,10 @@ namespace Cronos_Data
                                 }
                             }
                         }
+                        else
+                        {
+                            fy_first_deposit = _fy_ld;
+                        }
 
                         string result_month_first_deposit = "";
                         if (fy_first_deposit != "" && fy_first_deposit != "-")
@@ -613,7 +692,7 @@ namespace Cronos_Data
                         }
                         else
                         {
-                            result_month_first_deposit = "-";
+                            result_month_first_deposit = "";
                         }
 
                         DateTime month_registration = Convert.ToDateTime(date_register);
@@ -668,8 +747,8 @@ namespace Cronos_Data
                                 Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY");
                             }
 
-                            _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\FY Daily Registration.txt";
-                            _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\FY Daily Registration.xlsx";
+                            _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\FY Registration.txt";
+                            _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\FY Registration.xlsx";
                             _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\";
 
                             if (File.Exists(_fy_folder_path_result))
@@ -1037,6 +1116,10 @@ namespace Cronos_Data
                 JObject jo_fy_last_deposit = JObject.Parse(deserializeObject.ToString());
                 JToken last_deposit = jo_fy_last_deposit.SelectToken("$.last");
                 _fy_ld = last_deposit.ToString();
+                if (_fy_ld == "-")
+                {
+                    _fy_ld = "";
+                }
             }
             catch (Exception err)
             {
@@ -1161,8 +1244,8 @@ namespace Cronos_Data
                 Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY");
             }
 
-            _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\FY Daily Registration.txt";
-            _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\FY Daily Registration.xlsx";
+            _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\FY Registration.txt";
+            _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\FY Registration.xlsx";
             _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\";
 
             if (File.Exists(_fy_folder_path_result))
@@ -1211,7 +1294,7 @@ namespace Cronos_Data
                 }
 
                 count++;
-            }
+            } 
             int i;
             for (i = 1; i <= 17; i++)
             {
@@ -1222,7 +1305,7 @@ namespace Cronos_Data
             app.Quit();
             Marshal.ReleaseComObject(app);
 
-            string memberlist_temp = Path.Combine(Path.GetTempPath(), "FY Daily Registration.txt");
+            string memberlist_temp = Path.Combine(Path.GetTempPath(), "FY Registration.txt");
             if (!File.Exists(memberlist_temp))
             {
                 string text = File.ReadAllText(_fy_folder_path_result);
@@ -1345,147 +1428,150 @@ namespace Cronos_Data
             int selected_index = comboBox_fy_list.SelectedIndex;
             if (selected_index == 0)
             {
-                if (!_isSecondRequest_fy)
+                if (!_isSecondRequestFinish_fy)
                 {
-                    // Deposit Record
-                    var reqparm = new NameValueCollection
+                    if (!_isSecondRequest_fy)
                     {
-                        { "s_btype", ""},
-                        { "s_StartTime", start_datetime},
-                        { "s_EndTime", end_datetime},
-                        { "dno", "" },
-                        { "s_dpttype", "0"},
-                        { "s_type", "1" },
-                        { "s_transtype", "0"},
-                        { "s_ppid", "0"},
-                        { "s_payoption", "0"},
-                        { "groupid", "0"},
-                        { "s_keyword", ""},
-                        { "s_playercurrency", "ALL"},
-                        { "skip", "0"},
-                        { "data[0][name]", "sEcho"},
-                        { "data[0][value]", _fy_secho++.ToString()},
-                        { "data[1][name]", "iColumns"},
-                        { "data[1][value]", "17"},
-                        { "data[2][name]", "sColumns"},
-                        { "data[2][value]", ""},
-                        { "data[3][name]", "iDisplayStart"},
-                        { "data[3][value]", "0"},
-                        { "data[4][name]", "iDisplayLength"},
-                        { "data[4][value]", "1"}
-                    };
+                        // Deposit Record
+                        var reqparm = new NameValueCollection
+                        {
+                            { "s_btype", ""},
+                            { "s_StartTime", start_datetime},
+                            { "s_EndTime", end_datetime},
+                            { "dno", "" },
+                            { "s_dpttype", "0"},
+                            { "s_type", "1" },
+                            { "s_transtype", "0"},
+                            { "s_ppid", "0"},
+                            { "s_payoption", "0"},
+                            { "groupid", "0"},
+                            { "s_keyword", ""},
+                            { "s_playercurrency", "ALL"},
+                            { "skip", "0"},
+                            { "data[0][name]", "sEcho"},
+                            { "data[0][value]", _fy_secho++.ToString()},
+                            { "data[1][name]", "iColumns"},
+                            { "data[1][value]", "17"},
+                            { "data[2][name]", "sColumns"},
+                            { "data[2][value]", ""},
+                            { "data[3][name]", "iDisplayStart"},
+                            { "data[3][value]", "0"},
+                            { "data[4][name]", "iDisplayLength"},
+                            { "data[4][value]", "1"}
+                        };
 
-                    // status
-                    label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
-                    label_fy_status.Text = "status: doing calculation... DEPOSIT RECORD";
+                        // status
+                        label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
+                        label_fy_status.Text = "status: doing calculation... DEPOSIT RECORD";
 
-                    result_gettotal = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/dptHistoryAjax", "POST", reqparm);
-                    responsebody_gettotatal = Encoding.UTF8.GetString(result_gettotal).Remove(0, 1);
+                        result_gettotal = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/dptHistoryAjax", "POST", reqparm);
+                        responsebody_gettotatal = Encoding.UTF8.GetString(result_gettotal).Remove(0, 1);
+                    }
+                    else
+                    {
+                        // Manual Deposit Record
+                        var reqparm = new NameValueCollection
+                        {
+                            { "s_btype", ""},
+                            { "ptype", "1212"},
+                            { "fs_ptype", "1212"},
+                            { "s_StartTime", start_datetime},
+                            { "s_EndTime", end_datetime},
+                            { "s_type", "1"},
+                            { "s_keyword", ""},
+                            { "s_playercurrency", "ALL"},
+                            { "data[0][name]", "sEcho"},
+                            { "data[0][value]", _fy_secho++.ToString()},
+                            { "data[1][name]", "iColumns"},
+                            { "data[1][value]", "18"},
+                            { "data[2][name]", "sColumns"},
+                            { "data[2][value]", ""},
+                            { "data[3][name]", "iDisplayStart"},
+                            { "data[3][value]", "0"},
+                            { "data[4][name]", "iDisplayLength"},
+                            { "data[4][value]", "1"}
+                        };
+
+                        // status
+                        label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
+                        label_fy_status.Text = "status: doing calculation... M-DEPOSIT RECORD";
+
+                        result_gettotal = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/dptCorrectionAjax", "POST", reqparm);
+                        responsebody_gettotatal = Encoding.UTF8.GetString(result_gettotal);
+                    }
                 }
                 else
                 {
-                    // Manual Deposit Record
-                    var reqparm = new NameValueCollection
+                    if (!_isThirdRequest_fy)
                     {
-                        { "s_btype", ""},
-                        { "ptype", "1212"},
-                        { "fs_ptype", "1212"},
-                        { "s_StartTime", start_datetime},
-                        { "s_EndTime", end_datetime},
-                        { "s_type", "1"},
-                        { "s_keyword", ""},
-                        { "s_playercurrency", "ALL"},
-                        { "data[0][name]", "sEcho"},
-                        { "data[0][value]", _fy_secho++.ToString()},
-                        { "data[1][name]", "iColumns"},
-                        { "data[1][value]", "18"},
-                        { "data[2][name]", "sColumns"},
-                        { "data[2][value]", ""},
-                        { "data[3][name]", "iDisplayStart"},
-                        { "data[3][value]", "0"},
-                        { "data[4][name]", "iDisplayLength"},
-                        { "data[4][value]", "1"}
-                    };
+                        // Withdrawal Record
+                        var reqparm = new NameValueCollection
+                        {
+                            { "s_btype", ""},
+                            { "s_StartTime", start_datetime},
+                            { "s_EndTime", end_datetime},
+                            { "s_wtdAmtFr", "" },
+                            { "s_wtdAmtTo", ""},
+                            { "s_dpttype", "0" },
+                            { "skip", "0"},
+                            { "s_type", "1"},
+                            { "s_keyword", "0"},
+                            { "s_playercurrency", "ALL"},
+                            { "wttype", "0"},
+                            { "data[0][name]", "sEcho"},
+                            { "data[0][value]", _fy_secho++.ToString()},
+                            { "data[1][name]", "iColumns"},
+                            { "data[1][value]", "18"},
+                            { "data[2][name]", "sColumns"},
+                            { "data[2][value]", ""},
+                            { "data[3][name]", "iDisplayStart"},
+                            { "data[3][value]", "0"},
+                            { "data[4][name]", "iDisplayLength"},
+                            { "data[4][value]", "1"}
+                        };
 
-                    // status
-                    label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
-                    label_fy_status.Text = "status: doing calculation... M-DEPOSIT RECORD";
+                        // status
+                        label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
+                        label_fy_status.Text = "status: doing calculation... WITHDRAWAL RECORD";
 
-                    result_gettotal = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/dptCorrectionAjax", "POST", reqparm);
-                    responsebody_gettotatal = Encoding.UTF8.GetString(result_gettotal);
+                        result_gettotal = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/wtdHistoryAjax", "POST", reqparm);
+                        responsebody_gettotatal = Encoding.UTF8.GetString(result_gettotal);
+                    }
+                    else
+                    {
+                        // Manual Withdrawal Record
+                        var reqparm = new NameValueCollection
+                        {
+                            { "s_btype", ""},
+                            { "ptype", "1313"},
+                            { "fs_ptype", "1313"},
+                            { "s_StartTime", start_datetime},
+                            { "s_EndTime", end_datetime},
+                            { "s_type", "1"},
+                            { "s_keyword", ""},
+                            { "s_playercurrency", "ALL"},
+                            { "data[0][name]", "sEcho"},
+                            { "data[0][value]", _fy_secho++.ToString()},
+                            { "data[1][name]", "iColumns"},
+                            { "data[1][value]", "18"},
+                            { "data[2][name]", "sColumns"},
+                            { "data[2][value]", ""},
+                            { "data[3][name]", "iDisplayStart"},
+                            { "data[3][value]", "0"},
+                            { "data[4][name]", "iDisplayLength"},
+                            { "data[4][value]", "1"}
+                        };
+
+                        // status
+                        label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
+                        label_fy_status.Text = "status: doing calculation... M-WITHDRAWAL RECORD";
+
+                        result_gettotal = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/dptCorrectionAjax", "POST", reqparm);
+                        responsebody_gettotatal = Encoding.UTF8.GetString(result_gettotal);
+                    }
                 }
             }
             else if (selected_index == 1)
-            {
-                if (!_isSecondRequest_fy)
-                {
-                    // Withdrawal Record
-                    var reqparm = new NameValueCollection
-                    {
-                        { "s_btype", ""},
-                        { "s_StartTime", start_datetime},
-                        { "s_EndTime", end_datetime},
-                        { "s_wtdAmtFr", "" },
-                        { "s_wtdAmtTo", ""},
-                        { "s_dpttype", "0" },
-                        { "skip", "0"},
-                        { "s_type", "1"},
-                        { "s_keyword", "0"},
-                        { "s_playercurrency", "ALL"},
-                        { "wttype", "0"},
-                        { "data[0][name]", "sEcho"},
-                        { "data[0][value]", _fy_secho++.ToString()},
-                        { "data[1][name]", "iColumns"},
-                        { "data[1][value]", "18"},
-                        { "data[2][name]", "sColumns"},
-                        { "data[2][value]", ""},
-                        { "data[3][name]", "iDisplayStart"},
-                        { "data[3][value]", "0"},
-                        { "data[4][name]", "iDisplayLength"},
-                        { "data[4][value]", "1"}
-                    };
-
-                    // status
-                    label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
-                    label_fy_status.Text = "status: doing calculation... WITHDRAWAL RECORD";
-
-                    result_gettotal = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/wtdHistoryAjax", "POST", reqparm);
-                    responsebody_gettotatal = Encoding.UTF8.GetString(result_gettotal);
-                }
-                else
-                {
-                    // Manual Withdrawal Record
-                    var reqparm = new NameValueCollection
-                    {
-                        { "s_btype", ""},
-                        { "ptype", "1313"},
-                        { "fs_ptype", "1313"},
-                        { "s_StartTime", start_datetime},
-                        { "s_EndTime", end_datetime},
-                        { "s_type", "1"},
-                        { "s_keyword", ""},
-                        { "s_playercurrency", "ALL"},
-                        { "data[0][name]", "sEcho"},
-                        { "data[0][value]", _fy_secho++.ToString()},
-                        { "data[1][name]", "iColumns"},
-                        { "data[1][value]", "18"},
-                        { "data[2][name]", "sColumns"},
-                        { "data[2][value]", ""},
-                        { "data[3][name]", "iDisplayStart"},
-                        { "data[3][value]", "0"},
-                        { "data[4][name]", "iDisplayLength"},
-                        { "data[4][value]", "1"}
-                    };
-
-                    // status
-                    label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
-                    label_fy_status.Text = "status: doing calculation... M-WITHDRAWAL RECORD";
-
-                    result_gettotal = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/dptCorrectionAjax", "POST", reqparm);
-                    responsebody_gettotatal = Encoding.UTF8.GetString(result_gettotal);
-                }
-            }
-            else if (selected_index == 2)
             {
                 if (!_isSecondRequest_fy)
                 {
@@ -1551,7 +1637,7 @@ namespace Cronos_Data
                     responsebody_gettotatal = Encoding.UTF8.GetString(result_gettotal);
                 }
             }
-            else if (selected_index == 3)
+            else if (selected_index == 2)
             {
                 // Bet Record
                 var reqparm = new NameValueCollection
@@ -1658,69 +1744,73 @@ namespace Cronos_Data
             
             fy_gettotal.Add(_total_page_fy.ToString());
 
-            if (_total_records_fy > 0)
-            {
-                // status
-                label_fy_page_count.Text = "0 of " + _total_page_fy.ToString("N0");
-                label_fy_currentrecord.Text = "0 of " + Convert.ToInt32(_total_records_fy).ToString("N0");
-                _fy_no_result = false;
-            }
-            else
-            {
-                _fy_no_result = true;
+            label_fy_page_count.Text = "0 of " + _total_page_fy.ToString("N0");
+            label_fy_currentrecord.Text = "0 of " + Convert.ToInt32(_total_records_fy).ToString("N0");
+            _fy_no_result = false;
+            
+            //if (_total_records_fy > 0)
+            //{
+            //    // status
+            //    label_fy_page_count.Text = "0 of " + _total_page_fy.ToString("N0");
+            //    label_fy_currentrecord.Text = "0 of " + Convert.ToInt32(_total_records_fy).ToString("N0");
+            //    _fy_no_result = false;
+            //}
+            //else
+            //{
+            //    _fy_no_result = true;
 
-                panel_fy_status.Visible = false;
-                button_fy_start.Visible = true;
-                panel_fy_filter.Enabled = true;
-                //button_filelocation.Enabled = true;
+            //    panel_fy_status.Visible = false;
+            //    button_fy_start.Visible = true;
+            //    panel_fy_filter.Enabled = true;
+            //    //button_filelocation.Enabled = true;
 
-                button_fy_proceed.Visible = false;
-                label_fy_locatefolder.Visible = false;
+            //    button_fy_proceed.Visible = false;
+            //    label_fy_locatefolder.Visible = false;
 
-                label_fy_status.Text = "-";
-                label_fy_page_count.Text = "-";
-                label_fy_currentrecord.Text = "-";
-                label_fy_inserting_count.Text = "-";
-                label_fy_start_datetime.Text = "-";
-                label_fy_finish_datetime.Text = "-";
-                label_fy_elapsed.Text = "-";
+            //    label_fy_status.Text = "-";
+            //    label_fy_page_count.Text = "-";
+            //    label_fy_currentrecord.Text = "-";
+            //    label_fy_inserting_count.Text = "-";
+            //    label_fy_start_datetime.Text = "-";
+            //    label_fy_finish_datetime.Text = "-";
+            //    label_fy_elapsed.Text = "-";
 
-                panel_fy_datetime.Location = new Point(66, 226);
+            //    panel_fy_datetime.Location = new Point(66, 226);
 
-                // set default variables
-                _fy_bet_records.Clear();
-                fy_datetime.Clear();
-                fy_gettotal.Clear();
-                _total_records_fy = 0;
-                _total_page_fy = 0;
-                _fy_displayinexel_i = 0;
-                _fy_pages_count_display = 0;
-                _fy_pages_count = 0;
-                _detect_fy = false;
-                _fy_inserted_in_excel = true;
-                _fy_row = 1;
-                _fy_row_count = 1;
-                _isDone_fy = false;
-                _fy_secho = 0;
-                _fy_i = 0;
-                _fy_ii = 0;
-                _fy_get_ii = 1;
-                _fy_get_ii_display = 1;
-                _fy_folder_path_result = "";
-                _fy_folder_path_result_locate = "";
-                _fy_current_index = 1;
-                _fy_csv.Clear();
-                timer_fy_start.Start();
+            //    // set default variables
+            //    _fy_bet_records.Clear();
+            //    fy_datetime.Clear();
+            //    fy_gettotal.Clear();
+            //    _total_records_fy = 0;
+            //    _total_page_fy = 0;
+            //    _fy_displayinexel_i = 0;
+            //    _fy_pages_count_display = 0;
+            //    _fy_pages_count = 0;
+            //    _detect_fy = false;
+            //    _fy_inserted_in_excel = true;
+            //    _fy_row = 1;
+            //    _fy_row_count = 1;
+            //    _isDone_fy = false;
+            //    _fy_secho = 0;
+            //    _fy_i = 0;
+            //    _fy_ii = 0;
+            //    _fy_get_ii = 1;
+            //    _fy_get_ii_display = 1;
+            //    _fy_folder_path_result = "";
+            //    _fy_folder_path_result_locate = "";
+            //    _fy_current_index = 1;
+            //    _fy_csv.Clear();
+            //    timer_fy_start.Start();
 
-                // MEMBER LIST
-                _fy_playerlist_cn = "";
-                _fy_playerlist_ea = "";
-                _fy_id_playerlist = "";
+            //    // MEMBER LIST
+            //    _fy_playerlist_cn = "";
+            //    _fy_playerlist_ea = "";
+            //    _fy_id_playerlist = "";
 
-                MessageBox.Show("No data found.", "FY", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
+            //    MessageBox.Show("No data found.", "FY", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //}
         }
-        
+
         private async Task GetDataFYAsync()
         {
             try
@@ -1781,10 +1871,12 @@ namespace Cronos_Data
                 int selected_index = comboBox_fy_list.SelectedIndex;
                 if (selected_index == 0)
                 {
-                    if (!_isSecondRequest_fy)
+                    if (!_isSecondRequestFinish_fy)
                     {
-                        // Deposit Record
-                        var reqparm = new NameValueCollection
+                        if (!_isSecondRequest_fy)
+                        {
+                            // Deposit Record
+                            var reqparm = new NameValueCollection
                         {
                             { "s_btype", "" },
                             { "s_StartTime", gettotal_start_datetime},
@@ -1811,15 +1903,15 @@ namespace Cronos_Data
                             { "data[4][value]", _display_length_fy.ToString()}
                         };
 
-                        label_fy_status.Text = "status: getting data... DEPOSIT RECORD";
+                            label_fy_status.Text = "status: getting data... DEPOSIT RECORD";
 
-                        result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/dptHistoryAjax", "POST", reqparm);
-                        responsebody = Encoding.UTF8.GetString(result).Remove(0, 1);
-                    }
-                    else
-                    {
-                        // Manual Deposit Record
-                        var reqparm = new NameValueCollection
+                            result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/dptHistoryAjax", "POST", reqparm);
+                            responsebody = Encoding.UTF8.GetString(result).Remove(0, 1);
+                        }
+                        else
+                        {
+                            // Manual Deposit Record
+                            var reqparm = new NameValueCollection
                         {
                             { "s_btype", ""},
                             { "ptype", "1212"},
@@ -1840,20 +1932,20 @@ namespace Cronos_Data
                             { "data[4][value]", _display_length_fy.ToString()}
                         };
 
-                        // status
-                        label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
-                        label_fy_status.Text = "status: getting data... M-DEPOSIT RECORD";
+                            // status
+                            label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
+                            label_fy_status.Text = "status: getting data... M-DEPOSIT RECORD";
 
-                        result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/dptCorrectionAjax", "POST", reqparm);
-                        responsebody = Encoding.UTF8.GetString(result);
+                            result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/dptCorrectionAjax", "POST", reqparm);
+                            responsebody = Encoding.UTF8.GetString(result);
+                        }
                     }
-                }
-                else if (selected_index == 1)
-                {
-                    if (!_isSecondRequest_fy)
+                    else
                     {
-                        // Withdrawal Record
-                        var reqparm = new NameValueCollection
+                        if (!_isThirdRequest_fy)
+                        {
+                            // Withdrawal Record
+                            var reqparm = new NameValueCollection
                         {
                             { "s_btype", ""},
                             { "s_StartTime", gettotal_start_datetime},
@@ -1878,17 +1970,17 @@ namespace Cronos_Data
                             { "data[4][value]", _display_length_fy.ToString()}
                         };
 
-                        // status
-                        label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
-                        label_fy_status.Text = "status: getting data... WITHDRAWAL RECORD";
+                            // status
+                            label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
+                            label_fy_status.Text = "status: getting data... WITHDRAWAL RECORD";
 
-                        result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/wtdHistoryAjax", "POST", reqparm);
-                        responsebody = Encoding.UTF8.GetString(result);
-                    }
-                    else
-                    {
-                        // Manual Withdrawal Record
-                        var reqparm = new NameValueCollection
+                            result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/wtdHistoryAjax", "POST", reqparm);
+                            responsebody = Encoding.UTF8.GetString(result);
+                        }
+                        else
+                        {
+                            // Manual Withdrawal Record
+                            var reqparm = new NameValueCollection
                         {
                             { "s_btype", ""},
                             { "ptype", "1313"},
@@ -1911,15 +2003,16 @@ namespace Cronos_Data
                             { "data[4][value]", _display_length_fy.ToString()}
                         };
 
-                        // status
-                        label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
-                        label_fy_status.Text = "status: getting data... M-WITHDRAWAL RECORD";
+                            // status
+                            label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
+                            label_fy_status.Text = "status: getting data... M-WITHDRAWAL RECORD";
 
-                        result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/dptCorrectionAjax", "POST", reqparm);
-                        responsebody = Encoding.UTF8.GetString(result);
+                            result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/dptCorrectionAjax", "POST", reqparm);
+                            responsebody = Encoding.UTF8.GetString(result);
+                        }
                     }
                 }
-                else if (selected_index == 2)
+                else if (selected_index == 1)
                 {
                     if (!_isSecondRequest_fy)
                     {
@@ -1985,7 +2078,7 @@ namespace Cronos_Data
                         responsebody = Encoding.UTF8.GetString(result);
                     }
                 }
-                else if (selected_index == 3)
+                else if (selected_index == 2)
                 {
                     // Bet Record
                     var reqparm = new NameValueCollection
@@ -2110,10 +2203,12 @@ namespace Cronos_Data
                     int selected_index = comboBox_fy_list.SelectedIndex;
                     if (selected_index == 0)
                     {
-                        if (!_isSecondRequest_fy)
+                        if (!_isSecondRequestFinish_fy)
                         {
-                            // Deposit Record
-                            var reqparm = new NameValueCollection
+                            if (!_isSecondRequest_fy)
+                            {
+                                // Deposit Record
+                                var reqparm = new NameValueCollection
                             {
                                 { "s_btype", "" },
                                 { "s_StartTime", gettotal_start_datetime},
@@ -2140,15 +2235,15 @@ namespace Cronos_Data
                                 { "data[4][value]", _display_length_fy.ToString()}
                             };
 
-                            label_fy_status.Text = "status: getting data... DEPOSIT RECORD";
+                                label_fy_status.Text = "status: getting data... DEPOSIT RECORD";
 
-                            result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/dptHistoryAjax", "POST", reqparm);
-                            responsebody = Encoding.UTF8.GetString(result).Remove(0, 1);
-                        }
-                        else
-                        {
-                            // Manual Deposit Record
-                            var reqparm = new NameValueCollection
+                                result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/dptHistoryAjax", "POST", reqparm);
+                                responsebody = Encoding.UTF8.GetString(result).Remove(0, 1);
+                            }
+                            else
+                            {
+                                // Manual Deposit Record
+                                var reqparm = new NameValueCollection
                             {
                                 { "s_btype", ""},
                                 { "ptype", "1212"},
@@ -2169,20 +2264,20 @@ namespace Cronos_Data
                                 { "data[4][value]", _display_length_fy.ToString()}
                             };
 
-                            // status
-                            label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
-                            label_fy_status.Text = "status: getting data... M-DEPOSIT RECORD";
+                                // status
+                                label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
+                                label_fy_status.Text = "status: getting data... M-DEPOSIT RECORD";
 
-                            result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/dptCorrectionAjax", "POST", reqparm);
-                            responsebody = Encoding.UTF8.GetString(result);
+                                result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/dptCorrectionAjax", "POST", reqparm);
+                                responsebody = Encoding.UTF8.GetString(result);
+                            }
                         }
-                    }
-                    else if (selected_index == 1)
-                    {
-                        if (!_isSecondRequest_fy)
+                        else
                         {
-                            // Withdrawal Record
-                            var reqparm = new NameValueCollection
+                            if (!_isThirdRequest_fy)
+                            {
+                                // Withdrawal Record
+                                var reqparm = new NameValueCollection
                             {
                                 { "s_btype", ""},
                                 { "s_StartTime", gettotal_start_datetime},
@@ -2207,17 +2302,17 @@ namespace Cronos_Data
                                 { "data[4][value]", _display_length_fy.ToString()}
                             };
 
-                            // status
-                            label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
-                            label_fy_status.Text = "status: getting data... WITHDRAWAL RECORD";
+                                // status
+                                label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
+                                label_fy_status.Text = "status: getting data... WITHDRAWAL RECORD";
 
-                            result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/wtdHistoryAjax", "POST", reqparm);
-                            responsebody = Encoding.UTF8.GetString(result);
-                        }
-                        else
-                        {
-                            // Manual Withdrawal Record
-                            var reqparm = new NameValueCollection
+                                result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/wtdHistoryAjax", "POST", reqparm);
+                                responsebody = Encoding.UTF8.GetString(result);
+                            }
+                            else
+                            {
+                                // Manual Withdrawal Record
+                                var reqparm = new NameValueCollection
                             {
                                 { "s_btype", ""},
                                 { "ptype", "1313"},
@@ -2240,15 +2335,16 @@ namespace Cronos_Data
                                 { "data[4][value]", _display_length_fy.ToString()}
                             };
 
-                            // status
-                            label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
-                            label_fy_status.Text = "status: getting data... M-WITHDRAWAL RECORD";
+                                // status
+                                label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
+                                label_fy_status.Text = "status: getting data... M-WITHDRAWAL RECORD";
 
-                            result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/dptCorrectionAjax", "POST", reqparm);
-                            responsebody = Encoding.UTF8.GetString(result);
+                                result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/dptCorrectionAjax", "POST", reqparm);
+                                responsebody = Encoding.UTF8.GetString(result);
+                            }
                         }
                     }
-                    else if (selected_index == 2)
+                    else if (selected_index == 1)
                     {
                         if (!_isSecondRequest_fy)
                         {
@@ -2314,7 +2410,7 @@ namespace Cronos_Data
                             responsebody = Encoding.UTF8.GetString(result);
                         }
                     }
-                    else if (selected_index == 3)
+                    else if (selected_index == 2)
                     {
                         // Bet Record
                         var reqparm = new NameValueCollection
@@ -2417,184 +2513,445 @@ namespace Cronos_Data
                         int selected_index = comboBox_fy_list.SelectedIndex;
                         if (selected_index == 0)
                         {
-                            if (!_isSecondRequest_fy)
+                            if (!_isSecondRequestFinish_fy)
                             {
-                                // Deposit Record
-                                JToken submitted_date__transaction_id = jo_fy.SelectToken("$.aaData[" + ii + "][0]");
-                                string submitted_date = submitted_date__transaction_id.ToString().Substring(0, 19);
-                                string transaction_id = submitted_date__transaction_id.ToString().Substring(23);
-                                string date = submitted_date__transaction_id.ToString().Substring(0, 10);
-
-                                JToken member_get = jo_fy.SelectToken("$.aaData[" + ii + "][1]");
-                                string member = Regex.Match(member_get.ToString(), "<span(.*?)>(.*?)</span>").Groups[2].Value;
-
-                                JToken vip = jo_fy.SelectToken("$.aaData[" + ii + "][3]").ToString().Replace("\"", "");
-
-                                JToken amount = jo_fy.SelectToken("$.aaData[" + ii + "][5]").ToString().Replace("\"", "");
-
-                                JToken payment_type = jo_fy.SelectToken("$.aaData[" + ii + "][10]");
-                                payment_type = payment_type.ToString().Replace(":<br>", "");
-                                payment_type = payment_type.ToString().Replace("<br>", "");
-
-                                JToken status_get = jo_fy.SelectToken("$.aaData[" + ii + "][12]").ToString().Replace("\"", "");
-                                string status = Regex.Match(status_get.ToString(), "<font(.*?)>(.*?)</font>").Groups[2].Value;
-
-                                JToken updated_date__updated_time = jo_fy.SelectToken("$.aaData[" + ii + "][13]").ToString().Replace("\"", "");
-                                string updated_date = updated_date__updated_time.ToString().Substring(0, 10);
-                                string updated_time = updated_date__updated_time.ToString().Substring(15);
-
-                                //MessageBox.Show("submited date: " + submitted_date);
-                                //MessageBox.Show("transaction_id: " + transaction_id);
-                                //MessageBox.Show("member: " + member);
-                                //MessageBox.Show("vip: " + vip);
-                                //MessageBox.Show("amount: " + amount);
-                                //MessageBox.Show("status: " + status);
-                                //MessageBox.Show("updated_date: " + updated_date);
-                                //MessageBox.Show("updated_time: " + updated_time);
-
-                                int half = transaction_id.Length / 2;
-                                string half1 = transaction_id.Substring(0, half);
-                                string half2 = transaction_id.Substring(half);
-                                string transaction_id_replace = "'" + half1 + " " + half2;
-
-                                DateTime month = DateTime.ParseExact(submitted_date, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
-                                //string month = DateTime.Now.ToString("MM/01/yyyy");
-
-                                if (_fy_get_ii == 1)
+                                if (!_isSecondRequest_fy)
                                 {
-                                    var header = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11}", "Brand", "Month", "Date", "Submitted Date", "Updated Date", "Member", "Payment Type", "Transaction ID", "Amount", "Transaction Type", "VIP", "Status");
-                                    _fy_csv.AppendLine(header);
-                                }
+                                    // Deposit Record
+                                    JToken submitted_date__transaction_id = jo_fy.SelectToken("$.aaData[" + ii + "][0]");
+                                    string submitted_date = submitted_date__transaction_id.ToString().Substring(0, 19);
+                                    string transaction_id = submitted_date__transaction_id.ToString().Substring(23);
+                                    string date = submitted_date__transaction_id.ToString().Substring(0, 10);
 
-                                var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11}", "FY", "\"" + month.ToString("MM/01/yyyy") + "\"", "\"" + date + "\"", "\"" + submitted_date + "\"", "\"" + updated_date + " " + updated_time + "\"", "\"" + member + "\"", "\"" + payment_type + "\"", "\"" + "'" + transaction_id + "\"", "\"" + amount + "\"", "\"" + "Deposit" + "\"", "\"" + vip + "\"", "\"" + status + "\"");
-                                _fy_csv.AppendLine(newLine);
-                            }
-                            else
-                            {
-                                // Manual Deposit Record
-                                JToken member_get = jo_fy.SelectToken("$.aaData[" + ii + "][1]");
-                                string member = Regex.Match(member_get.ToString(), "<span(.*?)>(.*?)</span>").Groups[2].Value;
+                                    JToken member_get = jo_fy.SelectToken("$.aaData[" + ii + "][1]");
+                                    string member = Regex.Match(member_get.ToString(), "<span(.*?)>(.*?)</span>").Groups[2].Value;
 
-                                JToken vip = jo_fy.SelectToken("$.aaData[" + ii + "][3]").ToString().Replace("\"", "");
+                                    JToken vip = jo_fy.SelectToken("$.aaData[" + ii + "][3]").ToString().Replace("\"", "");
 
-                                JToken amount = jo_fy.SelectToken("$.aaData[" + ii + "][5]").ToString().Replace("(RMB) - ¥ ", "");
+                                    JToken amount = jo_fy.SelectToken("$.aaData[" + ii + "][5]").ToString().Replace("\"", "");
 
-                                JToken remark = jo_fy.SelectToken("$.aaData[" + ii + "][8]").ToString().Replace("\"", "");
+                                    JToken payment_type = jo_fy.SelectToken("$.aaData[" + ii + "][10]");
+                                    payment_type = payment_type.ToString().Replace(":<br>", "");
+                                    payment_type = payment_type.ToString().Replace("<br>", "");
 
-                                JToken submitted_date__submitted_time = jo_fy.SelectToken("$.aaData[" + ii + "][10]");
-                                string submitted_date = submitted_date__submitted_time.ToString().Substring(0, 10);
-                                string submitted_time = submitted_date__submitted_time.ToString().Substring(15);
-                                
-                                DateTime month = DateTime.ParseExact(submitted_date, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                                    JToken status_get = jo_fy.SelectToken("$.aaData[" + ii + "][12]").ToString().Replace("\"", "");
+                                    string status = Regex.Match(status_get.ToString(), "<font(.*?)>(.*?)</font>").Groups[2].Value;
 
-                                JToken payment_type = jo_fy.SelectToken("$.aaData[" + ii + "][7]").ToString().Replace("\"", "");
+                                    JToken updated_date__updated_time = jo_fy.SelectToken("$.aaData[" + ii + "][13]").ToString().Replace("\"", "");
+                                    string updated_date = updated_date__updated_time.ToString().Substring(0, 10);
+                                    string updated_time = updated_date__updated_time.ToString().Substring(15);
 
-                                //if (_fy_get_ii == 1)
-                                //{
-                                //    var header = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11}", "Brand", "Month", "Date", "Submitted Date", "Updated Date", "Member", "Payment Type", "Transaction ID", "Amount", "Transaction Type", "VIP", "Status");
-                                //    _fy_csv.AppendLine(header);
-                                //}
+                                    //MessageBox.Show("submited date: " + submitted_date);
+                                    //MessageBox.Show("transaction_id: " + transaction_id);
+                                    //MessageBox.Show("member: " + member);
+                                    //MessageBox.Show("vip: " + vip);
+                                    //MessageBox.Show("amount: " + amount);
+                                    //MessageBox.Show("status: " + status);
+                                    //MessageBox.Show("updated_date: " + updated_date);
+                                    //MessageBox.Show("updated_time: " + updated_time);
 
-                                var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11}", "FY", "\"" + month.ToString("MM/01/yyyy") + "\"", "\"" + submitted_date + "\"", "\"" + submitted_date + " " + submitted_time + "\"", "\"" + submitted_date + " " + submitted_time + "\"", "\"" + member + "\"", "\"" + payment_type + "\"", "\"" + remark + "\"", "\"" + amount + "\"", "\"" + "Deposit" + "\"", "\"" + vip + "\"", "\"" + "Success" + "\"");
-                                _fy_csv.AppendLine(newLine);
-                            }
-                        }
-                        else if (selected_index == 1)
-                        {
-                            if (!_isSecondRequest_fy)
-                            {
-                                // Withdrawal Record
-                                JToken transaction_id = jo_fy.SelectToken("$.aaData[" + ii + "][0]").ToString().Replace("\"", "");
+                                    int half = transaction_id.Length / 2;
+                                    string half1 = transaction_id.Substring(0, half);
+                                    string half2 = transaction_id.Substring(half);
+                                    string transaction_id_replace = "'" + half1 + " " + half2;
+                                    
+                                    // Bank account
+                                    string pg_company = "";
+                                    string pg_type = "";
+                                    string bank_account_fy_temp = Path.Combine(Path.GetTempPath(), "FY Payment Code.txt"); ;
+                                    
+                                    using (StreamReader sr = File.OpenText(bank_account_fy_temp))
+                                    {
+                                        string s = String.Empty;
+                                        while ((s = sr.ReadLine()) != null)
+                                        {
+                                            string[] results = s.Split('	');
+                                            int bank_account_i = 0;
+                                            bool isNext = false;
+                                            foreach (string result in results)
+                                            {
+                                                bank_account_i++;
 
-                                JToken member_get = jo_fy.SelectToken("$.aaData[" + ii + "][1]");
-                                string member = Regex.Match(member_get.ToString(), "<span(.*?)>(.*?)</span>").Groups[2].Value;
+                                                if (bank_account_i == 1)
+                                                {
+                                                    if (result == "手工存款")
+                                                    {
+                                                        string replace_transaction_id = transaction_id.ToLower();
+                                                        if (replace_transaction_id.Contains("wechat"))
+                                                        {
+                                                            pg_company = "MANUAL WECHAT";
+                                                            pg_type = "MANUAL WECHAT";
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            pg_company = "LOCAL BANK";
+                                                            pg_type = "LOCAL BANK";
+                                                            break;
+                                                        }
+                                                    } else if (result == payment_type.ToString().Trim())
+                                                    {
+                                                        isNext = true;
+                                                    }
+                                                }
 
-                                JToken vip = jo_fy.SelectToken("$.aaData[" + ii + "][3]").ToString().Replace("\"", "");
+                                                if (isNext)
+                                                {
+                                                    if (bank_account_i == 2)
+                                                    {
+                                                        pg_company = result;
+                                                    }
+                                                    else if (bank_account_i == 3)
+                                                    {
+                                                        pg_type = result;
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
 
-                                JToken amount = jo_fy.SelectToken("$.aaData[" + ii + "][6]").ToString().Replace("\"", "");
+                                    DateTime month = DateTime.ParseExact(submitted_date, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+                                    //string month = DateTime.Now.ToString("MM/01/yyyy");
+                                    
+                                    string duration_time = "";
+                                    
+                                    DateTime start = DateTime.ParseExact(submitted_date, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+                                    DateTime end = DateTime.ParseExact(updated_date + " " + updated_time, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
 
-                                JToken submitted_date__submitted_time = jo_fy.SelectToken("$.aaData[" + ii + "][8]").ToString().Replace("\"", "");
-                                string submitted_date = submitted_date__submitted_time.ToString().Substring(0, 10);
-                                string submitted_time = submitted_date__submitted_time.ToString().Substring(15);
-                                string date = submitted_date__submitted_time.ToString().Substring(0, 10);
+                                    TimeSpan span = end - start;
+                                    double totalMinutes = Math.Floor(span.TotalMinutes);
 
-                                JToken status = jo_fy.SelectToken("$.aaData[" + ii + "][10]").ToString().Replace("</br>", "");
-                                if (status.ToString() == "出款成功")
-                                {
-                                    status = "Success";
+                                    if (totalMinutes <= 5)
+                                    {
+                                        // 0-5
+                                        duration_time = "0-5min";
+                                    }
+                                    else if (totalMinutes <= 10)
+                                    {
+                                        // 6-10
+                                        duration_time = "6-10min";
+                                    }
+                                    else if (totalMinutes <= 15)
+                                    {
+                                        // 11-15
+                                        duration_time = "11-15min";
+                                    }
+                                    else if (totalMinutes <= 20)
+                                    {
+                                        // 16-20
+                                        duration_time = "16-20min";
+                                    }
+                                    else if (totalMinutes <= 25)
+                                    {
+                                        // 21-25
+                                        duration_time = "21-25min";
+                                    }
+                                    else if (totalMinutes <= 30)
+                                    {
+                                        // 26-30
+                                        duration_time = "26-30min";
+                                    }
+                                    else if (totalMinutes <= 60)
+                                    {
+                                        // 31-60
+                                        duration_time = "31-60min";
+                                    }
+                                    else if (totalMinutes >= 61)
+                                    {
+                                        // > 60
+                                        duration_time = ">60min";
+                                    }
+                                    
+                                    string transaction_time = "";
+                                    string retained = "retained";
+                                    string fd_date = "fd_date";
+                                    string new_fy = "new_fy";
+                                    string reactivated = "reactivated";
+
+                                    string replace_status = status.ToLower();
+                                    if (replace_status == "success")
+                                    {
+                                        // get last deposit in temp file
+
+                                        // retained
+                                        // 2 months current date
+                                        var last2month = DateTime.Today.AddMonths(-2);
+                                        //MessageBox.Show(last2month.ToString());
+                                    }
+                                    else
+                                    {
+                                        retained = "";
+                                        fd_date = "";
+                                        new_fy = "";
+                                        reactivated = "";
+                                    }
+
+                                    if (_fy_get_ii == 1)
+                                    {
+                                        var header = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19}", "Brand", "Month", "Date", "Submitted Date", "Updated Date", "Member", "Payment Type", "PG Company", "PG Type", "Transaction ID", "Amount", "Transaction Time", "Transaction Type", "Duration Time", "VIP", "Status", "Retained", "FD Date", "New", "Reactivated");
+                                        _fy_csv.AppendLine(header);
+                                    }
+
+                                    var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19}", "FY", "\"" + month.ToString("MM/01/yyyy") + "\"", "\"" + date + "\"", "\"" + submitted_date + "\"", "\"" + updated_date + " " + updated_time + "\"", "\"" + member + "\"", "\"" + payment_type + "\"", "\"" + pg_company + "\"", "\"" + pg_type + "\"", "\"" + "'" + transaction_id + "\"", "\"" + amount + "\"", "\"" + "trasaction time" + "\"", "\"" + "Deposit" + "\"", "\"" + duration_time + "\"", "\"" + vip + "\"", "\"" + status + "\"", "\"" + retained + "\"", "\"" + fd_date + "\"", "\"" + new_fy + "\"", "\"" + reactivated + "\"");
+                                    _fy_csv.AppendLine(newLine);
                                 }
                                 else
                                 {
-                                    status = "Failure";
-                                }
+                                    // Manual Deposit Record
+                                    JToken member_get = jo_fy.SelectToken("$.aaData[" + ii + "][1]");
+                                    string member = Regex.Match(member_get.ToString(), "<span(.*?)>(.*?)</span>").Groups[2].Value;
 
-                                JToken payment_type = jo_fy.SelectToken("$.aaData[" + ii + "][12]").ToString().Replace("\"", "");
-                                string[] payment_type_get_array = payment_type.ToString().Split("<br />");
-                                int i_payment_type = 0;
-                                foreach (string obj in payment_type_get_array)
-                                {
-                                    i_payment_type++;
+                                    JToken vip = jo_fy.SelectToken("$.aaData[" + ii + "][3]").ToString().Replace("\"", "");
 
-                                    if (i_payment_type == 1)
+                                    JToken amount = jo_fy.SelectToken("$.aaData[" + ii + "][5]").ToString().Replace("(RMB) - ¥ ", "");
+
+                                    JToken remark = jo_fy.SelectToken("$.aaData[" + ii + "][8]").ToString().Replace("\"", "");
+
+                                    JToken submitted_date__submitted_time = jo_fy.SelectToken("$.aaData[" + ii + "][10]");
+                                    string submitted_date = submitted_date__submitted_time.ToString().Substring(0, 10);
+                                    string submitted_time = submitted_date__submitted_time.ToString().Substring(15);
+
+                                    DateTime month = DateTime.ParseExact(submitted_date, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+                                    JToken payment_type = jo_fy.SelectToken("$.aaData[" + ii + "][7]").ToString().Replace("\"", "");
+
+                                    //if (_fy_get_ii == 1)
+                                    //{
+                                    //    var header = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11}", "Brand", "Month", "Date", "Submitted Date", "Updated Date", "Member", "Payment Type", "Transaction ID", "Amount", "Transaction Type", "VIP", "Status");
+                                    //    _fy_csv.AppendLine(header);
+                                    //}
+
+                                    // Bank account
+                                    string pg_company = "";
+                                    string pg_type = "";
+                                    string bank_account_fy_temp = Path.Combine(Path.GetTempPath(), "FY Payment Code.txt"); ;
+
+                                    using (StreamReader sr = File.OpenText(bank_account_fy_temp))
                                     {
-                                        payment_type = obj;
-                                        break;
+                                        string s = String.Empty;
+                                        while ((s = sr.ReadLine()) != null)
+                                        {
+                                            string[] results = s.Split('	');
+                                            int bank_account_i = 0;
+                                            bool isNext = false;
+                                            foreach (string result in results)
+                                            {
+                                                bank_account_i++;
+
+                                                if (bank_account_i == 1)
+                                                {
+                                                    if (result == payment_type.ToString().Trim())
+                                                    {
+                                                        isNext = true;
+                                                    }
+                                                }
+
+                                                if (isNext)
+                                                {
+                                                    if (bank_account_i == 2)
+                                                    {
+                                                        pg_company = result;
+                                                    }
+                                                    else if (bank_account_i == 3)
+                                                    {
+                                                        pg_type = result;
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
+
+                                    //var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13}", "FY", "\"" + month.ToString("MM/01/yyyy") + "\"", "\"" + submitted_date + "\"", "\"" + submitted_date + " " + submitted_time + "\"", "\"" + submitted_date + " " + submitted_time + "\"", "\"" + member + "\"", "\"" + payment_type + "\"", "\"" + pg_company + "\"", "\"" + pg_type + "\"", "\"" + remark + "\"", "\"" + amount + "\"", "\"" + "Deposit" + "\"", "\"" + vip + "\"", "\"" + "Success" + "\"");
+                                    //_fy_csv.AppendLine(newLine);
+
+                                    var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19}", "FY", "\"" + month.ToString("MM/01/yyyy") + "\"", "\"" + submitted_date + "\"", "\"" + submitted_date + " " + submitted_time + "\"", "\"" + submitted_date + " " + submitted_time + "\"", "\"" + member + "\"", "\"" + payment_type + "\"", "\"" + pg_company + "\"", "\"" + pg_type + "\"", "\"" + remark + "\"", "\"" + amount + "\"", "\"" + "trasaction time" + "\"", "\"" + "Deposit" + "\"", "\"" + "duration time" + "\"", "\"" + vip + "\"", "\"" + "Success" + "\"", "\"" + "retained" + "\"", "\"" + "fd date" + "\"", "\"" + "new" + "\"", "\"" + "reactivated" + "\"");
+                                    _fy_csv.AppendLine(newLine);
                                 }
-
-                                JToken updated_date__updated_time = jo_fy.SelectToken("$.aaData[" + ii + "][13]").ToString().Replace("\"", "");
-                                string updated_date = updated_date__updated_time.ToString().Substring(0, 10);
-                                string updated_time = updated_date__updated_time.ToString().Substring(15);
-                                updated_date__updated_time = updated_date + " " + updated_time;
-
-                                int half = transaction_id.ToString().Length / 2;
-                                string half1 = transaction_id.ToString().Substring(0, half);
-                                string half2 = transaction_id.ToString().Substring(half);
-                                string transaction_id_replace = "'" + half1 + " " + half2;
-
-                                DateTime month = DateTime.ParseExact(submitted_date, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-                                //string month = DateTime.Now.ToString("MM/01/yyyy");
-
-                                if (_fy_get_ii == 1)
-                                {
-                                    var header = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11}", "Brand", "Month", "Date", "Submitted Date", "Updated Date", "Member", "Payment Type", "Transaction ID", "Amount", "Transaction Type", "VIP", "Status");
-                                    _fy_csv.AppendLine(header);
-                                }
-
-                                var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11}", "FY", "\"" + month.ToString("MM/01/yyyy") + "\"", "\"" + date + "\"", "\"" + updated_date__updated_time + "\"", "\"" + updated_date + " " + updated_time + "\"", "\"" + member + "\"", "\"" + payment_type + "\"", "\"" + "'" + transaction_id + "\"", "\"" + amount + "\"", "\"" + "Withdrawal" + "\"", "\"" + vip + "\"", "\"" + status + "\"");
-                                _fy_csv.AppendLine(newLine);
                             }
                             else
                             {
-                                // Manual Withdrawal Record
-                                JToken member_get = jo_fy.SelectToken("$.aaData[" + ii + "][1]");
-                                string member = Regex.Match(member_get.ToString(), "<span(.*?)>(.*?)</span>").Groups[2].Value;
+                                if (!_isThirdRequest_fy)
+                                {
+                                    // Withdrawal Record
+                                    JToken transaction_id = jo_fy.SelectToken("$.aaData[" + ii + "][0]").ToString().Replace("\"", "");
 
-                                JToken vip = jo_fy.SelectToken("$.aaData[" + ii + "][3]").ToString().Replace("\"", "");
+                                    JToken member_get = jo_fy.SelectToken("$.aaData[" + ii + "][1]");
+                                    string member = Regex.Match(member_get.ToString(), "<span(.*?)>(.*?)</span>").Groups[2].Value;
 
-                                JToken amount = jo_fy.SelectToken("$.aaData[" + ii + "][5]").ToString().Replace("(RMB) - ¥ ", "");
+                                    JToken vip = jo_fy.SelectToken("$.aaData[" + ii + "][3]").ToString().Replace("\"", "");
 
-                                JToken remark = jo_fy.SelectToken("$.aaData[" + ii + "][8]").ToString().Replace("\"", "");
+                                    JToken amount = jo_fy.SelectToken("$.aaData[" + ii + "][6]").ToString().Replace("\"", "");
 
-                                JToken submitted_date__submitted_time = jo_fy.SelectToken("$.aaData[" + ii + "][10]");
-                                string submitted_date = submitted_date__submitted_time.ToString().Substring(0, 10);
-                                string submitted_time = submitted_date__submitted_time.ToString().Substring(15);
+                                    JToken submitted_date__submitted_time = jo_fy.SelectToken("$.aaData[" + ii + "][8]").ToString().Replace("\"", "");
+                                    string submitted_date = submitted_date__submitted_time.ToString().Substring(0, 10);
+                                    string submitted_time = submitted_date__submitted_time.ToString().Substring(15);
+                                    string date = submitted_date__submitted_time.ToString().Substring(0, 10);
 
-                                DateTime month = DateTime.ParseExact(submitted_date, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                                    JToken status = jo_fy.SelectToken("$.aaData[" + ii + "][10]").ToString().Replace("</br>", "");
+                                    if (status.ToString() == "出款成功")
+                                    {
+                                        status = "Success";
+                                    }
+                                    else
+                                    {
+                                        status = "Failure";
+                                    }
 
-                                JToken payment_type = jo_fy.SelectToken("$.aaData[" + ii + "][7]").ToString().Replace("\"", "");
+                                    JToken payment_type = jo_fy.SelectToken("$.aaData[" + ii + "][12]").ToString().Replace("\"", "");
+                                    string[] payment_type_get_array = payment_type.ToString().Split("<br />");
+                                    int i_payment_type = 0;
+                                    foreach (string obj in payment_type_get_array)
+                                    {
+                                        i_payment_type++;
 
-                                //if (_fy_get_ii == 1)
-                                //{
-                                //    var header = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11}", "Brand", "Month", "Date", "Submitted Date", "Updated Date", "Member", "Payment Type", "Transaction ID", "Amount", "Transaction Type", "VIP", "Status");
-                                //    _fy_csv.AppendLine(header);
-                                //}
+                                        if (i_payment_type == 1)
+                                        {
+                                            payment_type = obj;
+                                            break;
+                                        }
+                                    }
 
-                                var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11}", "FY", "\"" + month.ToString("MM/01/yyyy") + "\"", "\"" + submitted_date + "\"", "\"" + submitted_date + " " + submitted_time + "\"", "\"" + submitted_date + " " + submitted_time + "\"", "\"" + member + "\"", "\"" + payment_type + "\"", "\"" + remark + "\"", "\"" + amount + "\"", "\"" + "Deposit" + "\"", "\"" + vip + "\"", "\"" + "Success" + "\"");
-                                _fy_csv.AppendLine(newLine);
+                                    JToken updated_date__updated_time = jo_fy.SelectToken("$.aaData[" + ii + "][13]").ToString().Replace("\"", "");
+                                    string updated_date = updated_date__updated_time.ToString().Substring(0, 10);
+                                    string updated_time = updated_date__updated_time.ToString().Substring(15);
+                                    updated_date__updated_time = updated_date + " " + updated_time;
+
+                                    int half = transaction_id.ToString().Length / 2;
+                                    string half1 = transaction_id.ToString().Substring(0, half);
+                                    string half2 = transaction_id.ToString().Substring(half);
+                                    string transaction_id_replace = "'" + half1 + " " + half2;
+
+                                    // Bank account
+                                    string pg_company = "";
+                                    string pg_type = "";
+                                    string bank_account_fy_temp = Path.Combine(Path.GetTempPath(), "FY Payment Code.txt"); ;
+
+                                    using (StreamReader sr = File.OpenText(bank_account_fy_temp))
+                                    {
+                                        string s = String.Empty;
+                                        while ((s = sr.ReadLine()) != null)
+                                        {
+                                            string[] results = s.Split('	');
+                                            int bank_account_i = 0;
+                                            bool isNext = false;
+                                            foreach (string result in results)
+                                            {
+                                                bank_account_i++;
+
+                                                if (bank_account_i == 1)
+                                                {
+                                                    if (result == payment_type.ToString().Trim())
+                                                    {
+                                                        isNext = true;
+                                                    }
+                                                }
+
+                                                if (isNext)
+                                                {
+                                                    if (bank_account_i == 2)
+                                                    {
+                                                        pg_company = result;
+                                                    }
+                                                    else if (bank_account_i == 3)
+                                                    {
+                                                        pg_type = result;
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    DateTime month = DateTime.ParseExact(submitted_date, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                                    //string month = DateTime.Now.ToString("MM/01/yyyy");
+
+                                    //if (_fy_get_ii == 1)
+                                    //{
+                                    //    var header = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11}", "Brand", "Month", "Date", "Submitted Date", "Updated Date", "Member", "Payment Type", "Transaction ID", "Amount", "Transaction Type", "VIP", "Status");
+                                    //    _fy_csv.AppendLine(header);
+                                    //}
+
+                                    //var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13}", "FY", "\"" + month.ToString("MM/01/yyyy") + "\"", "\"" + submitted_date + "\"", "\"" + submitted_date + " " + submitted_time + "\"", "\"" + submitted_date + " " + submitted_time + "\"", "\"" + member + "\"", "\"" + payment_type + "\"", "\"" + pg_company + "\"", "\"" + pg_type + "\"", "\"" + "'" + transaction_id + "\"", "\"" + amount + "\"", "\"" + "Deposit" + "\"", "\"" + vip + "\"", "\"" + "Success" + "\"");
+                                    //_fy_csv.AppendLine(newLine);
+
+                                    var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19}", "FY", "\"" + month.ToString("MM/01/yyyy") + "\"", "\"" + date + "\"", "\"" + submitted_date + "\"", "\"" + updated_date + " " + updated_time + "\"", "\"" + member + "\"", "\"" + payment_type + "\"", "\"" + pg_company + "\"", "\"" + pg_type + "\"", "\"" + "'" + transaction_id + "\"", "\"" + amount + "\"", "\"" + "trasaction time" + "\"", "\"" + "Withdrawal" + "\"", "\"" + "duration time" + "\"", "\"" + vip + "\"", "\"" + status + "\"", "\"" + "retained" + "\"", "\"" + "fd date" + "\"", "\"" + "new" + "\"", "\"" + "reactivated" + "\"");
+                                    _fy_csv.AppendLine(newLine);
+                                }
+                                else
+                                {
+                                    // Manual Withdrawal Record
+                                    JToken member_get = jo_fy.SelectToken("$.aaData[" + ii + "][1]");
+                                    string member = Regex.Match(member_get.ToString(), "<span(.*?)>(.*?)</span>").Groups[2].Value;
+
+                                    JToken vip = jo_fy.SelectToken("$.aaData[" + ii + "][3]").ToString().Replace("\"", "");
+
+                                    JToken amount = jo_fy.SelectToken("$.aaData[" + ii + "][5]").ToString().Replace("(RMB) - ¥ ", "");
+
+                                    JToken remark = jo_fy.SelectToken("$.aaData[" + ii + "][8]").ToString().Replace("\"", "");
+
+                                    JToken submitted_date__submitted_time = jo_fy.SelectToken("$.aaData[" + ii + "][10]");
+                                    string submitted_date = submitted_date__submitted_time.ToString().Substring(0, 10);
+                                    string submitted_time = submitted_date__submitted_time.ToString().Substring(15);
+
+                                    DateTime month = DateTime.ParseExact(submitted_date, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+                                    JToken payment_type = jo_fy.SelectToken("$.aaData[" + ii + "][7]").ToString().Replace("\"", "");
+
+                                    //if (_fy_get_ii == 1)
+                                    //{
+                                    //    var header = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11}", "Brand", "Month", "Date", "Submitted Date", "Updated Date", "Member", "Payment Type", "Transaction ID", "Amount", "Transaction Type", "VIP", "Status");
+                                    //    _fy_csv.AppendLine(header);
+                                    //}
+
+                                    // Bank account
+                                    string pg_company = "";
+                                    string pg_type = "";
+                                    string bank_account_fy_temp = Path.Combine(Path.GetTempPath(), "FY Payment Code.txt"); ;
+
+                                    using (StreamReader sr = File.OpenText(bank_account_fy_temp))
+                                    {
+                                        string s = String.Empty;
+                                        while ((s = sr.ReadLine()) != null)
+                                        {
+                                            string[] results = s.Split('	');
+                                            int bank_account_i = 0;
+                                            bool isNext = false;
+                                            foreach (string result in results)
+                                            {
+                                                bank_account_i++;
+
+                                                if (bank_account_i == 1)
+                                                {
+                                                    if (result == payment_type.ToString().Trim())
+                                                    {
+                                                        isNext = true;
+                                                    }
+                                                }
+
+                                                if (isNext)
+                                                {
+                                                    if (bank_account_i == 2)
+                                                    {
+                                                        pg_company = result;
+                                                    }
+                                                    else if (bank_account_i == 3)
+                                                    {
+                                                        pg_type = result;
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19}", "FY", "\"" + month.ToString("MM/01/yyyy") + "\"", "\"" + submitted_date + "\"", "\"" + submitted_date + " " + submitted_time + "\"", "\"" + submitted_date + " " + submitted_time + "\"", "\"" + member + "\"", "\"" + payment_type + "\"", "\"" + pg_company + "\"", "\"" + pg_type + "\"", "\"" + remark + "\"", "\"" + amount + "\"", "\"" + "trasaction time" + "\"", "\"" + "Withdrawal" + "\"", "\"" + "duration time" + "\"", "\"" + vip + "\"", "\"" + "Success" + "\"", "\"" + "retained" + "\"", "\"" + "fd date" + "\"", "\"" + "new" + "\"", "\"" + "reactivated" + "\"");
+                                    _fy_csv.AppendLine(newLine);
+                                }
                             }
                         }
-                        else if (selected_index == 2)
+                        else if (selected_index == 1)
                         {
                             if (!_isSecondRequest_fy)
                             {
@@ -2619,6 +2976,60 @@ namespace Cronos_Data
                                 //MessageBox.Show(submitted_date);
                                 //MessageBox.Show(submitted_time);
 
+                                string replace_remark = "";
+                                foreach (char c in remark.ToString())
+                                {
+                                    if (c == ';')
+                                    {
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        replace_remark += c;
+                                    }
+                                }
+
+                                // Bonus code
+                                string bonus_category = "";
+                                string purpose = "";
+                                string bank_account_fy_temp = Path.Combine(Path.GetTempPath(), "FY Bonus Code.txt"); ;
+
+                                using (StreamReader sr = File.OpenText(bank_account_fy_temp))
+                                {
+                                    string s = String.Empty;
+                                    while ((s = sr.ReadLine()) != null)
+                                    {
+                                        string[] results = s.Split('	');
+                                        int bonus_code_i = 0;
+                                        bool isNext = false;
+                                        foreach (string result in results)
+                                        {
+                                            bonus_code_i++;
+
+                                            if (bonus_code_i == 1)
+                                            {
+                                                if (result == replace_remark)
+                                                {
+                                                    isNext = true;
+                                                }
+                                            }
+
+                                            if (isNext)
+                                            {
+                                                if (bonus_code_i == 2)
+                                                {
+                                                    bonus_category = result;
+                                                }
+                                                else if (bonus_code_i == 3)
+                                                {
+                                                    purpose = result;
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
                                 DateTime month = DateTime.ParseExact(submitted_date, "yyyy-MM-dd", CultureInfo.InvariantCulture);
 
                                 if (_fy_get_ii == 1)
@@ -2627,7 +3038,7 @@ namespace Cronos_Data
                                     _fy_csv.AppendLine(header);
                                 }
 
-                                var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8}", "FY", "\"" + month.ToString("MM/01/yyyy") + "\"", "\"" + submitted_date + "\"", "\"" + member + "\"", "\"" + "" + "\"", "\"" + "" + "\"", "\"" + amount + "\"", "\"" + remark + "\"", "\"" + vip + "\"");
+                                var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8}", "FY", "\"" + month.ToString("MM/01/yyyy") + "\"", "\"" + submitted_date + "\"", "\"" + member + "\"", "\"" + bonus_category + "\"", "\"" + purpose + "\"", "\"" + amount + "\"", "\"" + remark + "\"", "\"" + vip + "\"");
                                 _fy_csv.AppendLine(newLine);
                             }
                             else
@@ -2656,6 +3067,60 @@ namespace Cronos_Data
                                 //MessageBox.Show(game_platform.ToString());
                                 //MessageBox.Show(amount.ToString());
 
+                                string replace_remark = "";
+                                foreach (char c in game_platform.ToString())
+                                {
+                                    if (c == ';')
+                                    {
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        replace_remark += c;
+                                    }
+                                }
+
+                                // Bonus code
+                                string bonus_category = "";
+                                string purpose = "";
+                                string bank_account_fy_temp = Path.Combine(Path.GetTempPath(), "FY Bonus Code.txt"); ;
+
+                                using (StreamReader sr = File.OpenText(bank_account_fy_temp))
+                                {
+                                    string s = String.Empty;
+                                    while ((s = sr.ReadLine()) != null)
+                                    {
+                                        string[] results = s.Split('	');
+                                        int bonus_code_i = 0;
+                                        bool isNext = false;
+                                        foreach (string result in results)
+                                        {
+                                            bonus_code_i++;
+
+                                            if (bonus_code_i == 1)
+                                            {
+                                                if (result == replace_remark)
+                                                {
+                                                    isNext = true;
+                                                }
+                                            }
+
+                                            if (isNext)
+                                            {
+                                                if (bonus_code_i == 2)
+                                                {
+                                                    bonus_category = result;
+                                                }
+                                                else if (bonus_code_i == 3)
+                                                {
+                                                    purpose = result;
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
                                 DateTime month = DateTime.ParseExact(submitted_year + "-" + submitted_month + "-" + submitted_day, "yyyy-MM-dd", CultureInfo.InvariantCulture);
 
                                 //if (_fy_get_ii == 1)
@@ -2668,7 +3133,7 @@ namespace Cronos_Data
                                 _fy_csv.AppendLine(newLine);
                             }
                         }
-                        else if (selected_index == 3)
+                        else if (selected_index == 2)
                         {
                             // Bet Record
                             JToken game_platform = jo_fy.SelectToken("$.aaData[" + ii + "][0]");
@@ -2690,18 +3155,66 @@ namespace Cronos_Data
                             JToken valid_invalid_id = jo_fy.SelectToken("$.aaData[" + ii + "][10][0]");
                             JToken valid_invalid = jo_fy.SelectToken("$.aaData[" + ii + "][10][1]");
 
-                            int half = bet_no.ToString().Length / 2;
-                            string half1 = bet_no.ToString().Substring(0, half);
-                            string half2 = bet_no.ToString().Substring(half);
-                            string bet_no_replace = "'" + half1 + " " + half2;
+                            //int half = bet_no.ToString().Length / 2;
+                            //string half1 = bet_no.ToString().Substring(0, half);
+                            //string half2 = bet_no.ToString().Substring(half);
+                            //string bet_no_replace = "'" + half1 + " " + half2;
+
+                            string bet_time_date = bet_time.ToString().Substring(0, 10);
+                            DateTime month = DateTime.ParseExact(bet_time_date, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                            //MessageBox.Show(bet_time_date.ToString());
+                            //MessageBox.Show(month.ToString("MM/01/yyyy"));
+
+                            // get vip
+                            string vip = "";
+                            // comment
+                            string memberlist_temp = Path.Combine(Path.GetTempPath(), "FY Registration.txt");
+                            if (File.Exists(memberlist_temp))
+                            {
+                                using (StreamReader sr = File.OpenText(memberlist_temp))
+                                {
+                                    string s = String.Empty;
+                                    while ((s = sr.ReadLine()) != null)
+                                    {
+                                        int memberlist_i = 0;
+                                        string[] results = s.Split("\",\"");
+                                        foreach (string result in results)
+                                        {
+                                            memberlist_i++;
+
+                                            if (memberlist_i == 1)
+                                            {
+                                                // Username
+                                                //MessageBox.Show(username + " " + result.Replace("FY,\"", ""));
+                                                if (player_name.ToString() == result.Replace("FY,\"", ""))
+                                                {
+                                                    int memberlist_i_inner = 0;
+                                                    string[] results_inner = s.Split("\",\"");
+                                                    foreach (string result_inner in results_inner)
+                                                    {
+                                                        memberlist_i_inner++;
+                                                        //MessageBox.Show(memberlist_i_inner + " -----" + result_inner + "-----------------" + player_name.ToString());
+                                                        if (memberlist_i_inner == 9)
+                                                        {
+                                                            // VIP
+                                                            vip = result_inner;
+                                                            break;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
 
                             if (_fy_get_ii == 1)
                             {
-                                var header = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10}", "Game Platform", "Username", "Bet No.", "Bet Time", "Bet Type", "Game Result", "Stake Amount", "Win Amount", "Company Win/Loss", "Valid Bet", "Valid/Invalid");
+                                var header = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13}", "Month", "Date", "VIP", "Game Platform", "Username", "Bet No", "Bet Time", "Bet Type", "Game Result", "Stake Amount", "Win Amount", "Company Win/Loss", "Valid Bet", "Valid/Invalid");
                                 _fy_csv.AppendLine(header);
                             }
 
-                            var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10}", game_platform, "\"" + player_name + "\"", "\"" + bet_no_replace + "\"", "\"" + bet_time + "\"", "\"" + result_bet_type.ToString().Replace(";", "") + "\"", "\"" + game_result + "\"", "\"" + stake_amount + "\"", "\"" + win_amount + "\"", "\"" + company_win_loss + "\"", "\"" + valid_bet + "\"", "\"" + valid_invalid + "\"");
+                            var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13}", "\"" + month.ToString("MM/01/yyyy") + "\"", "\"" + bet_time_date + "\"", "\"" + vip + "\"", "\"" + game_platform + "\"", "\"" + player_name + "\"", "\"" + "'" + bet_no + "\"", "\"" + bet_time + "\"", "\"" + result_bet_type.ToString().Replace(";", "") + "\"", "\"" + game_result + "\"", "\"" + stake_amount + "\"", "\"" + win_amount + "\"", "\"" + company_win_loss + "\"", "\"" + valid_bet + "\"", "\"" + valid_invalid + "\"");
                             _fy_csv.AppendLine(newLine);
                         }
                              
@@ -2746,345 +3259,355 @@ namespace Cronos_Data
 
                             if (selected_index == 0)
                             {
-                                if (!_isSecondRequest_fy)
+                                if (!_isSecondRequestFinish_fy)
                                 {
-                                    // Deposit Record
-                                    if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Deposit Record"))
+                                    if (!_isSecondRequest_fy)
                                     {
-                                        Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Deposit Record");
-                                    }
-
-                                    _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Deposit Record\\FY_DepositRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".txt";
-                                    _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Deposit Record\\FY_DepositRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
-                                    _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Deposit Record\\";
-
-                                    if (File.Exists(_fy_folder_path_result))
-                                    {
-                                        File.Delete(_fy_folder_path_result);
-                                    }
-
-                                    if (File.Exists(_fy_folder_path_result_xlsx))
-                                    {
-                                        File.Delete(_fy_folder_path_result_xlsx);
-                                    }
-
-                                    //_fy_csv.ToString().Reverse();
-                                    File.WriteAllText(_fy_folder_path_result, _fy_csv.ToString(), Encoding.UTF8);
-
-                                    Excel.Application app = new Excel.Application();
-                                    Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-                                    Excel.Worksheet worksheet = wb.ActiveSheet;
-                                    worksheet.Activate();
-                                    worksheet.Application.ActiveWindow.SplitRow = 1;
-                                    worksheet.Application.ActiveWindow.FreezePanes = true;
-                                    Excel.Range firstRow = (Excel.Range)worksheet.Rows[1];
-                                    firstRow.AutoFilter(1,
-                                                        Type.Missing,
-                                                        Excel.XlAutoFilterOperator.xlAnd,
-                                                        Type.Missing,
-                                                        true);
-                                    worksheet.Columns[2].NumberFormat = "MMM-yy";
-                                    worksheet.Columns[4].NumberFormat = "hh:mm:ss AM/PM";
-                                    worksheet.Columns[5].NumberFormat = "hh:mm:ss AM/PM";
-                                    //worksheet.Columns[8].Replace(" ", "");
-                                    worksheet.Columns[8].NumberFormat = "@";
-                                    //asd123
-                                    Excel.Range usedRange = worksheet.UsedRange;
-                                    Excel.Range rows = usedRange.Rows;
-                                    int count = 0;
-                                    foreach (Excel.Range row in rows)
-                                    {
-                                        if (count == 0)
+                                        // Deposit Record
+                                        if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record"))
                                         {
-                                            Excel.Range firstCell = row.Cells[1];
-
-                                            string firstCellValue = firstCell.Value as String;
-
-                                            if (!string.IsNullOrEmpty(firstCellValue))
-                                            {
-                                                row.Interior.Color = Color.FromArgb(222, 30, 112);
-                                                row.Font.Color = Color.FromArgb(255, 255, 255);
-                                                row.Font.Bold = true;
-                                                row.Font.Size = 12;
-                                            }
-
-                                            break;
+                                            Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record");
                                         }
 
-                                        count++;
-                                    }
-                                    int i_excel;
-                                    for (i_excel = 1; i_excel <= 20; i_excel++)
-                                    {
-                                        worksheet.Columns[i_excel].ColumnWidth = 20;
-                                    }
-                                    wb.SaveAs(_fy_folder_path_result_xlsx, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-                                    wb.Close();
-                                    app.Quit();
-                                    Marshal.ReleaseComObject(app);
+                                        _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\FY_PaymentRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".txt";
+                                        _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\FY_PaymentRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
+                                        _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\";
 
-                                    //if (File.Exists(_fy_folder_path_result))
-                                    //{
-                                    //    File.Delete(_fy_folder_path_result);
-                                    //}
+                                        if (File.Exists(_fy_folder_path_result))
+                                        {
+                                            File.Delete(_fy_folder_path_result);
+                                        }
+
+                                        if (File.Exists(_fy_folder_path_result_xlsx))
+                                        {
+                                            File.Delete(_fy_folder_path_result_xlsx);
+                                        }
+
+                                        //_fy_csv.ToString().Reverse();
+                                        File.WriteAllText(_fy_folder_path_result, _fy_csv.ToString(), Encoding.UTF8);
+
+                                        Excel.Application app = new Excel.Application();
+                                        Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                                        Excel.Worksheet worksheet = wb.ActiveSheet;
+                                        worksheet.Activate();
+                                        worksheet.Application.ActiveWindow.SplitRow = 1;
+                                        worksheet.Application.ActiveWindow.FreezePanes = true;
+                                        Excel.Range firstRow = (Excel.Range)worksheet.Rows[1];
+                                        firstRow.AutoFilter(1,
+                                                            Type.Missing,
+                                                            Excel.XlAutoFilterOperator.xlAnd,
+                                                            Type.Missing,
+                                                            true);
+                                        worksheet.Columns[2].NumberFormat = "MMM-yy";
+                                        worksheet.Columns[4].NumberFormat = "hh:mm:ss AM/PM";
+                                        worksheet.Columns[5].NumberFormat = "hh:mm:ss AM/PM";
+                                        //worksheet.Columns[8].Replace(" ", "");
+                                        worksheet.Columns[8].NumberFormat = "@";
+                                        //asd123
+                                        Excel.Range usedRange = worksheet.UsedRange;
+                                        Excel.Range rows = usedRange.Rows;
+                                        int count = 0;
+                                        foreach (Excel.Range row in rows)
+                                        {
+                                            if (count == 0)
+                                            {
+                                                Excel.Range firstCell = row.Cells[1];
+
+                                                string firstCellValue = firstCell.Value as String;
+
+                                                if (!string.IsNullOrEmpty(firstCellValue))
+                                                {
+                                                    row.Interior.Color = Color.FromArgb(222, 30, 112);
+                                                    row.Font.Color = Color.FromArgb(255, 255, 255);
+                                                    row.Font.Bold = true;
+                                                    row.Font.Size = 12;
+                                                }
+
+                                                break;
+                                            }
+
+                                            count++;
+                                        }
+                                        int i_excel;
+                                        for (i_excel = 1; i_excel <= 20; i_excel++)
+                                        {
+                                            worksheet.Columns[i_excel].ColumnWidth = 20;
+                                        }
+                                        wb.SaveAs(_fy_folder_path_result_xlsx, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                                        wb.Close();
+                                        app.Quit();
+                                        Marshal.ReleaseComObject(app);
+
+                                        //if (File.Exists(_fy_folder_path_result))
+                                        //{
+                                        //    File.Delete(_fy_folder_path_result);
+                                        //}
+                                    }
+                                    else
+                                    {
+                                        // Manual Deposit Record
+                                        if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record"))
+                                        {
+                                            Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record");
+                                        }
+
+                                        _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\FY_PaymentRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".txt";
+                                        _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\FY_PaymentRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
+                                        _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\";
+
+                                        //if (File.Exists(_fy_folder_path_result))
+                                        //{
+                                        //    File.Delete(_fy_folder_path_result);
+                                        //}
+
+                                        if (File.Exists(_fy_folder_path_result_xlsx))
+                                        {
+                                            File.Delete(_fy_folder_path_result_xlsx);
+                                        }
+
+                                        //var lines = File.ReadAllLines(_fy_folder_path_result).Where(arg => !string.IsNullOrWhiteSpace(arg));
+
+                                        using (StreamWriter file = new StreamWriter(_fy_folder_path_result, true, Encoding.UTF8))
+                                        {
+                                            file.Write(_fy_csv.ToString());
+                                        }
+
+                                        //File.WriteAllText(_fy_folder_path_result, _fy_csv.ToString(), Encoding.UTF8);
+
+                                        Excel.Application app = new Excel.Application();
+                                        Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                                        Excel.Worksheet worksheet = wb.ActiveSheet;
+                                        worksheet.Activate();
+                                        worksheet.Application.ActiveWindow.SplitRow = 1;
+                                        worksheet.Application.ActiveWindow.FreezePanes = true;
+                                        Excel.Range firstRow = (Excel.Range)worksheet.Rows[1];
+                                        firstRow.AutoFilter(1,
+                                                            Type.Missing,
+                                                            Excel.XlAutoFilterOperator.xlAnd,
+                                                            Type.Missing,
+                                                            true);
+                                        worksheet.Columns[2].NumberFormat = "MMM-yy";
+                                        worksheet.Columns[4].NumberFormat = "hh:mm:ss AM/PM";
+                                        worksheet.Columns[5].NumberFormat = "hh:mm:ss AM/PM";
+                                        //worksheet.Columns[8].Replace(" ", "");
+                                        //worksheet.Columns[8].NumberFormat = "@";
+                                        Excel.Range usedRange = worksheet.UsedRange;
+                                        Excel.Range rows = usedRange.Rows;
+                                        int count = 0;
+                                        foreach (Excel.Range row in rows)
+                                        {
+                                            if (count == 0)
+                                            {
+                                                Excel.Range firstCell = row.Cells[1];
+
+                                                string firstCellValue = firstCell.Value as String;
+
+                                                if (!string.IsNullOrEmpty(firstCellValue))
+                                                {
+                                                    row.Interior.Color = Color.FromArgb(222, 30, 112);
+                                                    row.Font.Color = Color.FromArgb(255, 255, 255);
+                                                    row.Font.Bold = true;
+                                                    row.Font.Size = 12;
+                                                }
+
+                                                break;
+                                            }
+
+                                            count++;
+                                        }
+                                        int i_excel;
+                                        for (i_excel = 1; i_excel <= 20; i_excel++)
+                                        {
+                                            worksheet.Columns[i_excel].ColumnWidth = 20;
+                                        }
+                                        wb.SaveAs(_fy_folder_path_result_xlsx, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                                        wb.Close();
+                                        app.Quit();
+                                        Marshal.ReleaseComObject(app);
+
+                                        //if (File.Exists(_fy_folder_path_result))
+                                        //{
+                                        //    File.Delete(_fy_folder_path_result);
+                                        //}
+                                    }
                                 }
                                 else
                                 {
-                                    // Manual Deposit Record
-                                    if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Deposit Record"))
+                                    if (!_isThirdRequest_fy)
                                     {
-                                        Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Deposit Record");
-                                    }
-
-                                    _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Deposit Record\\FY_DepositRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".txt";
-                                    _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Deposit Record\\FY_DepositRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
-                                    _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Deposit Record\\";
-
-                                    //if (File.Exists(_fy_folder_path_result))
-                                    //{
-                                    //    File.Delete(_fy_folder_path_result);
-                                    //}
-
-                                    if (File.Exists(_fy_folder_path_result_xlsx))
-                                    {
-                                        File.Delete(_fy_folder_path_result_xlsx);
-                                    }
-
-                                    using (StreamWriter file = new StreamWriter(_fy_folder_path_result, true, Encoding.UTF8))
-                                    {
-                                        file.WriteLine(_fy_csv.ToString());
-                                    }
-
-                                    //File.WriteAllText(_fy_folder_path_result, _fy_csv.ToString(), Encoding.UTF8);
-
-                                    Excel.Application app = new Excel.Application();
-                                    Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-                                    Excel.Worksheet worksheet = wb.ActiveSheet;
-                                    worksheet.Activate();
-                                    worksheet.Application.ActiveWindow.SplitRow = 1;
-                                    worksheet.Application.ActiveWindow.FreezePanes = true;
-                                    Excel.Range firstRow = (Excel.Range)worksheet.Rows[1];
-                                    firstRow.AutoFilter(1,
-                                                        Type.Missing,
-                                                        Excel.XlAutoFilterOperator.xlAnd,
-                                                        Type.Missing,
-                                                        true);
-                                    worksheet.Columns[2].NumberFormat = "MMM-yy";
-                                    worksheet.Columns[4].NumberFormat = "hh:mm:ss AM/PM";
-                                    worksheet.Columns[5].NumberFormat = "hh:mm:ss AM/PM";
-                                    //worksheet.Columns[8].Replace(" ", "");
-                                    //worksheet.Columns[8].NumberFormat = "@";
-                                    Excel.Range usedRange = worksheet.UsedRange;
-                                    Excel.Range rows = usedRange.Rows;
-                                    int count = 0;
-                                    foreach (Excel.Range row in rows)
-                                    {
-                                        if (count == 0)
+                                        // Withdrawal Record
+                                        if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record"))
                                         {
-                                            Excel.Range firstCell = row.Cells[1];
-
-                                            string firstCellValue = firstCell.Value as String;
-
-                                            if (!string.IsNullOrEmpty(firstCellValue))
-                                            {
-                                                row.Interior.Color = Color.FromArgb(222, 30, 112);
-                                                row.Font.Color = Color.FromArgb(255, 255, 255);
-                                                row.Font.Bold = true;
-                                                row.Font.Size = 12;
-                                            }
-
-                                            break;
+                                            Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record");
                                         }
 
-                                        count++;
-                                    }
-                                    int i_excel;
-                                    for (i_excel = 1; i_excel <= 20; i_excel++)
-                                    {
-                                        worksheet.Columns[i_excel].ColumnWidth = 20;
-                                    }
-                                    wb.SaveAs(_fy_folder_path_result_xlsx, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-                                    wb.Close();
-                                    app.Quit();
-                                    Marshal.ReleaseComObject(app);
+                                        _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\FY_PaymentRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".txt";
+                                        _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\FY_PaymentRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
+                                        _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\";
 
-                                    if (File.Exists(_fy_folder_path_result))
+                                        //if (File.Exists(_fy_folder_path_result))
+                                        //{
+                                        //    File.Delete(_fy_folder_path_result);
+                                        //}
+
+                                        if (File.Exists(_fy_folder_path_result_xlsx))
+                                        {
+                                            File.Delete(_fy_folder_path_result_xlsx);
+                                        }
+
+                                        using (StreamWriter file = new StreamWriter(_fy_folder_path_result, true, Encoding.UTF8))
+                                        {
+                                            file.Write(_fy_csv.ToString());
+                                        }
+
+                                        //_fy_csv.ToString().Reverse();
+                                        //File.WriteAllText(_fy_folder_path_result, _fy_csv.ToString(), Encoding.UTF8);
+
+                                        Excel.Application app = new Excel.Application();
+                                        Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                                        Excel.Worksheet worksheet = wb.ActiveSheet;
+                                        worksheet.Activate();
+                                        worksheet.Application.ActiveWindow.SplitRow = 1;
+                                        worksheet.Application.ActiveWindow.FreezePanes = true;
+                                        Excel.Range firstRow = (Excel.Range)worksheet.Rows[1];
+                                        firstRow.AutoFilter(1,
+                                                            Type.Missing,
+                                                            Excel.XlAutoFilterOperator.xlAnd,
+                                                            Type.Missing,
+                                                            true);
+                                        worksheet.Columns[2].NumberFormat = "MMM-yy";
+                                        worksheet.Columns[4].NumberFormat = "hh:mm:ss AM/PM";
+                                        worksheet.Columns[5].NumberFormat = "hh:mm:ss AM/PM";
+                                        //worksheet.Columns[8].Replace(" ", "");
+                                        worksheet.Columns[8].NumberFormat = "@";
+                                        Excel.Range usedRange = worksheet.UsedRange;
+                                        Excel.Range rows = usedRange.Rows;
+                                        int count = 0;
+                                        foreach (Excel.Range row in rows)
+                                        {
+                                            if (count == 0)
+                                            {
+                                                Excel.Range firstCell = row.Cells[1];
+
+                                                string firstCellValue = firstCell.Value as String;
+
+                                                if (!string.IsNullOrEmpty(firstCellValue))
+                                                {
+                                                    row.Interior.Color = Color.FromArgb(222, 30, 112);
+                                                    row.Font.Color = Color.FromArgb(255, 255, 255);
+                                                    row.Font.Bold = true;
+                                                    row.Font.Size = 12;
+                                                }
+
+                                                break;
+                                            }
+
+                                            count++;
+                                        }
+                                        int i_excel;
+                                        for (i_excel = 1; i_excel <= 20; i_excel++)
+                                        {
+                                            worksheet.Columns[i_excel].ColumnWidth = 20;
+                                        }
+                                        wb.SaveAs(_fy_folder_path_result_xlsx, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                                        wb.Close();
+                                        app.Quit();
+                                        Marshal.ReleaseComObject(app);
+
+                                        //if (File.Exists(_fy_folder_path_result))
+                                        //{
+                                        //    File.Delete(_fy_folder_path_result);
+                                        //}
+                                    }
+                                    else
                                     {
-                                        File.Delete(_fy_folder_path_result);
+                                        // Manual Withdrawal Record
+                                        if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record"))
+                                        {
+                                            Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record");
+                                        }
+
+                                        _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\FY_PaymentRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".txt";
+                                        _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\FY_PaymentRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
+                                        _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\";
+
+                                        //if (File.Exists(_fy_folder_path_result))
+                                        //{
+                                        //    File.Delete(_fy_folder_path_result);
+                                        //}
+
+                                        if (File.Exists(_fy_folder_path_result_xlsx))
+                                        {
+                                            File.Delete(_fy_folder_path_result_xlsx);
+                                        }
+
+                                        using (StreamWriter file = new StreamWriter(_fy_folder_path_result, true, Encoding.UTF8))
+                                        {
+                                            file.Write(_fy_csv.ToString());
+                                        }
+
+                                        //File.WriteAllText(_fy_folder_path_result, _fy_csv.ToString(), Encoding.UTF8);
+
+                                        Excel.Application app = new Excel.Application();
+                                        Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                                        Excel.Worksheet worksheet = wb.ActiveSheet;
+                                        worksheet.Activate();
+                                        worksheet.Application.ActiveWindow.SplitRow = 1;
+                                        worksheet.Application.ActiveWindow.FreezePanes = true;
+                                        Excel.Range firstRow = (Excel.Range)worksheet.Rows[1];
+                                        firstRow.AutoFilter(1,
+                                                            Type.Missing,
+                                                            Excel.XlAutoFilterOperator.xlAnd,
+                                                            Type.Missing,
+                                                            true);
+                                        worksheet.Columns[2].NumberFormat = "MMM-yy";
+                                        worksheet.Columns[4].NumberFormat = "hh:mm:ss AM/PM";
+                                        worksheet.Columns[5].NumberFormat = "hh:mm:ss AM/PM";
+                                        //worksheet.Columns[8].Replace(" ", "");
+                                        //worksheet.Columns[8].NumberFormat = "@";
+                                        Excel.Range usedRange = worksheet.UsedRange;
+                                        Excel.Range rows = usedRange.Rows;
+                                        int count = 0;
+                                        foreach (Excel.Range row in rows)
+                                        {
+                                            if (count == 0)
+                                            {
+                                                Excel.Range firstCell = row.Cells[1];
+
+                                                string firstCellValue = firstCell.Value as String;
+
+                                                if (!string.IsNullOrEmpty(firstCellValue))
+                                                {
+                                                    row.Interior.Color = Color.FromArgb(222, 30, 112);
+                                                    row.Font.Color = Color.FromArgb(255, 255, 255);
+                                                    row.Font.Bold = true;
+                                                    row.Font.Size = 12;
+                                                }
+
+                                                break;
+                                            }
+
+                                            count++;
+                                        }
+                                        int i_excel;
+                                        for (i_excel = 1; i_excel <= 20; i_excel++)
+                                        {
+                                            worksheet.Columns[i_excel].ColumnWidth = 20;
+                                        }
+                                        wb.SaveAs(_fy_folder_path_result_xlsx, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                                        wb.Close();
+                                        app.Quit();
+                                        Marshal.ReleaseComObject(app);
+
+                                        // comment
+                                        //if (File.Exists(_fy_folder_path_result))
+                                        //{
+                                        //    File.Delete(_fy_folder_path_result);
+                                        //}
                                     }
                                 }
                             }
                             else if (selected_index == 1)
-                            {
-                                if (!_isSecondRequest_fy)
-                                {
-                                    // Withdrawal Record
-                                    if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Withdrawal Record"))
-                                    {
-                                        Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Withdrawal Record");
-                                    }
-
-                                    _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Withdrawal Record\\FY_WithdrawalRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".txt";
-                                    _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Withdrawal Record\\FY_WithdrawalRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
-                                    _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Withdrawal Record\\";
-
-                                    if (File.Exists(_fy_folder_path_result))
-                                    {
-                                        File.Delete(_fy_folder_path_result);
-                                    }
-
-                                    if (File.Exists(_fy_folder_path_result_xlsx))
-                                    {
-                                        File.Delete(_fy_folder_path_result_xlsx);
-                                    }
-
-                                    //_fy_csv.ToString().Reverse();
-                                    File.WriteAllText(_fy_folder_path_result, _fy_csv.ToString(), Encoding.UTF8);
-
-                                    Excel.Application app = new Excel.Application();
-                                    Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-                                    Excel.Worksheet worksheet = wb.ActiveSheet;
-                                    worksheet.Activate();
-                                    worksheet.Application.ActiveWindow.SplitRow = 1;
-                                    worksheet.Application.ActiveWindow.FreezePanes = true;
-                                    Excel.Range firstRow = (Excel.Range)worksheet.Rows[1];
-                                    firstRow.AutoFilter(1,
-                                                        Type.Missing,
-                                                        Excel.XlAutoFilterOperator.xlAnd,
-                                                        Type.Missing,
-                                                        true);
-                                    worksheet.Columns[2].NumberFormat = "MMM-yy";
-                                    worksheet.Columns[4].NumberFormat = "hh:mm:ss AM/PM";
-                                    worksheet.Columns[5].NumberFormat = "hh:mm:ss AM/PM";
-                                    //worksheet.Columns[8].Replace(" ", "");
-                                    worksheet.Columns[8].NumberFormat = "@";
-                                    Excel.Range usedRange = worksheet.UsedRange;
-                                    Excel.Range rows = usedRange.Rows;
-                                    int count = 0;
-                                    foreach (Excel.Range row in rows)
-                                    {
-                                        if (count == 0)
-                                        {
-                                            Excel.Range firstCell = row.Cells[1];
-
-                                            string firstCellValue = firstCell.Value as String;
-
-                                            if (!string.IsNullOrEmpty(firstCellValue))
-                                            {
-                                                row.Interior.Color = Color.FromArgb(222, 30, 112);
-                                                row.Font.Color = Color.FromArgb(255, 255, 255);
-                                                row.Font.Bold = true;
-                                                row.Font.Size = 12;
-                                            }
-
-                                            break;
-                                        }
-
-                                        count++;
-                                    }
-                                    int i_excel;
-                                    for (i_excel = 1; i_excel <= 20; i_excel++)
-                                    {
-                                        worksheet.Columns[i_excel].ColumnWidth = 20;
-                                    }
-                                    wb.SaveAs(_fy_folder_path_result_xlsx, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-                                    wb.Close();
-                                    app.Quit();
-                                    Marshal.ReleaseComObject(app);
-
-                                    //if (File.Exists(_fy_folder_path_result))
-                                    //{
-                                    //    File.Delete(_fy_folder_path_result);
-                                    //}
-                                }
-                                else
-                                {
-                                    // Manual Withdrawal Record
-                                    if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Withdrawal Record"))
-                                    {
-                                        Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Withdrawal Record");
-                                    }
-
-                                    _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Withdrawal Record\\FY_WithdrawalRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".txt";
-                                    _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Withdrawal Record\\FY_WithdrawalRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
-                                    _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Withdrawal Record\\";
-
-                                    //if (File.Exists(_fy_folder_path_result))
-                                    //{
-                                    //    File.Delete(_fy_folder_path_result);
-                                    //}
-
-                                    if (File.Exists(_fy_folder_path_result_xlsx))
-                                    {
-                                        File.Delete(_fy_folder_path_result_xlsx);
-                                    }
-
-                                    using (StreamWriter file = new StreamWriter(_fy_folder_path_result, true, Encoding.UTF8))
-                                    {
-                                        file.WriteLine(_fy_csv.ToString());
-                                    }
-
-                                    //File.WriteAllText(_fy_folder_path_result, _fy_csv.ToString(), Encoding.UTF8);
-
-                                    Excel.Application app = new Excel.Application();
-                                    Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-                                    Excel.Worksheet worksheet = wb.ActiveSheet;
-                                    worksheet.Activate();
-                                    worksheet.Application.ActiveWindow.SplitRow = 1;
-                                    worksheet.Application.ActiveWindow.FreezePanes = true;
-                                    Excel.Range firstRow = (Excel.Range)worksheet.Rows[1];
-                                    firstRow.AutoFilter(1,
-                                                        Type.Missing,
-                                                        Excel.XlAutoFilterOperator.xlAnd,
-                                                        Type.Missing,
-                                                        true);
-                                    worksheet.Columns[2].NumberFormat = "MMM-yy";
-                                    worksheet.Columns[4].NumberFormat = "hh:mm:ss AM/PM";
-                                    worksheet.Columns[5].NumberFormat = "hh:mm:ss AM/PM";
-                                    //worksheet.Columns[8].Replace(" ", "");
-                                    worksheet.Columns[8].NumberFormat = "@";
-                                    Excel.Range usedRange = worksheet.UsedRange;
-                                    Excel.Range rows = usedRange.Rows;
-                                    int count = 0;
-                                    foreach (Excel.Range row in rows)
-                                    {
-                                        if (count == 0)
-                                        {
-                                            Excel.Range firstCell = row.Cells[1];
-
-                                            string firstCellValue = firstCell.Value as String;
-
-                                            if (!string.IsNullOrEmpty(firstCellValue))
-                                            {
-                                                row.Interior.Color = Color.FromArgb(222, 30, 112);
-                                                row.Font.Color = Color.FromArgb(255, 255, 255);
-                                                row.Font.Bold = true;
-                                                row.Font.Size = 12;
-                                            }
-
-                                            break;
-                                        }
-
-                                        count++;
-                                    }
-                                    int i_excel;
-                                    for (i_excel = 1; i_excel <= 20; i_excel++)
-                                    {
-                                        worksheet.Columns[i_excel].ColumnWidth = 20;
-                                    }
-                                    wb.SaveAs(_fy_folder_path_result_xlsx, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-                                    wb.Close();
-                                    app.Quit();
-                                    Marshal.ReleaseComObject(app);
-
-                                    if (File.Exists(_fy_folder_path_result))
-                                    {
-                                        File.Delete(_fy_folder_path_result);
-                                    }
-                                }
-
-                            }
-                            else if (selected_index == 2)
                             {
                                 if (!_isSecondRequest_fy)
                                 {
@@ -3253,7 +3776,7 @@ namespace Cronos_Data
                                     }
                                 }
                             }
-                            else if (selected_index == 3)
+                            else if (selected_index == 2)
                             {
                                 // Bet Record
                                 if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bet Record"))
@@ -3333,8 +3856,8 @@ namespace Cronos_Data
                                 {
                                     File.Delete(_fy_folder_path_result);
                                 }
-                            }         
-                            
+                            }
+
                             _fy_csv.Clear();
 
                             label_fy_currentrecord.Text = (_fy_get_ii_display).ToString("N0") + " of " + Convert.ToInt32(_total_records_fy).ToString("N0");
@@ -3406,345 +3929,355 @@ namespace Cronos_Data
             int selected_index = comboBox_fy_list.SelectedIndex;
             if (selected_index == 0)
             {
-                if (!_isSecondRequest_fy)
+                if (!_isSecondRequestFinish_fy)
                 {
-                    // Deposit Record
-                    if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Deposit Record"))
+                    if (!_isSecondRequest_fy)
                     {
-                        Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Deposit Record");
-                    }
-
-                    _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Deposit Record\\FY_DepositRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".txt";
-                    _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Deposit Record\\FY_DepositRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
-                    _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Deposit Record\\";
-
-                    if (File.Exists(_fy_folder_path_result))
-                    {
-                        File.Delete(_fy_folder_path_result);
-                    }
-
-                    if (File.Exists(_fy_folder_path_result_xlsx))
-                    {
-                        File.Delete(_fy_folder_path_result_xlsx);
-                    }
-
-                    //_fy_csv.ToString().Reverse();
-                    File.WriteAllText(_fy_folder_path_result, _fy_csv.ToString(), Encoding.UTF8);
-
-                    Excel.Application app = new Excel.Application();
-                    Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-                    Excel.Worksheet worksheet = wb.ActiveSheet;
-                    worksheet.Activate();
-                    worksheet.Application.ActiveWindow.SplitRow = 1;
-                    worksheet.Application.ActiveWindow.FreezePanes = true;
-                    Excel.Range firstRow = (Excel.Range)worksheet.Rows[1];
-                    firstRow.AutoFilter(1,
-                                        Type.Missing,
-                                        Excel.XlAutoFilterOperator.xlAnd,
-                                        Type.Missing,
-                                        true);
-                    worksheet.Columns[2].NumberFormat = "MMM-yy";
-                    worksheet.Columns[4].NumberFormat = "hh:mm:ss AM/PM";
-                    worksheet.Columns[5].NumberFormat = "hh:mm:ss AM/PM";
-                    //worksheet.Columns[8].Replace(" ", "");
-                    worksheet.Columns[8].NumberFormat = "@";
-                    //asd123
-                    Excel.Range usedRange = worksheet.UsedRange;
-                    Excel.Range rows = usedRange.Rows;
-                    int count = 0;
-                    foreach (Excel.Range row in rows)
-                    {
-                        if (count == 0)
+                        // Deposit Record
+                        if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record"))
                         {
-                            Excel.Range firstCell = row.Cells[1];
-
-                            string firstCellValue = firstCell.Value as String;
-
-                            if (!string.IsNullOrEmpty(firstCellValue))
-                            {
-                                row.Interior.Color = Color.FromArgb(222, 30, 112);
-                                row.Font.Color = Color.FromArgb(255, 255, 255);
-                                row.Font.Bold = true;
-                                row.Font.Size = 12;
-                            }
-
-                            break;
+                            Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record");
                         }
 
-                        count++;
-                    }
-                    int i_excel;
-                    for (i_excel = 1; i_excel <= 20; i_excel++)
-                    {
-                        worksheet.Columns[i_excel].ColumnWidth = 20;
-                    }
-                    wb.SaveAs(_fy_folder_path_result_xlsx, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-                    wb.Close();
-                    app.Quit();
-                    Marshal.ReleaseComObject(app);
+                        _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\FY_PaymentRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".txt";
+                        _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\FY_PaymentRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
+                        _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\";
 
-                    //if (File.Exists(_fy_folder_path_result))
-                    //{
-                    //    File.Delete(_fy_folder_path_result);
-                    //}
+                        if (File.Exists(_fy_folder_path_result))
+                        {
+                            File.Delete(_fy_folder_path_result);
+                        }
+
+                        if (File.Exists(_fy_folder_path_result_xlsx))
+                        {
+                            File.Delete(_fy_folder_path_result_xlsx);
+                        }
+
+                        //_fy_csv.ToString().Reverse();
+                        File.WriteAllText(_fy_folder_path_result, _fy_csv.ToString(), Encoding.UTF8);
+
+                        Excel.Application app = new Excel.Application();
+                        Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                        Excel.Worksheet worksheet = wb.ActiveSheet;
+                        worksheet.Activate();
+                        worksheet.Application.ActiveWindow.SplitRow = 1;
+                        worksheet.Application.ActiveWindow.FreezePanes = true;
+                        Excel.Range firstRow = (Excel.Range)worksheet.Rows[1];
+                        firstRow.AutoFilter(1,
+                                            Type.Missing,
+                                            Excel.XlAutoFilterOperator.xlAnd,
+                                            Type.Missing,
+                                            true);
+                        worksheet.Columns[2].NumberFormat = "MMM-yy";
+                        worksheet.Columns[4].NumberFormat = "hh:mm:ss AM/PM";
+                        worksheet.Columns[5].NumberFormat = "hh:mm:ss AM/PM";
+                        //worksheet.Columns[8].Replace(" ", "");
+                        worksheet.Columns[8].NumberFormat = "@";
+                        //asd123
+                        Excel.Range usedRange = worksheet.UsedRange;
+                        Excel.Range rows = usedRange.Rows;
+                        int count = 0;
+                        foreach (Excel.Range row in rows)
+                        {
+                            if (count == 0)
+                            {
+                                Excel.Range firstCell = row.Cells[1];
+
+                                string firstCellValue = firstCell.Value as String;
+
+                                if (!string.IsNullOrEmpty(firstCellValue))
+                                {
+                                    row.Interior.Color = Color.FromArgb(222, 30, 112);
+                                    row.Font.Color = Color.FromArgb(255, 255, 255);
+                                    row.Font.Bold = true;
+                                    row.Font.Size = 12;
+                                }
+
+                                break;
+                            }
+
+                            count++;
+                        }
+                        int i_excel;
+                        for (i_excel = 1; i_excel <= 20; i_excel++)
+                        {
+                            worksheet.Columns[i_excel].ColumnWidth = 20;
+                        }
+                        wb.SaveAs(_fy_folder_path_result_xlsx, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                        wb.Close();
+                        app.Quit();
+                        Marshal.ReleaseComObject(app);
+
+                        //if (File.Exists(_fy_folder_path_result))
+                        //{
+                        //    File.Delete(_fy_folder_path_result);
+                        //}
+                    }
+                    else
+                    {
+                        // Manual Deposit Record
+                        if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record"))
+                        {
+                            Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record");
+                        }
+
+                        _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\FY_PaymentRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".txt";
+                        _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\FY_PaymentRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
+                        _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\";
+
+                        //if (File.Exists(_fy_folder_path_result))
+                        //{
+                        //    File.Delete(_fy_folder_path_result);
+                        //}
+
+                        if (File.Exists(_fy_folder_path_result_xlsx))
+                        {
+                            File.Delete(_fy_folder_path_result_xlsx);
+                        }
+
+                        //var lines = File.ReadAllLines(_fy_folder_path_result).Where(arg => !string.IsNullOrWhiteSpace(arg));
+                        
+                        using (StreamWriter file = new StreamWriter(_fy_folder_path_result, true, Encoding.UTF8))
+                        {
+                            file.Write(_fy_csv.ToString());
+                        }
+
+                        //File.WriteAllText(_fy_folder_path_result, _fy_csv.ToString(), Encoding.UTF8);
+
+                        Excel.Application app = new Excel.Application();
+                        Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                        Excel.Worksheet worksheet = wb.ActiveSheet;
+                        worksheet.Activate();
+                        worksheet.Application.ActiveWindow.SplitRow = 1;
+                        worksheet.Application.ActiveWindow.FreezePanes = true;
+                        Excel.Range firstRow = (Excel.Range)worksheet.Rows[1];
+                        firstRow.AutoFilter(1,
+                                            Type.Missing,
+                                            Excel.XlAutoFilterOperator.xlAnd,
+                                            Type.Missing,
+                                            true);
+                        worksheet.Columns[2].NumberFormat = "MMM-yy";
+                        worksheet.Columns[4].NumberFormat = "hh:mm:ss AM/PM";
+                        worksheet.Columns[5].NumberFormat = "hh:mm:ss AM/PM";
+                        //worksheet.Columns[8].Replace(" ", "");
+                        worksheet.Columns[8].NumberFormat = "@";
+                        Excel.Range usedRange = worksheet.UsedRange;
+                        Excel.Range rows = usedRange.Rows;
+                        int count = 0;
+                        foreach (Excel.Range row in rows)
+                        {
+                            if (count == 0)
+                            {
+                                Excel.Range firstCell = row.Cells[1];
+
+                                string firstCellValue = firstCell.Value as String;
+
+                                if (!string.IsNullOrEmpty(firstCellValue))
+                                {
+                                    row.Interior.Color = Color.FromArgb(222, 30, 112);
+                                    row.Font.Color = Color.FromArgb(255, 255, 255);
+                                    row.Font.Bold = true;
+                                    row.Font.Size = 12;
+                                }
+
+                                break;
+                            }
+
+                            count++;
+                        }
+                        int i_excel;
+                        for (i_excel = 1; i_excel <= 20; i_excel++)
+                        {
+                            worksheet.Columns[i_excel].ColumnWidth = 20;
+                        }
+                        wb.SaveAs(_fy_folder_path_result_xlsx, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                        wb.Close();
+                        app.Quit();
+                        Marshal.ReleaseComObject(app);
+
+                        //if (File.Exists(_fy_folder_path_result))
+                        //{
+                        //    File.Delete(_fy_folder_path_result);
+                        //}
+                    }
                 }
                 else
                 {
-                    // Manual Deposit Record
-                    if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Deposit Record"))
+                    if (!_isThirdRequest_fy)
                     {
-                        Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Deposit Record");
-                    }
-
-                    _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Deposit Record\\FY_DepositRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".txt";
-                    _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Deposit Record\\FY_DepositRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
-                    _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Deposit Record\\";
-
-                    //if (File.Exists(_fy_folder_path_result))
-                    //{
-                    //    File.Delete(_fy_folder_path_result);
-                    //}
-
-                    if (File.Exists(_fy_folder_path_result_xlsx))
-                    {
-                        File.Delete(_fy_folder_path_result_xlsx);
-                    }
-
-                    using (StreamWriter file = new StreamWriter(_fy_folder_path_result, true, Encoding.UTF8))
-                    {
-                        file.WriteLine(_fy_csv.ToString());
-                    }
-
-                    //File.WriteAllText(_fy_folder_path_result, _fy_csv.ToString(), Encoding.UTF8);
-
-                    Excel.Application app = new Excel.Application();
-                    Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-                    Excel.Worksheet worksheet = wb.ActiveSheet;
-                    worksheet.Activate();
-                    worksheet.Application.ActiveWindow.SplitRow = 1;
-                    worksheet.Application.ActiveWindow.FreezePanes = true;
-                    Excel.Range firstRow = (Excel.Range)worksheet.Rows[1];
-                    firstRow.AutoFilter(1,
-                                        Type.Missing,
-                                        Excel.XlAutoFilterOperator.xlAnd,
-                                        Type.Missing,
-                                        true);
-                    worksheet.Columns[2].NumberFormat = "MMM-yy";
-                    worksheet.Columns[4].NumberFormat = "hh:mm:ss AM/PM";
-                    worksheet.Columns[5].NumberFormat = "hh:mm:ss AM/PM";
-                    //worksheet.Columns[8].Replace(" ", "");
-                    //worksheet.Columns[8].NumberFormat = "@";
-                    Excel.Range usedRange = worksheet.UsedRange;
-                    Excel.Range rows = usedRange.Rows;
-                    int count = 0;
-                    foreach (Excel.Range row in rows)
-                    {
-                        if (count == 0)
+                        // Withdrawal Record
+                        if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record"))
                         {
-                            Excel.Range firstCell = row.Cells[1];
-
-                            string firstCellValue = firstCell.Value as String;
-
-                            if (!string.IsNullOrEmpty(firstCellValue))
-                            {
-                                row.Interior.Color = Color.FromArgb(222, 30, 112);
-                                row.Font.Color = Color.FromArgb(255, 255, 255);
-                                row.Font.Bold = true;
-                                row.Font.Size = 12;
-                            }
-
-                            break;
+                            Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record");
                         }
 
-                        count++;
-                    }
-                    int i_excel;
-                    for (i_excel = 1; i_excel <= 20; i_excel++)
-                    {
-                        worksheet.Columns[i_excel].ColumnWidth = 20;
-                    }
-                    wb.SaveAs(_fy_folder_path_result_xlsx, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-                    wb.Close();
-                    app.Quit();
-                    Marshal.ReleaseComObject(app);
+                        _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\FY_PaymentRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".txt";
+                        _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\FY_PaymentRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
+                        _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\";
 
-                    if (File.Exists(_fy_folder_path_result))
+                        //if (File.Exists(_fy_folder_path_result))
+                        //{
+                        //    File.Delete(_fy_folder_path_result);
+                        //}
+
+                        if (File.Exists(_fy_folder_path_result_xlsx))
+                        {
+                            File.Delete(_fy_folder_path_result_xlsx);
+                        }
+
+                        using (StreamWriter file = new StreamWriter(_fy_folder_path_result, true, Encoding.UTF8))
+                        {
+                            file.Write(_fy_csv.ToString());
+                        }
+
+                        //_fy_csv.ToString().Reverse();
+                        //File.WriteAllText(_fy_folder_path_result, _fy_csv.ToString(), Encoding.UTF8);
+
+                        Excel.Application app = new Excel.Application();
+                        Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                        Excel.Worksheet worksheet = wb.ActiveSheet;
+                        worksheet.Activate();
+                        worksheet.Application.ActiveWindow.SplitRow = 1;
+                        worksheet.Application.ActiveWindow.FreezePanes = true;
+                        Excel.Range firstRow = (Excel.Range)worksheet.Rows[1];
+                        firstRow.AutoFilter(1,
+                                            Type.Missing,
+                                            Excel.XlAutoFilterOperator.xlAnd,
+                                            Type.Missing,
+                                            true);
+                        worksheet.Columns[2].NumberFormat = "MMM-yy";
+                        worksheet.Columns[4].NumberFormat = "hh:mm:ss AM/PM";
+                        worksheet.Columns[5].NumberFormat = "hh:mm:ss AM/PM";
+                        //worksheet.Columns[8].Replace(" ", "");
+                        worksheet.Columns[8].NumberFormat = "@";
+                        Excel.Range usedRange = worksheet.UsedRange;
+                        Excel.Range rows = usedRange.Rows;
+                        int count = 0;
+                        foreach (Excel.Range row in rows)
+                        {
+                            if (count == 0)
+                            {
+                                Excel.Range firstCell = row.Cells[1];
+
+                                string firstCellValue = firstCell.Value as String;
+
+                                if (!string.IsNullOrEmpty(firstCellValue))
+                                {
+                                    row.Interior.Color = Color.FromArgb(222, 30, 112);
+                                    row.Font.Color = Color.FromArgb(255, 255, 255);
+                                    row.Font.Bold = true;
+                                    row.Font.Size = 12;
+                                }
+
+                                break;
+                            }
+
+                            count++;
+                        }
+                        int i_excel;
+                        for (i_excel = 1; i_excel <= 20; i_excel++)
+                        {
+                            worksheet.Columns[i_excel].ColumnWidth = 20;
+                        }
+                        wb.SaveAs(_fy_folder_path_result_xlsx, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                        wb.Close();
+                        app.Quit();
+                        Marshal.ReleaseComObject(app);
+
+                        //if (File.Exists(_fy_folder_path_result))
+                        //{
+                        //    File.Delete(_fy_folder_path_result);
+                        //}
+                    }
+                    else
                     {
-                        File.Delete(_fy_folder_path_result);
+                        // Manual Withdrawal Record
+                        if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record"))
+                        {
+                            Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record");
+                        }
+
+                        _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\FY_PaymentRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".txt";
+                        _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\FY_PaymentRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
+                        _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\";
+
+                        //if (File.Exists(_fy_folder_path_result))
+                        //{
+                        //    File.Delete(_fy_folder_path_result);
+                        //}
+
+                        if (File.Exists(_fy_folder_path_result_xlsx))
+                        {
+                            File.Delete(_fy_folder_path_result_xlsx);
+                        }
+
+                        using (StreamWriter file = new StreamWriter(_fy_folder_path_result, true, Encoding.UTF8))
+                        {
+                            file.Write(_fy_csv.ToString());
+                        }
+
+                        //File.WriteAllText(_fy_folder_path_result, _fy_csv.ToString(), Encoding.UTF8);
+
+                        Excel.Application app = new Excel.Application();
+                        Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                        Excel.Worksheet worksheet = wb.ActiveSheet;
+                        worksheet.Activate();
+                        worksheet.Application.ActiveWindow.SplitRow = 1;
+                        worksheet.Application.ActiveWindow.FreezePanes = true;
+                        Excel.Range firstRow = (Excel.Range)worksheet.Rows[1];
+                        firstRow.AutoFilter(1,
+                                            Type.Missing,
+                                            Excel.XlAutoFilterOperator.xlAnd,
+                                            Type.Missing,
+                                            true);
+                        worksheet.Columns[2].NumberFormat = "MMM-yy";
+                        worksheet.Columns[4].NumberFormat = "hh:mm:ss AM/PM";
+                        worksheet.Columns[5].NumberFormat = "hh:mm:ss AM/PM";
+                        //worksheet.Columns[8].Replace(" ", "");
+                        worksheet.Columns[8].NumberFormat = "@";
+                        Excel.Range usedRange = worksheet.UsedRange;
+                        Excel.Range rows = usedRange.Rows;
+                        int count = 0;
+                        foreach (Excel.Range row in rows)
+                        {
+                            if (count == 0)
+                            {
+                                Excel.Range firstCell = row.Cells[1];
+
+                                string firstCellValue = firstCell.Value as String;
+
+                                if (!string.IsNullOrEmpty(firstCellValue))
+                                {
+                                    row.Interior.Color = Color.FromArgb(222, 30, 112);
+                                    row.Font.Color = Color.FromArgb(255, 255, 255);
+                                    row.Font.Bold = true;
+                                    row.Font.Size = 12;
+                                }
+
+                                break;
+                            }
+
+                            count++;
+                        }
+                        int i_excel;
+                        for (i_excel = 1; i_excel <= 20; i_excel++)
+                        {
+                            worksheet.Columns[i_excel].ColumnWidth = 20;
+                        }
+                        wb.SaveAs(_fy_folder_path_result_xlsx, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                        wb.Close();
+                        app.Quit();
+                        Marshal.ReleaseComObject(app);
+
+                        // comment
+                        //if (File.Exists(_fy_folder_path_result))
+                        //{
+                        //    File.Delete(_fy_folder_path_result);
+                        //}
                     }
                 }
             }
             else if (selected_index == 1)
-            {
-                if (!_isSecondRequest_fy)
-                {
-                    // Withdrawal Record
-                    if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Withdrawal Record"))
-                    {
-                        Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Withdrawal Record");
-                    }
-
-                    _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Withdrawal Record\\FY_WithdrawalRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".txt";
-                    _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Withdrawal Record\\FY_WithdrawalRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
-                    _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Withdrawal Record\\";
-
-                    if (File.Exists(_fy_folder_path_result))
-                    {
-                        File.Delete(_fy_folder_path_result);
-                    }
-
-                    if (File.Exists(_fy_folder_path_result_xlsx))
-                    {
-                        File.Delete(_fy_folder_path_result_xlsx);
-                    }
-
-                    //_fy_csv.ToString().Reverse();
-                    File.WriteAllText(_fy_folder_path_result, _fy_csv.ToString(), Encoding.UTF8);
-
-                    Excel.Application app = new Excel.Application();
-                    Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-                    Excel.Worksheet worksheet = wb.ActiveSheet;
-                    worksheet.Activate();
-                    worksheet.Application.ActiveWindow.SplitRow = 1;
-                    worksheet.Application.ActiveWindow.FreezePanes = true;
-                    Excel.Range firstRow = (Excel.Range)worksheet.Rows[1];
-                    firstRow.AutoFilter(1,
-                                        Type.Missing,
-                                        Excel.XlAutoFilterOperator.xlAnd,
-                                        Type.Missing,
-                                        true);
-                    worksheet.Columns[2].NumberFormat = "MMM-yy";
-                    worksheet.Columns[4].NumberFormat = "hh:mm:ss AM/PM";
-                    worksheet.Columns[5].NumberFormat = "hh:mm:ss AM/PM";
-                    //worksheet.Columns[8].Replace(" ", "");
-                    worksheet.Columns[8].NumberFormat = "@";
-                    Excel.Range usedRange = worksheet.UsedRange;
-                    Excel.Range rows = usedRange.Rows;
-                    int count = 0;
-                    foreach (Excel.Range row in rows)
-                    {
-                        if (count == 0)
-                        {
-                            Excel.Range firstCell = row.Cells[1];
-
-                            string firstCellValue = firstCell.Value as String;
-
-                            if (!string.IsNullOrEmpty(firstCellValue))
-                            {
-                                row.Interior.Color = Color.FromArgb(222, 30, 112);
-                                row.Font.Color = Color.FromArgb(255, 255, 255);
-                                row.Font.Bold = true;
-                                row.Font.Size = 12;
-                            }
-
-                            break;
-                        }
-
-                        count++;
-                    }
-                    int i_excel;
-                    for (i_excel = 1; i_excel <= 20; i_excel++)
-                    {
-                        worksheet.Columns[i_excel].ColumnWidth = 20;
-                    }
-                    wb.SaveAs(_fy_folder_path_result_xlsx, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-                    wb.Close();
-                    app.Quit();
-                    Marshal.ReleaseComObject(app);
-
-                    //if (File.Exists(_fy_folder_path_result))
-                    //{
-                    //    File.Delete(_fy_folder_path_result);
-                    //}
-                }
-                else
-                {
-                    // Manual Withdrawal Record
-                    if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Withdrawal Record"))
-                    {
-                        Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Withdrawal Record");
-                    }
-
-                    _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Withdrawal Record\\FY_WithdrawalRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".txt";
-                    _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Withdrawal Record\\FY_WithdrawalRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
-                    _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Withdrawal Record\\";
-
-                    //if (File.Exists(_fy_folder_path_result))
-                    //{
-                    //    File.Delete(_fy_folder_path_result);
-                    //}
-
-                    if (File.Exists(_fy_folder_path_result_xlsx))
-                    {
-                        File.Delete(_fy_folder_path_result_xlsx);
-                    }
-
-                    using (StreamWriter file = new StreamWriter(_fy_folder_path_result, true, Encoding.UTF8))
-                    {
-                        file.WriteLine(_fy_csv.ToString());
-                    }
-
-                    //File.WriteAllText(_fy_folder_path_result, _fy_csv.ToString(), Encoding.UTF8);
-
-                    Excel.Application app = new Excel.Application();
-                    Excel.Workbook wb = app.Workbooks.Open(_fy_folder_path_result, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-                    Excel.Worksheet worksheet = wb.ActiveSheet;
-                    worksheet.Activate();
-                    worksheet.Application.ActiveWindow.SplitRow = 1;
-                    worksheet.Application.ActiveWindow.FreezePanes = true;
-                    Excel.Range firstRow = (Excel.Range)worksheet.Rows[1];
-                    firstRow.AutoFilter(1,
-                                        Type.Missing,
-                                        Excel.XlAutoFilterOperator.xlAnd,
-                                        Type.Missing,
-                                        true);
-                    worksheet.Columns[2].NumberFormat = "MMM-yy";
-                    worksheet.Columns[4].NumberFormat = "hh:mm:ss AM/PM";
-                    worksheet.Columns[5].NumberFormat = "hh:mm:ss AM/PM";
-                    //worksheet.Columns[8].Replace(" ", "");
-                    //worksheet.Columns[8].NumberFormat = "@";
-                    Excel.Range usedRange = worksheet.UsedRange;
-                    Excel.Range rows = usedRange.Rows;
-                    int count = 0;
-                    foreach (Excel.Range row in rows)
-                    {
-                        if (count == 0)
-                        {
-                            Excel.Range firstCell = row.Cells[1];
-
-                            string firstCellValue = firstCell.Value as String;
-
-                            if (!string.IsNullOrEmpty(firstCellValue))
-                            {
-                                row.Interior.Color = Color.FromArgb(222, 30, 112);
-                                row.Font.Color = Color.FromArgb(255, 255, 255);
-                                row.Font.Bold = true;
-                                row.Font.Size = 12;
-                            }
-
-                            break;
-                        }
-
-                        count++;
-                    }
-                    int i_excel;
-                    for (i_excel = 1; i_excel <= 20; i_excel++)
-                    {
-                        worksheet.Columns[i_excel].ColumnWidth = 20;
-                    }
-                    wb.SaveAs(_fy_folder_path_result_xlsx, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-                    wb.Close();
-                    app.Quit();
-                    Marshal.ReleaseComObject(app);
-
-                    if (File.Exists(_fy_folder_path_result))
-                    {
-                        File.Delete(_fy_folder_path_result);
-                    }
-                }
-
-            }
-            else if (selected_index == 2)
             {
                 if (!_isSecondRequest_fy)
                 {
@@ -3913,7 +4446,7 @@ namespace Cronos_Data
                     }
                 }
             }
-            else if (selected_index == 3)
+            else if (selected_index == 2)
             {
                 // Bet Record
                 if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bet Record"))
@@ -4006,8 +4539,8 @@ namespace Cronos_Data
             
             Invoke(new Action(async () =>
             {
-                label_fy_finish_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
-                timer_fy.Stop();
+                //label_fy_finish_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
+                //timer_fy.Stop();
                 pictureBox_fy_loader.Visible = false;
                 button_fy_proceed.Visible = true;
                 label_fy_locatefolder.Visible = true;
@@ -4015,185 +4548,275 @@ namespace Cronos_Data
 
                 if (selected_index == 0)
                 {
-                    if (!_isSecondRequest_fy)
+                    if (!_isSecondRequestFinish_fy)
                     {
-                        // Deposit Record
-                        label_fy_status.Text = "status: done --- DEPOSIT RECORD";
-                        _isSecondRequest_fy = true;
-
-                        button_fy_proceed.PerformClick();
-
-                        fy_datetime.Clear();
-                        fy_gettotal.Clear();
-                        fy_gettotal_test.Clear();
-
-                        string start_datetime = dateTimePicker_start_fy.Text;
-                        DateTime start = DateTime.Parse(start_datetime);
-
-                        string end_datetime = dateTimePicker_end_fy.Text;
-                        DateTime end = DateTime.Parse(end_datetime);
-
-                        string result_start = start.ToString("yyyy-MM-dd");
-                        string result_end = end.ToString("yyyy-MM-dd");
-                        string result_start_time = start.ToString("HH:mm:ss");
-                        string result_end_time = end.ToString("HH:mm:ss");
-
-                        if (result_start != result_end)
+                        if (!_isSecondRequest_fy)
                         {
-                            string end_get = "";
-                            int i = 0;
-                            while (result_start != result_end)
-                            {
-                                end_get = end.AddDays(-i).ToString("yyyy-MM-dd");
-                                if (result_start == end_get)
-                                {
-                                    string start_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd ") + result_start_time;
-                                    string end_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd 23:59:59");
-                                    fy_datetime.Add(start_get_to_list + "*|*" + end_get_to_list);
+                            // Deposit Record
+                            label_fy_status.Text = "status: done --- DEPOSIT RECORD";
+                            _isSecondRequest_fy = true;
 
-                                    break;
-                                }
-                                else
+                            button_fy_proceed.PerformClick();
+
+                            fy_datetime.Clear();
+                            fy_gettotal.Clear();
+                            fy_gettotal_test.Clear();
+
+                            string start_datetime = dateTimePicker_start_fy.Text;
+                            DateTime start = DateTime.Parse(start_datetime);
+
+                            string end_datetime = dateTimePicker_end_fy.Text;
+                            DateTime end = DateTime.Parse(end_datetime);
+
+                            string result_start = start.ToString("yyyy-MM-dd");
+                            string result_end = end.ToString("yyyy-MM-dd");
+                            string result_start_time = start.ToString("HH:mm:ss");
+                            string result_end_time = end.ToString("HH:mm:ss");
+
+                            if (result_start != result_end)
+                            {
+                                string end_get = "";
+                                int i = 0;
+                                while (result_start != result_end)
                                 {
-                                    if (i == 0)
+                                    end_get = end.AddDays(-i).ToString("yyyy-MM-dd");
+                                    if (result_start == end_get)
                                     {
-                                        string start_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd 00:00:00");
-                                        string end_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd ") + result_end_time;
+                                        string start_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd ") + result_start_time;
+                                        string end_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd 23:59:59");
                                         fy_datetime.Add(start_get_to_list + "*|*" + end_get_to_list);
+
+                                        break;
                                     }
                                     else
                                     {
-                                        string start_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd 00:00:00");
-                                        string end_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd 23:59:59");
-                                        fy_datetime.Add(start_get_to_list + "*|*" + end_get_to_list);
+                                        if (i == 0)
+                                        {
+                                            string start_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd 00:00:00");
+                                            string end_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd ") + result_end_time;
+                                            fy_datetime.Add(start_get_to_list + "*|*" + end_get_to_list);
+                                        }
+                                        else
+                                        {
+                                            string start_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd 00:00:00");
+                                            string end_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd 23:59:59");
+                                            fy_datetime.Add(start_get_to_list + "*|*" + end_get_to_list);
+                                        }
                                     }
-                                }
 
-                                i++;
+                                    i++;
+                                }
+                            }
+                            else
+                            {
+                                fy_datetime.Add(start_datetime + "*|*" + end_datetime);
+                            }
+
+                            //_fy_current_datetime = "";
+                            //label_fy_start_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
+                            //_fy_start_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+                            //timer_fy.Start();
+                            webBrowser_fy.Stop();
+                            timer_fy_start.Stop();
+                            button_fy_start.Visible = false;
+                            pictureBox_fy_loader.Visible = true;
+                            panel_fy_filter.Enabled = false;
+                            button_filelocation.Enabled = false;
+                            panel_fy_status.Visible = true;
+
+                            await GetDataFYAsync();
+
+                            if (!_fy_no_result)
+                            {
+                                FYAsync();
                             }
                         }
                         else
                         {
-                            fy_datetime.Add(start_datetime + "*|*" + end_datetime);
-                        }
+                            // Manual Deposit Record
+                            label_fy_status.Text = "status: done --- M-DEPOSIT RECORD";
+                            _isSecondRequest_fy = false;
+                            _isSecondRequestFinish_fy = true;
 
-                        _fy_current_datetime = "";
-                        label_fy_start_datetime.Text = DateTime.Now.ToString("ddd, dd mmm HH:mm:ss");
-                        _fy_start_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
-                        timer_fy.Start();
-                        webBrowser_fy.Stop();
-                        timer_fy_start.Stop();
-                        button_fy_start.Visible = false;
-                        pictureBox_fy_loader.Visible = true;
-                        panel_fy_filter.Enabled = false;
-                        button_filelocation.Enabled = false;
-                        panel_fy_status.Visible = true;
+                            button_fy_proceed.PerformClick();
 
-                        await GetDataFYAsync();
+                            fy_datetime.Clear();
+                            fy_gettotal.Clear();
+                            fy_gettotal_test.Clear();
 
-                        if (!_fy_no_result)
-                        {
-                            FYAsync();
+                            string start_datetime = dateTimePicker_start_fy.Text;
+                            DateTime start = DateTime.Parse(start_datetime);
+
+                            string end_datetime = dateTimePicker_end_fy.Text;
+                            DateTime end = DateTime.Parse(end_datetime);
+
+                            string result_start = start.ToString("yyyy-MM-dd");
+                            string result_end = end.ToString("yyyy-MM-dd");
+                            string result_start_time = start.ToString("HH:mm:ss");
+                            string result_end_time = end.ToString("HH:mm:ss");
+
+                            if (result_start != result_end)
+                            {
+                                string end_get = "";
+                                int i = 0;
+                                while (result_start != result_end)
+                                {
+                                    end_get = end.AddDays(-i).ToString("yyyy-MM-dd");
+                                    if (result_start == end_get)
+                                    {
+                                        string start_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd ") + result_start_time;
+                                        string end_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd 23:59:59");
+                                        fy_datetime.Add(start_get_to_list + "*|*" + end_get_to_list);
+
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        if (i == 0)
+                                        {
+                                            string start_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd 00:00:00");
+                                            string end_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd ") + result_end_time;
+                                            fy_datetime.Add(start_get_to_list + "*|*" + end_get_to_list);
+                                        }
+                                        else
+                                        {
+                                            string start_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd 00:00:00");
+                                            string end_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd 23:59:59");
+                                            fy_datetime.Add(start_get_to_list + "*|*" + end_get_to_list);
+                                        }
+                                    }
+
+                                    i++;
+                                }
+                            }
+                            else
+                            {
+                                fy_datetime.Add(start_datetime + "*|*" + end_datetime);
+                            }
+
+                            //_fy_current_datetime = "";
+                            //label_fy_start_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
+                            //_fy_start_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+                            //timer_fy.Start();
+                            webBrowser_fy.Stop();
+                            timer_fy_start.Stop();
+                            button_fy_start.Visible = false;
+                            pictureBox_fy_loader.Visible = true;
+                            panel_fy_filter.Enabled = false;
+                            button_filelocation.Enabled = false;
+                            panel_fy_status.Visible = true;
+
+                            await GetDataFYAsync();
+
+                            if (!_fy_no_result)
+                            {
+                                FYAsync();
+                            }
                         }
                     }
                     else
                     {
-                        // Manual Deposit Record
-                        label_fy_status.Text = "status: done --- M-DEPOSIT RECORD";
-                        _isSecondRequest_fy = false;
+                        if (!_isThirdRequest_fy)
+                        {
+                            // Withdrawal Record
+                            label_fy_status.Text = "status: done --- WITHDRAWAL RECORD";
+                            _isThirdRequest_fy = true;
+
+                            button_fy_proceed.PerformClick();
+
+                            fy_datetime.Clear();
+                            fy_gettotal.Clear();
+                            fy_gettotal_test.Clear();
+
+                            string start_datetime = dateTimePicker_start_fy.Text;
+                            DateTime start = DateTime.Parse(start_datetime);
+
+                            string end_datetime = dateTimePicker_end_fy.Text;
+                            DateTime end = DateTime.Parse(end_datetime);
+
+                            string result_start = start.ToString("yyyy-MM-dd");
+                            string result_end = end.ToString("yyyy-MM-dd");
+                            string result_start_time = start.ToString("HH:mm:ss");
+                            string result_end_time = end.ToString("HH:mm:ss");
+
+                            if (result_start != result_end)
+                            {
+                                string end_get = "";
+                                int i = 0;
+                                while (result_start != result_end)
+                                {
+                                    end_get = end.AddDays(-i).ToString("yyyy-MM-dd");
+                                    if (result_start == end_get)
+                                    {
+                                        string start_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd ") + result_start_time;
+                                        string end_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd 23:59:59");
+                                        fy_datetime.Add(start_get_to_list + "*|*" + end_get_to_list);
+
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        if (i == 0)
+                                        {
+                                            string start_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd 00:00:00");
+                                            string end_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd ") + result_end_time;
+                                            fy_datetime.Add(start_get_to_list + "*|*" + end_get_to_list);
+                                        }
+                                        else
+                                        {
+                                            string start_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd 00:00:00");
+                                            string end_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd 23:59:59");
+                                            fy_datetime.Add(start_get_to_list + "*|*" + end_get_to_list);
+                                        }
+                                    }
+
+                                    i++;
+                                }
+                            }
+                            else
+                            {
+                                fy_datetime.Add(start_datetime + "*|*" + end_datetime);
+                            }
+
+                            //_fy_current_datetime = "";
+                            //label_fy_start_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
+                            //_fy_start_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+                            //timer_fy.Start();
+                            webBrowser_fy.Stop();
+                            timer_fy_start.Stop();
+                            button_fy_start.Visible = false;
+                            pictureBox_fy_loader.Visible = true;
+                            panel_fy_filter.Enabled = false;
+                            button_filelocation.Enabled = false;
+                            panel_fy_status.Visible = true;
+
+                            await GetDataFYAsync();
+
+                            if (!_fy_no_result)
+                            {
+                                FYAsync();
+                            }
+                        }
+                        else
+                        {
+                            // Manual Withdrawal Record
+                            label_fy_finish_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
+                            timer_fy.Stop();
+
+                            label_fy_status.Text = "status: done --- M-WITHDRAWAL RECORD";
+                            _isThirdRequest_fy = false;
+                            _isSecondRequestFinish_fy = false;
+                            panel_fy_datetime.Location = new Point(5, 226);
+
+                            textBox2.Text = _fy_folder_path_result;
+                            //InsertPaymentRecord_FY(_fy_folder_path_result);
+
+                            MessageBox.Show(_fy_folder_path_result);
+                            MessageBox.Show("push to database");
+                        }
                     }
                 }
                 else if (selected_index == 1)
-                {
-                    if (!_isSecondRequest_fy)
-                    {
-                        // Withdrawal Record
-                        label_fy_status.Text = "status: done --- WITHDRAWAL RECORD";
-                        _isSecondRequest_fy = true;
-
-                        button_fy_proceed.PerformClick();
-
-                        fy_datetime.Clear();
-                        fy_gettotal.Clear();
-                        fy_gettotal_test.Clear();
-
-                        string start_datetime = dateTimePicker_start_fy.Text;
-                        DateTime start = DateTime.Parse(start_datetime);
-
-                        string end_datetime = dateTimePicker_end_fy.Text;
-                        DateTime end = DateTime.Parse(end_datetime);
-
-                        string result_start = start.ToString("yyyy-MM-dd");
-                        string result_end = end.ToString("yyyy-MM-dd");
-                        string result_start_time = start.ToString("HH:mm:ss");
-                        string result_end_time = end.ToString("HH:mm:ss");
-
-                        if (result_start != result_end)
-                        {
-                            string end_get = "";
-                            int i = 0;
-                            while (result_start != result_end)
-                            {
-                                end_get = end.AddDays(-i).ToString("yyyy-MM-dd");
-                                if (result_start == end_get)
-                                {
-                                    string start_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd ") + result_start_time;
-                                    string end_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd 23:59:59");
-                                    fy_datetime.Add(start_get_to_list + "*|*" + end_get_to_list);
-
-                                    break;
-                                }
-                                else
-                                {
-                                    if (i == 0)
-                                    {
-                                        string start_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd 00:00:00");
-                                        string end_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd ") + result_end_time;
-                                        fy_datetime.Add(start_get_to_list + "*|*" + end_get_to_list);
-                                    }
-                                    else
-                                    {
-                                        string start_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd 00:00:00");
-                                        string end_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd 23:59:59");
-                                        fy_datetime.Add(start_get_to_list + "*|*" + end_get_to_list);
-                                    }
-                                }
-
-                                i++;
-                            }
-                        }
-                        else
-                        {
-                            fy_datetime.Add(start_datetime + "*|*" + end_datetime);
-                        }
-
-                        _fy_current_datetime = "";
-                        label_fy_start_datetime.Text = DateTime.Now.ToString("ddd, dd mmm HH:mm:ss");
-                        _fy_start_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
-                        timer_fy.Start();
-                        webBrowser_fy.Stop();
-                        timer_fy_start.Stop();
-                        button_fy_start.Visible = false;
-                        pictureBox_fy_loader.Visible = true;
-                        panel_fy_filter.Enabled = false;
-                        button_filelocation.Enabled = false;
-                        panel_fy_status.Visible = true;
-
-                        await GetDataFYAsync();
-
-                        if (!_fy_no_result)
-                        {
-                            FYAsync();
-                        }
-                    }
-                    else
-                    {
-                        // Manual Withdrawal Record
-                        label_fy_status.Text = "status: done --- M-WITHDRAWAL RECORD";
-                        _isSecondRequest_fy = false;
-                    }
-                }
-                else if (selected_index == 2)
                 {
                     if (!_isSecondRequest_fy)
                     {
@@ -4257,10 +4880,10 @@ namespace Cronos_Data
                             fy_datetime.Add(start_datetime + "*|*" + end_datetime);
                         }
 
-                        _fy_current_datetime = "";
-                        label_fy_start_datetime.Text = DateTime.Now.ToString("ddd, dd mmm HH:mm:ss");
-                        _fy_start_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
-                        timer_fy.Start();
+                        //_fy_current_datetime = "";
+                        //label_fy_start_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
+                        //_fy_start_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+                        //timer_fy.Start();
                         webBrowser_fy.Stop();
                         timer_fy_start.Stop();
                         button_fy_start.Visible = false;
@@ -4279,17 +4902,22 @@ namespace Cronos_Data
                     else
                     {
                         // Generated Bonus Record
+                        label_fy_finish_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
+                        timer_fy.Stop();
                         label_fy_status.Text = "status: done --- G-BONUS RECORD";
                         _isSecondRequest_fy = false;
+                        panel_fy_datetime.Location = new Point(5, 226);
                     }
                 }
-                else if (selected_index == 3)
+                else if (selected_index == 2)
                 {
                     // Bet Record
+                    label_fy_finish_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
+                    timer_fy.Stop();
                     label_fy_status.Text = "status: done --- BET RECORD";
+                    panel_fy_datetime.Location = new Point(5, 226);
                 }
                 
-                panel_fy_datetime.Location = new Point(5, 226);
             }));
 
             //var notification = new NotifyIcon()
@@ -4305,6 +4933,65 @@ namespace Cronos_Data
 
             timer_fy_start.Start();
         }
+
+        // ghghghghgh
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         private void FYHeader()
         {
@@ -4415,6 +5102,9 @@ namespace Cronos_Data
         private async void button_fy_start_ClickAsync(object sender, EventArgs e)
         {
             isButtonStart_fy = true;
+            panel_fy_filter.Enabled = false;
+            button_filelocation.Enabled = false;
+            label_fy_start_datetime.Text = "-";
             fy_datetime.Clear();
             fy_gettotal.Clear();
             fy_gettotal_test.Clear();
@@ -4443,13 +5133,14 @@ namespace Cronos_Data
             else
             {
                 _fy_no_result = true;
-                MessageBox.Show("No data found.");
+                MessageBox.Show("No data found.", "FY", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
-
-
+        
         private void button_fy_stop_Click(object sender, EventArgs e)
         {
+            panel_fy_filter.Enabled = true;
+            button_filelocation.Enabled = true;
             button_fy_stop.Visible = false;
             button_fy_start.Visible = true;
             timer_fy_count = 10;
@@ -4526,7 +5217,7 @@ namespace Cronos_Data
                     }
 
                     _fy_current_datetime = "";
-                    label_fy_start_datetime.Text = DateTime.Now.ToString("ddd, dd mmm HH:mm:ss");
+                    label_fy_start_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
                     _fy_start_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
                     timer_fy.Start();
                     webBrowser_fy.Stop();
@@ -4545,67 +5236,6 @@ namespace Cronos_Data
                     }
                 }
                 else if (selected_index == 1)
-                {
-                    // Withdrawal Record
-                    if (result_start != result_end)
-                    {
-                        string end_get = "";
-                        int i = 0;
-                        while (result_start != result_end)
-                        {
-                            end_get = end.AddDays(-i).ToString("yyyy-MM-dd");
-                            if (result_start == end_get)
-                            {
-                                string start_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd ") + result_start_time;
-                                string end_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd 23:59:59");
-                                fy_datetime.Add(start_get_to_list + "*|*" + end_get_to_list);
-
-                                break;
-                            }
-                            else
-                            {
-                                if (i == 0)
-                                {
-                                    string start_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd 00:00:00");
-                                    string end_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd ") + result_end_time;
-                                    fy_datetime.Add(start_get_to_list + "*|*" + end_get_to_list);
-                                }
-                                else
-                                {
-                                    string start_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd 00:00:00");
-                                    string end_get_to_list = end.AddDays(-i).ToString("yyyy-MM-dd 23:59:59");
-                                    fy_datetime.Add(start_get_to_list + "*|*" + end_get_to_list);
-                                }
-                            }
-
-                            i++;
-                        }
-                    }
-                    else
-                    {
-                        fy_datetime.Add(start_datetime + "*|*" + end_datetime);
-                    }
-
-                    _fy_current_datetime = "";
-                    label_fy_start_datetime.Text = DateTime.Now.ToString("ddd, dd mmm HH:mm:ss");
-                    _fy_start_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
-                    timer_fy.Start();
-                    webBrowser_fy.Stop();
-                    timer_fy_start.Stop();
-                    button_fy_start.Visible = false;
-                    pictureBox_fy_loader.Visible = true;
-                    panel_fy_filter.Enabled = false;
-                    button_filelocation.Enabled = false;
-                    panel_fy_status.Visible = true;
-
-                    await GetDataFYAsync();
-
-                    if (!_fy_no_result)
-                    {
-                        FYAsync();
-                    }
-                }
-                else if (selected_index == 2)
                 {
                     // Bonus Record
                     if (result_start != result_end)
@@ -4648,7 +5278,7 @@ namespace Cronos_Data
                     }
 
                     _fy_current_datetime = "";
-                    label_fy_start_datetime.Text = DateTime.Now.ToString("ddd, dd mmm HH:mm:ss");
+                    label_fy_start_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
                     _fy_start_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
                     timer_fy.Start();
                     webBrowser_fy.Stop();
@@ -4666,7 +5296,7 @@ namespace Cronos_Data
                         FYAsync();
                     }
                 }
-                else if (selected_index == 3)
+                else if (selected_index == 2)
                 {
                     // Bet Record
                     if (result_start != result_end)
@@ -4709,7 +5339,7 @@ namespace Cronos_Data
                     }
 
                     _fy_current_datetime = "";
-                    label_fy_start_datetime.Text = DateTime.Now.ToString("ddd, dd mmm HH:mm:ss");
+                    label_fy_start_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
                     _fy_start_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
                     timer_fy.Start();
                     webBrowser_fy.Stop();
@@ -4727,11 +5357,11 @@ namespace Cronos_Data
                         FYAsync();
                     }
                 }
-                else if (selected_index == 4)
+                else if (selected_index == 3)
                 {
                     // Member List
                     _fy_current_datetime = "";
-                    label_fy_start_datetime.Text = DateTime.Now.ToString("ddd, dd mmm HH:mm:ss");
+                    label_fy_start_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
                     _fy_start_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
                     timer_fy.Start();
                     webBrowser_fy.Stop();
@@ -4767,7 +5397,6 @@ namespace Cronos_Data
             label_fy_page_count.Text = "-";
             label_fy_currentrecord.Text = "-";
             label_fy_inserting_count.Text = "-";
-            label_fy_start_datetime.Text = "-";
             label_fy_finish_datetime.Text = "-";
             label_fy_elapsed.Text = "-";
 
@@ -4986,63 +5615,67 @@ namespace Cronos_Data
 
             tf_gettotal.Add(_total_page_tf.ToString());
 
-            if (_total_records_tf > 0)
-            {
-                // status
-                label_tf_page_count.Text = "0 of " + _total_page_tf.ToString("N0");
-                label_tf_currentrecord.Text = "0 of " + Convert.ToInt32(_total_records_tf).ToString("N0");
-                _tf_no_result = false;
-            }
-            else
-            {
-                _tf_no_result = true;
+            label_tf_page_count.Text = "0 of " + _total_page_tf.ToString("N0");
+            label_tf_currentrecord.Text = "0 of " + Convert.ToInt32(_total_records_tf).ToString("N0");
+            _tf_no_result = false;
 
-                panel_tf_status.Visible = false;
-                button_tf_start.Visible = true;
-                panel_tf_filter.Enabled = true;
-                //button_filelocation.Enabled = true;
+            //if (_total_records_tf > 0)
+            //{
+            //    // status
+            //    label_tf_page_count.Text = "0 of " + _total_page_tf.ToString("N0");
+            //    label_tf_currentrecord.Text = "0 of " + Convert.ToInt32(_total_records_tf).ToString("N0");
+            //    _tf_no_result = false;
+            //}
+            //else
+            //{
+            //    _tf_no_result = true;
 
-                button_tf_proceed.Visible = false;
-                label_tf_locatefolder.Visible = false;
+            //    panel_tf_status.Visible = false;
+            //    button_tf_start.Visible = true;
+            //    panel_tf_filter.Enabled = true;
+            //    //button_filelocation.Enabled = true;
 
-                label_tf_status.Text = "-";
-                label_tf_page_count.Text = "-";
-                label_tf_currentrecord.Text = "-";
-                label_tf_inserting_count.Text = "-";
-                label_tf_start_datetime.Text = "-";
-                label_tf_finish_datetime.Text = "-";
-                label_tf_elapsed.Text = "-";
+            //    button_tf_proceed.Visible = false;
+            //    label_tf_locatefolder.Visible = false;
 
-                panel_tf_datetime.Location = new Point(66, 226);
+            //    label_tf_status.Text = "-";
+            //    label_tf_page_count.Text = "-";
+            //    label_tf_currentrecord.Text = "-";
+            //    label_tf_inserting_count.Text = "-";
+            //    label_tf_start_datetime.Text = "-";
+            //    label_tf_finish_datetime.Text = "-";
+            //    label_tf_elapsed.Text = "-";
 
-                // set default variables
-                _tf_bet_records.Clear();
-                tf_datetime.Clear();
-                tf_gettotal.Clear();
-                _total_records_tf = 0;
-                _total_page_tf = 0;
-                _tf_displayinexel_i = 0;
-                _tf_pages_count_display = 0;
-                _tf_pages_count = 0;
-                _detect_tf = false;
-                _tf_inserted_in_excel = true;
-                _tf_row = 1;
-                _tf_row_count = 1;
-                _isDone_tf = false;
-                _tf_secho = 0;
-                _tf_i = 0;
-                _tf_ii = 0;
-                _tf_get_ii = 1;
-                _tf_get_ii_display = 1;
+            //    panel_tf_datetime.Location = new Point(66, 226);
 
-                _tf_folder_path_result = "";
-                _tf_folder_path_result_locate = "";
-                _tf_current_index = 1;
-                _tf_csv.Clear();
-                timer_tf_start.Start();
+            //    // set default variables
+            //    _tf_bet_records.Clear();
+            //    tf_datetime.Clear();
+            //    tf_gettotal.Clear();
+            //    _total_records_tf = 0;
+            //    _total_page_tf = 0;
+            //    _tf_displayinexel_i = 0;
+            //    _tf_pages_count_display = 0;
+            //    _tf_pages_count = 0;
+            //    _detect_tf = false;
+            //    _tf_inserted_in_excel = true;
+            //    _tf_row = 1;
+            //    _tf_row_count = 1;
+            //    _isDone_tf = false;
+            //    _tf_secho = 0;
+            //    _tf_i = 0;
+            //    _tf_ii = 0;
+            //    _tf_get_ii = 1;
+            //    _tf_get_ii_display = 1;
 
-                MessageBox.Show("No data found.", "TF", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
+            //    _tf_folder_path_result = "";
+            //    _tf_folder_path_result_locate = "";
+            //    _tf_current_index = 1;
+            //    _tf_csv.Clear();
+            //    timer_tf_start.Start();
+
+            //    MessageBox.Show("No data found.", "TF", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //}
         }
 
         private async Task GetDataTFAsync()
@@ -5327,16 +5960,68 @@ namespace Cronos_Data
                         JToken valid_bet = jo_tf.SelectToken("$.aaData[" + ii + "][9][1]");
                         JToken valid_invalid_id = jo_tf.SelectToken("$.aaData[" + ii + "][10][0]");
                         JToken valid_invalid = jo_tf.SelectToken("$.aaData[" + ii + "][10][1]");
-                        
-                        if (_tf_get_ii == 1)
+
+                        //int half = bet_no.ToString().Length / 2;
+                        //string half1 = bet_no.ToString().Substring(0, half);
+                        //string half2 = bet_no.ToString().Substring(half);
+                        //string bet_no_replace = "'" + half1 + " " + half2;
+
+                        string bet_time_date = bet_time.ToString().Substring(0, 10);
+                        DateTime month = DateTime.ParseExact(bet_time_date, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                        //MessageBox.Show(bet_time_date.ToString());
+                        //MessageBox.Show(month.ToString("MM/01/yyyy"));
+
+                        // get vip
+                        string vip = "";
+                        string memberlist_temp = Path.Combine(Path.GetTempPath(), "FY Registration.txt");
+                        if (File.Exists(memberlist_temp))
                         {
-                            var header = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10}", "Game Platform", "Username", "Bet No.", "Bet Time", "Bet Type", "Game Result", "Stake Amount", "Win Amount", "Company Win/Loss", "Valid Bet", "Valid/Invalid");
-                            _tf_csv.AppendLine(header);
+                            using (StreamReader sr = File.OpenText(memberlist_temp))
+                            {
+                                string s = String.Empty;
+                                while ((s = sr.ReadLine()) != null)
+                                {
+                                    int memberlist_i = 0;
+                                    string[] results = s.Split("\",\"");
+                                    foreach (string result in results)
+                                    {
+                                        memberlist_i++;
+
+                                        if (memberlist_i == 1)
+                                        {
+                                            // Username
+                                            //MessageBox.Show(username + " " + result.Replace("FY,\"", ""));
+                                            if (player_name.ToString() == result.Replace("FY,\"", ""))
+                                            {
+                                                int memberlist_i_inner = 0;
+                                                string[] results_inner = s.Split("\",\"");
+                                                foreach (string result_inner in results_inner)
+                                                {
+                                                    memberlist_i_inner++;
+                                                    //MessageBox.Show(memberlist_i_inner + " -----" + result_inner + "-----------------" + player_name.ToString());
+                                                    if (memberlist_i_inner == 9)
+                                                    {
+                                                        // VIP
+                                                        vip = result_inner;
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
 
-                        var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10}", game_platform, "\"" + player_name + "\"", "\"" + bet_no + "\"", "\"" + bet_time + "\"", "\"" + result_bet_type.ToString().Replace(";", "") + "\"", "\"" + game_result + "\"", "\"" + stake_amount + "\"", "\"" + win_amount + "\"", "\"" + company_win_loss + "\"", "\"" + valid_bet + "\"", "\"" + valid_invalid + "\"");
-                        _tf_csv.AppendLine(newLine);
-                        
+                        if (_fy_get_ii == 1)
+                        {
+                            var header = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13}", "Month", "Date", "VIP", "Game Platform", "Username", "Bet No", "Bet Time", "Bet Type", "Game Result", "Stake Amount", "Win Amount", "Company Win/Loss", "Valid Bet", "Valid/Invalid");
+                            _fy_csv.AppendLine(header);
+                        }
+
+                        var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13}", "\"" + month.ToString("MM/01/yyyy") + "\"", "\"" + bet_time_date + "\"", "\"" + vip + "\"", "\"" + game_platform + "\"", "\"" + player_name + "\"", "\"" + "'" + bet_no + "\"", "\"" + bet_time + "\"", "\"" + result_bet_type.ToString().Replace(";", "") + "\"", "\"" + game_result + "\"", "\"" + stake_amount + "\"", "\"" + win_amount + "\"", "\"" + company_win_loss + "\"", "\"" + valid_bet + "\"", "\"" + valid_invalid + "\"");
+                        _fy_csv.AppendLine(newLine);
+
                         if ((_tf_get_ii) == _limit_tf)
                         {
                             // status
@@ -5499,8 +6184,10 @@ namespace Cronos_Data
         private bool _fy_cn_ea;
         private bool isInsertMemberRegister = false;
         private bool _isSecondRequest_fy = false;
+        private bool _isThirdRequest_fy = false;
         private bool isButtonStart_fy = false;
         private string _fy_ld;
+        private bool _isSecondRequestFinish_fy = false;
 
         private void TF_InsertDone()
         {
@@ -5807,7 +6494,7 @@ namespace Cronos_Data
             else
             {
                 _tf_no_result = true;
-                MessageBox.Show("No data found.");
+                MessageBox.Show("No data found.", "TF", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
         
@@ -5984,6 +6671,37 @@ namespace Cronos_Data
 
             if (fbd.ShowDialog() == DialogResult.OK)
             {
+                if (Properties.Settings.Default.filelocation == "")
+                {
+                    label_filelocation.Text = Properties.Settings.Default.filelocation;
+
+                    string bank_account_fy = label_filelocation.Text + "\\Cronos Data\\FY\\FY Payment Code.xlsx";
+                    string bank_account_fy_temp = Path.Combine(Path.GetTempPath(), "FY Payment Code.txt"); ;
+
+                    Excel.Application app = new Excel.Application();
+                    Excel.Workbook wb = app.Workbooks.Open(bank_account_fy, Type.Missing, true);
+                    wb.Application.DisplayAlerts = false;
+                    wb.SaveAs(bank_account_fy_temp, Excel.XlFileFormat.xlUnicodeText);
+                    wb.Close();
+                    app.Quit();
+                    app.Application.DisplayAlerts = true;
+                    Marshal.ReleaseComObject(wb);
+                    Marshal.ReleaseComObject(app);
+
+                    string bonus_code_fy = label_filelocation.Text + "\\Cronos Data\\FY\\FY Bonus Code.xlsx";
+                    string bonus_code_fy_temp = Path.Combine(Path.GetTempPath(), "FY Bonus Code.txt"); ;
+
+                    Excel.Application app_bonus = new Excel.Application();
+                    Excel.Workbook wb_bonus = app_bonus.Workbooks.Open(bonus_code_fy, Type.Missing, true);
+                    wb_bonus.Application.DisplayAlerts = false;
+                    wb_bonus.SaveAs(bonus_code_fy_temp, Excel.XlFileFormat.xlUnicodeText);
+                    wb_bonus.Close();
+                    app_bonus.Quit();
+                    app_bonus.Application.DisplayAlerts = true;
+                    Marshal.ReleaseComObject(app_bonus);
+                    Marshal.ReleaseComObject(app_bonus);
+                }
+
                 label_filelocation.Text = fbd.SelectedPath;
                 Properties.Settings.Default.filelocation = fbd.SelectedPath;
                 Properties.Settings.Default.Save();
@@ -6063,16 +6781,73 @@ namespace Cronos_Data
 
         private void button5_Click(object sender, EventArgs e)
         {
-            string memberlist_temp = Path.Combine(Path.GetTempPath(), "FY Daily Registration.txt");
-            if (!File.Exists(memberlist_temp))
+            //// get last deposit in temp file
+            //var last_deposit_get = "2018-08-03";
+            //DateTime last_deposit = DateTime.ParseExact(last_deposit_get, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+            //var first_deposit_get = "2018-09";
+            //DateTime first_deposit = DateTime.ParseExact(first_deposit_get, "yyyy-MM", CultureInfo.InvariantCulture);
+
+
+            //// retained
+            //// 2 months current date
+            //var last2month_get = DateTime.Today.AddMonths(-2);
+            //DateTime last2month = DateTime.ParseExact(last2month_get.ToString("yyyy-MM-dd"), "yyyy-MM-dd", CultureInfo.InvariantCulture);
+            //if (last_deposit >= last2month)
+            //{
+            //    MessageBox.Show("retained");
+            //}
+            //else
+            //{
+            //    MessageBox.Show("not retained");
+            //}
+
+            //// reactivated
+            //// any month
+
+
+            //// new
+            //String month_get = DateTime.Now.Month.ToString();
+            //String year_get = DateTime.Now.Year.ToString();
+            //string year_month = year_get + "-" + month_get;
+            //if (first_deposit.ToString("yyyy-MM") == year_month)
+            //{
+            //    MessageBox.Show("new");
+            //}
+            //else
+            //{
+            //    MessageBox.Show("not new");
+            //}
+            
+
+            string asdsa = @"C:\Users\adulay\Desktop\Cronos Data\FY\2018-10-30\Payment Record\FY_PaymentRecord_2018-10-30_01.txt";
+            InsertPaymentRecord_FY(asdsa);
+        }
+
+        private void InsertPaymentRecord_FY(string path)
+        {
+            try
             {
-                MessageBox.Show("not exist");
-                File.WriteAllText(memberlist_temp, "test");
+                string connection = "Data Source=192.168.10.252;User ID=sa;password=Test@123;Initial Catalog=testrain;Integrated Security=True;Trusted_Connection=false;";
+
+                using (SqlConnection conn = new SqlConnection(connection))
+                {
+                    conn.Open();
+                    SqlCommand sqlCommand = new SqlCommand("Select Member, Status FROM [testrain].[dbo].[FY.Payment]", conn);
+                    SqlDataReader reader = sqlCommand.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        MessageBox.Show(reader.GetString(0).ToString());
+                        MessageBox.Show(reader.GetString(1).ToString());
+                    }
+                    reader.Close();
+                    conn.Close();
+                }
             }
-            else
+            catch (Exception err)
             {
-                MessageBox.Show("exist");
+                MessageBox.Show(err.ToString());
             }
         }
+
     }
 }
