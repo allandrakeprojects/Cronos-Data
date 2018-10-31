@@ -122,6 +122,7 @@
             this.timer_fy_start_button = new System.Windows.Forms.Timer(this.components);
             this.label_fy_count = new System.Windows.Forms.Label();
             this.sPanel_separator = new Cronos_Data.SPanel();
+            this.label_fy_insert = new System.Windows.Forms.Label();
             this.panel_header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_minimize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_close)).BeginInit();
@@ -1151,12 +1152,22 @@
             this.sPanel_separator.Size = new System.Drawing.Size(44, 446);
             this.sPanel_separator.TabIndex = 1;
             // 
+            // label_fy_insert
+            // 
+            this.label_fy_insert.AutoSize = true;
+            this.label_fy_insert.Location = new System.Drawing.Point(357, 55);
+            this.label_fy_insert.Name = "label_fy_insert";
+            this.label_fy_insert.Size = new System.Drawing.Size(35, 13);
+            this.label_fy_insert.TabIndex = 34;
+            this.label_fy_insert.Text = "label5";
+            // 
             // Main_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1140, 525);
+            this.Controls.Add(this.label_fy_insert);
             this.Controls.Add(this.button_fy_start);
             this.Controls.Add(this.label_fy_count);
             this.Controls.Add(this.button_fy_stop);
@@ -1303,5 +1314,6 @@
         private System.Windows.Forms.Button button_fy_stop;
         private System.Windows.Forms.Label label_fy_count;
         private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Label label_fy_insert;
     }
 }
