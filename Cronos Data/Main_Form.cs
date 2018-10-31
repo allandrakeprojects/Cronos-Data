@@ -7627,8 +7627,6 @@ namespace Cronos_Data
                             {
                                 File.Delete(_fy_folder_path_result);
                             }
-
-                            MessageBox.Show("done");
                         }
 
                         transaction.Commit();
