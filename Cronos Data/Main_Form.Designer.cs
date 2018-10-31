@@ -52,6 +52,7 @@
             this.label_start_fy = new System.Windows.Forms.Label();
             this.label_end_fy = new System.Windows.Forms.Label();
             this.panel_fy_status = new System.Windows.Forms.Panel();
+            this.label_fy_insert = new System.Windows.Forms.Label();
             this.button_fy_proceed = new System.Windows.Forms.Button();
             this.label_fy_locatefolder = new System.Windows.Forms.Label();
             this.panel_fy_datetime = new System.Windows.Forms.Panel();
@@ -88,6 +89,8 @@
             this.panel_tf = new System.Windows.Forms.Panel();
             this.button_tf_start = new System.Windows.Forms.Button();
             this.panel_tf_status = new System.Windows.Forms.Panel();
+            this.button_tf_stop = new System.Windows.Forms.Button();
+            this.label_tf_insert = new System.Windows.Forms.Label();
             this.button_tf_proceed = new System.Windows.Forms.Button();
             this.label_tf_locatefolder = new System.Windows.Forms.Label();
             this.panel_tf_datetime = new System.Windows.Forms.Panel();
@@ -121,7 +124,6 @@
             this.button4 = new System.Windows.Forms.Button();
             this.timer_fy_start_button = new System.Windows.Forms.Timer(this.components);
             this.label_fy_count = new System.Windows.Forms.Label();
-            this.label_fy_insert = new System.Windows.Forms.Label();
             this.sPanel_separator = new Cronos_Data.SPanel();
             this.panel_header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_minimize)).BeginInit();
@@ -411,6 +413,15 @@
             this.panel_fy_status.TabIndex = 23;
             this.panel_fy_status.Visible = false;
             // 
+            // label_fy_insert
+            // 
+            this.label_fy_insert.Location = new System.Drawing.Point(382, 207);
+            this.label_fy_insert.Name = "label_fy_insert";
+            this.label_fy_insert.Size = new System.Drawing.Size(125, 23);
+            this.label_fy_insert.TabIndex = 34;
+            this.label_fy_insert.Text = "-";
+            this.label_fy_insert.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // button_fy_proceed
             // 
             this.button_fy_proceed.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(122)))), ((int)(((byte)(159)))));
@@ -680,7 +691,6 @@
             // panel_footer
             // 
             this.panel_footer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(122)))), ((int)(((byte)(159)))));
-            this.panel_footer.Controls.Add(this.panel_landing);
             this.panel_footer.Controls.Add(this.label_version);
             this.panel_footer.Controls.Add(this.label_updates);
             this.panel_footer.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -692,9 +702,9 @@
             // panel_landing
             // 
             this.panel_landing.Controls.Add(this.pictureBox_landing);
-            this.panel_landing.Location = new System.Drawing.Point(23, -4);
+            this.panel_landing.Location = new System.Drawing.Point(-4, 21);
             this.panel_landing.Name = "panel_landing";
-            this.panel_landing.Size = new System.Drawing.Size(1138, 485);
+            this.panel_landing.Size = new System.Drawing.Size(1148, 485);
             this.panel_landing.TabIndex = 31;
             // 
             // pictureBox_landing
@@ -715,7 +725,7 @@
             this.label_version.Name = "label_version";
             this.label_version.Size = new System.Drawing.Size(43, 13);
             this.label_version.TabIndex = 1;
-            this.label_version.Text = "v1.0.0";
+            this.label_version.Text = "v1.0.1";
             this.label_version.Visible = false;
             // 
             // label_updates
@@ -804,6 +814,8 @@
             // panel_tf_status
             // 
             this.panel_tf_status.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.panel_tf_status.Controls.Add(this.button_tf_stop);
+            this.panel_tf_status.Controls.Add(this.label_tf_insert);
             this.panel_tf_status.Controls.Add(this.button_tf_proceed);
             this.panel_tf_status.Controls.Add(this.label_tf_locatefolder);
             this.panel_tf_status.Controls.Add(this.panel_tf_datetime);
@@ -820,6 +832,34 @@
             this.panel_tf_status.Size = new System.Drawing.Size(524, 284);
             this.panel_tf_status.TabIndex = 23;
             this.panel_tf_status.Visible = false;
+            // 
+            // button_tf_stop
+            // 
+            this.button_tf_stop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(122)))), ((int)(((byte)(159)))));
+            this.button_tf_stop.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button_tf_stop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_tf_stop.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_tf_stop.ForeColor = System.Drawing.Color.White;
+            this.button_tf_stop.Image = ((System.Drawing.Image)(resources.GetObject("button_tf_stop.Image")));
+            this.button_tf_stop.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button_tf_stop.Location = new System.Drawing.Point(185, 82);
+            this.button_tf_stop.Name = "button_tf_stop";
+            this.button_tf_stop.Padding = new System.Windows.Forms.Padding(15, 0, 15, 0);
+            this.button_tf_stop.Size = new System.Drawing.Size(153, 59);
+            this.button_tf_stop.TabIndex = 34;
+            this.button_tf_stop.Text = "START";
+            this.button_tf_stop.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.button_tf_stop.UseVisualStyleBackColor = false;
+            this.button_tf_stop.Visible = false;
+            // 
+            // label_tf_insert
+            // 
+            this.label_tf_insert.Location = new System.Drawing.Point(380, 208);
+            this.label_tf_insert.Name = "label_tf_insert";
+            this.label_tf_insert.Size = new System.Drawing.Size(125, 23);
+            this.label_tf_insert.TabIndex = 35;
+            this.label_tf_insert.Text = "-";
+            this.label_tf_insert.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // button_tf_proceed
             // 
@@ -1105,7 +1145,7 @@
             // 
             // timer_landing
             // 
-            this.timer_landing.Interval = 1000;
+            this.timer_landing.Interval = 2000;
             this.timer_landing.Tick += new System.EventHandler(this.timer_landing_Tick);
             // 
             // textBox2
@@ -1144,15 +1184,6 @@
             this.label_fy_count.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.label_fy_count.Visible = false;
             // 
-            // label_fy_insert
-            // 
-            this.label_fy_insert.Location = new System.Drawing.Point(382, 207);
-            this.label_fy_insert.Name = "label_fy_insert";
-            this.label_fy_insert.Size = new System.Drawing.Size(125, 23);
-            this.label_fy_insert.TabIndex = 34;
-            this.label_fy_insert.Text = "-";
-            this.label_fy_insert.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
             // sPanel_separator
             // 
             this.sPanel_separator.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
@@ -1170,6 +1201,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1140, 525);
+            this.Controls.Add(this.panel_landing);
             this.Controls.Add(this.button_fy_start);
             this.Controls.Add(this.label_fy_count);
             this.Controls.Add(this.button_fy_stop);
@@ -1314,8 +1346,10 @@
         private System.Windows.Forms.ComboBox comboBox_fy_list;
         private System.Windows.Forms.Timer timer_fy_start_button;
         private System.Windows.Forms.Button button_fy_stop;
-        private System.Windows.Forms.Label label_fy_count;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Label label_fy_insert;
+        private System.Windows.Forms.Label label_tf_insert;
+        private System.Windows.Forms.Button button_tf_stop;
+        private System.Windows.Forms.Label label_fy_count;
     }
 }

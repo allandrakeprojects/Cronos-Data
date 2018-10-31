@@ -77,6 +77,15 @@ namespace Cronos_Data
         private string _fy_playerlist_cn = "";
         private string _fy_playerlist_ea = "";
         private string _fy_id_playerlist;
+        
+        private bool _fy_cn_ea;
+        private bool isInsertMemberRegister = false;
+        private bool _isSecondRequest_fy = false;
+        private bool _isThirdRequest_fy = false;
+        private bool isButtonStart_fy = false;
+        private string _fy_ld;
+        private bool _isSecondRequestFinish_fy = false;
+
 
         // TF ---
         List<TF_BetRecord> _tf_bet_records = new List<TF_BetRecord>();
@@ -230,10 +239,10 @@ namespace Cronos_Data
                     File.Copy(path_bonus_code_parent, path_bonus_code);
                 }
 
-                if (!File.Exists(path_cn_ea))
-                {
-                    File.Copy(path_cn_ea_parent, path_cn_ea);
-                }
+                //if (!File.Exists(path_cn_ea))
+                //{
+                //    File.Copy(path_cn_ea_parent, path_cn_ea);
+                //}
 
                 string bank_account_fy = label_filelocation.Text + "\\Cronos Data\\FY\\FY Payment Code.xlsx";
                 string bank_account_fy_temp = Path.Combine(Path.GetTempPath(), "FY Payment Code.txt");
@@ -327,8 +336,8 @@ namespace Cronos_Data
                         if (webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/account/login"))
                         {
                             webBrowser_fy.Document.Window.ScrollTo(0, 180);
-                            webBrowser_fy.Document.GetElementById("csname").SetAttribute("value", "central12");
-                            webBrowser_fy.Document.GetElementById("cspwd").SetAttribute("value", "abc123");
+                            //webBrowser_fy.Document.GetElementById("csname").SetAttribute("value", "central12");
+                            //webBrowser_fy.Document.GetElementById("cspwd").SetAttribute("value", "abc123");
                         }
 
                         if (webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/player/list") || webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/site/index") || webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/player/online"))
@@ -700,12 +709,7 @@ namespace Cronos_Data
                         
                         var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16}", "FY", "\"" + username + "\"", "\"" + name + "\"", "\"" + status + "\"", "\"" + date_register + " " + date_time_register + "\"", "\"" + last_login_date + "\"", "\"" + _fy_ld + "\"", "\"" + _fy_playerlist_cn + "\"", "\"" + _fy_playerlist_ea + "\"", "\"" + vip + "\"", "\"" + date_register + "\"", "\"" + month_registration.ToString("MM/01/yyyy") + "\"", "\"" + fy_first_deposit + "\"", "\"" + result_month_first_deposit + "\"", "\"" + source + "\"", "\"" + ip + "\"", "\"" + register_domain + "\"");
                         _fy_csv.AppendLine(newLine);
-
-                        if ((_fy_get_ii) == 500)
-                        {
-                            FY_PlayerListInsertDone();
-                        }
-
+                        
                         if ((_fy_get_ii) == _limit_fy)
                         {
                             // status
@@ -916,37 +920,7 @@ namespace Cronos_Data
 
             _fy_csv_memberrregister_custom.Clear();
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        
         private async Task FY_PlayerListContactNumberEmailAsync(string id)
         {
             try
@@ -1103,33 +1077,7 @@ namespace Cronos_Data
                 await FY_PlayerListLastDeposit(_fy_id_playerlist);
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        
         private async Task GetDataFYPagesPlayerListAsync()
         {
             try
@@ -1338,62 +1286,6 @@ namespace Cronos_Data
 
             timer_fy_start.Start();
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         private async Task FY_GetTotal(string start_datetime, string end_datetime)
         {
             var cookie = FullWebBrowserCookie.GetCookieInternal(webBrowser_fy.Url, false);
@@ -1791,7 +1683,6 @@ namespace Cronos_Data
             //    MessageBox.Show("No data found.", "FY", MessageBoxButtons.OK, MessageBoxIcon.Information);
             //}
         }
-
         private async Task GetDataFYAsync()
         {
             try
@@ -5289,66 +5180,7 @@ namespace Cronos_Data
 
             timer_fy_start.Start();
         }
-
-        // ghghghghgh
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        
         private void FYHeader()
         {
             Excel.Application application = new Excel.Application();
@@ -5808,28 +5640,6 @@ namespace Cronos_Data
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         
         
         // ----------------
@@ -5892,8 +5702,8 @@ namespace Cronos_Data
                     if (webBrowser_tf.Url.ToString().Equals("http://cs.tianfa86.org/account/login"))
                     {
                         webBrowser_tf.Document.Window.ScrollTo(0, 180);
-                        //webBrowser_tf.Document.GetElementById("csname").SetAttribute("value", "tfrain");
-                        //webBrowser_tf.Document.GetElementById("cspwd").SetAttribute("value", "djrain123$$");
+                        //webBrowser_tf.Document.GetElementById("csname").SetAttribute("value", "central12");
+                        //webBrowser_tf.Document.GetElementById("cspwd").SetAttribute("value", "abc123");
                     }
 
                     if (webBrowser_tf.Url.ToString().Equals("http://cs.tianfa86.org/player/list") || webBrowser_tf.Url.ToString().Equals("http://cs.tianfa86.org/site/index") || webBrowser_tf.Url.ToString().Equals("http://cs.tianfa86.org/player/online"))
@@ -6538,13 +6348,6 @@ namespace Cronos_Data
         }
 
         int detect_tf = 0;
-        private bool _fy_cn_ea;
-        private bool isInsertMemberRegister = false;
-        private bool _isSecondRequest_fy = false;
-        private bool _isThirdRequest_fy = false;
-        private bool isButtonStart_fy = false;
-        private string _fy_ld;
-        private bool _isSecondRequestFinish_fy = false;
 
         private void TF_InsertDone()
         {
@@ -6912,13 +6715,7 @@ namespace Cronos_Data
                 MessageBox.Show("Can't locate folder.", "TF", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
-        
-
-
-
-
-
-
+                
         // Drag Header to Move
         private void panel_header_MouseDown(object sender, MouseEventArgs e)
         {
