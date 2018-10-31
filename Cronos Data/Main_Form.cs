@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Data;
@@ -1318,6 +1319,10 @@ namespace Cronos_Data
                 label_fy_status.ForeColor = Color.FromArgb(34, 139, 34);
                 label_fy_status.Text = "status: done --- MEMBER LIST";
                 panel_fy_datetime.Location = new Point(5, 226);
+
+                // Database Member List FY
+                string path = Path.Combine(Path.GetTempPath(), "FY Registration.txt");
+                InsertMemberList_FY(path);
             }));
 
             //var notification = new NotifyIcon()
@@ -4192,6 +4197,9 @@ namespace Cronos_Data
                                 //{
                                 //    File.Delete(_fy_folder_path_result);
                                 //}
+
+                                // Database Bet Record FY
+                                InsertBetRecord_FY(_fy_folder_path_result);
                             }
 
                             _fy_csv.Clear();
@@ -5261,6 +5269,9 @@ namespace Cronos_Data
                     timer_fy.Stop();
                     label_fy_status.Text = "status: done --- BET RECORD";
                     panel_fy_datetime.Location = new Point(5, 226);
+
+                    // Database Bet Record FY
+                    InsertBetRecord_FY(_fy_folder_path_result);
                 }
                 
             }));
@@ -5729,7 +5740,8 @@ namespace Cronos_Data
             {
                 panel_fy_filter.Visible = true;
             }
-            
+
+            label_fy_insert.Visible = false;
             panel_fy_status.Visible = false;
             button_fy_start.Visible = true;
             panel_fy_filter.Enabled = true;
@@ -7177,8 +7189,10 @@ namespace Cronos_Data
             //Marshal.ReleaseComObject(app_bonus);
 
             _fy_filename = "FY_PaymentRecord_2018-10-31_01.xlsx";
-            string asdsa = @"C:\Users\adulay\Desktop\Cronos Data\FY\2018-10-31\Bet Record\FY_BetRecord_2018-10-31_01.txt";
-            InsertBetRecord_FY(asdsa);
+
+           
+            string asdsa = Path.Combine(Path.GetTempPath(), "FY Registration.txt");
+            InsertMemberList_FY(asdsa);
         }
         
         private void InsertPaymentRecord_FY(string path)
@@ -7186,7 +7200,8 @@ namespace Cronos_Data
             button_fy_proceed.Text = "SENDING...";
             button_fy_proceed.Enabled = false;
             label_fy_locatefolder.Enabled = false;
-
+            label_fy_insert.Visible = true;
+            
             try
             {
                 string connection = "Data Source=192.168.10.252;User ID=sa;password=Test@123;Initial Catalog=testrain;Integrated Security=True;Trusted_Connection=false;";
@@ -7210,6 +7225,7 @@ namespace Cronos_Data
                             command.Transaction = transaction;
 
                             int count = 0;
+                            int display_count = 0;
                             foreach (String dataLine in fileContent)
                             {
                                 if (dataLine.Length > 1)
@@ -7219,6 +7235,9 @@ namespace Cronos_Data
 
                                     if (count != 1)
                                     {
+                                        display_count++;
+                                        label_fy_insert.Text = display_count.ToString();
+
                                         String[] columns = dataLine.Split("\",\"");
                                         command.Parameters.Clear();
 
@@ -7334,7 +7353,8 @@ namespace Cronos_Data
             button_fy_proceed.Text = "SENDING...";
             button_fy_proceed.Enabled = false;
             label_fy_locatefolder.Enabled = false;
-            
+            label_fy_insert.Visible = true;
+
             try
             {
                 string connection = "Data Source=192.168.10.252;User ID=sa;password=Test@123;Initial Catalog=testrain;Integrated Security=True;Trusted_Connection=false;";
@@ -7358,6 +7378,7 @@ namespace Cronos_Data
                             command.Transaction = transaction;
 
                             int count = 0;
+                            int display_count = 0;
                             foreach (String dataLine in fileContent)
                             {
                                 if (dataLine.Length > 1)
@@ -7367,6 +7388,9 @@ namespace Cronos_Data
 
                                     if (count != 1)
                                     {
+                                        display_count++;
+                                        label_fy_insert.Text = display_count.ToString();
+
                                         String[] columns = dataLine.Split("\",\"");
                                         command.Parameters.Clear();
 
@@ -7456,8 +7480,8 @@ namespace Cronos_Data
             button_fy_proceed.Text = "SENDING...";
             button_fy_proceed.Enabled = false;
             label_fy_locatefolder.Enabled = false;
-            string ghghghggh = "";
-            string ghghghg = "";
+            label_fy_insert.Visible = true;
+
             try
             {
                 string connection = "Data Source=192.168.10.252;User ID=sa;password=Test@123;Initial Catalog=testrain;Integrated Security=True;Trusted_Connection=false;";
@@ -7496,33 +7520,83 @@ namespace Cronos_Data
 
                                         String[] columns = dataLine.Split("\",\"");
                                         command.Parameters.Clear();
-                                        ghghghggh = count.ToString();
-                                        //MessageBox.Show(columns[0].Replace("\"", ""));
-                                        //MessageBox.Show(columns[1].Replace("\"", ""));
-                                        //MessageBox.Show(columns[2].Replace("\"", ""));
-                                        //MessageBox.Show(columns[3].Replace("\"", ""));
-                                        //MessageBox.Show(columns[4].Replace("\"", ""));
-                                        //MessageBox.Show(columns[5].Replace("\"", ""));
-                                        //MessageBox.Show(columns[6].Replace("\"", ""));
-                                        //MessageBox.Show(columns[7].Replace("\"", ""));
-                                        //MessageBox.Show(columns[8].Replace("\"", ""));
-                                        //MessageBox.Show(columns[9].Replace("\"", ""));
-                                        //MessageBox.Show(columns[10].Replace("\"", ""));
-                                        //MessageBox.Show(columns[11].Replace("\"", ""));
-                                        //MessageBox.Show(columns[12].Replace("\"", ""));
-                                        //MessageBox.Show(columns[13].Replace("\"", ""));
-
-                                        // Date
-                                        //"10/01/2018","2018-10-30","","MG电子游戏","gao0218","'27049559236","2018-10-30 01:01:01","篮球巨星-171022","结算完成","2.50","0.00","2.50","2.50","有效"
-                                        
-
-                                        //MessageBox.Show(columns[1].Replace("\"", "") + " 00:00:00".Length);
-
 
                                         command.Parameters.Add("date", SqlDbType.DateTime).Value = columns[1].Replace("\"", "") + " 00:00:00";
                                         last_date = columns[1].Replace("\"", "") + " 00:00:00";
 
-                                        command.Parameters.Add("category", SqlDbType.NVarChar).Value = "SL";
+
+                                        string category_get = "";
+
+                                        ArrayList cg = new ArrayList(new string[] {"KY棋牌", "乐游棋牌"});
+                                        foreach (var item in cg)
+                                        {
+                                            if (columns[3].Replace("\"", "") == item.ToString())
+                                            {
+                                                category_get = "CG";
+                                            }
+                                        }
+
+                                        if (category_get == "")
+                                        {
+                                            ArrayList fg = new ArrayList(new string[] { "AG捕鱼", "IM GG捕鱼", "IM MWG捕魚", "IM MWG捕鱼", "IM捕鱼", "MWG捕魚", "MWG捕鱼" });
+                                            foreach (var item in fg)
+                                            {
+                                                if (columns[3].Replace("\"", "") == item.ToString())
+                                                {
+                                                    category_get = "FG";
+                                                }
+                                            }
+                                        }
+
+                                        if (category_get == "")
+                                        {
+                                            ArrayList lc = new ArrayList(new string[] { "38", "AG体育", "AG真人", "BB真人", "BB视讯", "BG视讯", "GD真人", "IM PT真人", "KY棋牌", "LD 真人", "LD真人", "MG真人", "乐游棋牌", "新EBet", "欧博真人", "沙龙真人", "申博真人" });
+                                            foreach (var item in lc)
+                                            {
+                                                if (columns[3].Replace("\"", "") == item.ToString())
+                                                {
+                                                    category_get = "LC";
+                                                }
+                                            }
+                                        }
+
+                                        if (category_get == "")
+                                        {
+                                            ArrayList lt = new ArrayList(new string[] { "BB彩票", "IG 时时彩游戏", "IG 香港彩游戏", "KENO", "KG", "VR彩票", "蚂蚁彩票" });
+                                            foreach (var item in lt)
+                                            {
+                                                if (columns[3].Replace("\"", "") == item.ToString())
+                                                {
+                                                    category_get = "LT";
+                                                }
+                                            }
+                                        }
+
+                                        if (category_get == "")
+                                        {
+                                            ArrayList sl = new ArrayList(new string[] { "AGYoPlay电游", "AG电游", "BB机率", "CQ9", "CQ9游戏", "CQ9电子", "IM PT", "IM PT电游", "IM 电子", "IM电子", "IM电游", "MG电子游戏", "MG电游", "MG真人", "newPT电游", "NT电游", "PG电子", "PG電子", "PlaytechS 电子", "SW 电子", "欧博空战世纪" });
+                                            foreach (var item in sl)
+                                            {
+                                                if (columns[3].Replace("\"", "") == item.ToString())
+                                                {
+                                                    category_get = "SL";
+                                                }
+                                            }
+                                        }
+
+                                        if (category_get == "")
+                                        {
+                                            ArrayList sp = new ArrayList(new string[] { "49", "AG体育", "CMD体育", "新IM体育", "新皇冠体育", "沙巴体育", "皇冠体育" });
+                                            foreach (var item in sp)
+                                            {
+                                                if (columns[3].Replace("\"", "") == item.ToString())
+                                                {
+                                                    category_get = "SP";
+                                                }
+                                            }
+                                        }
+
+                                        command.Parameters.Add("category", SqlDbType.NVarChar).Value = category_get;
                                         command.Parameters.Add("platform", SqlDbType.NVarChar).Value = columns[3].Replace("\"", "");
                                         command.Parameters.Add("username", SqlDbType.NVarChar).Value = columns[4].Replace("\"", "");
                                         columns[5] = columns[5].Replace("\"", "");
@@ -7565,8 +7639,192 @@ namespace Cronos_Data
             }
             catch (Exception err)
             {
-                MessageBox.Show(ghghghggh);
-                MessageBox.Show(ghghghg);
+                MessageBox.Show(err.ToString());
+                button_fy_proceed.Text = "PROCEED";
+                button_fy_proceed.Enabled = true;
+                label_fy_locatefolder.Enabled = true;
+            }
+        }
+
+        private void InsertMemberList_FY(string path)
+        {
+            button_fy_proceed.Text = "SENDING...";
+            button_fy_proceed.Enabled = false;
+            label_fy_locatefolder.Enabled = false;
+            label_fy_insert.Visible = true;
+
+            try
+            {
+                string connection = "Data Source=192.168.10.252;User ID=sa;password=Test@123;Initial Catalog=testrain;Integrated Security=True;Trusted_Connection=false;";
+
+                using (SqlConnection conn = new SqlConnection(connection))
+                {
+                    conn.Open();
+                    SqlCommand sqlCommand = new SqlCommand("Select Member, Status FROM [testrain].[dbo].[FY.Registration]", conn);
+
+                    using (SqlTransaction transaction = conn.BeginTransaction())
+                    {
+                        String insertCommand = @"INSERT INTO [testrain].[dbo].[FY.Registration] ([Username], [Name], [Registration Date], [Month Reg], [VIP Level], [Status], [Contact Number], [Email], [First Deposit Date], [First Deposit Month], [Last Deposit Date], [Last Login Date], [IP Address], [Source], [Date Registered], [Brand], [File Name]) ";
+                        insertCommand += @"VALUES (@username, @name, @registration_date, @month_reg, @vip, @status, @contact_number, @email, @fd, @fdm, @ld, @ll, @ip, @source, @date_registered, @brand, @file_name)";
+
+                        String[] fileContent = File.ReadAllLines(path);
+                        string last_date = "";
+                        using (SqlCommand command = conn.CreateCommand())
+                        {
+                            command.CommandText = insertCommand;
+                            command.CommandType = CommandType.Text;
+                            command.Transaction = transaction;
+
+                            int count = 0;
+                            int display_count = 0;
+                            foreach (String dataLine in fileContent)
+                            {
+                                if (dataLine.Length > 1)
+                                {
+                                    Application.DoEvents();
+                                    count++;
+
+                                    if (count != 1)
+                                    {
+
+
+                                        display_count++;
+                                        label_fy_insert.Text = display_count.ToString();
+
+                                        String[] columns = dataLine.Split("\",\"");
+                                        command.Parameters.Clear();
+
+
+
+
+
+                                        //MessageBox.Show(columns[0].Replace("\"", ""));
+                                        //MessageBox.Show(columns[1].Replace("\"", ""));
+                                        //MessageBox.Show(columns[2].Replace("\"", ""));
+                                        //MessageBox.Show(columns[3].Replace("\"", ""));
+                                        //MessageBox.Show(columns[4].Replace("\"", ""));
+                                        //MessageBox.Show(columns[5].Replace("\"", ""));
+                                        //MessageBox.Show(columns[6].Replace("\"", ""));
+                                        //MessageBox.Show(columns[7].Replace("\"", ""));
+                                        //MessageBox.Show(columns[8].Replace("\"", ""));
+                                        //MessageBox.Show(columns[9].Replace("\"", ""));
+                                        //MessageBox.Show(columns[10].Replace("\"", ""));
+                                        //MessageBox.Show(columns[11].Replace("\"", ""));
+                                        //MessageBox.Show(columns[12].Replace("\"", ""));
+                                        //MessageBox.Show(columns[13].Replace("\"", ""));
+                                        //MessageBox.Show(columns[14].Replace("\"", ""));
+                                        //MessageBox.Show(columns[15].Replace("\"", ""));
+                                        //MessageBox.Show(columns[16].Replace("\"", ""));
+
+
+
+
+
+                                        // Username
+                                        columns[0] = columns[0].Replace("\"", "");
+                                        columns[0] = columns[0].Replace("FY,", "");
+                                        command.Parameters.Add("username", SqlDbType.NVarChar).Value = columns[0].Replace("\"", "");
+                                        // Name
+                                        command.Parameters.Add("name", SqlDbType.NVarChar).Value = columns[1].Replace("\"", "");
+                                        // Registration Date
+                                        command.Parameters.Add("registration_date", SqlDbType.DateTime).Value = columns[9].Replace("\"", "") + " 00:00:00";
+                                        // Month Reg
+                                        command.Parameters.Add("month_reg", SqlDbType.DateTime).Value = columns[10].Replace("\"", "") + " 00:00:00";
+                                        // VIP
+                                        command.Parameters.Add("vip", SqlDbType.NVarChar).Value = columns[8].Replace("\"", "");
+                                        // Status
+                                        command.Parameters.Add("status", SqlDbType.NVarChar).Value = columns[2].Replace("\"", "");
+                                        // Contact Number
+                                        if (columns[6].Replace("\"", "") != "")
+                                        {
+                                            command.Parameters.Add("contact_number", SqlDbType.Float).Value = columns[6].Replace("\"", "");
+                                        }
+                                        else
+                                        {
+                                            command.Parameters.Add("contact_number", SqlDbType.Float).Value = DBNull.Value;
+                                        }
+                                        // Email
+                                        if (columns[7].Replace("\"", "") != "")
+                                        {
+                                            command.Parameters.Add("email", SqlDbType.NVarChar).Value = columns[7].Replace("\"", "");
+                                        }
+                                        else
+                                        {
+                                            command.Parameters.Add("email", SqlDbType.NVarChar).Value = DBNull.Value;
+                                        }
+                                        // FD
+                                        if (columns[11].Replace("\"", "") != "")
+                                        {
+                                            command.Parameters.Add("fd", SqlDbType.DateTime).Value = columns[11].Replace("\"", "");
+                                        }
+                                        else
+                                        {
+                                            command.Parameters.Add("fd", SqlDbType.DateTime).Value = DBNull.Value;
+                                        }
+                                        // FDM
+                                        if (columns[12].Replace("\"", "") != "")
+                                        {
+                                            command.Parameters.Add("fdm", SqlDbType.DateTime).Value = columns[12].Replace("\"", "") + " 00:00:00";
+                                        }
+                                        else
+                                        {
+                                            command.Parameters.Add("fdm", SqlDbType.DateTime).Value = DBNull.Value;
+                                        }
+                                        // LD
+                                        if (columns[5].Replace("\"", "") != "")
+                                        {
+                                            command.Parameters.Add("ld", SqlDbType.DateTime).Value = columns[5].Replace("\"", "");
+                                        }
+                                        else
+                                        {
+                                            command.Parameters.Add("ld", SqlDbType.DateTime).Value = DBNull.Value;
+                                        }
+                                        // LL
+                                        if (columns[4].Replace("\"", "") != "")
+                                        {
+                                            command.Parameters.Add("ll", SqlDbType.DateTime).Value = columns[4].Replace("\"", "");
+                                        }
+                                        else
+                                        {
+                                            command.Parameters.Add("ll", SqlDbType.DateTime).Value = DBNull.Value;
+                                        }
+                                        // IP
+                                        //MessageBox.Show(columns[14].Replace("\"", ""));
+                                        command.Parameters.Add("ip", SqlDbType.NVarChar).Value = columns[14].Replace("\"", "");
+                                        // Source
+                                        //MessageBox.Show(columns[13].Replace("\"", ""));
+                                        command.Parameters.Add("source", SqlDbType.NVarChar).Value = columns[13].Replace("\"", "");
+                                        // Date Registered
+                                        //MessageBox.Show(columns[3].Replace("\"", ""));
+                                        command.Parameters.Add("date_registered", SqlDbType.DateTime).Value = columns[3].Replace("\"", "");
+                                        // Brand
+                                        command.Parameters.Add("brand", SqlDbType.NVarChar).Value = "FY";
+                                        // File Name
+                                        command.Parameters.Add("file_name", SqlDbType.NVarChar).Value = _fy_filename;
+
+                                        command.ExecuteNonQuery();
+                                    }
+                                }
+                            }
+
+                            button_fy_proceed.Text = "PROCEED";
+                            button_fy_proceed.Enabled = true;
+                            label_fy_locatefolder.Enabled = true;
+
+                            if (File.Exists(_fy_folder_path_result))
+                            {
+                                File.Delete(_fy_folder_path_result);
+                            }
+                        }
+
+                        transaction.Commit();
+                    }
+
+                    conn.Close();
+                }
+            }
+            catch (Exception err)
+            {
                 MessageBox.Show(err.ToString());
                 button_fy_proceed.Text = "PROCEED";
                 button_fy_proceed.Enabled = true;

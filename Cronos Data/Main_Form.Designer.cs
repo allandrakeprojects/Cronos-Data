@@ -121,8 +121,8 @@
             this.button4 = new System.Windows.Forms.Button();
             this.timer_fy_start_button = new System.Windows.Forms.Timer(this.components);
             this.label_fy_count = new System.Windows.Forms.Label();
-            this.sPanel_separator = new Cronos_Data.SPanel();
             this.label_fy_insert = new System.Windows.Forms.Label();
+            this.sPanel_separator = new Cronos_Data.SPanel();
             this.panel_header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_minimize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_close)).BeginInit();
@@ -171,6 +171,7 @@
             this.button5.TabIndex = 34;
             this.button5.Text = "button5";
             this.button5.UseVisualStyleBackColor = true;
+            this.button5.Visible = false;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // label4
@@ -392,6 +393,7 @@
             // panel_fy_status
             // 
             this.panel_fy_status.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.panel_fy_status.Controls.Add(this.label_fy_insert);
             this.panel_fy_status.Controls.Add(this.button_fy_proceed);
             this.panel_fy_status.Controls.Add(this.label_fy_locatefolder);
             this.panel_fy_status.Controls.Add(this.panel_fy_datetime);
@@ -1112,6 +1114,7 @@
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(100, 20);
             this.textBox2.TabIndex = 31;
+            this.textBox2.Visible = false;
             // 
             // button4
             // 
@@ -1141,6 +1144,15 @@
             this.label_fy_count.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.label_fy_count.Visible = false;
             // 
+            // label_fy_insert
+            // 
+            this.label_fy_insert.Location = new System.Drawing.Point(382, 207);
+            this.label_fy_insert.Name = "label_fy_insert";
+            this.label_fy_insert.Size = new System.Drawing.Size(125, 23);
+            this.label_fy_insert.TabIndex = 34;
+            this.label_fy_insert.Text = "-";
+            this.label_fy_insert.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // sPanel_separator
             // 
             this.sPanel_separator.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
@@ -1152,22 +1164,12 @@
             this.sPanel_separator.Size = new System.Drawing.Size(44, 446);
             this.sPanel_separator.TabIndex = 1;
             // 
-            // label_fy_insert
-            // 
-            this.label_fy_insert.AutoSize = true;
-            this.label_fy_insert.Location = new System.Drawing.Point(357, 55);
-            this.label_fy_insert.Name = "label_fy_insert";
-            this.label_fy_insert.Size = new System.Drawing.Size(35, 13);
-            this.label_fy_insert.TabIndex = 34;
-            this.label_fy_insert.Text = "label5";
-            // 
             // Main_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1140, 525);
-            this.Controls.Add(this.label_fy_insert);
             this.Controls.Add(this.button_fy_start);
             this.Controls.Add(this.label_fy_count);
             this.Controls.Add(this.button_fy_stop);
