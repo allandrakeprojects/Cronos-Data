@@ -4353,7 +4353,7 @@ namespace Cronos_Data
 
                                 // Database Bet Record FY
                                 // asd comment
-                                //InsertBetRecord_FY(_fy_folder_path_result);
+                                InsertBetRecord_FY(_fy_folder_path_result);
                                 label_fy_insert.Visible = false;
                             }
                         }
@@ -5425,7 +5425,7 @@ namespace Cronos_Data
 
                     // Database Bet Record FY
                     // asd comment
-                    //InsertBetRecord_FY(_fy_folder_path_result);
+                    InsertBetRecord_FY(_fy_folder_path_result);
                     display_count_fy = 0;
                 }
 
