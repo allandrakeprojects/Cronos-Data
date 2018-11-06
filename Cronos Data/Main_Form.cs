@@ -1294,6 +1294,7 @@ namespace Cronos_Data
                 label_fy_status.Text = "status: done --- MEMBER LIST";
                 panel_fy_datetime.Location = new Point(5, 226);
 
+
                 // Database Member List FY
                 string path = Path.Combine(Path.GetTempPath(), "FY Registration.txt");
                 InsertMemberList_FY(path);
@@ -3602,82 +3603,6 @@ namespace Cronos_Data
                                     break;
                                 }
                             }
-                            
-                            //string memberlist_temp = Path.Combine(Path.GetTempPath(), "FY Registration VIP.txt");
-                            //if (File.Exists(memberlist_temp))
-                            //{
-                            //    using (StreamReader sr = new StreamReader(memberlist_temp))
-                            //    {
-                            //        string s = String.Empty;
-                            //        while ((s = sr.ReadLine()) != null)
-                            //        {
-                            //            int memberlist_i = 0;
-                            //            string[] results = s.Split("*|*");
-                            //            foreach (string result in results)
-                            //            {
-                            //                memberlist_i++;
-
-                            //                if (memberlist_i == 1)
-                            //                {
-                            //                    // Username
-                            //                    if (player_name.ToString() == result)
-                            //                    {
-                            //                        int memberlist_i_inner = 0;
-                            //                        string[] results_inner = s.Split("*|*");
-                            //                        foreach (string result_inner in results_inner)
-                            //                        {
-                            //                            memberlist_i_inner++;
-                            //                            if (memberlist_i_inner == 2)
-                            //                            {
-                            //                                // VIP
-                            //                                vip = result_inner;
-                            //                                break;
-                            //                            }
-                            //                        }
-                            //                    }
-                            //                }
-                            //            }
-                            //        }
-                            //    }
-                            //}
-
-                            //string memberlist_temp = Path.Combine(Path.GetTempPath(), "FY Registration.txt");
-                            //if (File.Exists(memberlist_temp))
-                            //{
-                            //    using (StreamReader sr = new StreamReader(memberlist_temp))
-                            //    {
-                            //        string s = String.Empty;
-                            //        while ((s = sr.ReadLine()) != null)
-                            //        {
-                            //            int memberlist_i = 0;
-                            //            string[] results = s.Split("*|*");
-                            //            foreach (string result in results)
-                            //            {
-                            //                memberlist_i++;
-
-                            //                if (memberlist_i == 1)
-                            //                {
-                            //                    // Username
-                            //                    if (player_name.ToString() == result)
-                            //                    {
-                            //                        int memberlist_i_inner = 0;
-                            //                        string[] results_inner = s.Split("*|*");
-                            //                        foreach (string result_inner in results_inner)
-                            //                        {
-                            //                            memberlist_i_inner++;
-                            //                            if (memberlist_i_inner == 5)
-                            //                            {
-                            //                                // VIP
-                            //                                vip = result_inner;
-                            //                                break;
-                            //                            }
-                            //                        }
-                            //                    }
-                            //                }
-                            //            }
-                            //        }
-                            //    }
-                            //}
 
                             if (_fy_get_ii == 1)
                             {
@@ -5041,7 +4966,6 @@ namespace Cronos_Data
             {
                 //label_fy_finish_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
                 //timer_fy.Stop();
-                pictureBox_fy_loader.Visible = false;
                 button_fy_proceed.Visible = true;
                 label_fy_locatefolder.Visible = true;
                 label_fy_status.ForeColor = Color.FromArgb(34, 139, 34);
@@ -5300,13 +5224,9 @@ namespace Cronos_Data
                         else
                         {
                             // Manual Withdrawal Record
-                            label_fy_finish_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
-                            timer_fy.Stop();
-
                             label_fy_status.Text = "status: done --- M-WITHDRAWAL RECORD";
                             _isThirdRequest_fy = false;
                             _isSecondRequestFinish_fy = false;
-                            panel_fy_datetime.Location = new Point(5, 226);
 
                             // asd textBox2.Text = _fy_folder_path_result;
 
@@ -5403,11 +5323,8 @@ namespace Cronos_Data
                     else
                     {
                         // Generated Bonus Record
-                        label_fy_finish_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
-                        timer_fy.Stop();
                         label_fy_status.Text = "status: done --- G-BONUS RECORD";
                         _isSecondRequest_fy = false;
-                        panel_fy_datetime.Location = new Point(5, 226);
 
                         // Database Bonus Record FY
                         // asd comment
@@ -5418,10 +5335,7 @@ namespace Cronos_Data
                 else if (selected_index == 2)
                 {
                     // Bet Record
-                    label_fy_finish_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
-                    timer_fy.Stop();
                     label_fy_status.Text = "status: done --- BET RECORD";
-                    panel_fy_datetime.Location = new Point(5, 226);
 
                     // Database Bet Record FY
                     // asd comment
@@ -7278,6 +7192,11 @@ namespace Cronos_Data
                                 }
                             }
 
+                            label_fy_finish_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
+                            timer_fy.Stop();
+                            panel_fy_datetime.Location = new Point(5, 226);
+                            pictureBox_fy_loader.Visible = false;
+
                             button_fy_proceed.Text = "PROCEED";
                             button_fy_proceed.Enabled = true;
                             label_fy_locatefolder.Enabled = true;
@@ -7402,6 +7321,11 @@ namespace Cronos_Data
                                     }
                                 }
                             }
+
+                            label_fy_finish_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
+                            timer_fy.Stop();
+                            panel_fy_datetime.Location = new Point(5, 226);
+                            pictureBox_fy_loader.Visible = false;
 
                             button_fy_proceed.Text = "PROCEED";
                             button_fy_proceed.Enabled = true;
@@ -7536,6 +7460,11 @@ namespace Cronos_Data
                                     }
                                 }
                             }
+
+                            label_fy_finish_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
+                            timer_fy.Stop();
+                            panel_fy_datetime.Location = new Point(5, 226);
+                            pictureBox_fy_loader.Visible = false;
 
                             button_fy_proceed.Text = "PROCEED";
                             button_fy_proceed.Enabled = true;
@@ -7693,6 +7622,11 @@ namespace Cronos_Data
                                     }
                                 }
                             }
+
+                            label_fy_finish_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
+                            timer_fy.Stop();
+                            panel_fy_datetime.Location = new Point(5, 226);
+                            pictureBox_fy_loader.Visible = false;
 
                             button_fy_proceed.Text = "PROCEED";
                             button_fy_proceed.Enabled = true;
