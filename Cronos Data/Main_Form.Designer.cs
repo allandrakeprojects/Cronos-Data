@@ -556,7 +556,7 @@
             // 
             // timer_fy_start
             // 
-            this.timer_fy_start.Interval = 10000;
+            this.timer_fy_start.Interval = 30000;
             this.timer_fy_start.Tick += new System.EventHandler(this.timer_fy_start_Tick);
             // 
             // button_filelocation
@@ -622,7 +622,7 @@
             // panel_landing
             // 
             this.panel_landing.Controls.Add(this.pictureBox_landing);
-            this.panel_landing.Location = new System.Drawing.Point(-4, 21);
+            this.panel_landing.Location = new System.Drawing.Point(3, 496);
             this.panel_landing.Name = "panel_landing";
             this.panel_landing.Size = new System.Drawing.Size(1148, 485);
             this.panel_landing.TabIndex = 31;
@@ -1056,7 +1056,6 @@
             this.button1.TabIndex = 35;
             this.button1.Text = "button1";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // sPanel_separator
