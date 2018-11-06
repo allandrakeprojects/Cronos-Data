@@ -208,79 +208,10 @@ namespace Cronos_Data
                 label_filelocation.Text = Properties.Settings.Default.filelocation;
 
                 // asd comment
-                GetMemberList_FY();
-                GetBonusCode_FY();
-                GetGamePlatform_FY();
+                //GetMemberList_FY();
+                //GetBonusCode_FY();
+                //GetGamePlatform_FY();
                 GetPaymentType_FY();
-
-
-
-                //var path_payment_code_parent = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "FY Payment Code.xlsx");
-                //string path_payment_code = label_filelocation.Text + "\\Cronos Data\\FY\\FY Payment Code.xlsx";
-                //var path_bonus_code_parent = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "FY Bonus Code.xlsx");
-                //string path_bonus_code = label_filelocation.Text + "\\Cronos Data\\FY\\FY Bonus Code.xlsx";
-                //var path_cn_ea_parent = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "FY Registration CN EA.txt");
-                //string path_cn_ea = Path.Combine(Path.GetTempPath(), "FY Registration CN EA.txt");
-                //if (!File.Exists(path_payment_code))
-                //{
-                //    if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data"))
-                //    {
-                //        Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data");
-                //    }
-
-                //    if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY"))
-                //    {
-                //        Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY");
-                //    }
-
-                //    File.Copy(path_payment_code_parent, path_payment_code);
-                //}
-
-                //if (!File.Exists(path_bonus_code))
-                //{
-                //    if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data"))
-                //    {
-                //        Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data");
-                //    }
-
-                //    if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY"))
-                //    {
-                //        Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY");
-                //    }
-
-                //    File.Copy(path_bonus_code_parent, path_bonus_code);
-                //}
-
-                ////if (!File.Exists(path_cn_ea))
-                ////{
-                ////    File.Copy(path_cn_ea_parent, path_cn_ea);
-                ////}
-
-                //string bank_account_fy = label_filelocation.Text + "\\Cronos Data\\FY\\FY Payment Code.xlsx";
-                //string bank_account_fy_temp = Path.Combine(Path.GetTempPath(), "FY Payment Type Code.txt");
-
-                //Excel.Application app = new Excel.Application();
-                //Excel.Workbook wb = app.Workbooks.Open(bank_account_fy, Type.Missing, true);
-                //wb.Application.DisplayAlerts = false;
-                //wb.SaveAs(bank_account_fy_temp, Excel.XlFileFormat.xlUnicodeText);
-                //wb.Close();
-                //app.Quit();
-                //app.Application.DisplayAlerts = true;
-                //Marshal.ReleaseComObject(wb);
-                //Marshal.ReleaseComObject(app);
-
-                //string bonus_code_fy = label_filelocation.Text + "\\Cronos Data\\FY\\FY Bonus Code.xlsx";
-                //string bonus_code_fy_temp = Path.Combine(Path.GetTempPath(), "FY Bonus Code.txt");
-
-                //Excel.Application app_bonus = new Excel.Application();
-                //Excel.Workbook wb_bonus = app_bonus.Workbooks.Open(bonus_code_fy, Type.Missing, true);
-                //wb_bonus.Application.DisplayAlerts = false;
-                //wb_bonus.SaveAs(bonus_code_fy_temp, Excel.XlFileFormat.xlUnicodeText);
-                //wb_bonus.Close();
-                //app_bonus.Quit();
-                //app_bonus.Application.DisplayAlerts = true;
-                //Marshal.ReleaseComObject(app_bonus);
-                //Marshal.ReleaseComObject(app_bonus);
             }
         }
 
@@ -8043,28 +7974,27 @@ namespace Cronos_Data
             //string asd = "bb35712<><>黄勇强<><>8/28/2018 12:00:00 AM<><>8/1/2018 12:00:00 AM<><>VIP 5<><>Normal<><>8618107843123<><>teeryook@sina.com<><>8/28/2018 12:00:00 AM<><>8/1/2018 12:00:00 AM<><>8/28/2018 12:00:00 AM<><>9/23/2018 10:58:51 AM<><>125.91.96.178<><>salesph<><><><><><>8/28/2018 10:24:03 PM<><>FY<><><><>";
             //string asdasd = Regex.Match(asd.ToString(), "(.*?)<><>(.*?)<><>(.*?)<><>(.*?)<><>(.*?)<><>").Groups[5].Value;
             //MessageBox.Show(asdasd);
+            
+            //List<String> memberlist = new List<String>();
+            //memberlist.Add("bb35712");
+            //memberlist.Add("VIP 5");
+            //memberlist.Add("lcy2547");
+            //memberlist.Add("New Member *");
+            //memberlist.Add("qiutian123");
+            //memberlist.Add("VIP 100000000");
+            //string vip = "";
 
+            //MessageBox.Show(memberlist.Count.ToString());
+            //for (int i = 0; i < memberlist.Count; i+=2)
+            //{
+            //    if (memberlist[i] == "qiutian123")
+            //    {
+            //        vip = memberlist[i + 1];
+            //        break;
+            //    }
+            //}
 
-            List<String> memberlist = new List<String>();
-            memberlist.Add("bb35712");
-            memberlist.Add("VIP 5");
-            memberlist.Add("lcy2547");
-            memberlist.Add("New Member *");
-            memberlist.Add("qiutian123");
-            memberlist.Add("VIP 100000000");
-            string vip = "";
-
-            MessageBox.Show(memberlist.Count.ToString());
-            for (int i = 0; i < memberlist.Count; i+=2)
-            {
-                if (memberlist[i] == "qiutian123")
-                {
-                    vip = memberlist[i + 1];
-                    break;
-                }
-            }
-
-            MessageBox.Show(vip);
+            //MessageBox.Show(vip);
         }
     }
 }
