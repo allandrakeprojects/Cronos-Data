@@ -114,6 +114,7 @@
             this.label_getdatacount_fy = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.sPanel_separator = new Cronos_Data.SPanel();
+            this.label1 = new System.Windows.Forms.Label();
             this.panel_header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_minimize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_close)).BeginInit();
@@ -451,8 +452,7 @@
             this.comboBox_fy_list.Items.AddRange(new object[] {
             "Payment Report",
             "Bonus Report",
-            "Bet Record",
-            "Turnover Report"});
+            "Bet Record"});
             this.comboBox_fy_list.Location = new System.Drawing.Point(69, 47);
             this.comboBox_fy_list.Name = "comboBox_fy_list";
             this.comboBox_fy_list.Size = new System.Drawing.Size(133, 23);
@@ -1069,12 +1069,22 @@
             this.sPanel_separator.Size = new System.Drawing.Size(44, 446);
             this.sPanel_separator.TabIndex = 1;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(1003, 68);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.TabIndex = 36;
+            this.label1.Text = "label1";
+            // 
             // Main_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1140, 525);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.panel_landing);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.button_filelocation);
@@ -1122,6 +1132,7 @@
             this.panel_tf_filter.ResumeLayout(false);
             this.panel_tf_filter.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -1211,5 +1222,6 @@
         private System.Windows.Forms.Label label_fy_total_records_1;
         private System.Windows.Forms.Label label_fy_status;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label label1;
     }
 }
