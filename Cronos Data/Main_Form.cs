@@ -1,4 +1,5 @@
 ﻿using ChoETL;
+using Microsoft.VisualBasic.FileIO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -3611,7 +3612,7 @@ namespace Cronos_Data
                             _fy_csv.AppendLine(newLine);
                         }
 
-                        if ((_fy_get_ii) == 1000)
+                        if ((_fy_get_ii) == _limit_fy)
                         {
                             // status
                             label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
@@ -4272,7 +4273,7 @@ namespace Cronos_Data
 
 
                                 // asdasdasd
-                                SaveAsTurnOver_FY(replace);
+                                //SaveAsTurnOver_FY(replace);
 
 
                                 // Database Bet Record FY
@@ -4309,82 +4310,7 @@ namespace Cronos_Data
             }
         }
 
-        private void SaveAsTurnOver_FY(string count_get)
-        {
-            // Turnover Record
-            if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Turnover Record"))
-            {
-                Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Turnover Record");
-            }
-
-            string _fy_filename = "FY_TurnoverRecord_" + _fy_current_datetime.ToString() + "_" + count_get + ".xlsx";
-            string _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Turnover Record\\FY_TurnoverRecord_" + _fy_current_datetime.ToString() + "_" + count_get + ".txt";
-            string _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Turnover Record\\FY_TurnoverRecord_" + _fy_current_datetime.ToString() + "_" + count_get + ".xlsx";
-            string _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Turnover Record\\";
-
-            if (File.Exists(_fy_folder_path_result))
-            {
-                File.Delete(_fy_folder_path_result);
-            }
-
-            if (File.Exists(_fy_folder_path_result_xlsx))
-            {
-                File.Delete(_fy_folder_path_result_xlsx);
-            }
-
-            string path = Path.Combine(Path.GetTempPath(), "FY Turnover.txt");
-
-            Excel.Application app = new Excel.Application();
-            Excel.Workbook wb = app.Workbooks.Open(path, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-            Excel.Worksheet worksheet = wb.ActiveSheet;
-            worksheet.Activate();
-            worksheet.Application.ActiveWindow.SplitRow = 1;
-            worksheet.Application.ActiveWindow.FreezePanes = true;
-            Excel.Range firstRow = (Excel.Range)worksheet.Rows[1];
-            firstRow.AutoFilter(1,
-                                Type.Missing,
-                                Excel.XlAutoFilterOperator.xlAnd,
-                                Type.Missing,
-                                true);
-            //worksheet.Columns[3].Replace(" ", "");
-            //worksheet.Columns[3].NumberFormat = "@";
-            //worksheet.Columns[2].NumberFormat = "MMM-yy";
-            //worksheet.Columns[4].NumberFormat = "hh:mm:ss AM/PM";
-            //worksheet.Columns[5].NumberFormat = "hh:mm:ss AM/PM";
-            Excel.Range usedRange = worksheet.UsedRange;
-            Excel.Range rows = usedRange.Rows;
-            int count = 0;
-            foreach (Excel.Range row in rows)
-            {
-                if (count == 0)
-                {
-                    Excel.Range firstCell = row.Cells[1];
-
-                    string firstCellValue = firstCell.Value as String;
-
-                    if (!string.IsNullOrEmpty(firstCellValue))
-                    {
-                        row.Interior.Color = Color.FromArgb(222, 30, 112);
-                        row.Font.Color = Color.FromArgb(255, 255, 255);
-                        row.Font.Bold = true;
-                        row.Font.Size = 12;
-                    }
-
-                    break;
-                }
-
-                count++;
-            }
-            int i_excel;
-            for (i_excel = 1; i_excel <= 20; i_excel++)
-            {
-                worksheet.Columns[i_excel].ColumnWidth = 20;
-            }
-            wb.SaveAs(_fy_folder_path_result_xlsx, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-            wb.Close();
-            app.Quit();
-            Marshal.ReleaseComObject(app);
-        }
+        // saveas asd
 
 
 
@@ -8112,11 +8038,11 @@ namespace Cronos_Data
 
         bool deposit_fy = false;
         String[] filecontent_deposit_fy = null;
-        int count_fy = 0;
         private void Turnover_FY(string player_name, string stake_amount_get, string win_amount_get, string company_win_loss_get, string valid_bet_get, string date_get, string month_get, string vip_get, string gameplatform_get)
         {
             if (!deposit_fy)
             {
+                MessageBox.Show("ghgh");
                 filecontent_deposit_fy = File.ReadAllLines(Path.Combine(Path.GetTempPath(), "FY Registration Deposit.txt"));
                 deposit_fy = true;
             }
@@ -8244,22 +8170,21 @@ namespace Cronos_Data
             foreach (String dataLine_turnover in fileContent_turnover_fy)
             {
                 //Application.DoEvents();
-                count_fy++;
 
-                String[] columns_turnover = dataLine_turnover.Split(",");
+                String[] columns_turnover = dataLine_turnover.Split("*|*");
 
-                if (columns_turnover[0] == "\"" + player_name + "\"")
+                if (columns_turnover[0] == player_name)
                 {
                     string text = File.ReadAllText(path_turnover);
 
-                    int bet_count = Convert.ToInt32(columns_turnover[1].Replace("\"", "")) + 1;
-                    decimal stake_amount = Convert.ToDecimal(stake_amount_get) + Convert.ToDecimal(columns_turnover[2].Replace("\"", ""));
-                    decimal win_amount = Convert.ToDecimal(win_amount_get) + Convert.ToDecimal(columns_turnover[3].Replace("\"", ""));
-                    decimal company_win_loss = Convert.ToDecimal(company_win_loss_get) + Convert.ToDecimal(columns_turnover[4].Replace("\"", ""));
-                    decimal valid_bet = Convert.ToDecimal(valid_bet_get) + Convert.ToDecimal(columns_turnover[5].Replace("\"", ""));
+                    int bet_count = Convert.ToInt32(columns_turnover[1]) + 1;
+                    decimal stake_amount = Convert.ToDecimal(stake_amount_get) + Convert.ToDecimal(columns_turnover[2]);
+                    decimal win_amount = Convert.ToDecimal(win_amount_get) + Convert.ToDecimal(columns_turnover[3]);
+                    decimal company_win_loss = Convert.ToDecimal(company_win_loss_get) + Convert.ToDecimal(columns_turnover[4]);
+                    decimal valid_bet = Convert.ToDecimal(valid_bet_get) + Convert.ToDecimal(columns_turnover[5]);
 
-                    string updated_text = columns_turnover[0] + "," + "\"" + bet_count + "\"" + "," + "\"" + stake_amount + "\"" + "," + "\"" + win_amount + "\"" + "," + company_win_loss + "\"" + "," + "\"" + valid_bet + "\"" + "," + columns_turnover[6] + "," + columns_turnover[7] + "," + columns_turnover[8] + "," + columns_turnover[9] + "," + columns_turnover[10] + "," + columns_turnover[11] + "," + columns_turnover[12] + "," + columns_turnover[13] + "," + columns_turnover[14] + "," + columns_turnover[15];
-                    text = text.Replace(columns_turnover[0] + "," + columns_turnover[1] + "," + columns_turnover[2] + "," + columns_turnover[3] + "," + columns_turnover[4] + "," + columns_turnover[5] + "," + columns_turnover[6] + "," + columns_turnover[7] + "," + columns_turnover[8] + "," + columns_turnover[9] + "," + columns_turnover[10] + "," + columns_turnover[11] + "," + columns_turnover[12] + "," + columns_turnover[13] + "," + columns_turnover[14] + "," + columns_turnover[15], updated_text);
+                    string updated_text = columns_turnover[0] + "*|*" + bet_count + "*|*" + stake_amount + "*|*" + win_amount + "*|*" + company_win_loss + "*|*" + valid_bet + "*|*" + columns_turnover[6] + "*|*" + columns_turnover[7] + "*|*" + columns_turnover[8] + "*|*" + columns_turnover[9] + "*|*" + columns_turnover[10] + "*|*" + columns_turnover[11] + "*|*" + columns_turnover[12] + "*|*" + columns_turnover[13] + "*|*" + columns_turnover[14] + "*|*" + columns_turnover[15];
+                    text = text.Replace(columns_turnover[0] + "*|*" + columns_turnover[1] + "*|*" + columns_turnover[2] + "*|*" + columns_turnover[3] + "*|*" + columns_turnover[4] + "*|*" + columns_turnover[5] + "*|*" + columns_turnover[6] + "*|*" + columns_turnover[7] + "*|*" + columns_turnover[8] + "*|*" + columns_turnover[9] + "*|*" + columns_turnover[10] + "*|*" + columns_turnover[11] + "*|*" + columns_turnover[12] + "*|*" + columns_turnover[13] + "*|*" + columns_turnover[14] + "*|*" + columns_turnover[15], updated_text);
                     File.WriteAllText(path_turnover, text);
                     isFind = true;
                     break;
@@ -8267,14 +8192,6 @@ namespace Cronos_Data
                 else
                 {
                     isFind = false;
-                }
-
-                using (StreamWriter file = new StreamWriter(path_turnover, true, Encoding.UTF8))
-                {
-                    if (count_fy == 1)
-                    {
-                        file.WriteLine("\"" + "Player Name" + "\"" + "," + "\"" + "Bet Counts" + "\"" + "," + "\"" + "Stake Amount" + "\"" + "," + "\"" + "Win Amount" + "\"" + "," + "\"" + "Company Win/Loss" + "\"" + "," + "\"" + "Valid Bet" + "\"" + "," + "\"" + "Date" + "\"" + "," + "\"" + "Month" + "\"" + "," + "\"" + "VIP" + "\"" + "," + "\"" + "Category" + "\"" + "," + "\"" + "Platform" + "\"" + "," + "\"" + "First Deposit Date" + "\"" + "," + "\"" + "Retained" + "\"" + "," + "\"" + "New Based On Reg" + "\"" + "," + "\"" + "New Based On Reg" + "\"" + "," + "\"" + "Real Player" + "\"");
-                    }
                 }
             }
             
@@ -8289,7 +8206,7 @@ namespace Cronos_Data
                 {
                     //Application.DoEvents();
 
-                    String[] columns_gameplatform = dataLine_gameplatform.Split(",");
+                    String[] columns_gameplatform = dataLine_gameplatform.Split("*|*");
 
                     if (columns_gameplatform[0] == gameplatform_get)
                     {
@@ -8301,149 +8218,109 @@ namespace Cronos_Data
                 
                 using (StreamWriter file = new StreamWriter(path_turnover, true, Encoding.UTF8))
                 {
-                    file.WriteLine("\"" + player_name + "\"" + "," + "\"" + "1" + "\"" + "," + "\"" + stake_amount_get + "\"" + "," + "\"" + win_amount_get + "\"" + "," + "\"" + company_win_loss_get + "\"" + "," + "\"" + valid_bet_get + "\"" + "," + "\"" + date_get + "\"" + "," + "\"" + month_get + "\"" + "," + "\"" + vip_get + "\"" + "," + "\"" + category + "\"" + "," + "\"" + platform + "\"" + "," + "\"" + fdd + "\"" + "," + "\"" + retained + "\"" + "," + "\"" + new_based_on_reg + "\"" + "," + "\"" + new_based_on_dep + "\"" + "," + "\"" + real_player + "\"");
+                    file.WriteLine(player_name + "*|*" + "1" + "*|*" + stake_amount_get + "*|*" + win_amount_get + "*|*" + company_win_loss_get + "*|*" + valid_bet_get + "*|*" + date_get + "*|*" + month_get + "*|*" + vip_get + "*|*" + category + "*|*" + platform + "*|*" + fdd + "*|*" + retained + "*|*" + new_based_on_reg + "*|*" + new_based_on_dep + "*|*" + real_player);
                 }
             }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            String[] fileContent = File.ReadAllLines("C:\\Users\\adulay\\Desktop\\Cronos Data\\FY\\2018-11-06\\Bet Record\\FY_BetRecord_2018-11-06_01.txt");
-            string path_turnover = Path.Combine(Path.GetTempPath(), "FY Turnover.txt");
-            if (File.Exists(path_turnover))
-            {
-                File.Delete(path_turnover);
-            }
+            //String[] fileContent = File.ReadAllLines("C:\\Users\\adulay\\Desktop\\Cronos Data\\FY\\2018-11-06\\Bet Record\\FY_BetRecord_2018-11-06_01.txt");
+            //string path_turnover = Path.Combine(Path.GetTempPath(), "FY Turnover.txt");
+            //if (File.Exists(path_turnover))
+            //{
+            //    File.Delete(path_turnover);
+            //}
 
-            int count = 0;
-            foreach (String dataLine in fileContent)
-            {
-                Application.DoEvents();
-                label1.Text = count.ToString();
+            //int count = 0;
+            //foreach (String dataLine in fileContent)
+            //{
+            //    Application.DoEvents();
+            //    label1.Text = count.ToString();
 
-                String[] columns = dataLine.Split("\",\"");
-                count++;
+            //    String[] columns = dataLine.Split("\",\"");
+            //    count++;
 
-                if (count != 1)
-                {
-                    if (count == 2)
-                    {
-                        //MessageBox.Show("1");
-                        if (dataLine.Length > 1)
-                        {
-                            
-                            using (StreamWriter file = new StreamWriter(path_turnover, true, Encoding.UTF8))
-                            {
-                                file.WriteLine(columns[4] + "*|*" + "1" + "*|*" + columns[9] + "*|*" + columns[10] + "*|*" + columns[11] + "*|*" + columns[12]);
-                            }
-                            //MessageBox.Show(columns[4]);
-                            //MessageBox.Show(columns[9]);
-                            //MessageBox.Show(columns[10]);
-                            //MessageBox.Show(columns[11]);
-                            //MessageBox.Show(columns[12]);
-                        }
-                    }
-                    else
-                    {
-                        bool isFind = false;
-                        //MessageBox.Show("2");
-                        //MessageBox.Show(dataLine);
-                        String[] fileContent_turnover = File.ReadAllLines(Path.Combine(Path.GetTempPath(), "FY Turnover.txt"));
-                        foreach (String dataLine_turnover in fileContent_turnover)
-                        {
-                            Application.DoEvents();
+            //    if (count != 1)
+            //    {
+            //        if (count == 2)
+            //        {
+            //            //MessageBox.Show("1");
+            //            if (dataLine.Length > 1)
+            //            {
 
-                            String[] columns_turnover = dataLine_turnover.Split("*|*");
+            //                using (StreamWriter file = new StreamWriter(path_turnover, true, Encoding.UTF8))
+            //                {
+            //                    file.WriteLine(columns[4] + "*|*" + "1" + "*|*" + columns[9] + "*|*" + columns[10] + "*|*" + columns[11] + "*|*" + columns[12]);
+            //                }
+            //                //MessageBox.Show(columns[4]);
+            //                //MessageBox.Show(columns[9]);
+            //                //MessageBox.Show(columns[10]);
+            //                //MessageBox.Show(columns[11]);
+            //                //MessageBox.Show(columns[12]);
+            //            }
+            //        }
+            //        else
+            //        {
+            //            bool isFind = false;
+            //            //MessageBox.Show("2");
+            //            //MessageBox.Show(dataLine);
+            //            String[] fileContent_turnover = File.ReadAllLines(Path.Combine(Path.GetTempPath(), "FY Turnover.txt"));
+            //            foreach (String dataLine_turnover in fileContent_turnover)
+            //            {
+            //                Application.DoEvents();
 
-                            if (columns_turnover[0] == columns[4])
-                            {
-                                string text = File.ReadAllText(path_turnover);
+            //                String[] columns_turnover = dataLine_turnover.Split("*|*");
 
-                                int bet_count = Convert.ToInt32(columns_turnover[1]) + 1;
-                                decimal stake_amount = Convert.ToDecimal(columns[9]) + Convert.ToDecimal(columns_turnover[2]);
-                                decimal win_amount = Convert.ToDecimal(columns[10]) + Convert.ToDecimal(columns_turnover[3]);
-                                decimal company_win_loss = Convert.ToDecimal(columns[11]) + Convert.ToDecimal(columns_turnover[4]);
-                                decimal valid_bet = Convert.ToDecimal(columns[12]) + Convert.ToDecimal(columns_turnover[5]);
+            //                if (columns_turnover[0] == columns[4])
+            //                {
+            //                    string text = File.ReadAllText(path_turnover);
 
-                                string updated_text = columns_turnover[0] + "*|*" + bet_count + "*|*" + stake_amount + "*|*" + win_amount + "*|*" + company_win_loss + "*|*" + valid_bet;
-                                text = text.Replace(columns_turnover[0] + "*|*" + columns_turnover[1] + "*|*" + columns_turnover[2] + "*|*" + columns_turnover[3] + "*|*" + columns_turnover[4] + "*|*" + columns_turnover[5], updated_text);
-                                File.WriteAllText(path_turnover, text);
-                                //MessageBox.Show(columns_turnover[0]);
-                                //MessageBox.Show(columns[4]);
-                                //MessageBox.Show("detect " + columns[4]);
-                                //MessageBox.Show(columns_turnover[1]);
-                                //MessageBox.Show(columns_turnover[2]);
-                                //MessageBox.Show(columns_turnover[3]);
-                                //MessageBox.Show(columns_turnover[4]);
-                                //MessageBox.Show(columns_turnover[5]);
-                                isFind = true;
-                                break;
-                            }
-                            else
-                            {
-                                isFind = false;
-                            }
+            //                    int bet_count = Convert.ToInt32(columns_turnover[1]) + 1;
+            //                    decimal stake_amount = Convert.ToDecimal(columns[9]) + Convert.ToDecimal(columns_turnover[2]);
+            //                    decimal win_amount = Convert.ToDecimal(columns[10]) + Convert.ToDecimal(columns_turnover[3]);
+            //                    decimal company_win_loss = Convert.ToDecimal(columns[11]) + Convert.ToDecimal(columns_turnover[4]);
+            //                    decimal valid_bet = Convert.ToDecimal(columns[12]) + Convert.ToDecimal(columns_turnover[5]);
 
-                            //MessageBox.Show(columns_turnover[0]);
-                            //MessageBox.Show(columns_turnover[1]);
-                            //MessageBox.Show(columns_turnover[2]);
-                            //MessageBox.Show(columns_turnover[3]);
-                        }
+            //                    string updated_text = columns_turnover[0] + "*|*" + bet_count + "*|*" + stake_amount + "*|*" + win_amount + "*|*" + company_win_loss + "*|*" + valid_bet;
+            //                    text = text.Replace(columns_turnover[0] + "*|*" + columns_turnover[1] + "*|*" + columns_turnover[2] + "*|*" + columns_turnover[3] + "*|*" + columns_turnover[4] + "*|*" + columns_turnover[5], updated_text);
+            //                    File.WriteAllText(path_turnover, text);
+            //                    //MessageBox.Show(columns_turnover[0]);
+            //                    //MessageBox.Show(columns[4]);
+            //                    //MessageBox.Show("detect " + columns[4]);
+            //                    //MessageBox.Show(columns_turnover[1]);
+            //                    //MessageBox.Show(columns_turnover[2]);
+            //                    //MessageBox.Show(columns_turnover[3]);
+            //                    //MessageBox.Show(columns_turnover[4]);
+            //                    //MessageBox.Show(columns_turnover[5]);
+            //                    isFind = true;
+            //                    break;
+            //                }
+            //                else
+            //                {
+            //                    isFind = false;
+            //                }
 
-                        //MessageBox.Show("ghghghg");
+            //                //MessageBox.Show(columns_turnover[0]);
+            //                //MessageBox.Show(columns_turnover[1]);
+            //                //MessageBox.Show(columns_turnover[2]);
+            //                //MessageBox.Show(columns_turnover[3]);
+            //            }
 
-                        if (!isFind)
-                        {
-                            using (StreamWriter file = new StreamWriter(path_turnover, true, Encoding.UTF8))
-                            {
-                                file.WriteLine(columns[4] + "*|*" + "1" + "*|*" + columns[9] + "*|*" + columns[10] + "*|*" + columns[11] + "*|*" + columns[12]);
-                            }
-                        }
-                    }
-                }
-            }
+            //            //MessageBox.Show("ghghghg");
 
-            MessageBox.Show("done");
+            //            if (!isFind)
+            //            {
+            //                using (StreamWriter file = new StreamWriter(path_turnover, true, Encoding.UTF8))
+            //                {
+            //                    file.WriteLine(columns[4] + "*|*" + "1" + "*|*" + columns[9] + "*|*" + columns[10] + "*|*" + columns[11] + "*|*" + columns[12]);
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            //MessageBox.Show("done");
 
 
             ////FY1801RB3SL03515
@@ -8623,6 +8500,68 @@ namespace Cronos_Data
             //}
 
             //MessageBox.Show(vip);
+
+
+            string csv_file_path = @"C:\Users\adulay\Desktop\Cronos Data\FY\2018-11-07\Bet Record\FY_BetRecord_2018-11-06_01.txt";
+            DataTable csvData = GetDataTabletFromCSVFile(csv_file_path);
+            InsertDataIntoSQLServerUsingSQLBulkCopy(csvData);
+            MessageBox.Show(csvData.Rows.Count.ToString());
+            //Console.WriteLine("Rows count:" + csvData.Rows.Count);
+        }
+
+        private static DataTable GetDataTabletFromCSVFile(string csv_file_path)
+        {
+            DataTable csvData = new DataTable();
+            try
+            {
+                using (TextFieldParser csvReader = new TextFieldParser(csv_file_path))
+                {
+                    csvReader.SetDelimiters(new string[] { "," });
+                    csvReader.HasFieldsEnclosedInQuotes = true;
+                    string[] colFields = csvReader.ReadFields();
+                    foreach (string column in colFields)
+                    {
+                        DataColumn datecolumn = new DataColumn(column);
+                        datecolumn.AllowDBNull = true;
+                        csvData.Columns.Add(datecolumn);
+                    }
+                    while (!csvReader.EndOfData)
+                    {
+                        string[] fieldData = csvReader.ReadFields();
+                        //Making empty value as null
+                        for (int i = 0; i < fieldData.Length; i++)
+                        {
+                            if (fieldData[i] == "")
+                            {
+                                fieldData[i] = null;
+                            }
+                        }
+                        
+                        csvData.Rows.Add(fieldData);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+            return csvData;
+        }
+
+        static void InsertDataIntoSQLServerUsingSQLBulkCopy(DataTable csvFileData)
+        {
+            using (SqlConnection dbConnection = new SqlConnection("Data Source=192.168.10.252;User ID=sa;password=Test@123;Initial Catalog=testrain;Integrated Security=True;Trusted_Connection=false;"))
+            {
+                dbConnection.Open();
+                using (SqlBulkCopy s = new SqlBulkCopy(dbConnection))
+                {
+                    s.DestinationTableName = "[testrain].[dbo].[FY.Bet Record]";
+
+                    foreach (var column in csvFileData.Columns)
+                        s.ColumnMappings.Add(column.ToString(), column.ToString());
+
+                    s.WriteToServer(csvFileData);
+                }
+            }
         }
     }
 }

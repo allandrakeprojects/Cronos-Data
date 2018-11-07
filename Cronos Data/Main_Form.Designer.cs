@@ -452,7 +452,8 @@
             this.comboBox_fy_list.Items.AddRange(new object[] {
             "Payment Report",
             "Bonus Report",
-            "Bet Record"});
+            "Bet Record",
+            "Turnover Report"});
             this.comboBox_fy_list.Location = new System.Drawing.Point(69, 47);
             this.comboBox_fy_list.Name = "comboBox_fy_list";
             this.comboBox_fy_list.Size = new System.Drawing.Size(133, 23);
