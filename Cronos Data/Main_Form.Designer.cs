@@ -75,36 +75,6 @@
             this.pictureBox_landing = new System.Windows.Forms.PictureBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.panel_tf = new System.Windows.Forms.Panel();
-            this.button_tf_start = new System.Windows.Forms.Button();
-            this.panel_tf_status = new System.Windows.Forms.Panel();
-            this.button_tf_stop = new System.Windows.Forms.Button();
-            this.label_tf_insert = new System.Windows.Forms.Label();
-            this.button_tf_proceed = new System.Windows.Forms.Button();
-            this.label_tf_locatefolder = new System.Windows.Forms.Label();
-            this.panel_tf_datetime = new System.Windows.Forms.Panel();
-            this.label_tf_elapsed = new System.Windows.Forms.Label();
-            this.label_tf_elapsed_1 = new System.Windows.Forms.Label();
-            this.label_tf_start_datetime_1 = new System.Windows.Forms.Label();
-            this.label_tf_finish_datetime = new System.Windows.Forms.Label();
-            this.label_tf_finish_datetime_1 = new System.Windows.Forms.Label();
-            this.label_tf_start_datetime = new System.Windows.Forms.Label();
-            this.pictureBox_tf_loader = new System.Windows.Forms.PictureBox();
-            this.label_tf_currentrecord = new System.Windows.Forms.Label();
-            this.label_tf_inserting_count_1 = new System.Windows.Forms.Label();
-            this.label_tf_page_count = new System.Windows.Forms.Label();
-            this.label_tf_page_count_1 = new System.Windows.Forms.Label();
-            this.label_tf_inserting_count = new System.Windows.Forms.Label();
-            this.label_tf_total_records_1 = new System.Windows.Forms.Label();
-            this.label_tf_status = new System.Windows.Forms.Label();
-            this.label_title_tf = new System.Windows.Forms.Label();
-            this.webBrowser_tf = new System.Windows.Forms.WebBrowser();
-            this.panel_tf_filter = new System.Windows.Forms.Panel();
-            this.comboBox_tf = new System.Windows.Forms.ComboBox();
-            this.dateTimePicker_end_tf = new System.Windows.Forms.DateTimePicker();
-            this.dateTimePicker_start_tf = new System.Windows.Forms.DateTimePicker();
-            this.label_start_tf = new System.Windows.Forms.Label();
-            this.label_end_tf = new System.Windows.Forms.Label();
             this.timer_tf_detect_inserted_in_excel = new System.Windows.Forms.Timer(this.components);
             this.timer_tf_start = new System.Windows.Forms.Timer(this.components);
             this.timer_tf = new System.Windows.Forms.Timer(this.components);
@@ -113,8 +83,8 @@
             this.label_fy_count = new System.Windows.Forms.Label();
             this.label_getdatacount_fy = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
-            this.sPanel_separator = new Cronos_Data.SPanel();
             this.label1 = new System.Windows.Forms.Label();
+            this.panel = new System.Windows.Forms.Panel();
             this.panel_header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_minimize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_close)).BeginInit();
@@ -127,16 +97,12 @@
             this.panel_landing.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_landing)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            this.panel_tf.SuspendLayout();
-            this.panel_tf_status.SuspendLayout();
-            this.panel_tf_datetime.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_tf_loader)).BeginInit();
-            this.panel_tf_filter.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel_header
             // 
             this.panel_header.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(122)))), ((int)(((byte)(159)))));
+            this.panel_header.Controls.Add(this.panel);
             this.panel_header.Controls.Add(this.label_title);
             this.panel_header.Controls.Add(this.pictureBox_minimize);
             this.panel_header.Controls.Add(this.pictureBox_close);
@@ -144,14 +110,14 @@
             this.panel_header.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel_header.Location = new System.Drawing.Point(0, 0);
             this.panel_header.Name = "panel_header";
-            this.panel_header.Size = new System.Drawing.Size(1140, 45);
+            this.panel_header.Size = new System.Drawing.Size(569, 45);
             this.panel_header.TabIndex = 0;
             this.panel_header.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel_header_MouseDown);
             // 
             // label_title
             // 
             this.label_title.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_title.ForeColor = System.Drawing.Color.White;
+            this.label_title.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.label_title.Location = new System.Drawing.Point(2, 0);
             this.label_title.Name = "label_title";
             this.label_title.Size = new System.Drawing.Size(166, 45);
@@ -165,8 +131,8 @@
             // 
             this.pictureBox_minimize.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.pictureBox_minimize.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBox_minimize.Image = global::Cronos_Data.Properties.Resources.minus;
-            this.pictureBox_minimize.Location = new System.Drawing.Point(1055, 10);
+            this.pictureBox_minimize.Image = global::FY_Cronos_Data.Properties.Resources.minus;
+            this.pictureBox_minimize.Location = new System.Drawing.Point(479, 10);
             this.pictureBox_minimize.Name = "pictureBox_minimize";
             this.pictureBox_minimize.Size = new System.Drawing.Size(24, 24);
             this.pictureBox_minimize.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -179,8 +145,8 @@
             // 
             this.pictureBox_close.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.pictureBox_close.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBox_close.Image = global::Cronos_Data.Properties.Resources.close;
-            this.pictureBox_close.Location = new System.Drawing.Point(1094, 10);
+            this.pictureBox_close.Image = global::FY_Cronos_Data.Properties.Resources.close;
+            this.pictureBox_close.Location = new System.Drawing.Point(518, 10);
             this.pictureBox_close.Name = "pictureBox_close";
             this.pictureBox_close.Size = new System.Drawing.Size(24, 24);
             this.pictureBox_close.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -192,9 +158,9 @@
             // label_filelocation
             // 
             this.label_filelocation.ForeColor = System.Drawing.Color.White;
-            this.label_filelocation.Location = new System.Drawing.Point(-3, 16);
+            this.label_filelocation.Location = new System.Drawing.Point(-7, 16);
             this.label_filelocation.Name = "label_filelocation";
-            this.label_filelocation.Size = new System.Drawing.Size(1147, 13);
+            this.label_filelocation.Size = new System.Drawing.Size(580, 13);
             this.label_filelocation.TabIndex = 3;
             this.label_filelocation.Text = "-";
             this.label_filelocation.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -357,7 +323,7 @@
             // 
             // pictureBox_fy_loader
             // 
-            this.pictureBox_fy_loader.Image = global::Cronos_Data.Properties.Resources.loader;
+            this.pictureBox_fy_loader.Image = global::FY_Cronos_Data.Properties.Resources.loader;
             this.pictureBox_fy_loader.Location = new System.Drawing.Point(3, 180);
             this.pictureBox_fy_loader.Name = "pictureBox_fy_loader";
             this.pictureBox_fy_loader.Size = new System.Drawing.Size(60, 101);
@@ -452,8 +418,7 @@
             this.comboBox_fy_list.Items.AddRange(new object[] {
             "Payment Report",
             "Bonus Report",
-            "Bet Record",
-            "Turnover Report"});
+            "Bet Record"});
             this.comboBox_fy_list.Location = new System.Drawing.Point(69, 47);
             this.comboBox_fy_list.Name = "comboBox_fy_list";
             this.comboBox_fy_list.Size = new System.Drawing.Size(133, 23);
@@ -566,9 +531,9 @@
             this.button_filelocation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_filelocation.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_filelocation.ForeColor = System.Drawing.Color.White;
-            this.button_filelocation.Image = global::Cronos_Data.Properties.Resources.folder;
+            this.button_filelocation.Image = global::FY_Cronos_Data.Properties.Resources.folder;
             this.button_filelocation.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button_filelocation.Location = new System.Drawing.Point(498, 52);
+            this.button_filelocation.Location = new System.Drawing.Point(217, 52);
             this.button_filelocation.Name = "button_filelocation";
             this.button_filelocation.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
             this.button_filelocation.Size = new System.Drawing.Size(134, 30);
@@ -591,15 +556,16 @@
             this.panel_footer.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel_footer.Location = new System.Drawing.Point(0, 505);
             this.panel_footer.Name = "panel_footer";
-            this.panel_footer.Size = new System.Drawing.Size(1140, 20);
+            this.panel_footer.Size = new System.Drawing.Size(569, 20);
             this.panel_footer.TabIndex = 4;
             // 
             // label_version
             // 
+            this.label_version.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label_version.AutoSize = true;
             this.label_version.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_version.ForeColor = System.Drawing.Color.White;
-            this.label_version.Location = new System.Drawing.Point(1080, 4);
+            this.label_version.Location = new System.Drawing.Point(513, 4);
             this.label_version.Name = "label_version";
             this.label_version.Size = new System.Drawing.Size(43, 13);
             this.label_version.TabIndex = 1;
@@ -608,11 +574,12 @@
             // 
             // label_updates
             // 
+            this.label_updates.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label_updates.AutoSize = true;
             this.label_updates.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label_updates.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_updates.ForeColor = System.Drawing.Color.White;
-            this.label_updates.Location = new System.Drawing.Point(977, 3);
+            this.label_updates.Location = new System.Drawing.Point(406, 3);
             this.label_updates.Name = "label_updates";
             this.label_updates.Size = new System.Drawing.Size(99, 13);
             this.label_updates.TabIndex = 0;
@@ -623,15 +590,15 @@
             // panel_landing
             // 
             this.panel_landing.Controls.Add(this.pictureBox_landing);
-            this.panel_landing.Location = new System.Drawing.Point(3, 496);
+            this.panel_landing.Location = new System.Drawing.Point(1, 19);
             this.panel_landing.Name = "panel_landing";
-            this.panel_landing.Size = new System.Drawing.Size(1148, 485);
+            this.panel_landing.Size = new System.Drawing.Size(567, 485);
             this.panel_landing.TabIndex = 31;
             // 
             // pictureBox_landing
             // 
-            this.pictureBox_landing.Image = global::Cronos_Data.Properties.Resources.icon;
-            this.pictureBox_landing.Location = new System.Drawing.Point(497, 173);
+            this.pictureBox_landing.Image = global::FY_Cronos_Data.Properties.Resources.icon;
+            this.pictureBox_landing.Location = new System.Drawing.Point(226, 188);
             this.pictureBox_landing.Name = "pictureBox_landing";
             this.pictureBox_landing.Size = new System.Drawing.Size(135, 134);
             this.pictureBox_landing.TabIndex = 0;
@@ -651,371 +618,6 @@
             // 
             this.Column1.HeaderText = "Column1";
             this.Column1.Name = "Column1";
-            // 
-            // panel_tf
-            // 
-            this.panel_tf.Controls.Add(this.button_tf_start);
-            this.panel_tf.Controls.Add(this.panel_tf_status);
-            this.panel_tf.Controls.Add(this.label_title_tf);
-            this.panel_tf.Controls.Add(this.webBrowser_tf);
-            this.panel_tf.Controls.Add(this.panel_tf_filter);
-            this.panel_tf.Location = new System.Drawing.Point(588, 89);
-            this.panel_tf.Name = "panel_tf";
-            this.panel_tf.Size = new System.Drawing.Size(534, 408);
-            this.panel_tf.TabIndex = 25;
-            this.panel_tf.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_tf_Paint);
-            // 
-            // button_tf_start
-            // 
-            this.button_tf_start.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(122)))), ((int)(((byte)(159)))));
-            this.button_tf_start.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button_tf_start.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button_tf_start.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_tf_start.ForeColor = System.Drawing.Color.White;
-            this.button_tf_start.Image = ((System.Drawing.Image)(resources.GetObject("button_tf_start.Image")));
-            this.button_tf_start.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button_tf_start.Location = new System.Drawing.Point(191, 204);
-            this.button_tf_start.Name = "button_tf_start";
-            this.button_tf_start.Padding = new System.Windows.Forms.Padding(15, 0, 15, 0);
-            this.button_tf_start.Size = new System.Drawing.Size(153, 59);
-            this.button_tf_start.TabIndex = 25;
-            this.button_tf_start.Text = "START";
-            this.button_tf_start.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button_tf_start.UseVisualStyleBackColor = false;
-            this.button_tf_start.Visible = false;
-            this.button_tf_start.Click += new System.EventHandler(this.button_tf_start_ClickAsync);
-            // 
-            // panel_tf_status
-            // 
-            this.panel_tf_status.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.panel_tf_status.Controls.Add(this.button_tf_stop);
-            this.panel_tf_status.Controls.Add(this.label_tf_insert);
-            this.panel_tf_status.Controls.Add(this.button_tf_proceed);
-            this.panel_tf_status.Controls.Add(this.label_tf_locatefolder);
-            this.panel_tf_status.Controls.Add(this.panel_tf_datetime);
-            this.panel_tf_status.Controls.Add(this.pictureBox_tf_loader);
-            this.panel_tf_status.Controls.Add(this.label_tf_currentrecord);
-            this.panel_tf_status.Controls.Add(this.label_tf_inserting_count_1);
-            this.panel_tf_status.Controls.Add(this.label_tf_page_count);
-            this.panel_tf_status.Controls.Add(this.label_tf_page_count_1);
-            this.panel_tf_status.Controls.Add(this.label_tf_inserting_count);
-            this.panel_tf_status.Controls.Add(this.label_tf_total_records_1);
-            this.panel_tf_status.Controls.Add(this.label_tf_status);
-            this.panel_tf_status.Location = new System.Drawing.Point(7, 121);
-            this.panel_tf_status.Name = "panel_tf_status";
-            this.panel_tf_status.Size = new System.Drawing.Size(524, 284);
-            this.panel_tf_status.TabIndex = 23;
-            this.panel_tf_status.Visible = false;
-            // 
-            // button_tf_stop
-            // 
-            this.button_tf_stop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(122)))), ((int)(((byte)(159)))));
-            this.button_tf_stop.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button_tf_stop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button_tf_stop.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_tf_stop.ForeColor = System.Drawing.Color.White;
-            this.button_tf_stop.Image = ((System.Drawing.Image)(resources.GetObject("button_tf_stop.Image")));
-            this.button_tf_stop.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button_tf_stop.Location = new System.Drawing.Point(185, 82);
-            this.button_tf_stop.Name = "button_tf_stop";
-            this.button_tf_stop.Padding = new System.Windows.Forms.Padding(15, 0, 15, 0);
-            this.button_tf_stop.Size = new System.Drawing.Size(153, 59);
-            this.button_tf_stop.TabIndex = 34;
-            this.button_tf_stop.Text = "START";
-            this.button_tf_stop.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button_tf_stop.UseVisualStyleBackColor = false;
-            this.button_tf_stop.Visible = false;
-            // 
-            // label_tf_insert
-            // 
-            this.label_tf_insert.Location = new System.Drawing.Point(380, 208);
-            this.label_tf_insert.Name = "label_tf_insert";
-            this.label_tf_insert.Size = new System.Drawing.Size(125, 23);
-            this.label_tf_insert.TabIndex = 35;
-            this.label_tf_insert.Text = "-";
-            this.label_tf_insert.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // button_tf_proceed
-            // 
-            this.button_tf_proceed.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(122)))), ((int)(((byte)(159)))));
-            this.button_tf_proceed.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button_tf_proceed.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button_tf_proceed.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_tf_proceed.ForeColor = System.Drawing.Color.White;
-            this.button_tf_proceed.Location = new System.Drawing.Point(382, 233);
-            this.button_tf_proceed.Name = "button_tf_proceed";
-            this.button_tf_proceed.Size = new System.Drawing.Size(126, 28);
-            this.button_tf_proceed.TabIndex = 23;
-            this.button_tf_proceed.Text = "PROCEED";
-            this.button_tf_proceed.UseVisualStyleBackColor = false;
-            this.button_tf_proceed.Visible = false;
-            this.button_tf_proceed.Click += new System.EventHandler(this.button_tf_proceed_Click);
-            // 
-            // label_tf_locatefolder
-            // 
-            this.label_tf_locatefolder.AutoSize = true;
-            this.label_tf_locatefolder.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.label_tf_locatefolder.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_tf_locatefolder.Location = new System.Drawing.Point(436, 264);
-            this.label_tf_locatefolder.Name = "label_tf_locatefolder";
-            this.label_tf_locatefolder.Size = new System.Drawing.Size(72, 13);
-            this.label_tf_locatefolder.TabIndex = 29;
-            this.label_tf_locatefolder.Text = "Locate Folder";
-            this.label_tf_locatefolder.Visible = false;
-            this.label_tf_locatefolder.Click += new System.EventHandler(this.label_tf_locatefolder_Click);
-            // 
-            // panel_tf_datetime
-            // 
-            this.panel_tf_datetime.Controls.Add(this.label_tf_elapsed);
-            this.panel_tf_datetime.Controls.Add(this.label_tf_elapsed_1);
-            this.panel_tf_datetime.Controls.Add(this.label_tf_start_datetime_1);
-            this.panel_tf_datetime.Controls.Add(this.label_tf_finish_datetime);
-            this.panel_tf_datetime.Controls.Add(this.label_tf_finish_datetime_1);
-            this.panel_tf_datetime.Controls.Add(this.label_tf_start_datetime);
-            this.panel_tf_datetime.Location = new System.Drawing.Point(66, 226);
-            this.panel_tf_datetime.Name = "panel_tf_datetime";
-            this.panel_tf_datetime.Size = new System.Drawing.Size(287, 58);
-            this.panel_tf_datetime.TabIndex = 28;
-            // 
-            // label_tf_elapsed
-            // 
-            this.label_tf_elapsed.AutoSize = true;
-            this.label_tf_elapsed.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_tf_elapsed.Location = new System.Drawing.Point(66, 38);
-            this.label_tf_elapsed.Name = "label_tf_elapsed";
-            this.label_tf_elapsed.Size = new System.Drawing.Size(11, 15);
-            this.label_tf_elapsed.TabIndex = 29;
-            this.label_tf_elapsed.Text = "-";
-            // 
-            // label_tf_elapsed_1
-            // 
-            this.label_tf_elapsed_1.AutoSize = true;
-            this.label_tf_elapsed_1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_tf_elapsed_1.Location = new System.Drawing.Point(3, 36);
-            this.label_tf_elapsed_1.Name = "label_tf_elapsed_1";
-            this.label_tf_elapsed_1.Size = new System.Drawing.Size(55, 15);
-            this.label_tf_elapsed_1.TabIndex = 28;
-            this.label_tf_elapsed_1.Text = "Elapsed:";
-            // 
-            // label_tf_start_datetime_1
-            // 
-            this.label_tf_start_datetime_1.AutoSize = true;
-            this.label_tf_start_datetime_1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_tf_start_datetime_1.Location = new System.Drawing.Point(3, 5);
-            this.label_tf_start_datetime_1.Name = "label_tf_start_datetime_1";
-            this.label_tf_start_datetime_1.Size = new System.Drawing.Size(35, 15);
-            this.label_tf_start_datetime_1.TabIndex = 24;
-            this.label_tf_start_datetime_1.Text = "Start:";
-            // 
-            // label_tf_finish_datetime
-            // 
-            this.label_tf_finish_datetime.AutoSize = true;
-            this.label_tf_finish_datetime.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_tf_finish_datetime.Location = new System.Drawing.Point(66, 21);
-            this.label_tf_finish_datetime.Name = "label_tf_finish_datetime";
-            this.label_tf_finish_datetime.Size = new System.Drawing.Size(11, 15);
-            this.label_tf_finish_datetime.TabIndex = 27;
-            this.label_tf_finish_datetime.Text = "-";
-            // 
-            // label_tf_finish_datetime_1
-            // 
-            this.label_tf_finish_datetime_1.AutoSize = true;
-            this.label_tf_finish_datetime_1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_tf_finish_datetime_1.Location = new System.Drawing.Point(3, 21);
-            this.label_tf_finish_datetime_1.Name = "label_tf_finish_datetime_1";
-            this.label_tf_finish_datetime_1.Size = new System.Drawing.Size(43, 15);
-            this.label_tf_finish_datetime_1.TabIndex = 25;
-            this.label_tf_finish_datetime_1.Text = "Finish:";
-            // 
-            // label_tf_start_datetime
-            // 
-            this.label_tf_start_datetime.AutoSize = true;
-            this.label_tf_start_datetime.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_tf_start_datetime.Location = new System.Drawing.Point(66, 5);
-            this.label_tf_start_datetime.Name = "label_tf_start_datetime";
-            this.label_tf_start_datetime.Size = new System.Drawing.Size(11, 15);
-            this.label_tf_start_datetime.TabIndex = 26;
-            this.label_tf_start_datetime.Text = "-";
-            // 
-            // pictureBox_tf_loader
-            // 
-            this.pictureBox_tf_loader.Image = global::Cronos_Data.Properties.Resources.loader;
-            this.pictureBox_tf_loader.Location = new System.Drawing.Point(3, 180);
-            this.pictureBox_tf_loader.Name = "pictureBox_tf_loader";
-            this.pictureBox_tf_loader.Size = new System.Drawing.Size(60, 101);
-            this.pictureBox_tf_loader.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.pictureBox_tf_loader.TabIndex = 23;
-            this.pictureBox_tf_loader.TabStop = false;
-            // 
-            // label_tf_currentrecord
-            // 
-            this.label_tf_currentrecord.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_tf_currentrecord.Location = new System.Drawing.Point(258, 116);
-            this.label_tf_currentrecord.Name = "label_tf_currentrecord";
-            this.label_tf_currentrecord.Size = new System.Drawing.Size(250, 18);
-            this.label_tf_currentrecord.TabIndex = 12;
-            this.label_tf_currentrecord.Text = "-";
-            // 
-            // label_tf_inserting_count_1
-            // 
-            this.label_tf_inserting_count_1.AutoSize = true;
-            this.label_tf_inserting_count_1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_tf_inserting_count_1.Location = new System.Drawing.Point(134, 145);
-            this.label_tf_inserting_count_1.Name = "label_tf_inserting_count_1";
-            this.label_tf_inserting_count_1.Size = new System.Drawing.Size(92, 18);
-            this.label_tf_inserting_count_1.TabIndex = 21;
-            this.label_tf_inserting_count_1.Text = "Insert Count:";
-            this.label_tf_inserting_count_1.Visible = false;
-            // 
-            // label_tf_page_count
-            // 
-            this.label_tf_page_count.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_tf_page_count.Location = new System.Drawing.Point(259, 86);
-            this.label_tf_page_count.Name = "label_tf_page_count";
-            this.label_tf_page_count.Size = new System.Drawing.Size(249, 18);
-            this.label_tf_page_count.TabIndex = 13;
-            this.label_tf_page_count.Text = "-";
-            // 
-            // label_tf_page_count_1
-            // 
-            this.label_tf_page_count_1.AutoSize = true;
-            this.label_tf_page_count_1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_tf_page_count_1.Location = new System.Drawing.Point(134, 86);
-            this.label_tf_page_count_1.Name = "label_tf_page_count_1";
-            this.label_tf_page_count_1.Size = new System.Drawing.Size(46, 18);
-            this.label_tf_page_count_1.TabIndex = 20;
-            this.label_tf_page_count_1.Text = "Page:";
-            // 
-            // label_tf_inserting_count
-            // 
-            this.label_tf_inserting_count.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_tf_inserting_count.Location = new System.Drawing.Point(258, 145);
-            this.label_tf_inserting_count.Name = "label_tf_inserting_count";
-            this.label_tf_inserting_count.Size = new System.Drawing.Size(250, 18);
-            this.label_tf_inserting_count.TabIndex = 15;
-            this.label_tf_inserting_count.Text = "-";
-            this.label_tf_inserting_count.Visible = false;
-            // 
-            // label_tf_total_records_1
-            // 
-            this.label_tf_total_records_1.AutoSize = true;
-            this.label_tf_total_records_1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_tf_total_records_1.Location = new System.Drawing.Point(132, 116);
-            this.label_tf_total_records_1.Name = "label_tf_total_records_1";
-            this.label_tf_total_records_1.Size = new System.Drawing.Size(98, 18);
-            this.label_tf_total_records_1.TabIndex = 18;
-            this.label_tf_total_records_1.Text = "Total Record:";
-            // 
-            // label_tf_status
-            // 
-            this.label_tf_status.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_tf_status.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(122)))), ((int)(((byte)(159)))));
-            this.label_tf_status.Location = new System.Drawing.Point(3, 42);
-            this.label_tf_status.Name = "label_tf_status";
-            this.label_tf_status.Size = new System.Drawing.Size(518, 25);
-            this.label_tf_status.TabIndex = 17;
-            this.label_tf_status.Text = "-";
-            this.label_tf_status.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label_title_tf
-            // 
-            this.label_title_tf.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_title_tf.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.label_title_tf.Location = new System.Drawing.Point(3, 3);
-            this.label_title_tf.Name = "label_title_tf";
-            this.label_title_tf.Size = new System.Drawing.Size(528, 30);
-            this.label_title_tf.TabIndex = 2;
-            this.label_title_tf.Text = "Tian Fa";
-            this.label_title_tf.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // webBrowser_tf
-            // 
-            this.webBrowser_tf.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.webBrowser_tf.Location = new System.Drawing.Point(6, 35);
-            this.webBrowser_tf.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webBrowser_tf.Name = "webBrowser_tf";
-            this.webBrowser_tf.ScriptErrorsSuppressed = true;
-            this.webBrowser_tf.Size = new System.Drawing.Size(522, 367);
-            this.webBrowser_tf.TabIndex = 0;
-            this.webBrowser_tf.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowser_tf_DocumentCompleted);
-            // 
-            // panel_tf_filter
-            // 
-            this.panel_tf_filter.Controls.Add(this.comboBox_tf);
-            this.panel_tf_filter.Controls.Add(this.dateTimePicker_end_tf);
-            this.panel_tf_filter.Controls.Add(this.dateTimePicker_start_tf);
-            this.panel_tf_filter.Controls.Add(this.label_start_tf);
-            this.panel_tf_filter.Controls.Add(this.label_end_tf);
-            this.panel_tf_filter.Location = new System.Drawing.Point(3, 35);
-            this.panel_tf_filter.Name = "panel_tf_filter";
-            this.panel_tf_filter.Size = new System.Drawing.Size(528, 80);
-            this.panel_tf_filter.TabIndex = 24;
-            // 
-            // comboBox_tf
-            // 
-            this.comboBox_tf.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox_tf.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.comboBox_tf.FormattingEnabled = true;
-            this.comboBox_tf.Items.AddRange(new object[] {
-            "Yesterday",
-            "Last week",
-            "Last month"});
-            this.comboBox_tf.Location = new System.Drawing.Point(76, 18);
-            this.comboBox_tf.Name = "comboBox_tf";
-            this.comboBox_tf.Size = new System.Drawing.Size(108, 23);
-            this.comboBox_tf.TabIndex = 7;
-            this.comboBox_tf.SelectedIndexChanged += new System.EventHandler(this.comboBox_tf_SelectedIndexChanged);
-            // 
-            // dateTimePicker_end_tf
-            // 
-            this.dateTimePicker_end_tf.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dateTimePicker_end_tf.Location = new System.Drawing.Point(278, 44);
-            this.dateTimePicker_end_tf.Name = "dateTimePicker_end_tf";
-            this.dateTimePicker_end_tf.Size = new System.Drawing.Size(169, 21);
-            this.dateTimePicker_end_tf.TabIndex = 11;
-            // 
-            // dateTimePicker_start_tf
-            // 
-            this.dateTimePicker_start_tf.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dateTimePicker_start_tf.Location = new System.Drawing.Point(278, 16);
-            this.dateTimePicker_start_tf.Name = "dateTimePicker_start_tf";
-            this.dateTimePicker_start_tf.Size = new System.Drawing.Size(169, 21);
-            this.dateTimePicker_start_tf.TabIndex = 8;
-            // 
-            // label_start_tf
-            // 
-            this.label_start_tf.AutoSize = true;
-            this.label_start_tf.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_start_tf.Location = new System.Drawing.Point(207, 20);
-            this.label_start_tf.Name = "label_start_tf";
-            this.label_start_tf.Size = new System.Drawing.Size(66, 15);
-            this.label_start_tf.TabIndex = 9;
-            this.label_start_tf.Text = "Start Time:";
-            // 
-            // label_end_tf
-            // 
-            this.label_end_tf.AutoSize = true;
-            this.label_end_tf.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_end_tf.Location = new System.Drawing.Point(207, 49);
-            this.label_end_tf.Name = "label_end_tf";
-            this.label_end_tf.Size = new System.Drawing.Size(63, 15);
-            this.label_end_tf.TabIndex = 10;
-            this.label_end_tf.Text = "End Time:";
-            // 
-            // timer_tf_detect_inserted_in_excel
-            // 
-            this.timer_tf_detect_inserted_in_excel.Interval = 10000;
-            this.timer_tf_detect_inserted_in_excel.Tick += new System.EventHandler(this.timer_tf_detect_inserted_in_excel_Tick);
-            // 
-            // timer_tf_start
-            // 
-            this.timer_tf_start.Interval = 10000;
-            this.timer_tf_start.Tick += new System.EventHandler(this.timer_tf_start_Tick);
-            // 
-            // timer_tf
-            // 
-            this.timer_tf.Interval = 1000;
-            this.timer_tf.Tick += new System.EventHandler(this.timer_tf_Tick);
             // 
             // timer_landing
             // 
@@ -1046,11 +648,11 @@
             this.label_getdatacount_fy.Size = new System.Drawing.Size(534, 29);
             this.label_getdatacount_fy.TabIndex = 34;
             this.label_getdatacount_fy.Text = "-";
-            this.label_getdatacount_fy.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label_getdatacount_fy.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(1059, 68);
+            this.button1.Location = new System.Drawing.Point(476, 57);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 35;
@@ -1059,32 +661,32 @@
             this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // sPanel_separator
-            // 
-            this.sPanel_separator.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.sPanel_separator.BackColor = System.Drawing.Color.Transparent;
-            this.sPanel_separator.Cursor = System.Windows.Forms.Cursors.Default;
-            this.sPanel_separator.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(122)))), ((int)(((byte)(159)))));
-            this.sPanel_separator.Location = new System.Drawing.Point(557, 87);
-            this.sPanel_separator.Name = "sPanel_separator";
-            this.sPanel_separator.Size = new System.Drawing.Size(44, 446);
-            this.sPanel_separator.TabIndex = 1;
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(1003, 68);
+            this.label1.Location = new System.Drawing.Point(420, 57);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(35, 13);
             this.label1.TabIndex = 36;
             this.label1.Text = "label1";
+            this.label1.Visible = false;
+            // 
+            // panel
+            // 
+            this.panel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(30)))), ((int)(((byte)(112)))));
+            this.panel.Location = new System.Drawing.Point(-12, -5);
+            this.panel.Name = "panel";
+            this.panel.Size = new System.Drawing.Size(170, 10);
+            this.panel.TabIndex = 1;
+            this.panel.Visible = false;
             // 
             // Main_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1140, 525);
+            this.ClientSize = new System.Drawing.Size(569, 525);
+            this.Controls.Add(this.panel_landing);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.button_filelocation);
@@ -1092,18 +694,15 @@
             this.Controls.Add(this.button_fy_start);
             this.Controls.Add(this.label_fy_count);
             this.Controls.Add(this.button_fy_stop);
-            this.Controls.Add(this.panel_tf);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.panel_footer);
             this.Controls.Add(this.panel_fy);
-            this.Controls.Add(this.sPanel_separator);
             this.Controls.Add(this.panel_header);
-            this.Controls.Add(this.panel_landing);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Main_Form";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Cronos Data";
+            this.Text = "FY Cronos Data";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_Form_FormClosing);
             this.Load += new System.EventHandler(this.Main_Form_Load);
             this.Shown += new System.EventHandler(this.Main_Form_Shown);
@@ -1124,14 +723,6 @@
             this.panel_landing.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_landing)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            this.panel_tf.ResumeLayout(false);
-            this.panel_tf_status.ResumeLayout(false);
-            this.panel_tf_status.PerformLayout();
-            this.panel_tf_datetime.ResumeLayout(false);
-            this.panel_tf_datetime.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_tf_loader)).EndInit();
-            this.panel_tf_filter.ResumeLayout(false);
-            this.panel_tf_filter.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1154,7 +745,6 @@
         private System.Windows.Forms.Button button_fy_start;
         private System.Windows.Forms.Timer timer_fy_start;
         private System.Windows.Forms.Panel panel_fy_filter;
-        private SPanel sPanel_separator;
         private System.Windows.Forms.Timer timer_fy;
         private System.Windows.Forms.PictureBox pictureBox_minimize;
         private System.Windows.Forms.PictureBox pictureBox_close;
@@ -1162,34 +752,6 @@
         private System.Windows.Forms.Panel panel_footer;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.Panel panel_tf;
-        private System.Windows.Forms.Panel panel_tf_status;
-        private System.Windows.Forms.Button button_tf_proceed;
-        private System.Windows.Forms.Label label_tf_locatefolder;
-        private System.Windows.Forms.Panel panel_tf_datetime;
-        private System.Windows.Forms.Label label_tf_elapsed;
-        private System.Windows.Forms.Label label_tf_elapsed_1;
-        private System.Windows.Forms.Label label_tf_start_datetime_1;
-        private System.Windows.Forms.Label label_tf_finish_datetime;
-        private System.Windows.Forms.Label label_tf_finish_datetime_1;
-        private System.Windows.Forms.Label label_tf_start_datetime;
-        private System.Windows.Forms.PictureBox pictureBox_tf_loader;
-        private System.Windows.Forms.Label label_tf_currentrecord;
-        private System.Windows.Forms.Label label_tf_inserting_count_1;
-        private System.Windows.Forms.Label label_tf_page_count;
-        private System.Windows.Forms.Label label_tf_page_count_1;
-        private System.Windows.Forms.Label label_tf_inserting_count;
-        private System.Windows.Forms.Label label_tf_total_records_1;
-        private System.Windows.Forms.Label label_tf_status;
-        private System.Windows.Forms.Label label_title_tf;
-        private System.Windows.Forms.WebBrowser webBrowser_tf;
-        private System.Windows.Forms.Panel panel_tf_filter;
-        private System.Windows.Forms.ComboBox comboBox_tf;
-        private System.Windows.Forms.DateTimePicker dateTimePicker_end_tf;
-        private System.Windows.Forms.DateTimePicker dateTimePicker_start_tf;
-        private System.Windows.Forms.Label label_start_tf;
-        private System.Windows.Forms.Label label_end_tf;
-        private System.Windows.Forms.Button button_tf_start;
         private System.Windows.Forms.Timer timer_tf_detect_inserted_in_excel;
         private System.Windows.Forms.Timer timer_tf_start;
         private System.Windows.Forms.Timer timer_tf;
@@ -1201,8 +763,6 @@
         private System.Windows.Forms.ComboBox comboBox_fy_list;
         private System.Windows.Forms.Timer timer_fy_start_button;
         private System.Windows.Forms.Button button_fy_stop;
-        private System.Windows.Forms.Label label_tf_insert;
-        private System.Windows.Forms.Button button_tf_stop;
         private System.Windows.Forms.Label label_fy_count;
         private System.Windows.Forms.Label label_getdatacount_fy;
         private System.Windows.Forms.Panel panel_fy_status;
@@ -1224,5 +784,6 @@
         private System.Windows.Forms.Label label_fy_status;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Panel panel;
     }
 }

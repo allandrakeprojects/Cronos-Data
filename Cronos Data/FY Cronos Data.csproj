@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{E8C6BA14-8C10-4EC7-A916-F4DE0752B8C6}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Cronos_Data</RootNamespace>
-    <AssemblyName>Cronos Data</AssemblyName>
+    <RootNamespace>FY_Cronos_Data</RootNamespace>
+    <AssemblyName>FY Cronos Data</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -32,7 +32,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\FY Cronos Data.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>
@@ -156,6 +156,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FY Cronos Data.ico" />
+    <None Include="Resources\FY Cronos Data.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
