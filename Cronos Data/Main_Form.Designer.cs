@@ -113,8 +113,8 @@
             this.label_fy_count = new System.Windows.Forms.Label();
             this.label_getdatacount_fy = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
-            this.sPanel_separator = new Cronos_Data.SPanel();
             this.label1 = new System.Windows.Forms.Label();
+            this.sPanel_separator = new Cronos_Data.SPanel();
             this.panel_header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_minimize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_close)).BeginInit();
@@ -452,8 +452,7 @@
             this.comboBox_fy_list.Items.AddRange(new object[] {
             "Payment Report",
             "Bonus Report",
-            "Bet Record",
-            "Turnover Report"});
+            "Bet Record"});
             this.comboBox_fy_list.Location = new System.Drawing.Point(69, 47);
             this.comboBox_fy_list.Name = "comboBox_fy_list";
             this.comboBox_fy_list.Size = new System.Drawing.Size(133, 23);
@@ -659,7 +658,6 @@
             this.panel_tf.Controls.Add(this.label_title_tf);
             this.panel_tf.Controls.Add(this.webBrowser_tf);
             this.panel_tf.Controls.Add(this.panel_tf_filter);
-            this.panel_tf.Enabled = false;
             this.panel_tf.Location = new System.Drawing.Point(588, 89);
             this.panel_tf.Name = "panel_tf";
             this.panel_tf.Size = new System.Drawing.Size(534, 408);
@@ -1059,6 +1057,16 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(1003, 68);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.TabIndex = 36;
+            this.label1.Text = "label1";
+            this.label1.Visible = false;
+            // 
             // sPanel_separator
             // 
             this.sPanel_separator.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
@@ -1069,15 +1077,6 @@
             this.sPanel_separator.Name = "sPanel_separator";
             this.sPanel_separator.Size = new System.Drawing.Size(44, 446);
             this.sPanel_separator.TabIndex = 1;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(1003, 68);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
-            this.label1.TabIndex = 36;
-            this.label1.Text = "label1";
             // 
             // Main_Form
             // 
