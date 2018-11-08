@@ -201,6 +201,11 @@ namespace Cronos_Data
 
         private void Main_Form_Shown(object sender, EventArgs e)
         {
+            if (Properties.Settings.Default.filelocation != "")
+            {
+                label_filelocation.Text = Properties.Settings.Default.filelocation;
+            }
+            
             // asd comment
             GetMemberList_FY();
             GetBonusCode_FY();
@@ -212,6 +217,10 @@ namespace Cronos_Data
                 panel_fy.Enabled = false;
                 panel_tf.Enabled = false;
                 MessageBox.Show("Select file location to start the process.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                label_filelocation.Text = Properties.Settings.Default.filelocation;
             }
         }
 

@@ -113,6 +113,7 @@
             this.label_fy_count = new System.Windows.Forms.Label();
             this.label_getdatacount_fy = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.sPanel_separator = new Cronos_Data.SPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.panel_header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_minimize)).BeginInit();
@@ -451,7 +452,8 @@
             this.comboBox_fy_list.Items.AddRange(new object[] {
             "Payment Report",
             "Bonus Report",
-            "Bet Record"});
+            "Bet Record",
+            "Turnover Report"});
             this.comboBox_fy_list.Location = new System.Drawing.Point(69, 47);
             this.comboBox_fy_list.Name = "comboBox_fy_list";
             this.comboBox_fy_list.Size = new System.Drawing.Size(133, 23);
@@ -1057,6 +1059,17 @@
             this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // sPanel_separator
+            // 
+            this.sPanel_separator.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.sPanel_separator.BackColor = System.Drawing.Color.Transparent;
+            this.sPanel_separator.Cursor = System.Windows.Forms.Cursors.Default;
+            this.sPanel_separator.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(122)))), ((int)(((byte)(159)))));
+            this.sPanel_separator.Location = new System.Drawing.Point(557, 87);
+            this.sPanel_separator.Name = "sPanel_separator";
+            this.sPanel_separator.Size = new System.Drawing.Size(44, 446);
+            this.sPanel_separator.TabIndex = 1;
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -1065,7 +1078,6 @@
             this.label1.Size = new System.Drawing.Size(35, 13);
             this.label1.TabIndex = 36;
             this.label1.Text = "label1";
-            this.label1.Visible = false;
             // 
             // Main_Form
             // 
@@ -1074,7 +1086,6 @@
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1140, 525);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.panel_landing);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.button_filelocation);
             this.Controls.Add(this.label_getdatacount_fy);
@@ -1085,7 +1096,9 @@
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.panel_footer);
             this.Controls.Add(this.panel_fy);
+            this.Controls.Add(this.sPanel_separator);
             this.Controls.Add(this.panel_header);
+            this.Controls.Add(this.panel_landing);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Main_Form";
@@ -1141,6 +1154,7 @@
         private System.Windows.Forms.Button button_fy_start;
         private System.Windows.Forms.Timer timer_fy_start;
         private System.Windows.Forms.Panel panel_fy_filter;
+        private SPanel sPanel_separator;
         private System.Windows.Forms.Timer timer_fy;
         private System.Windows.Forms.PictureBox pictureBox_minimize;
         private System.Windows.Forms.PictureBox pictureBox_close;
