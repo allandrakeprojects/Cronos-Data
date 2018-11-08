@@ -92,6 +92,7 @@ namespace Cronos_Data
         private int display_count_turnover_fy = 0;        
         List<String> getmemberlist_fy = new List<String>();
         private bool isBetRecordInsert = false;
+        private bool isStopClick_fy = false;
 
 
         // TF ---
@@ -200,21 +201,17 @@ namespace Cronos_Data
 
         private void Main_Form_Shown(object sender, EventArgs e)
         {
+            // asd comment
+            GetMemberList_FY();
+            GetBonusCode_FY();
+            GetGamePlatform_FY();
+            GetPaymentType_FY();
+            
             if (Properties.Settings.Default.filelocation == "")
             {
                 panel_fy.Enabled = false;
                 panel_tf.Enabled = false;
                 MessageBox.Show("Select file location to start the process.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            else
-            {
-                label_filelocation.Text = Properties.Settings.Default.filelocation;
-
-                // asd comment
-                //GetMemberList_FY();
-                //GetBonusCode_FY();
-                //GetGamePlatform_FY();
-                GetPaymentType_FY();
             }
         }
 
@@ -294,6 +291,9 @@ namespace Cronos_Data
                                 webBrowser_fy.Visible = false;
                                 panel_fy_status.Visible = true;
                                 timer_fy_start.Start();
+
+                                // added auto
+                                button_fy_start.PerformClick();
                             }
 
                             //if (label_fy_status.Text == "-")
@@ -2580,11 +2580,19 @@ namespace Cronos_Data
 
                                                 // retained
                                                 // 2 months current date
-                                                var last2month_get = DateTime.Today.AddMonths(-2);
-                                                DateTime last2month = DateTime.ParseExact(last2month_get.ToString("yyyy-MM-dd"), "yyyy-MM-dd", CultureInfo.InvariantCulture);
-                                                if (last_deposit >= last2month)
+                                                double amount_get = Convert.ToDouble(amount);
+                                                if (amount_get > 0)
                                                 {
-                                                    retained = "Retained";
+                                                    var last2month_get = DateTime.Today.AddMonths(-2);
+                                                    DateTime last2month = DateTime.ParseExact(last2month_get.ToString("yyyy-MM-dd"), "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                                                    if (last_deposit >= last2month)
+                                                    {
+                                                        retained = "Retained";
+                                                    }
+                                                    else
+                                                    {
+                                                        retained = "Not Retained";
+                                                    }
                                                 }
                                                 else
                                                 {
@@ -3304,7 +3312,10 @@ namespace Cronos_Data
                                     }
                                     else
                                     {
-                                        replace_remark += c;
+                                        if (c != ' ')
+                                        {
+                                            replace_remark += c;
+                                        }
                                     }
                                 }
 
@@ -3353,7 +3364,6 @@ namespace Cronos_Data
                                 {
                                     if (bonus_category == "" && purpose == "")
                                     {
-                                        replace_remark = replace_remark.Trim();
                                         string get1 = replace_remark.Substring(6, 3);
                                         string get2 = get1.Substring(0, 2);
                                         string get3 = get1.Substring(2);
@@ -3553,7 +3563,7 @@ namespace Cronos_Data
                             // provider
                             // category
 
-                            Turnover_FY(player_name.ToString(), stake_amount.ToString().Replace(",", ""), win_amount.ToString().Replace(",", ""), company_win_loss.ToString().Replace(",", ""), valid_bet.ToString().Replace(",", ""), month.ToString("MM/01/yyyy"), bet_time_date, vip, game_platform.ToString());
+                            Turnover_FY(player_name.ToString(), stake_amount.ToString().Replace(",", ""), win_amount.ToString().Replace(",", ""), company_win_loss.ToString().Replace(",", ""), valid_bet.ToString().Replace(",", ""), bet_time_date, month.ToString("MM/01/yyyy"), vip, game_platform.ToString());
 
 
 
@@ -5495,6 +5505,7 @@ namespace Cronos_Data
             timer_fy_count = 10;
             label_fy_count.Visible = false;
             timer_fy_start_button.Stop();
+            isStopClick_fy = true;
         }
 
         int timer_fy_count = 10;
@@ -7001,32 +7012,6 @@ namespace Cronos_Data
                 if (Properties.Settings.Default.filelocation == "")
                 {
                     label_filelocation.Text = Properties.Settings.Default.filelocation;
-
-                    string bank_account_fy = label_filelocation.Text + "\\Cronos Data\\FY\\FY Payment Code.xlsx";
-                    string bank_account_fy_temp = Path.Combine(Path.GetTempPath(), "FY Payment Type Code.txt");
-
-                    Excel.Application app = new Excel.Application();
-                    Excel.Workbook wb = app.Workbooks.Open(bank_account_fy, Type.Missing, true);
-                    wb.Application.DisplayAlerts = false;
-                    wb.SaveAs(bank_account_fy_temp, Excel.XlFileFormat.xlUnicodeText);
-                    wb.Close();
-                    app.Quit();
-                    app.Application.DisplayAlerts = true;
-                    Marshal.ReleaseComObject(wb);
-                    Marshal.ReleaseComObject(app);
-
-                    string bonus_code_fy = label_filelocation.Text + "\\Cronos Data\\FY\\FY Bonus Code.xlsx";
-                    string bonus_code_fy_temp = Path.Combine(Path.GetTempPath(), "FY Bonus Code.txt");
-
-                    Excel.Application app_bonus = new Excel.Application();
-                    Excel.Workbook wb_bonus = app_bonus.Workbooks.Open(bonus_code_fy, Type.Missing, true);
-                    wb_bonus.Application.DisplayAlerts = false;
-                    wb_bonus.SaveAs(bonus_code_fy_temp, Excel.XlFileFormat.xlUnicodeText);
-                    wb_bonus.Close();
-                    app_bonus.Quit();
-                    app_bonus.Application.DisplayAlerts = true;
-                    Marshal.ReleaseComObject(app_bonus);
-                    Marshal.ReleaseComObject(app_bonus);
                 }
 
                 label_filelocation.Text = fbd.SelectedPath;
@@ -7262,6 +7247,14 @@ namespace Cronos_Data
                             {
                                 File.Delete(_fy_folder_path_result);
                             }
+
+                            // added auto
+                            if (!isStopClick_fy)
+                            {
+                                button_fy_proceed.PerformClick();
+                                comboBox_fy_list.SelectedIndex = 1;
+                                button_fy_start.PerformClick();
+                            }
                         }
 
                         transaction.Commit();
@@ -7391,6 +7384,14 @@ namespace Cronos_Data
                             if (File.Exists(_fy_folder_path_result))
                             {
                                 File.Delete(_fy_folder_path_result);
+                            }
+
+                            // added auto
+                            if (!isStopClick_fy)
+                            {
+                                button_fy_proceed.PerformClick();
+                                comboBox_fy_list.SelectedIndex = 2;
+                                button_fy_start.PerformClick();
                             }
                         }
 
@@ -8091,6 +8092,7 @@ namespace Cronos_Data
 
         bool deposit_fy = false;
         String[] filecontent_deposit_fy = null;
+
         private void Turnover_FY(string player_name, string stake_amount_get, string win_amount_get, string company_win_loss_get, string valid_bet_get, string date_get, string month_get, string vip_get, string gameplatform_get)
         {
             if (!deposit_fy)
@@ -8310,6 +8312,8 @@ namespace Cronos_Data
                                 Excel.XlAutoFilterOperator.xlAnd,
                                 Type.Missing,
                                 true);
+            worksheet.Columns[4].NumberFormat = "dd-MMM";
+            worksheet.Columns[5].NumberFormat = "dd-MMM";
             //worksheet.Columns[3].Replace(" ", "");
             //worksheet.Columns[3].NumberFormat = "@";
             //worksheet.Columns[2].NumberFormat = "MMM-yy";
