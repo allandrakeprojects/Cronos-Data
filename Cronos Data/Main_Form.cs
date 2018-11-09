@@ -481,7 +481,7 @@ namespace Cronos_Data
             {
                 if (!_isSecondRequest_fy)
                 {
-                    // Manual Bonus Record
+                    // Manual Bonus Report
                     var reqparm = new NameValueCollection
                     {
                         { "s_btype", ""},
@@ -514,7 +514,7 @@ namespace Cronos_Data
                 }
                 else
                 {
-                    // Generated Bonus Record
+                    // Generated Bonus Report
                     var reqparm = new NameValueCollection
                     {
                         { "s_btype", ""},
@@ -818,7 +818,7 @@ namespace Cronos_Data
                 {
                     if (!_isSecondRequest_fy)
                     {
-                        // Manual Bonus Record
+                        // Manual Bonus Report
                         var reqparm = new NameValueCollection
                         {
                             { "s_btype", ""},
@@ -851,7 +851,7 @@ namespace Cronos_Data
                     }
                     else
                     {
-                        // Generated Bonus Record
+                        // Generated Bonus Report
                         var reqparm = new NameValueCollection
                         {
                             { "s_btype", ""},
@@ -1157,7 +1157,7 @@ namespace Cronos_Data
                     {
                         if (!_isSecondRequest_fy)
                         {
-                            // Manual Bonus Record
+                            // Manual Bonus Report
                             var reqparm = new NameValueCollection
                             {
                                 { "s_btype", ""},
@@ -1190,7 +1190,7 @@ namespace Cronos_Data
                         }
                         else
                         {
-                            // Generated Bonus Record
+                            // Generated Bonus Report
                             var reqparm = new NameValueCollection
                             {
                                 { "s_btype", ""},
@@ -2346,7 +2346,7 @@ namespace Cronos_Data
                         {
                             if (!_isSecondRequest_fy)
                             {
-                                // Manual Bonus Record
+                                // Manual Bonus Report
                                 JToken member_get = jo_fy.SelectToken("$.aaData[" + ii + "][1]");
                                 string member = Regex.Match(member_get.ToString(), "<span(.*?)>(.*?)</span>").Groups[2].Value;
                                 JToken vip = jo_fy.SelectToken("$.aaData[" + ii + "][3]").ToString().Replace("\"", "");
@@ -2736,15 +2736,15 @@ namespace Cronos_Data
                                     if (!_isSecondRequest_fy)
                                     {
                                         // Deposit Record
-                                        if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record"))
+                                        if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Report"))
                                         {
-                                            Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record");
+                                            Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Report");
                                         }
 
-                                        _fy_filename = "FY_PaymentRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
-                                        _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\FY_PaymentRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".txt";
-                                        _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\FY_PaymentRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
-                                        _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\";
+                                        _fy_filename = "FY_PaymentReport_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
+                                        _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Report\\FY_PaymentReport_" + _fy_current_datetime.ToString() + "_" + replace + ".txt";
+                                        _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Report\\FY_PaymentReport_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
+                                        _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Report\\";
 
                                         if (File.Exists(_fy_folder_path_result))
                                         {
@@ -2825,15 +2825,15 @@ namespace Cronos_Data
                                     else
                                     {
                                         // Manual Deposit Record
-                                        if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record"))
+                                        if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Report"))
                                         {
-                                            Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record");
+                                            Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Report");
                                         }
 
-                                        _fy_filename = "FY_PaymentRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
-                                        _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\FY_PaymentRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".txt";
-                                        _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\FY_PaymentRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
-                                        _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\";
+                                        _fy_filename = "FY_PaymentReport_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
+                                        _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Report\\FY_PaymentReport_" + _fy_current_datetime.ToString() + "_" + replace + ".txt";
+                                        _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Report\\FY_PaymentReport_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
+                                        _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Report\\";
 
                                         //if (File.Exists(_fy_folder_path_result))
                                         //{
@@ -2916,15 +2916,15 @@ namespace Cronos_Data
                                     if (!_isThirdRequest_fy)
                                     {
                                         // Withdrawal Record
-                                        if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record"))
+                                        if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Report"))
                                         {
-                                            Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record");
+                                            Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Report");
                                         }
 
-                                        _fy_filename = "FY_PaymentRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
-                                        _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\FY_PaymentRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".txt";
-                                        _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\FY_PaymentRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
-                                        _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\";
+                                        _fy_filename = "FY_PaymentReport_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
+                                        _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Report\\FY_PaymentReport_" + _fy_current_datetime.ToString() + "_" + replace + ".txt";
+                                        _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Report\\FY_PaymentReport_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
+                                        _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Report\\";
 
                                         //if (File.Exists(_fy_folder_path_result))
                                         //{
@@ -3003,15 +3003,15 @@ namespace Cronos_Data
                                     else
                                     {
                                         // Manual Withdrawal Record
-                                        if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record"))
+                                        if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Report"))
                                         {
-                                            Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record");
+                                            Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Report");
                                         }
 
-                                        _fy_filename = "FY_PaymentRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
-                                        _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\FY_PaymentRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".txt";
-                                        _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\FY_PaymentRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
-                                        _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\";
+                                        _fy_filename = "FY_PaymentReport_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
+                                        _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Report\\FY_PaymentReport_" + _fy_current_datetime.ToString() + "_" + replace + ".txt";
+                                        _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Report\\FY_PaymentReport_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
+                                        _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Report\\";
 
                                         //if (File.Exists(_fy_folder_path_result))
                                         //{
@@ -3093,16 +3093,16 @@ namespace Cronos_Data
                             {
                                 if (!_isSecondRequest_fy)
                                 {
-                                    // Manual Bonus Record
-                                    if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bonus Record"))
+                                    // Manual Bonus Report
+                                    if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bonus Report"))
                                     {
-                                        Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bonus Record");
+                                        Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bonus Report");
                                     }
 
-                                    _fy_filename = "FY_BonusRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
-                                    _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bonus Record\\FY_BonusRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".txt";
-                                    _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bonus Record\\FY_BonusRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
-                                    _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bonus Record\\";
+                                    _fy_filename = "FY_BonusReport_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
+                                    _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bonus Report\\FY_BonusReport_" + _fy_current_datetime.ToString() + "_" + replace + ".txt";
+                                    _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bonus Report\\FY_BonusReport_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
+                                    _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bonus Report\\";
 
                                     if (File.Exists(_fy_folder_path_result))
                                     {
@@ -3181,16 +3181,16 @@ namespace Cronos_Data
                                 }
                                 else
                                 {
-                                    // Generated Bonus Record
-                                    if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bonus Record"))
+                                    // Generated Bonus Report
+                                    if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bonus Report"))
                                     {
-                                        Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bonus Record");
+                                        Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bonus Report");
                                     }
 
-                                    _fy_filename = "FY_BonusRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
-                                    _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bonus Record\\FY_BonusRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".txt";
-                                    _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bonus Record\\FY_BonusRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
-                                    _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bonus Record\\";
+                                    _fy_filename = "FY_BonusReport_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
+                                    _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bonus Report\\FY_BonusReport_" + _fy_current_datetime.ToString() + "_" + replace + ".txt";
+                                    _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bonus Report\\FY_BonusReport_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
+                                    _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bonus Report\\";
 
                                     //if (File.Exists(_fy_folder_path_result))
                                     //{
@@ -3428,15 +3428,15 @@ namespace Cronos_Data
                     if (!_isSecondRequest_fy)
                     {
                         // Deposit Record
-                        if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record"))
+                        if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Report"))
                         {
-                            Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record");
+                            Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Report");
                         }
 
-                        _fy_filename = "FY_PaymentRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
-                        _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\FY_PaymentRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".txt";
-                        _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\FY_PaymentRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
-                        _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\";
+                        _fy_filename = "FY_PaymentReport_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
+                        _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Report\\FY_PaymentReport_" + _fy_current_datetime.ToString() + "_" + replace + ".txt";
+                        _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Report\\FY_PaymentReport_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
+                        _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Report\\";
 
                         if (File.Exists(_fy_folder_path_result))
                         {
@@ -3511,15 +3511,15 @@ namespace Cronos_Data
                     else
                     {
                         // Manual Deposit Record
-                        if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record"))
+                        if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Report"))
                         {
-                            Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record");
+                            Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Report");
                         }
 
-                        _fy_filename = "FY_PaymentRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
-                        _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\FY_PaymentRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".txt";
-                        _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\FY_PaymentRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
-                        _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\";
+                        _fy_filename = "FY_PaymentReport_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
+                        _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Report\\FY_PaymentReport_" + _fy_current_datetime.ToString() + "_" + replace + ".txt";
+                        _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Report\\FY_PaymentReport_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
+                        _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Report\\";
 
                         //if (File.Exists(_fy_folder_path_result))
                         //{
@@ -3602,15 +3602,15 @@ namespace Cronos_Data
                     if (!_isThirdRequest_fy)
                     {
                         // Withdrawal Record
-                        if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record"))
+                        if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Report"))
                         {
-                            Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record");
+                            Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Report");
                         }
 
-                        _fy_filename = "FY_PaymentRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
-                        _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\FY_PaymentRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".txt";
-                        _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\FY_PaymentRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
-                        _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\";
+                        _fy_filename = "FY_PaymentReport_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
+                        _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Report\\FY_PaymentReport_" + _fy_current_datetime.ToString() + "_" + replace + ".txt";
+                        _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Report\\FY_PaymentReport_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
+                        _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Report\\";
 
                         //if (File.Exists(_fy_folder_path_result))
                         //{
@@ -3689,15 +3689,15 @@ namespace Cronos_Data
                     else
                     {
                         // Manual Withdrawal Record
-                        if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record"))
+                        if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Report"))
                         {
-                            Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record");
+                            Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Report");
                         }
 
-                        _fy_filename = "FY_PaymentRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
-                        _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\FY_PaymentRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".txt";
-                        _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\FY_PaymentRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
-                        _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Record\\";
+                        _fy_filename = "FY_PaymentReport_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
+                        _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Report\\FY_PaymentReport_" + _fy_current_datetime.ToString() + "_" + replace + ".txt";
+                        _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Report\\FY_PaymentReport_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
+                        _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Payment Report\\";
 
                         //if (File.Exists(_fy_folder_path_result))
                         //{
@@ -3779,16 +3779,16 @@ namespace Cronos_Data
             {
                 if (!_isSecondRequest_fy)
                 {
-                    // Manual Bonus Record
-                    if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bonus Record"))
+                    // Manual Bonus Report
+                    if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bonus Report"))
                     {
-                        Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bonus Record");
+                        Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bonus Report");
                     }
 
-                    _fy_filename = "FY_BonusRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
-                    _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bonus Record\\FY_BonusRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".txt";
-                    _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bonus Record\\FY_BonusRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
-                    _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bonus Record\\";
+                    _fy_filename = "FY_BonusReport_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
+                    _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bonus Report\\FY_BonusReport_" + _fy_current_datetime.ToString() + "_" + replace + ".txt";
+                    _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bonus Report\\FY_BonusReport_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
+                    _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bonus Report\\";
 
                     if (File.Exists(_fy_folder_path_result))
                     {
@@ -3861,16 +3861,16 @@ namespace Cronos_Data
                 }
                 else
                 {
-                    // Generated Bonus Record
-                    if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bonus Record"))
+                    // Generated Bonus Report
+                    if (!Directory.Exists(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bonus Report"))
                     {
-                        Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bonus Record");
+                        Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bonus Report");
                     }
 
-                    _fy_filename = "FY_BonusRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
-                    _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bonus Record\\FY_BonusRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".txt";
-                    _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bonus Record\\FY_BonusRecord_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
-                    _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bonus Record\\";
+                    _fy_filename = "FY_BonusReport_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
+                    _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bonus Report\\FY_BonusReport_" + _fy_current_datetime.ToString() + "_" + replace + ".txt";
+                    _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bonus Report\\FY_BonusReport_" + _fy_current_datetime.ToString() + "_" + replace + ".xlsx";
+                    _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Bonus Report\\";
 
                     //if (File.Exists(_fy_folder_path_result))
                     //{
@@ -4310,7 +4310,7 @@ namespace Cronos_Data
 
                             // Database Member List FY
                             // asd comment
-                            InsertPaymentRecord_FY(_fy_folder_path_result);
+                            InsertPaymentReport_FY(_fy_folder_path_result);
                             display_count_fy = 0;
                         }
                     }
@@ -4319,7 +4319,7 @@ namespace Cronos_Data
                 {
                     if (!_isSecondRequest_fy)
                     {
-                        // Manual Bonus Record
+                        // Manual Bonus Report
                         label_fy_status.Text = "status: done --- M-BONUS RECORD";
                         _isSecondRequest_fy = true;
 
@@ -4400,13 +4400,13 @@ namespace Cronos_Data
                     }
                     else
                     {
-                        // Generated Bonus Record
+                        // Generated Bonus Report
                         label_fy_status.Text = "status: done --- G-BONUS RECORD";
                         _isSecondRequest_fy = false;
 
-                        // Database Bonus Record FY
+                        // Database Bonus Report FY
                         // asd comment
-                        InsertBonusRecord_FY(_fy_folder_path_result);
+                        InsertBonusReport_FY(_fy_folder_path_result);
                         display_count_fy = 0;
                     }
                 }
@@ -4644,7 +4644,7 @@ namespace Cronos_Data
                 }
                 else if (selected_index == 1)
                 {
-                    // Bonus Record
+                    // Bonus Report
                     if (result_start != result_end)
                     {
                         string end_get = "";
@@ -4841,7 +4841,7 @@ namespace Cronos_Data
 
         // Get Insert
 
-        private void InsertPaymentRecord_FY(string path)
+        private void InsertPaymentReport_FY(string path)
         {
             button_fy_proceed.Text = "SENDING...";
             button_fy_proceed.Enabled = false;
@@ -5007,7 +5007,7 @@ namespace Cronos_Data
             }
         }
 
-        private void InsertBonusRecord_FY(string path)
+        private void InsertBonusReport_FY(string path)
         {
             button_fy_proceed.Text = "SENDING...";
             button_fy_proceed.Enabled = false;
@@ -6378,7 +6378,13 @@ namespace Cronos_Data
                 {
                     e.Cancel = true;
                 }
+                else
+                {
+                    Environment.Exit(0);
+                }
             }
+
+            Environment.Exit(0);
         }
 
         // Minimize
