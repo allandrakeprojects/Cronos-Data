@@ -1460,7 +1460,7 @@ namespace Cronos_Data
                                                         if (memberlist_i == 1)
                                                         {
                                                             // Username
-                                                            if (result.Trim() == member.ToString().Trim())
+                                                            if (result.Trim().ToLower() == member.ToString().Trim().ToLower())
                                                             {
                                                                 int memberlist_i_inner = 0;
                                                                 string[] results_inner = s.Split("*|*");
@@ -1811,7 +1811,7 @@ namespace Cronos_Data
                                                         if (memberlist_i == 1)
                                                         {
                                                             // Username
-                                                            if (result.Trim() == member.ToString().Trim())
+                                                            if (result.Trim().ToLower() == member.ToString().Trim().ToLower())
                                                             {
                                                                 int memberlist_i_inner = 0;
                                                                 string[] results_inner = s.Split("*|*");
