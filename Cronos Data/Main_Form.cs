@@ -281,8 +281,8 @@ namespace Cronos_Data
                             webBrowser_fy.Document.GetElementById("cspwd").SetAttribute("value", "abc123");
                         }
 
-                        if (webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/player/list") || webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/site/index") || webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/player/online"))
-                        {
+                        if (webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/player/list") || webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/site/index") || webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/player/online") || webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/message/platform"))
+                        { 
                             if (!isButtonStart_fy)
                             {
                                 button_fy_start.Visible = true;
@@ -1304,9 +1304,23 @@ namespace Cronos_Data
                                     string member = Regex.Match(member_get.ToString(), "<span(.*?)>(.*?)</span>").Groups[2].Value;
                                     JToken vip = jo_fy.SelectToken("$.aaData[" + ii + "][3]").ToString().Replace("\"", "");
                                     JToken amount = jo_fy.SelectToken("$.aaData[" + ii + "][5]").ToString().Replace("\"", "");
-                                    JToken payment_type = jo_fy.SelectToken("$.aaData[" + ii + "][10]");
-                                    payment_type = payment_type.ToString().Replace(":<br>", "");
-                                    payment_type = payment_type.ToString().Replace("<br>", "");
+                                    JToken payment_type = jo_fy.SelectToken("$.aaData[" + ii + "][11]");
+                                    string[] payment_types_replace = payment_type.ToString().Split("<br>");
+                                    payment_type = "";
+                                    int count_ = 0;
+                                    foreach (string payment_type_replace in payment_types_replace)
+                                    {
+                                        count_++;
+                                        if (count_ == 1)
+                                        {
+                                            payment_type += payment_type_replace + "-";
+                                        }
+                                        else if (count_ == 2)
+                                        {
+                                            payment_type += payment_type_replace;
+                                            break;
+                                        }
+                                    }
                                     JToken status_get = jo_fy.SelectToken("$.aaData[" + ii + "][12]").ToString().Replace("\"", "");
                                     string status = Regex.Match(status_get.ToString(), "<font(.*?)>(.*?)</font>").Groups[2].Value;
                                     JToken updated_date__updated_time = jo_fy.SelectToken("$.aaData[" + ii + "][13]").ToString().Replace("\"", "");
@@ -1318,57 +1332,60 @@ namespace Cronos_Data
                                     string pg_company = "";
                                     string pg_type = "";
                                     string bank_account_fy_temp = Path.Combine(Path.GetTempPath(), "FY Payment Type Code.txt");
-
-                                    using (StreamReader sr = File.OpenText(bank_account_fy_temp))
+                                    
+                                    if (payment_type.ToString().Trim() == "手工存款")
                                     {
-                                        string s = String.Empty;
-                                        while ((s = sr.ReadLine()) != null)
+                                        string replace_transaction_id = transaction_id.ToLower();
+                                        if (replace_transaction_id.Contains("wechat"))
                                         {
-                                            Application.DoEvents();
-
-                                            string[] results = s.Split("*|*");
-                                            int bank_account_i = 0;
-                                            bool isNext = false;
-                                            foreach (string result in results)
+                                            pg_company = "MANUAL WECHAT";
+                                            pg_type = "MANUAL WECHAT";
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            pg_company = "LOCAL BANK";
+                                            pg_type = "LOCAL BANK";
+                                            break;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        using (StreamReader sr = File.OpenText(bank_account_fy_temp))
+                                        {
+                                            string s = String.Empty;
+                                            while ((s = sr.ReadLine()) != null)
                                             {
                                                 Application.DoEvents();
 
-                                                bank_account_i++;
-
-                                                if (bank_account_i == 1)
+                                                string[] results = s.Split("*|*");
+                                                int bank_account_i = 0;
+                                                bool isNext = false;
+                                                foreach (string result in results)
                                                 {
-                                                    if (result == "手工存款")
+                                                    Application.DoEvents();
+
+                                                    bank_account_i++;
+
+                                                    if (bank_account_i == 1)
                                                     {
-                                                        string replace_transaction_id = transaction_id.ToLower();
-                                                        if (replace_transaction_id.Contains("wechat"))
+                                                        if (result == payment_type.ToString().Trim())
                                                         {
-                                                            pg_company = "MANUAL WECHAT";
-                                                            pg_type = "MANUAL WECHAT";
-                                                            break;
-                                                        }
-                                                        else
-                                                        {
-                                                            pg_company = "LOCAL BANK";
-                                                            pg_type = "LOCAL BANK";
-                                                            break;
+                                                            isNext = true;
                                                         }
                                                     }
-                                                    else if (result == payment_type.ToString().Trim())
-                                                    {
-                                                        isNext = true;
-                                                    }
-                                                }
 
-                                                if (isNext)
-                                                {
-                                                    if (bank_account_i == 2)
+                                                    if (isNext)
                                                     {
-                                                        pg_company = result;
-                                                    }
-                                                    else if (bank_account_i == 3)
-                                                    {
-                                                        pg_type = result;
-                                                        break;
+                                                        if (bank_account_i == 2)
+                                                        {
+                                                            pg_company = result;
+                                                        }
+                                                        else if (bank_account_i == 3)
+                                                        {
+                                                            pg_type = result;
+                                                            break;
+                                                        }
                                                     }
                                                 }
                                             }
@@ -2371,7 +2388,7 @@ namespace Cronos_Data
                                         }
 
                                         ArrayList items_code = new ArrayList(new string[] { "AD", "FDB", "DP", "PZ", "RF", "RAF", "RB", "SU", "TO", "RR", "CB", "GW", "RW", "TE" });
-                                        ArrayList items_bonus_category = new ArrayList(new string[] { "Adjustment", "FDB", "Deposit", "Prize", "Refer friend", "Refer friend", "Reload", "Signup Bonus", "Turnover", "Rebate", "Cashback", "Goodwill", "Reward", "Test" });
+                                        ArrayList items_bonus_category = new ArrayList(new string[] { "Adjustment", "FDB", "Deposit", "Prize", "Refer friend", "Refer friend", "Reload", "Signup Bonus", "Turnover", "Rebate", "Cashback", "Goodwill Bonus", "Reward", "Test" });
                                         int count_ = 0;
                                         foreach (var item in items_code)
                                         {
@@ -2730,7 +2747,7 @@ namespace Cronos_Data
 
                                                 if (!string.IsNullOrEmpty(firstCellValue))
                                                 {
-                                                    row.Interior.Color = Color.FromArgb(78, 122, 159);
+                                                    row.Interior.Color = Color.FromArgb(222, 30, 112);
                                                     row.Font.Color = Color.FromArgb(255, 255, 255);
                                                     row.Font.Bold = true;
                                                     row.Font.Size = 12;
@@ -2824,7 +2841,7 @@ namespace Cronos_Data
 
                                                 if (!string.IsNullOrEmpty(firstCellValue))
                                                 {
-                                                    row.Interior.Color = Color.FromArgb(78, 122, 159);
+                                                    row.Interior.Color = Color.FromArgb(222, 30, 112);
                                                     row.Font.Color = Color.FromArgb(255, 255, 255);
                                                     row.Font.Bold = true;
                                                     row.Font.Size = 12;
@@ -2914,7 +2931,7 @@ namespace Cronos_Data
 
                                                 if (!string.IsNullOrEmpty(firstCellValue))
                                                 {
-                                                    row.Interior.Color = Color.FromArgb(78, 122, 159);
+                                                    row.Interior.Color = Color.FromArgb(222, 30, 112);
                                                     row.Font.Color = Color.FromArgb(255, 255, 255);
                                                     row.Font.Bold = true;
                                                     row.Font.Size = 12;
@@ -3000,7 +3017,7 @@ namespace Cronos_Data
 
                                                 if (!string.IsNullOrEmpty(firstCellValue))
                                                 {
-                                                    row.Interior.Color = Color.FromArgb(78, 122, 159);
+                                                    row.Interior.Color = Color.FromArgb(222, 30, 112);
                                                     row.Font.Color = Color.FromArgb(255, 255, 255);
                                                     row.Font.Bold = true;
                                                     row.Font.Size = 12;
@@ -3087,7 +3104,7 @@ namespace Cronos_Data
 
                                             if (!string.IsNullOrEmpty(firstCellValue))
                                             {
-                                                row.Interior.Color = Color.FromArgb(78, 122, 159);
+                                                row.Interior.Color = Color.FromArgb(222, 30, 112);
                                                 row.Font.Color = Color.FromArgb(255, 255, 255);
                                                 row.Font.Bold = true;
                                                 row.Font.Size = 12;
@@ -3179,7 +3196,7 @@ namespace Cronos_Data
 
                                             if (!string.IsNullOrEmpty(firstCellValue))
                                             {
-                                                row.Interior.Color = Color.FromArgb(78, 122, 159);
+                                                row.Interior.Color = Color.FromArgb(222, 30, 112);
                                                 row.Font.Color = Color.FromArgb(255, 255, 255);
                                                 row.Font.Bold = true;
                                                 row.Font.Size = 12;
@@ -3262,7 +3279,7 @@ namespace Cronos_Data
 
                                         if (!string.IsNullOrEmpty(firstCellValue))
                                         {
-                                            row.Interior.Color = Color.FromArgb(78, 122, 159);
+                                            row.Interior.Color = Color.FromArgb(222, 30, 112);
                                             row.Font.Color = Color.FromArgb(255, 255, 255);
                                             row.Font.Bold = true;
                                             row.Font.Size = 12;
@@ -3422,7 +3439,7 @@ namespace Cronos_Data
 
                                 if (!string.IsNullOrEmpty(firstCellValue))
                                 {
-                                    row.Interior.Color = Color.FromArgb(78, 122, 159);
+                                    row.Interior.Color = Color.FromArgb(222, 30, 112);
                                     row.Font.Color = Color.FromArgb(255, 255, 255);
                                     row.Font.Bold = true;
                                     row.Font.Size = 12;
@@ -3510,7 +3527,7 @@ namespace Cronos_Data
 
                                 if (!string.IsNullOrEmpty(firstCellValue))
                                 {
-                                    row.Interior.Color = Color.FromArgb(78, 122, 159);
+                                    row.Interior.Color = Color.FromArgb(222, 30, 112);
                                     row.Font.Color = Color.FromArgb(255, 255, 255);
                                     row.Font.Bold = true;
                                     row.Font.Size = 12;
@@ -3600,7 +3617,7 @@ namespace Cronos_Data
 
                                 if (!string.IsNullOrEmpty(firstCellValue))
                                 {
-                                    row.Interior.Color = Color.FromArgb(78, 122, 159);
+                                    row.Interior.Color = Color.FromArgb(222, 30, 112);
                                     row.Font.Color = Color.FromArgb(255, 255, 255);
                                     row.Font.Bold = true;
                                     row.Font.Size = 12;
@@ -3686,7 +3703,7 @@ namespace Cronos_Data
 
                                 if (!string.IsNullOrEmpty(firstCellValue))
                                 {
-                                    row.Interior.Color = Color.FromArgb(78, 122, 159);
+                                    row.Interior.Color = Color.FromArgb(222, 30, 112);
                                     row.Font.Color = Color.FromArgb(255, 255, 255);
                                     row.Font.Bold = true;
                                     row.Font.Size = 12;
@@ -3773,7 +3790,7 @@ namespace Cronos_Data
 
                             if (!string.IsNullOrEmpty(firstCellValue))
                             {
-                                row.Interior.Color = Color.FromArgb(78, 122, 159);
+                                row.Interior.Color = Color.FromArgb(222, 30, 112);
                                 row.Font.Color = Color.FromArgb(255, 255, 255);
                                 row.Font.Bold = true;
                                 row.Font.Size = 12;
@@ -3859,7 +3876,7 @@ namespace Cronos_Data
 
                             if (!string.IsNullOrEmpty(firstCellValue))
                             {
-                                row.Interior.Color = Color.FromArgb(78, 122, 159);
+                                row.Interior.Color = Color.FromArgb(222, 30, 112);
                                 row.Font.Color = Color.FromArgb(255, 255, 255);
                                 row.Font.Bold = true;
                                 row.Font.Size = 12;
@@ -3942,7 +3959,7 @@ namespace Cronos_Data
 
                         if (!string.IsNullOrEmpty(firstCellValue))
                         {
-                            row.Interior.Color = Color.FromArgb(78, 122, 159);
+                            row.Interior.Color = Color.FromArgb(222, 30, 112);
                             row.Font.Color = Color.FromArgb(255, 255, 255);
                             row.Font.Bold = true;
                             row.Font.Size = 12;
@@ -5989,7 +6006,7 @@ namespace Cronos_Data
 
                     if (!string.IsNullOrEmpty(firstCellValue))
                     {
-                        row.Interior.Color = Color.FromArgb(78, 122, 159);
+                        row.Interior.Color = Color.FromArgb(222, 30, 112);
                         row.Font.Color = Color.FromArgb(255, 255, 255);
                         row.Font.Bold = true;
                         row.Font.Size = 12;

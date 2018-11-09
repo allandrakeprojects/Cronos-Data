@@ -652,7 +652,7 @@
             // 
             // label_getdatacount_fy
             // 
-            this.label_getdatacount_fy.Location = new System.Drawing.Point(17, 57);
+            this.label_getdatacount_fy.Location = new System.Drawing.Point(15, 60);
             this.label_getdatacount_fy.Name = "label_getdatacount_fy";
             this.label_getdatacount_fy.Size = new System.Drawing.Size(534, 29);
             this.label_getdatacount_fy.TabIndex = 34;
@@ -690,7 +690,6 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.button_filelocation);
-            this.Controls.Add(this.label_getdatacount_fy);
             this.Controls.Add(this.button_fy_start);
             this.Controls.Add(this.label_fy_count);
             this.Controls.Add(this.button_fy_stop);
@@ -698,6 +697,7 @@
             this.Controls.Add(this.panel_footer);
             this.Controls.Add(this.panel_fy);
             this.Controls.Add(this.panel_header);
+            this.Controls.Add(this.label_getdatacount_fy);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Main_Form";
