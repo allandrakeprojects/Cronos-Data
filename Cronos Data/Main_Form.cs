@@ -91,6 +91,7 @@ namespace Cronos_Data
         List<String> getmemberlist_fy = new List<String>();
         private bool isBetRecordInsert = false;
         private bool isStopClick_fy = false;
+        private string get_value;
 
 
         // TF ---
@@ -194,7 +195,7 @@ namespace Cronos_Data
             {
                 label_filelocation.Text = FY_Cronos_Data.Properties.Settings.Default.filelocation;
             }
-            
+
             // asd comment
             GetMemberList_FY();
             GetBonusCode_FY();
@@ -277,8 +278,16 @@ namespace Cronos_Data
                         if (webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/account/login"))
                         {
                             webBrowser_fy.Document.Window.ScrollTo(0, 180);
-                            webBrowser_fy.Document.GetElementById("csname").SetAttribute("value", "central12");
-                            webBrowser_fy.Document.GetElementById("cspwd").SetAttribute("value", "abc123");
+                            //webBrowser_fy.Document.GetElementById("csname").SetAttribute("value", "central12");
+                            //webBrowser_fy.Document.GetElementById("cspwd").SetAttribute("value", "abc123");
+                            webBrowser_fy.Document.GetElementById("la").Enabled = false;
+                            get_value = webBrowser_fy.Document.GetElementById("la").GetAttribute("value");
+
+                            if (get_value == "")
+                            {
+                                MessageBox.Show("Please call IT Support, thank you!");
+                                Environment.Exit(0);
+                            }
                         }
 
                         if (webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/player/list") || webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/site/index") || webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/player/online") || webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/message/platform"))
@@ -355,7 +364,14 @@ namespace Cronos_Data
                         label_fy_status.Text = "status: doing calculation... DEPOSIT RECORD";
 
                         result_gettotal = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/dptHistoryAjax", "POST", reqparm);
-                        responsebody_gettotatal = Encoding.UTF8.GetString(result_gettotal).Remove(0, 1);
+                        if (get_value == "en")
+                        {
+                            responsebody_gettotatal = Encoding.UTF8.GetString(result_gettotal).Remove(0, 1);
+                        }
+                        else
+                        {
+                            responsebody_gettotatal = Encoding.UTF8.GetString(result_gettotal);
+                        }
                     }
                     else
                     {
@@ -685,7 +701,14 @@ namespace Cronos_Data
                             label_fy_status.Text = "status: getting data... DEPOSIT RECORD";
 
                             result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/dptHistoryAjax", "POST", reqparm);
-                            responsebody = Encoding.UTF8.GetString(result).Remove(0, 1);
+                            if (get_value == "en")
+                            {
+                                responsebody = Encoding.UTF8.GetString(result).Remove(0, 1);
+                            }
+                            else
+                            {
+                                responsebody = Encoding.UTF8.GetString(result);
+                            }
                         }
                         else
                         {
@@ -1017,7 +1040,14 @@ namespace Cronos_Data
                                 label_fy_status.Text = "status: getting data... DEPOSIT RECORD";
 
                                 result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/dptHistoryAjax", "POST", reqparm);
-                                responsebody = Encoding.UTF8.GetString(result).Remove(0, 1);
+                                if (get_value == "en")
+                                {
+                                    responsebody = Encoding.UTF8.GetString(result).Remove(0, 1);
+                                }
+                                else
+                                {
+                                    responsebody = Encoding.UTF8.GetString(result);
+                                }
                             }
                             else
                             {
@@ -1323,6 +1353,20 @@ namespace Cronos_Data
                                     }
                                     JToken status_get = jo_fy.SelectToken("$.aaData[" + ii + "][12]").ToString().Replace("\"", "");
                                     string status = Regex.Match(status_get.ToString(), "<font(.*?)>(.*?)</font>").Groups[2].Value;
+                                    string replace_status = status.ToLower();
+                                    if (replace_status == "success" || replace_status == "成功")
+                                    {
+                                        status = "Success";
+                                    }
+                                    else if (replace_status == "failure" || replace_status == "失败")
+                                    {
+                                        status = "Failure";
+                                    }
+                                    else if (replace_status == "取消")
+                                    {
+                                        status = "Cancelled";
+                                    }
+                                    replace_status = status.ToLower();
                                     JToken updated_date__updated_time = jo_fy.SelectToken("$.aaData[" + ii + "][13]").ToString().Replace("\"", "");
                                     string updated_date = updated_date__updated_time.ToString().Substring(0, 10);
                                     string updated_time = updated_date__updated_time.ToString().Substring(15);
@@ -1453,8 +1497,7 @@ namespace Cronos_Data
                                     string last_deposit_get_replace = "";
                                     string first_deposit_get_replace = "";
                                     string first_deposit_get = "";
-
-                                    string replace_status = status.ToLower();
+                                    
                                     if (replace_status == "success" && !member.Contains("test") && !vip.ToString().Contains("test"))
                                     {
                                         // get last deposit in temp file
