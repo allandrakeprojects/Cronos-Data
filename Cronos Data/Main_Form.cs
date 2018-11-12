@@ -93,43 +93,6 @@ namespace Cronos_Data
         private bool isStopClick_fy = false;
         private string get_value;
 
-
-        // TF ---
-        List<String> tf_datetime = new List<String>();
-        List<String> tf_gettotal = new List<String>();
-        List<String> tf_gettotal_test = new List<String>();
-        private double _total_records_tf;
-        private double _display_length_tf = 5000;
-        private double _limit_tf = 250000;
-        private int _total_page_tf;
-        private int _result_count_json_tf;
-        private JObject jo_tf;
-        int _tf_displayinexel_i = 0;
-        private int _tf_pages_count_display = 0;
-        private int _tf_pages_count_last;
-        private int _tf_pages_count = 0;
-        private bool _detect_tf = false;
-        private bool _tf_inserted_in_excel = true;
-        private int _tf_row = 1;
-        private int _tf_row_count = 1;
-        private bool _isDone_tf = false;
-        private string _tf_folder_path_result;
-        private string _tf_folder_path_result_xlsx;
-        private string _tf_folder_path_result_locate;
-        int _tf_secho = 0;
-        int _tf_i = 0;
-        int _tf_ii = 0;
-        int _tf_get_ii = 1;
-        int _tf_get_ii_display = 1;
-        int _tf_current_index = 1;
-        string _tf_path = Path.Combine(Path.GetTempPath(), "cd_tf.txt");
-        StringBuilder _tf_csv = new StringBuilder();
-        private string _tf_start_datetime;
-        private string _tf_finish_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
-        private bool _tf_no_result;
-        private string _tf_current_datetime;
-        private int _test_tf_gettotal_count_record;
-
         // Border
         const int _ = 1;
         new Rectangle Top { get { return new Rectangle(0, 0, this.ClientSize.Width, _); } }
@@ -2640,65 +2603,7 @@ namespace Cronos_Data
                             // category
 
                             Turnover_FY(player_name.ToString(), stake_amount.ToString().Replace(",", ""), win_amount.ToString().Replace(",", ""), company_win_loss.ToString().Replace(",", ""), valid_bet.ToString().Replace(",", ""), bet_time_date, month.ToString("MM/01/yyyy"), vip, game_platform.ToString());
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                            
                             if (_fy_get_ii == 1)
                             {
                                 var header = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13}", "Month", "Date", "VIP", "Game Platform", "Username", "Bet No", "Bet Time", "Bet Type", "Game Result", "Stake Amount", "Win Amount", "Company Win/Loss", "Valid Bet", "Valid/Invalid");
@@ -6011,7 +5916,7 @@ namespace Cronos_Data
 
                 using (StreamWriter file = new StreamWriter(path_turnover, true, Encoding.UTF8))
                 {
-                    file.WriteLine("FY," + platform + "," + category + "," + month_get + "," + date_get + "," + player_name + ",CNY," + stake_amount_get + "," + win_amount_get + ",1," + company_win_loss_get + "," + vip_get + "," + retained + "," + date_reg + "," + fdd + "," + new_based_on_reg + "," + new_based_on_dep + "," + real_player);
+                    file.WriteLine("FY," + platform + "," + category + "," + month_get + "," + date_get + "," + player_name + ",CNY," + stake_amount_get + "," + valid_bet_get + ",1," + company_win_loss_get + "," + vip_get + "," + retained + "," + date_reg + "," + fdd + "," + new_based_on_reg + "," + new_based_on_dep + "," + real_player);
                 }
             }
         }
