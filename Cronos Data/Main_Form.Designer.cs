@@ -141,7 +141,7 @@
             this.pictureBox_minimize.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.pictureBox_minimize.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox_minimize.Image = global::FY_Cronos_Data.Properties.Resources.minus;
-            this.pictureBox_minimize.Location = new System.Drawing.Point(478, 10);
+            this.pictureBox_minimize.Location = new System.Drawing.Point(481, 10);
             this.pictureBox_minimize.Name = "pictureBox_minimize";
             this.pictureBox_minimize.Size = new System.Drawing.Size(24, 24);
             this.pictureBox_minimize.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -155,7 +155,7 @@
             this.pictureBox_close.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.pictureBox_close.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox_close.Image = global::FY_Cronos_Data.Properties.Resources.close;
-            this.pictureBox_close.Location = new System.Drawing.Point(517, 10);
+            this.pictureBox_close.Location = new System.Drawing.Point(519, 10);
             this.pictureBox_close.Name = "pictureBox_close";
             this.pictureBox_close.Size = new System.Drawing.Size(24, 24);
             this.pictureBox_close.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -578,7 +578,7 @@
             this.label_version.Name = "label_version";
             this.label_version.Size = new System.Drawing.Size(43, 13);
             this.label_version.TabIndex = 1;
-            this.label_version.Text = "v1.0.2";
+            this.label_version.Text = "v1.0.3";
             this.label_version.Visible = false;
             // 
             // label_updates

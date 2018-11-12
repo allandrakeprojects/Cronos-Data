@@ -205,7 +205,7 @@ namespace Cronos_Data
             if (FY_Cronos_Data.Properties.Settings.Default.filelocation == "")
             {
                 panel_fy.Enabled = false;
-                MessageBox.Show("Select file location to start the process.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Select file location to start the process.", "FY", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 button_filelocation.PerformClick();
             }
             else
@@ -285,7 +285,8 @@ namespace Cronos_Data
 
                             if (get_value == "")
                             {
-                                MessageBox.Show("Please call IT Support, thank you!");
+                                MessageBox.Show("Please call IT Support, thank you!", "FY", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                isClose = false;
                                 Environment.Exit(0);
                             }
                         }
@@ -306,7 +307,9 @@ namespace Cronos_Data
                     }
                     catch (Exception err)
                     {
-                        MessageBox.Show("No internet connection detected. Please call IT Support, thank you!");
+                        MessageBox.Show("No internet connection detected. Please call IT Support, thank you!", "FY", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        isClose = false;
+                        Environment.Exit(0);
                     }
                 }
             }
@@ -515,11 +518,12 @@ namespace Cronos_Data
                 else
                 {
                     // Generated Bonus Report
+                    DateTime start_datetime_replace = DateTime.ParseExact(start_datetime, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
                     var reqparm = new NameValueCollection
                     {
                         { "s_btype", ""},
                         { "skip", "0"},
-                        { "s_StartTime", start_datetime},
+                        { "s_StartTime", start_datetime_replace.AddDays(-1).ToString("yyyy-MM-dd HH:mm:ss")},
                         { "s_EndTime", end_datetime},
                         { "s_type", "0"},
                         { "s_keyword", "0"},
@@ -852,11 +856,12 @@ namespace Cronos_Data
                     else
                     {
                         // Generated Bonus Report
+                        DateTime start_datetime_replace = DateTime.ParseExact(gettotal_start_datetime, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
                         var reqparm = new NameValueCollection
                         {
                             { "s_btype", ""},
                             { "skip", "0"},
-                            { "s_StartTime", gettotal_start_datetime},
+                            { "s_StartTime", start_datetime_replace.AddDays(-1).ToString("yyyy-MM-dd HH:mm:ss")},
                             { "s_EndTime", gettotal_end_datetime},
                             { "s_type", "0"},
                             { "s_keyword", "0"},
@@ -1087,29 +1092,29 @@ namespace Cronos_Data
                             {
                                 // Withdrawal Record
                                 var reqparm = new NameValueCollection
-                            {
-                                { "s_btype", ""},
-                                { "s_StartTime", gettotal_start_datetime},
-                                { "s_EndTime", gettotal_end_datetime},
-                                { "s_wtdAmtFr", "" },
-                                { "s_wtdAmtTo", ""},
-                                { "s_dpttype", "0" },
-                                { "skip", "0"},
-                                { "s_type", "1"},
-                                { "s_keyword", "0"},
-                                { "s_playercurrency", "ALL"},
-                                { "wttype", "0"},
-                                { "data[0][name]", "sEcho"},
-                                { "data[0][value]", _fy_secho++.ToString()},
-                                { "data[1][name]", "iColumns"},
-                                { "data[1][value]", "18"},
-                                { "data[2][name]", "sColumns"},
-                                { "data[2][value]", ""},
-                                { "data[3][name]", "iDisplayStart"},
-                                { "data[3][value]", result_pages.ToString()},
-                                { "data[4][name]", "iDisplayLength"},
-                                { "data[4][value]", _display_length_fy.ToString()}
-                            };
+                                {
+                                    { "s_btype", ""},
+                                    { "s_StartTime", gettotal_start_datetime},
+                                    { "s_EndTime", gettotal_end_datetime},
+                                    { "s_wtdAmtFr", "" },
+                                    { "s_wtdAmtTo", ""},
+                                    { "s_dpttype", "0" },
+                                    { "skip", "0"},
+                                    { "s_type", "1"},
+                                    { "s_keyword", "0"},
+                                    { "s_playercurrency", "ALL"},
+                                    { "wttype", "0"},
+                                    { "data[0][name]", "sEcho"},
+                                    { "data[0][value]", _fy_secho++.ToString()},
+                                    { "data[1][name]", "iColumns"},
+                                    { "data[1][value]", "18"},
+                                    { "data[2][name]", "sColumns"},
+                                    { "data[2][value]", ""},
+                                    { "data[3][name]", "iDisplayStart"},
+                                    { "data[3][value]", result_pages.ToString()},
+                                    { "data[4][name]", "iDisplayLength"},
+                                    { "data[4][value]", _display_length_fy.ToString()}
+                                };
 
                                 // status
                                 label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
@@ -1191,11 +1196,12 @@ namespace Cronos_Data
                         else
                         {
                             // Generated Bonus Report
+                            DateTime start_datetime_replace = DateTime.ParseExact(gettotal_start_datetime, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
                             var reqparm = new NameValueCollection
                             {
                                 { "s_btype", ""},
                                 { "skip", "0"},
-                                { "s_StartTime", gettotal_start_datetime},
+                                { "s_StartTime", start_datetime_replace.AddDays(-1).ToString("yyyy-MM-dd HH:mm:ss")},
                                 { "s_EndTime", gettotal_end_datetime},
                                 { "s_type", "0"},
                                 { "s_keyword", "0"},
@@ -1709,7 +1715,7 @@ namespace Cronos_Data
                                         _fy_csv.AppendLine(header);
                                     }
 
-                                    var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19}", "FY", "\"" + month.ToString("MM/01/yyyy") + "\"", "\"" + date + "\"", "\"" + submitted_date + "\"", "\"" + updated_date + " " + updated_time + "\"", "\"" + member + "\"", "\"" + payment_type + "\"", "\"" + pg_company + "\"", "\"" + pg_type + "\"", "\"" + "'" + transaction_id.Replace(",", "") + "\"", "\"" + amount + "\"", "\"" + "" + "\"", "\"" + "Deposit" + "\"", "\"" + duration_time + "\"", "\"" + vip + "\"", "\"" + status + "\"", "\"" + retained + "\"", "\"" + fd_date + "\"", "\"" + new_fy + "\"", "\"" + reactivated + "\"");
+                                    var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19}", "FY", "\"" + month.ToString("MM/01/yyyy") + "\"", "\"" + date + "\"", "\"" + submitted_date + "\"", "\"" + updated_date + " " + updated_time + "\"", "\"" + member + "\"", "\"" + payment_type + "\"", "\"" + pg_company + "\"", "\"" + pg_type + "\"", "\"" + "'" + transaction_id.Replace(",", "") + "\"", "\"" + amount.ToString().Replace("-", "") + "\"", "\"" + "" + "\"", "\"" + "Deposit" + "\"", "\"" + duration_time + "\"", "\"" + vip + "\"", "\"" + status + "\"", "\"" + retained + "\"", "\"" + fd_date + "\"", "\"" + new_fy + "\"", "\"" + reactivated + "\"");
                                     _fy_csv.AppendLine(newLine);
                                 }
                                 else
@@ -2046,7 +2052,7 @@ namespace Cronos_Data
                                         reactivated = "";
                                     }
 
-                                    var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19}", "FY", "\"" + month.ToString("MM/01/yyyy") + "\"", "\"" + submitted_date + "\"", "\"" + submitted_date + " " + submitted_time + "\"", "\"" + submitted_date + " " + submitted_time + "\"", "\"" + member + "\"", "\"" + payment_type + "\"", "\"" + pg_company + "\"", "\"" + pg_type + "\"", "\"" + remark.ToString().Replace(",", "") + "\"", "\"" + amount + "\"", "\"" + "" + "\"", "\"" + "Deposit" + "\"", "\"" + duration_time + "\"", "\"" + vip + "\"", "\"" + "Success" + "\"", "\"" + retained + "\"", "\"" + fd_date + "\"", "\"" + new_fy + "\"", "\"" + reactivated + "\"");
+                                    var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19}", "FY", "\"" + month.ToString("MM/01/yyyy") + "\"", "\"" + submitted_date + "\"", "\"" + submitted_date + " " + submitted_time + "\"", "\"" + submitted_date + " " + submitted_time + "\"", "\"" + member + "\"", "\"" + payment_type + "\"", "\"" + pg_company + "\"", "\"" + pg_type + "\"", "\"" + remark.ToString().Replace(",", "") + "\"", "\"" + amount.ToString().Replace("-", "") + "\"", "\"" + "" + "\"", "\"" + "Deposit" + "\"", "\"" + duration_time + "\"", "\"" + vip + "\"", "\"" + "Success" + "\"", "\"" + retained + "\"", "\"" + fd_date + "\"", "\"" + new_fy + "\"", "\"" + reactivated + "\"");
                                     _fy_csv.AppendLine(newLine);
                                 }
                             }
@@ -2097,66 +2103,74 @@ namespace Cronos_Data
                                     string pg_type = "";
                                     string bank_account_fy_temp = Path.Combine(Path.GetTempPath(), "FY Payment Type Code.txt");
 
-                                    using (StreamReader sr = File.OpenText(bank_account_fy_temp))
+                                    if (!transaction_id.ToString().Contains("wrong"))
                                     {
-                                        string s = String.Empty;
-                                        while ((s = sr.ReadLine()) != null)
+                                        using (StreamReader sr = File.OpenText(bank_account_fy_temp))
                                         {
-                                            Application.DoEvents();
-
-                                            string[] results = s.Split("*|*");
-                                            int bank_account_i = 0;
-                                            bool isNext = false;
-                                            foreach (string result in results)
+                                            string s = String.Empty;
+                                            while ((s = sr.ReadLine()) != null)
                                             {
                                                 Application.DoEvents();
 
-                                                bank_account_i++;
-
-                                                if (bank_account_i == 1)
+                                                string[] results = s.Split("*|*");
+                                                int bank_account_i = 0;
+                                                bool isNext = false;
+                                                foreach (string result in results)
                                                 {
-                                                    if (result == "手工存款")
+                                                    Application.DoEvents();
+
+                                                    bank_account_i++;
+
+                                                    if (bank_account_i == 1)
                                                     {
-                                                        string replace_transaction_id = transaction_id.ToString().ToLower();
-                                                        if (replace_transaction_id.Contains("wechat"))
+                                                        if (result == "手工存款")
                                                         {
-                                                            pg_company = "MANUAL WECHAT";
-                                                            pg_type = "MANUAL WECHAT";
+                                                            string replace_transaction_id = transaction_id.ToString().ToLower();
+                                                            if (replace_transaction_id.Contains("wechat"))
+                                                            {
+                                                                pg_company = "MANUAL WECHAT";
+                                                                pg_type = "MANUAL WECHAT";
+                                                                break;
+                                                            }
+                                                            else
+                                                            {
+                                                                pg_company = "LOCAL BANK";
+                                                                pg_type = "LOCAL BANK";
+                                                                break;
+                                                            }
+                                                        }
+                                                        else if (result == payment_type.ToString().Trim())
+                                                        {
+                                                            isNext = true;
+                                                        }
+                                                    }
+
+                                                    if (isNext)
+                                                    {
+                                                        if (bank_account_i == 2)
+                                                        {
+                                                            pg_company = result;
+                                                        }
+                                                        else if (bank_account_i == 3)
+                                                        {
+                                                            pg_type = result;
                                                             break;
                                                         }
-                                                        else
-                                                        {
-                                                            pg_company = "LOCAL BANK";
-                                                            pg_type = "LOCAL BANK";
-                                                            break;
-                                                        }
-                                                    }
-                                                    else if (result == payment_type.ToString().Trim())
-                                                    {
-                                                        isNext = true;
-                                                    }
-                                                }
-
-                                                if (isNext)
-                                                {
-                                                    if (bank_account_i == 2)
-                                                    {
-                                                        pg_company = result;
-                                                    }
-                                                    else if (bank_account_i == 3)
-                                                    {
-                                                        pg_type = result;
-                                                        break;
                                                     }
                                                 }
                                             }
                                         }
-                                    }
 
-                                    if (payment_type.ToString() == "")
+                                        if (payment_type.ToString() == "")
+                                        {
+                                            pg_company = "";
+                                            pg_type = "";
+                                        }
+                                    }
+                                    else
                                     {
-                                        pg_company = "";
-                                        pg_type = "";
+                                        pg_company = "LOCAL BANK ADJUSTMENT";
+                                        pg_type = "LOCAL BANK ADJUSTMENT";
                                     }
 
                                     string duration_time = "";
@@ -2206,7 +2220,7 @@ namespace Cronos_Data
                                         duration_time = ">60min";
                                     }
 
-                                    var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19}", "FY", "\"" + month.ToString("MM/01/yyyy") + "\"", "\"" + date + "\"", "\"" + submitted_date + " " + submitted_time + "\"", "\"" + updated_date__updated_time + "\"", "\"" + member + "\"", "\"" + payment_type + "\"", "\"" + pg_company + "\"", "\"" + pg_type + "\"", "\"" + "'" + transaction_id + "\"", "\"" + amount + "\"", "\"" + "" + "\"", "\"" + "Withdrawal" + "\"", "\"" + duration_time + "\"", "\"" + vip + "\"", "\"" + status + "\"", "\"" + "" + "\"", "\"" + "" + "\"", "\"" + "" + "\"", "\"" + "" + "\"");
+                                    var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19}", "FY", "\"" + month.ToString("MM/01/yyyy") + "\"", "\"" + date + "\"", "\"" + submitted_date + " " + submitted_time + "\"", "\"" + updated_date__updated_time + "\"", "\"" + member + "\"", "\"" + payment_type + "\"", "\"" + pg_company + "\"", "\"" + pg_type + "\"", "\"" + "'" + transaction_id + "\"", "\"" + amount.ToString().Replace("-", "") + "\"", "\"" + "" + "\"", "\"" + "Withdrawal" + "\"", "\"" + duration_time + "\"", "\"" + vip + "\"", "\"" + status + "\"", "\"" + "" + "\"", "\"" + "" + "\"", "\"" + "" + "\"", "\"" + "" + "\"");
                                     _fy_csv.AppendLine(newLine);
                                 }
                                 else
@@ -2228,66 +2242,74 @@ namespace Cronos_Data
                                     string pg_type = "";
                                     string bank_account_fy_temp = Path.Combine(Path.GetTempPath(), "FY Payment Type Code.txt");
 
-                                    using (StreamReader sr = File.OpenText(bank_account_fy_temp))
+                                    if (!remark.ToString().Contains("wrong"))
                                     {
-                                        string s = String.Empty;
-                                        while ((s = sr.ReadLine()) != null)
+                                        using (StreamReader sr = File.OpenText(bank_account_fy_temp))
                                         {
-                                            Application.DoEvents();
-
-                                            string[] results = s.Split("*|*");
-                                            int bank_account_i = 0;
-                                            bool isNext = false;
-                                            foreach (string result in results)
+                                            string s = String.Empty;
+                                            while ((s = sr.ReadLine()) != null)
                                             {
                                                 Application.DoEvents();
 
-                                                bank_account_i++;
-
-                                                if (bank_account_i == 1)
+                                                string[] results = s.Split("*|*");
+                                                int bank_account_i = 0;
+                                                bool isNext = false;
+                                                foreach (string result in results)
                                                 {
-                                                    if (result == "手工存款")
+                                                    Application.DoEvents();
+
+                                                    bank_account_i++;
+
+                                                    if (bank_account_i == 1)
                                                     {
-                                                        string replace_transaction_id = remark.ToString().ToLower();
-                                                        if (replace_transaction_id.Contains("wechat"))
+                                                        if (result == "手工存款")
                                                         {
-                                                            pg_company = "MANUAL WECHAT";
-                                                            pg_type = "MANUAL WECHAT";
+                                                            string replace_transaction_id = remark.ToString().ToLower();
+                                                            if (replace_transaction_id.Contains("wechat"))
+                                                            {
+                                                                pg_company = "MANUAL WECHAT";
+                                                                pg_type = "MANUAL WECHAT";
+                                                                break;
+                                                            }
+                                                            else
+                                                            {
+                                                                pg_company = "LOCAL BANK";
+                                                                pg_type = "LOCAL BANK";
+                                                                break;
+                                                            }
+                                                        }
+                                                        else if (result == payment_type.ToString().Trim())
+                                                        {
+                                                            isNext = true;
+                                                        }
+                                                    }
+
+                                                    if (isNext)
+                                                    {
+                                                        if (bank_account_i == 2)
+                                                        {
+                                                            pg_company = result;
+                                                        }
+                                                        else if (bank_account_i == 3)
+                                                        {
+                                                            pg_type = result;
                                                             break;
                                                         }
-                                                        else
-                                                        {
-                                                            pg_company = "LOCAL BANK";
-                                                            pg_type = "LOCAL BANK";
-                                                            break;
-                                                        }
-                                                    }
-                                                    else if (result == payment_type.ToString().Trim())
-                                                    {
-                                                        isNext = true;
-                                                    }
-                                                }
-
-                                                if (isNext)
-                                                {
-                                                    if (bank_account_i == 2)
-                                                    {
-                                                        pg_company = result;
-                                                    }
-                                                    else if (bank_account_i == 3)
-                                                    {
-                                                        pg_type = result;
-                                                        break;
                                                     }
                                                 }
                                             }
                                         }
-                                    }
 
-                                    if (payment_type.ToString() == "")
+                                        if (payment_type.ToString() == "")
+                                        {
+                                            pg_company = "";
+                                            pg_type = "";
+                                        }
+                                    }
+                                    else
                                     {
-                                        pg_company = "";
-                                        pg_type = "";
+                                        pg_company = "LOCAL BANK ADJUSTMENT";
+                                        pg_type = "LOCAL BANK ADJUSTMENT";
                                     }
 
                                     string duration_time = "";
@@ -2337,7 +2359,7 @@ namespace Cronos_Data
                                         duration_time = ">60min";
                                     }
 
-                                    var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19}", "FY", "\"" + month.ToString("MM/01/yyyy") + "\"", "\"" + submitted_date + "\"", "\"" + submitted_date + " " + submitted_time + "\"", "\"" + submitted_date + " " + submitted_time + "\"", "\"" + member + "\"", "\"" + payment_type + "\"", "\"" + pg_company + "\"", "\"" + pg_type + "\"", "\"" + remark + "\"", "\"" + amount + "\"", "\"" + "" + "\"", "\"" + "Withdrawal" + "\"", "\"" + duration_time + "\"", "\"" + vip + "\"", "\"" + "Success" + "\"", "\"" + "" + "\"", "\"" + "" + "\"", "\"" + "" + "\"", "\"" + "" + "\"");
+                                    var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19}", "FY", "\"" + month.ToString("MM/01/yyyy") + "\"", "\"" + submitted_date + "\"", "\"" + submitted_date + " " + submitted_time + "\"", "\"" + submitted_date + " " + submitted_time + "\"", "\"" + member + "\"", "\"" + payment_type + "\"", "\"" + pg_company + "\"", "\"" + pg_type + "\"", "\"" + remark + "\"", "\"" + amount.ToString().Replace("-", "") + "\"", "\"" + "" + "\"", "\"" + "Withdrawal" + "\"", "\"" + duration_time + "\"", "\"" + vip + "\"", "\"" + "Success" + "\"", "\"" + "" + "\"", "\"" + "" + "\"", "\"" + "" + "\"", "\"" + "" + "\"");
                                     _fy_csv.AppendLine(newLine);
                                 }
                             }
@@ -2498,7 +2520,7 @@ namespace Cronos_Data
                             }
                             else
                             {
-                                // Generated Withdrawal Record
+                                // Generated Bonus Report
                                 JToken submitted_year__submitted_month__submitted_day = jo_fy.SelectToken("$.aaData[" + ii + "][0]");
                                 string submitted_year = submitted_year__submitted_month__submitted_day.ToString().Substring(0, 4);
                                 string submitted_month = submitted_year__submitted_month__submitted_day.ToString().Substring(4, 2);
@@ -4533,6 +4555,8 @@ namespace Cronos_Data
             {
                 _fy_no_result = true;
                 MessageBox.Show("No data found.", "FY", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                panel_fy_filter.Enabled = true;
+                button_filelocation.Enabled = true;
             }
         }
 
@@ -6361,7 +6385,7 @@ namespace Cronos_Data
         // Close
         private void pictureBox_close_Click(object sender, EventArgs e)
         {
-            DialogResult dr = MessageBox.Show("Exit the program?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult dr = MessageBox.Show("Exit the program?", "FY", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (dr == DialogResult.Yes)
             {
                 isClose = true;
@@ -6373,7 +6397,7 @@ namespace Cronos_Data
         {
             if (!isClose)
             {
-                DialogResult dr = MessageBox.Show("Exit the program?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                DialogResult dr = MessageBox.Show("Exit the program?", "FY", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (dr == DialogResult.No)
                 {
                     e.Cancel = true;
