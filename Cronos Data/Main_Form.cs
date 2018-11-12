@@ -337,29 +337,29 @@ namespace Cronos_Data
                         // Deposit Record
                         var reqparm = new NameValueCollection
                         {
-                            { "s_btype", ""},
-                            { "s_StartTime", start_datetime},
-                            { "s_EndTime", end_datetime},
-                            { "dno", "" },
-                            { "s_dpttype", "0"},
-                            { "s_type", "1" },
-                            { "s_transtype", "0"},
-                            { "s_ppid", "0"},
-                            { "s_payoption", "0"},
-                            { "groupid", "0"},
-                            { "s_keyword", ""},
-                            { "s_playercurrency", "ALL"},
-                            { "skip", "0"},
-                            { "data[0][name]", "sEcho"},
-                            { "data[0][value]", _fy_secho++.ToString()},
-                            { "data[1][name]", "iColumns"},
-                            { "data[1][value]", "17"},
-                            { "data[2][name]", "sColumns"},
-                            { "data[2][value]", ""},
-                            { "data[3][name]", "iDisplayStart"},
-                            { "data[3][value]", "0"},
-                            { "data[4][name]", "iDisplayLength"},
-                            { "data[4][value]", "1"}
+                            {"s_btype", ""},
+                            {"s_StartTime", start_datetime},
+                            {"s_EndTime", end_datetime},
+                            {"dno", ""},
+                            {"s_dpttype", "0"},
+                            {"s_type", "1"},
+                            {"s_transtype", "0"},
+                            {"s_ppid", "0"},
+                            {"s_payoption", "0"},
+                            {"groupid", "0"},
+                            {"s_keyword", ""},
+                            {"s_playercurrency", "ALL"},
+                            {"skip", "0"},
+                            {"data[0][name]", "sEcho"},
+                            {"data[0][value]", _fy_secho++.ToString()},
+                            {"data[1][name]", "iColumns"},
+                            {"data[1][value]", "17"},
+                            {"data[2][name]", "sColumns"},
+                            {"data[2][value]", ""},
+                            {"data[3][name]", "iDisplayStart"},
+                            {"data[3][value]", "0"},
+                            {"data[4][name]", "iDisplayLength"},
+                            {"data[4][value]", "1"}
                         };
 
                         // status
@@ -381,24 +381,24 @@ namespace Cronos_Data
                         // Manual Deposit Record
                         var reqparm = new NameValueCollection
                         {
-                            { "s_btype", ""},
-                            { "ptype", "1212"},
-                            { "fs_ptype", "1212"},
-                            { "s_StartTime", start_datetime},
-                            { "s_EndTime", end_datetime},
-                            { "s_type", "1"},
-                            { "s_keyword", ""},
-                            { "s_playercurrency", "ALL"},
-                            { "data[0][name]", "sEcho"},
-                            { "data[0][value]", _fy_secho++.ToString()},
-                            { "data[1][name]", "iColumns"},
-                            { "data[1][value]", "18"},
-                            { "data[2][name]", "sColumns"},
-                            { "data[2][value]", ""},
-                            { "data[3][name]", "iDisplayStart"},
-                            { "data[3][value]", "0"},
-                            { "data[4][name]", "iDisplayLength"},
-                            { "data[4][value]", "1"}
+                            {"s_btype", ""},
+                            {"ptype", "1212"},
+                            {"fs_ptype", "1212"},
+                            {"s_StartTime", start_datetime},
+                            {"s_EndTime", end_datetime},
+                            {"s_type", "1"},
+                            {"s_keyword", ""},
+                            {"s_playercurrency", "ALL"},
+                            {"data[0][name]", "sEcho"},
+                            {"data[0][value]", _fy_secho++.ToString()},
+                            {"data[1][name]", "iColumns"},
+                            {"data[1][value]", "18"},
+                            {"data[2][name]", "sColumns"},
+                            {"data[2][value]", ""},
+                            {"data[3][name]", "iDisplayStart"},
+                            {"data[3][value]", "0"},
+                            {"data[4][name]", "iDisplayLength"},
+                            {"data[4][value]", "1"}
                         };
 
                         // status
@@ -416,27 +416,27 @@ namespace Cronos_Data
                         // Withdrawal Record
                         var reqparm = new NameValueCollection
                         {
-                            { "s_btype", ""},
-                            { "s_StartTime", start_datetime},
-                            { "s_EndTime", end_datetime},
-                            { "s_wtdAmtFr", "" },
-                            { "s_wtdAmtTo", ""},
-                            { "s_dpttype", "0" },
-                            { "skip", "0"},
-                            { "s_type", "1"},
-                            { "s_keyword", "0"},
-                            { "s_playercurrency", "ALL"},
-                            { "wttype", "0"},
-                            { "data[0][name]", "sEcho"},
-                            { "data[0][value]", _fy_secho++.ToString()},
-                            { "data[1][name]", "iColumns"},
-                            { "data[1][value]", "18"},
-                            { "data[2][name]", "sColumns"},
-                            { "data[2][value]", ""},
-                            { "data[3][name]", "iDisplayStart"},
-                            { "data[3][value]", "0"},
-                            { "data[4][name]", "iDisplayLength"},
-                            { "data[4][value]", "1"}
+                            {"s_btype", ""},
+                            {"s_StartTime", start_datetime},
+                            {"s_EndTime", end_datetime},
+                            {"s_wtdAmtFr", ""},
+                            {"s_wtdAmtTo", ""},
+                            {"s_dpttype", "0"},
+                            {"skip", "0"},
+                            {"s_type", "1"},
+                            {"s_keyword", "0"},
+                            {"s_playercurrency", "ALL"},
+                            {"wttype", "0"},
+                            {"data[0][name]", "sEcho"},
+                            {"data[0][value]", _fy_secho++.ToString()},
+                            {"data[1][name]", "iColumns"},
+                            {"data[1][value]", "18"},
+                            {"data[2][name]", "sColumns"},
+                            {"data[2][value]", ""},
+                            {"data[3][name]", "iDisplayStart"},
+                            {"data[3][value]", "0"},
+                            {"data[4][name]", "iDisplayLength"},
+                            {"data[4][value]", "1"}
                         };
 
                         // status
@@ -451,24 +451,24 @@ namespace Cronos_Data
                         // Manual Withdrawal Record
                         var reqparm = new NameValueCollection
                         {
-                            { "s_btype", ""},
-                            { "ptype", "1313"},
-                            { "fs_ptype", "1313"},
-                            { "s_StartTime", start_datetime},
-                            { "s_EndTime", end_datetime},
-                            { "s_type", "1"},
-                            { "s_keyword", ""},
-                            { "s_playercurrency", "ALL"},
-                            { "data[0][name]", "sEcho"},
-                            { "data[0][value]", _fy_secho++.ToString()},
-                            { "data[1][name]", "iColumns"},
-                            { "data[1][value]", "18"},
-                            { "data[2][name]", "sColumns"},
-                            { "data[2][value]", ""},
-                            { "data[3][name]", "iDisplayStart"},
-                            { "data[3][value]", "0"},
-                            { "data[4][name]", "iDisplayLength"},
-                            { "data[4][value]", "1"}
+                            {"s_btype", ""},
+                            {"ptype", "1313"},
+                            {"fs_ptype", "1313"},
+                            {"s_StartTime", start_datetime},
+                            {"s_EndTime", end_datetime},
+                            {"s_type", "1"},
+                            {"s_keyword", ""},
+                            {"s_playercurrency", "ALL"},
+                            {"data[0][name]", "sEcho"},
+                            {"data[0][value]", _fy_secho++.ToString()},
+                            {"data[1][name]", "iColumns"},
+                            {"data[1][value]", "18"},
+                            {"data[2][name]", "sColumns"},
+                            {"data[2][value]", ""},
+                            {"data[3][name]", "iDisplayStart"},
+                            {"data[3][value]", "0"},
+                            {"data[4][name]", "iDisplayLength"},
+                            {"data[4][value]", "1"}
                         };
 
                         // status
@@ -487,25 +487,25 @@ namespace Cronos_Data
                     // Manual Bonus Report
                     var reqparm = new NameValueCollection
                     {
-                        { "s_btype", ""},
-                        { "ptype", "1411"},
-                        { "fs_ptype", "1411"},
-                        { "s_StartTime", start_datetime},
-                        { "s_EndTime", end_datetime},
-                        { "s_type", "1"},
-                        { "s_keyword", "0"},
-                        { "s_playercurrency", "ALL"},
-                        { "wttype", "0"},
-                        { "data[0][name]", "sEcho"},
-                        { "data[0][value]", _fy_secho++.ToString()},
-                        { "data[1][name]", "iColumns"},
-                        { "data[1][value]", "18"},
-                        { "data[2][name]", "sColumns"},
-                        { "data[2][value]", ""},
-                        { "data[3][name]", "iDisplayStart"},
-                        { "data[3][value]", "0"},
-                        { "data[4][name]", "iDisplayLength"},
-                        { "data[4][value]", "1"}
+                        {"s_btype", ""},
+                        {"ptype", "1411"},
+                        {"fs_ptype", "1411"},
+                        {"s_StartTime", start_datetime},
+                        {"s_EndTime", end_datetime},
+                        {"s_type", "1"},
+                        {"s_keyword", "0"},
+                        {"s_playercurrency", "ALL"},
+                        {"wttype", "0"},
+                        {"data[0][name]", "sEcho"},
+                        {"data[0][value]", _fy_secho++.ToString()},
+                        {"data[1][name]", "iColumns"},
+                        {"data[1][value]", "18"},
+                        {"data[2][name]", "sColumns"},
+                        {"data[2][value]", ""},
+                        {"data[3][name]", "iDisplayStart"},
+                        {"data[3][value]", "0"},
+                        {"data[4][name]", "iDisplayLength"},
+                        {"data[4][value]", "1"}
                     };
 
                     // status
@@ -521,22 +521,22 @@ namespace Cronos_Data
                     DateTime start_datetime_replace = DateTime.ParseExact(start_datetime, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
                     var reqparm = new NameValueCollection
                     {
-                        { "s_btype", ""},
-                        { "skip", "0"},
-                        { "s_StartTime", start_datetime_replace.AddDays(-1).ToString("yyyy-MM-dd HH:mm:ss")},
-                        { "s_EndTime", end_datetime},
-                        { "s_type", "0"},
-                        { "s_keyword", "0"},
-                        { "data[0][name]", "sEcho"},
-                        { "data[0][value]", _fy_secho++.ToString()},
-                        { "data[1][name]", "iColumns"},
-                        { "data[1][value]", "18"},
-                        { "data[2][name]", "sColumns"},
-                        { "data[2][value]", ""},
-                        { "data[3][name]", "iDisplayStart"},
-                        { "data[3][value]", "0"},
-                        { "data[4][name]", "iDisplayLength"},
-                        { "data[4][value]", "1"}
+                        {"s_btype", ""},
+                        {"skip", "0"},
+                        {"s_StartTime", start_datetime_replace.AddDays(-1).ToString("yyyy-MM-dd HH:mm:ss")},
+                        {"s_EndTime", end_datetime},
+                        {"s_type", "0"},
+                        {"s_keyword", "0"},
+                        {"data[0][name]", "sEcho"},
+                        {"data[0][value]", _fy_secho++.ToString()},
+                        {"data[1][name]", "iColumns"},
+                        {"data[1][value]", "18"},
+                        {"data[2][name]", "sColumns"},
+                        {"data[2][value]", ""},
+                        {"data[3][name]", "iDisplayStart"},
+                        {"data[3][value]", "0"},
+                        {"data[4][name]", "iDisplayLength"},
+                        {"data[4][value]", "1"}
                     };
 
                     // status
@@ -552,26 +552,26 @@ namespace Cronos_Data
                 // Bet Record
                 var reqparm = new NameValueCollection
                 {
-                    { "s_btype", ""},
-                    { "betNo", ""},
-                    { "name", ""},
-                    { "gpid", "0" },
-                    { "wager_settle", "0"},
-                    { "valid_inva", ""},
-                    { "start",  start_datetime},
-                    { "end", end_datetime},
-                    { "skip", "0"},
-                    { "ftime_188", "bettime"},
-                    { "data[0][name]", "sEcho"},
-                    { "data[0][value]", _fy_secho++.ToString()},
-                    { "data[1][name]", "iColumns"},
-                    { "data[1][value]", "12"},
-                    { "data[2][name]", "sColumns"},
-                    { "data[2][value]", ""},
-                    { "data[3][name]", "iDisplayStart"},
-                    { "data[3][value]", "0"},
-                    { "data[4][name]", "iDisplayLength"},
-                    { "data[4][value]", "1"}
+                    {"s_btype", ""},
+                    {"betNo", ""},
+                    {"name", ""},
+                    {"gpid", "0"},
+                    {"wager_settle", "0"},
+                    {"valid_inva", ""},
+                    {"start",  start_datetime},
+                    {"end", end_datetime},
+                    {"skip", "0"},
+                    {"ftime_188", "bettime"},
+                    {"data[0][name]", "sEcho"},
+                    {"data[0][value]", _fy_secho++.ToString()},
+                    {"data[1][name]", "iColumns"},
+                    {"data[1][value]", "12"},
+                    {"data[2][name]", "sColumns"},
+                    {"data[2][value]", ""},
+                    {"data[3][name]", "iDisplayStart"},
+                    {"data[3][value]", "0"},
+                    {"data[4][name]", "iDisplayLength"},
+                    {"data[4][value]", "1"}
                 };
 
                 // status
@@ -677,29 +677,29 @@ namespace Cronos_Data
                             // Deposit Record
                             var reqparm = new NameValueCollection
                             {
-                                { "s_btype", "" },
-                                { "s_StartTime", gettotal_start_datetime},
-                                { "s_EndTime", gettotal_end_datetime},
-                                { "dno", "" },
-                                { "s_dpttype", "0"},
-                                { "s_type", "1" },
-                                { "s_transtype", "0"},
-                                { "s_ppid", "0"},
-                                { "s_payoption", "0"},
-                                { "groupid", "0"},
-                                { "s_keyword", ""},
-                                { "s_playercurrency", "ALL"},
-                                { "skip", "0"},
-                                { "data[0][name]", "sEcho"},
-                                { "data[0][value]", _fy_secho++.ToString()},
-                                { "data[1][name]", "iColumns"},
-                                { "data[1][value]", "17"},
-                                { "data[2][name]", "sColumns"},
-                                { "data[2][value]", ""},
-                                { "data[3][name]", "iDisplayStart"},
-                                { "data[3][value]", "0"},
-                                { "data[4][name]", "iDisplayLength"},
-                                { "data[4][value]", _display_length_fy.ToString()}
+                                {"s_btype", ""},
+                                {"s_StartTime", gettotal_start_datetime},
+                                {"s_EndTime", gettotal_end_datetime},
+                                {"dno", ""},
+                                {"s_dpttype", "0"},
+                                {"s_type", "1"},
+                                {"s_transtype", "0"},
+                                {"s_ppid", "0"},
+                                {"s_payoption", "0"},
+                                {"groupid", "0"},
+                                {"s_keyword", ""},
+                                {"s_playercurrency", "ALL"},
+                                {"skip", "0"},
+                                {"data[0][name]", "sEcho"},
+                                {"data[0][value]", _fy_secho++.ToString()},
+                                {"data[1][name]", "iColumns"},
+                                {"data[1][value]", "17"},
+                                {"data[2][name]", "sColumns"},
+                                {"data[2][value]", ""},
+                                {"data[3][name]", "iDisplayStart"},
+                                {"data[3][value]", "0"},
+                                {"data[4][name]", "iDisplayLength"},
+                                {"data[4][value]", _display_length_fy.ToString()}
                             };
 
                             label_fy_status.Text = "status: getting data... DEPOSIT RECORD";
@@ -719,23 +719,23 @@ namespace Cronos_Data
                             // Manual Deposit Record
                             var reqparm = new NameValueCollection
                         {
-                            { "s_btype", ""},
-                            { "ptype", "1212"},
-                            { "fs_ptype", "1212"},
-                            { "s_StartTime", gettotal_start_datetime},
-                            { "s_EndTime", gettotal_end_datetime},
-                            { "s_type", "1"},
-                            { "s_keyword", ""},
-                            { "data[0][name]", "sEcho"},
-                            { "data[0][value]", _fy_secho++.ToString()},
-                            { "data[1][name]", "iColumns"},
-                            { "data[1][value]", "18"},
-                            { "data[2][name]", "sColumns"},
-                            { "data[2][value]", ""},
-                            { "data[3][name]", "iDisplayStart"},
-                            { "data[3][value]", "0"},
-                            { "data[4][name]", "iDisplayLength"},
-                            { "data[4][value]", _display_length_fy.ToString()}
+                            {"s_btype", ""},
+                            {"ptype", "1212"},
+                            {"fs_ptype", "1212"},
+                            {"s_StartTime", gettotal_start_datetime},
+                            {"s_EndTime", gettotal_end_datetime},
+                            {"s_type", "1"},
+                            {"s_keyword", ""},
+                            {"data[0][name]", "sEcho"},
+                            {"data[0][value]", _fy_secho++.ToString()},
+                            {"data[1][name]", "iColumns"},
+                            {"data[1][value]", "18"},
+                            {"data[2][name]", "sColumns"},
+                            {"data[2][value]", ""},
+                            {"data[3][name]", "iDisplayStart"},
+                            {"data[3][value]", "0"},
+                            {"data[4][name]", "iDisplayLength"},
+                            {"data[4][value]", _display_length_fy.ToString()}
                         };
 
                             // status
@@ -753,27 +753,27 @@ namespace Cronos_Data
                             // Withdrawal Record
                             var reqparm = new NameValueCollection
                         {
-                            { "s_btype", ""},
-                            { "s_StartTime", gettotal_start_datetime},
-                            { "s_EndTime", gettotal_end_datetime},
-                            { "s_wtdAmtFr", "" },
-                            { "s_wtdAmtTo", ""},
-                            { "s_dpttype", "0" },
-                            { "skip", "0"},
-                            { "s_type", "1"},
-                            { "s_keyword", "0"},
-                            { "s_playercurrency", "ALL"},
-                            { "wttype", "0"},
-                            { "data[0][name]", "sEcho"},
-                            { "data[0][value]", _fy_secho++.ToString()},
-                            { "data[1][name]", "iColumns"},
-                            { "data[1][value]", "18"},
-                            { "data[2][name]", "sColumns"},
-                            { "data[2][value]", ""},
-                            { "data[3][name]", "iDisplayStart"},
-                            { "data[3][value]", "0"},
-                            { "data[4][name]", "iDisplayLength"},
-                            { "data[4][value]", _display_length_fy.ToString()}
+                            {"s_btype", ""},
+                            {"s_StartTime", gettotal_start_datetime},
+                            {"s_EndTime", gettotal_end_datetime},
+                            {"s_wtdAmtFr", ""},
+                            {"s_wtdAmtTo", ""},
+                            {"s_dpttype", "0"},
+                            {"skip", "0"},
+                            {"s_type", "1"},
+                            {"s_keyword", "0"},
+                            {"s_playercurrency", "ALL"},
+                            {"wttype", "0"},
+                            {"data[0][name]", "sEcho"},
+                            {"data[0][value]", _fy_secho++.ToString()},
+                            {"data[1][name]", "iColumns"},
+                            {"data[1][value]", "18"},
+                            {"data[2][name]", "sColumns"},
+                            {"data[2][value]", ""},
+                            {"data[3][name]", "iDisplayStart"},
+                            {"data[3][value]", "0"},
+                            {"data[4][name]", "iDisplayLength"},
+                            {"data[4][value]", _display_length_fy.ToString()}
                         };
 
                             // status
@@ -788,25 +788,25 @@ namespace Cronos_Data
                             // Manual Withdrawal Record
                             var reqparm = new NameValueCollection
                         {
-                            { "s_btype", ""},
-                            { "ptype", "1313"},
-                            { "fs_ptype", "1313"},
-                            { "s_StartTime", gettotal_start_datetime},
-                            { "s_EndTime", gettotal_end_datetime},
-                            { "s_type", "1"},
-                            { "s_keyword", "0"},
-                            { "s_playercurrency", "ALL"},
-                            { "wttype", "0"},
-                            { "data[0][name]", "sEcho"},
-                            { "data[0][value]", _fy_secho++.ToString()},
-                            { "data[1][name]", "iColumns"},
-                            { "data[1][value]", "18"},
-                            { "data[2][name]", "sColumns"},
-                            { "data[2][value]", ""},
-                            { "data[3][name]", "iDisplayStart"},
-                            { "data[3][value]", "0"},
-                            { "data[4][name]", "iDisplayLength"},
-                            { "data[4][value]", _display_length_fy.ToString()}
+                            {"s_btype", ""},
+                            {"ptype", "1313"},
+                            {"fs_ptype", "1313"},
+                            {"s_StartTime", gettotal_start_datetime},
+                            {"s_EndTime", gettotal_end_datetime},
+                            {"s_type", "1"},
+                            {"s_keyword", "0"},
+                            {"s_playercurrency", "ALL"},
+                            {"wttype", "0"},
+                            {"data[0][name]", "sEcho"},
+                            {"data[0][value]", _fy_secho++.ToString()},
+                            {"data[1][name]", "iColumns"},
+                            {"data[1][value]", "18"},
+                            {"data[2][name]", "sColumns"},
+                            {"data[2][value]", ""},
+                            {"data[3][name]", "iDisplayStart"},
+                            {"data[3][value]", "0"},
+                            {"data[4][name]", "iDisplayLength"},
+                            {"data[4][value]", _display_length_fy.ToString()}
                         };
 
                             // status
@@ -825,25 +825,25 @@ namespace Cronos_Data
                         // Manual Bonus Report
                         var reqparm = new NameValueCollection
                         {
-                            { "s_btype", ""},
-                            { "ptype", "1411"},
-                            { "fs_ptype", "1411"},
-                            { "s_StartTime", gettotal_start_datetime},
-                            { "s_EndTime", gettotal_end_datetime},
-                            { "s_type", "1"},
-                            { "s_keyword", "0"},
-                            { "s_playercurrency", "ALL"},
-                            { "wttype", "0"},
-                            { "data[0][name]", "sEcho"},
-                            { "data[0][value]", _fy_secho++.ToString()},
-                            { "data[1][name]", "iColumns"},
-                            { "data[1][value]", "18"},
-                            { "data[2][name]", "sColumns"},
-                            { "data[2][value]", ""},
-                            { "data[3][name]", "iDisplayStart"},
-                            { "data[3][value]", "0"},
-                            { "data[4][name]", "iDisplayLength"},
-                            { "data[4][value]", _display_length_fy.ToString()}
+                            {"s_btype", ""},
+                            {"ptype", "1411"},
+                            {"fs_ptype", "1411"},
+                            {"s_StartTime", gettotal_start_datetime},
+                            {"s_EndTime", gettotal_end_datetime},
+                            {"s_type", "1"},
+                            {"s_keyword", "0"},
+                            {"s_playercurrency", "ALL"},
+                            {"wttype", "0"},
+                            {"data[0][name]", "sEcho"},
+                            {"data[0][value]", _fy_secho++.ToString()},
+                            {"data[1][name]", "iColumns"},
+                            {"data[1][value]", "18"},
+                            {"data[2][name]", "sColumns"},
+                            {"data[2][value]", ""},
+                            {"data[3][name]", "iDisplayStart"},
+                            {"data[3][value]", "0"},
+                            {"data[4][name]", "iDisplayLength"},
+                            {"data[4][value]", _display_length_fy.ToString()}
                         };
 
                         // status
@@ -859,22 +859,22 @@ namespace Cronos_Data
                         DateTime start_datetime_replace = DateTime.ParseExact(gettotal_start_datetime, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
                         var reqparm = new NameValueCollection
                         {
-                            { "s_btype", ""},
-                            { "skip", "0"},
-                            { "s_StartTime", start_datetime_replace.AddDays(-1).ToString("yyyy-MM-dd HH:mm:ss")},
-                            { "s_EndTime", gettotal_end_datetime},
-                            { "s_type", "0"},
-                            { "s_keyword", "0"},
-                            { "data[0][name]", "sEcho"},
-                            { "data[0][value]", _fy_secho++.ToString()},
-                            { "data[1][name]", "iColumns"},
-                            { "data[1][value]", "18"},
-                            { "data[2][name]", "sColumns"},
-                            { "data[2][value]", ""},
-                            { "data[3][name]", "iDisplayStart"},
-                            { "data[3][value]", "0"},
-                            { "data[4][name]", "iDisplayLength"},
-                            { "data[4][value]", _display_length_fy.ToString()}
+                            {"s_btype", ""},
+                            {"skip", "0"},
+                            {"s_StartTime", start_datetime_replace.AddDays(-1).ToString("yyyy-MM-dd HH:mm:ss")},
+                            {"s_EndTime", gettotal_end_datetime},
+                            {"s_type", "0"},
+                            {"s_keyword", "0"},
+                            {"data[0][name]", "sEcho"},
+                            {"data[0][value]", _fy_secho++.ToString()},
+                            {"data[1][name]", "iColumns"},
+                            {"data[1][value]", "18"},
+                            {"data[2][name]", "sColumns"},
+                            {"data[2][value]", ""},
+                            {"data[3][name]", "iDisplayStart"},
+                            {"data[3][value]", "0"},
+                            {"data[4][name]", "iDisplayLength"},
+                            {"data[4][value]", _display_length_fy.ToString()}
                         };
 
                         // status
@@ -890,26 +890,26 @@ namespace Cronos_Data
                     // Bet Record
                     var reqparm = new NameValueCollection
                     {
-                        { "s_btype", ""},
-                        { "betNo", ""},
-                        { "name", ""},
-                        { "gpid", "0" },
-                        { "wager_settle", "0"},
-                        { "valid_inva", ""},
-                        { "start",  gettotal_start_datetime},
-                        { "end", gettotal_end_datetime},
-                        { "skip", "0"},
-                        { "ftime_188", "bettime"},
-                        { "data[0][name]", "sEcho"},
-                        { "data[0][value]", _fy_secho++.ToString()},
-                        { "data[1][name]", "iColumns"},
-                        { "data[1][value]", "12"},
-                        { "data[2][name]", "sColumns"},
-                        { "data[2][value]", ""},
-                        { "data[3][name]", "iDisplayStart"},
-                        { "data[3][value]", "0"},
-                        { "data[4][name]", "iDisplayLength"},
-                        { "data[4][value]", _display_length_fy.ToString()}
+                        {"s_btype", ""},
+                        {"betNo", ""},
+                        {"name", ""},
+                        {"gpid", "0"},
+                        {"wager_settle", "0"},
+                        {"valid_inva", ""},
+                        {"start", gettotal_start_datetime},
+                        {"end", gettotal_end_datetime},
+                        {"skip", "0"},
+                        {"ftime_188", "bettime"},
+                        {"data[0][name]", "sEcho"},
+                        {"data[0][value]", _fy_secho++.ToString()},
+                        {"data[1][name]", "iColumns"},
+                        {"data[1][value]", "12"},
+                        {"data[2][name]", "sColumns"},
+                        {"data[2][value]", ""},
+                        {"data[3][name]", "iDisplayStart"},
+                        {"data[3][value]", "0"},
+                        {"data[4][name]", "iDisplayLength"},
+                        {"data[4][value]", _display_length_fy.ToString()}
                     };
 
                     label_fy_status.Text = "status: getting data... BET RECORD";
@@ -1017,29 +1017,29 @@ namespace Cronos_Data
                                 // Deposit Record
                                 var reqparm = new NameValueCollection
                                 {
-                                    { "s_btype", "" },
-                                    { "s_StartTime", gettotal_start_datetime},
-                                    { "s_EndTime", gettotal_end_datetime},
-                                    { "dno", "" },
-                                    { "s_dpttype", "0"},
-                                    { "s_type", "1" },
-                                    { "s_transtype", "0"},
-                                    { "s_ppid", "0"},
-                                    { "s_payoption", "0"},
-                                    { "groupid", "0"},
-                                    { "s_keyword", ""},
-                                    { "s_playercurrency", "ALL"},
-                                    { "skip", "0"},
-                                    { "data[0][name]", "sEcho"},
-                                    { "data[0][value]", _fy_secho++.ToString()},
-                                    { "data[1][name]", "iColumns"},
-                                    { "data[1][value]", "17"},
-                                    { "data[2][name]", "sColumns"},
-                                    { "data[2][value]", ""},
-                                    { "data[3][name]", "iDisplayStart"},
-                                    { "data[3][value]", result_pages.ToString()},
-                                    { "data[4][name]", "iDisplayLength"},
-                                    { "data[4][value]", _display_length_fy.ToString()}
+                                    {"s_btype", ""},
+                                    {"s_StartTime", gettotal_start_datetime},
+                                    {"s_EndTime", gettotal_end_datetime},
+                                    {"dno", ""},
+                                    {"s_dpttype", "0"},
+                                    {"s_type", "1"},
+                                    {"s_transtype", "0"},
+                                    {"s_ppid", "0"},
+                                    {"s_payoption", "0"},
+                                    {"groupid", "0"},
+                                    {"s_keyword", ""},
+                                    {"s_playercurrency", "ALL"},
+                                    {"skip", "0"},
+                                    {"data[0][name]", "sEcho"},
+                                    {"data[0][value]", _fy_secho++.ToString()},
+                                    {"data[1][name]", "iColumns"},
+                                    {"data[1][value]", "17"},
+                                    {"data[2][name]", "sColumns"},
+                                    {"data[2][value]", ""},
+                                    {"data[3][name]", "iDisplayStart"},
+                                    {"data[3][value]", result_pages.ToString()},
+                                    {"data[4][name]", "iDisplayLength"},
+                                    {"data[4][value]", _display_length_fy.ToString()}
                                 };
 
                                 label_fy_status.Text = "status: getting data... DEPOSIT RECORD";
@@ -1059,23 +1059,23 @@ namespace Cronos_Data
                                 // Manual Deposit Record
                                 var reqparm = new NameValueCollection
                             {
-                                { "s_btype", ""},
-                                { "ptype", "1212"},
-                                { "fs_ptype", "1212"},
-                                { "s_StartTime", gettotal_start_datetime},
-                                { "s_EndTime", gettotal_end_datetime},
-                                { "s_type", "1"},
-                                { "s_keyword", ""},
-                                { "data[0][name]", "sEcho"},
-                                { "data[0][value]", _fy_secho++.ToString()},
-                                { "data[1][name]", "iColumns"},
-                                { "data[1][value]", "18"},
-                                { "data[2][name]", "sColumns"},
-                                { "data[2][value]", ""},
-                                { "data[3][name]", "iDisplayStart"},
-                                { "data[3][value]", "0"},
-                                { "data[4][name]", "iDisplayLength"},
-                                { "data[4][value]", _display_length_fy.ToString()}
+                                {"s_btype", ""},
+                                {"ptype", "1212"},
+                                {"fs_ptype", "1212"},
+                                {"s_StartTime", gettotal_start_datetime},
+                                {"s_EndTime", gettotal_end_datetime},
+                                {"s_type", "1"},
+                                {"s_keyword", ""},
+                                {"data[0][name]", "sEcho"},
+                                {"data[0][value]", _fy_secho++.ToString()},
+                                {"data[1][name]", "iColumns"},
+                                {"data[1][value]", "18"},
+                                {"data[2][name]", "sColumns"},
+                                {"data[2][value]", ""},
+                                {"data[3][name]", "iDisplayStart"},
+                                {"data[3][value]", "0"},
+                                {"data[4][name]", "iDisplayLength"},
+                                {"data[4][value]", _display_length_fy.ToString()}
                             };
 
                                 // status
@@ -1093,27 +1093,27 @@ namespace Cronos_Data
                                 // Withdrawal Record
                                 var reqparm = new NameValueCollection
                                 {
-                                    { "s_btype", ""},
-                                    { "s_StartTime", gettotal_start_datetime},
-                                    { "s_EndTime", gettotal_end_datetime},
-                                    { "s_wtdAmtFr", "" },
-                                    { "s_wtdAmtTo", ""},
-                                    { "s_dpttype", "0" },
-                                    { "skip", "0"},
-                                    { "s_type", "1"},
-                                    { "s_keyword", "0"},
-                                    { "s_playercurrency", "ALL"},
-                                    { "wttype", "0"},
-                                    { "data[0][name]", "sEcho"},
-                                    { "data[0][value]", _fy_secho++.ToString()},
-                                    { "data[1][name]", "iColumns"},
-                                    { "data[1][value]", "18"},
-                                    { "data[2][name]", "sColumns"},
-                                    { "data[2][value]", ""},
-                                    { "data[3][name]", "iDisplayStart"},
-                                    { "data[3][value]", result_pages.ToString()},
-                                    { "data[4][name]", "iDisplayLength"},
-                                    { "data[4][value]", _display_length_fy.ToString()}
+                                    {"s_btype", ""},
+                                    {"s_StartTime", gettotal_start_datetime},
+                                    {"s_EndTime", gettotal_end_datetime},
+                                    {"s_wtdAmtFr", ""},
+                                    {"s_wtdAmtTo", ""},
+                                    {"s_dpttype", "0"},
+                                    {"skip", "0"},
+                                    {"s_type", "1"},
+                                    {"s_keyword", "0"},
+                                    {"s_playercurrency", "ALL"},
+                                    {"wttype", "0"},
+                                    {"data[0][name]", "sEcho"},
+                                    {"data[0][value]", _fy_secho++.ToString()},
+                                    {"data[1][name]", "iColumns"},
+                                    {"data[1][value]", "18"},
+                                    {"data[2][name]", "sColumns"},
+                                    {"data[2][value]", ""},
+                                    {"data[3][name]", "iDisplayStart"},
+                                    {"data[3][value]", result_pages.ToString()},
+                                    {"data[4][name]", "iDisplayLength"},
+                                    {"data[4][value]", _display_length_fy.ToString()}
                                 };
 
                                 // status
@@ -1128,25 +1128,25 @@ namespace Cronos_Data
                                 // Manual Withdrawal Record
                                 var reqparm = new NameValueCollection
                             {
-                                { "s_btype", ""},
-                                { "ptype", "1313"},
-                                { "fs_ptype", "1313"},
-                                { "s_StartTime", gettotal_start_datetime},
-                                { "s_EndTime", gettotal_end_datetime},
-                                { "s_type", "1"},
-                                { "s_keyword", "0"},
-                                { "s_playercurrency", "ALL"},
-                                { "wttype", "0"},
-                                { "data[0][name]", "sEcho"},
-                                { "data[0][value]", _fy_secho++.ToString()},
-                                { "data[1][name]", "iColumns"},
-                                { "data[1][value]", "18"},
-                                { "data[2][name]", "sColumns"},
-                                { "data[2][value]", ""},
-                                { "data[3][name]", "iDisplayStart"},
-                                { "data[3][value]", "0"},
-                                { "data[4][name]", "iDisplayLength"},
-                                { "data[4][value]", _display_length_fy.ToString()}
+                                {"s_btype", ""},
+                                {"ptype", "1313"},
+                                {"fs_ptype", "1313"},
+                                {"s_StartTime", gettotal_start_datetime},
+                                {"s_EndTime", gettotal_end_datetime},
+                                {"s_type", "1"},
+                                {"s_keyword", "0"},
+                                {"s_playercurrency", "ALL"},
+                                {"wttype", "0"},
+                                {"data[0][name]", "sEcho"},
+                                {"data[0][value]", _fy_secho++.ToString()},
+                                {"data[1][name]", "iColumns"},
+                                {"data[1][value]", "18"},
+                                {"data[2][name]", "sColumns"},
+                                {"data[2][value]", ""},
+                                {"data[3][name]", "iDisplayStart"},
+                                {"data[3][value]", "0"},
+                                {"data[4][name]", "iDisplayLength"},
+                                {"data[4][value]", _display_length_fy.ToString()}
                             };
 
                                 // status
@@ -1165,25 +1165,25 @@ namespace Cronos_Data
                             // Manual Bonus Report
                             var reqparm = new NameValueCollection
                             {
-                                { "s_btype", ""},
-                                { "ptype", "1411"},
-                                { "fs_ptype", "1411"},
-                                { "s_StartTime", gettotal_start_datetime},
-                                { "s_EndTime", gettotal_end_datetime},
-                                { "s_type", "1"},
-                                { "s_keyword", "0"},
-                                { "s_playercurrency", "ALL"},
-                                { "wttype", "0"},
-                                { "data[0][name]", "sEcho"},
-                                { "data[0][value]", _fy_secho++.ToString()},
-                                { "data[1][name]", "iColumns"},
-                                { "data[1][value]", "18"},
-                                { "data[2][name]", "sColumns"},
-                                { "data[2][value]", ""},
-                                { "data[3][name]", "iDisplayStart"},
-                                { "data[3][value]", result_pages.ToString()},
-                                { "data[4][name]", "iDisplayLength"},
-                                { "data[4][value]", _display_length_fy.ToString()}
+                                {"s_btype", ""},
+                                {"ptype", "1411"},
+                                {"fs_ptype", "1411"},
+                                {"s_StartTime", gettotal_start_datetime},
+                                {"s_EndTime", gettotal_end_datetime},
+                                {"s_type", "1"},
+                                {"s_keyword", "0"},
+                                {"s_playercurrency", "ALL"},
+                                {"wttype", "0"},
+                                {"data[0][name]", "sEcho"},
+                                {"data[0][value]", _fy_secho++.ToString()},
+                                {"data[1][name]", "iColumns"},
+                                {"data[1][value]", "18"},
+                                {"data[2][name]", "sColumns"},
+                                {"data[2][value]", ""},
+                                {"data[3][name]", "iDisplayStart"},
+                                {"data[3][value]", result_pages.ToString()},
+                                {"data[4][name]", "iDisplayLength"},
+                                {"data[4][value]", _display_length_fy.ToString()}
                             };
 
                             // status
@@ -1199,22 +1199,22 @@ namespace Cronos_Data
                             DateTime start_datetime_replace = DateTime.ParseExact(gettotal_start_datetime, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
                             var reqparm = new NameValueCollection
                             {
-                                { "s_btype", ""},
-                                { "skip", "0"},
-                                { "s_StartTime", start_datetime_replace.AddDays(-1).ToString("yyyy-MM-dd HH:mm:ss")},
-                                { "s_EndTime", gettotal_end_datetime},
-                                { "s_type", "0"},
-                                { "s_keyword", "0"},
-                                { "data[0][name]", "sEcho"},
-                                { "data[0][value]", _fy_secho++.ToString()},
-                                { "data[1][name]", "iColumns"},
-                                { "data[1][value]", "18"},
-                                { "data[2][name]", "sColumns"},
-                                { "data[2][value]", ""},
-                                { "data[3][name]", "iDisplayStart"},
-                                { "data[3][value]", "0"},
-                                { "data[4][name]", "iDisplayLength"},
-                                { "data[4][value]", _display_length_fy.ToString()}
+                                {"s_btype", ""},
+                                {"skip", "0"},
+                                {"s_StartTime", start_datetime_replace.AddDays(-1).ToString("yyyy-MM-dd HH:mm:ss")},
+                                {"s_EndTime", gettotal_end_datetime},
+                                {"s_type", "0"},
+                                {"s_keyword", "0"},
+                                {"data[0][name]", "sEcho"},
+                                {"data[0][value]", _fy_secho++.ToString()},
+                                {"data[1][name]", "iColumns"},
+                                {"data[1][value]", "18"},
+                                {"data[2][name]", "sColumns"},
+                                {"data[2][value]", ""},
+                                {"data[3][name]", "iDisplayStart"},
+                                {"data[3][value]", "0"},
+                                {"data[4][name]", "iDisplayLength"},
+                                {"data[4][value]", _display_length_fy.ToString()}
                             };
 
                             // status
@@ -1230,26 +1230,26 @@ namespace Cronos_Data
                         // Bet Record
                         var reqparm = new NameValueCollection
                         {
-                            { "s_btype", ""},
-                            { "betNo", ""},
-                            { "name", ""},
-                            { "gpid", "0" },
-                            { "wager_settle", "0"},
-                            { "valid_inva", ""},
-                            { "start",  gettotal_start_datetime},
-                            { "end", gettotal_end_datetime},
-                            { "skip", "0"},
-                            { "ftime_188", "bettime"},
-                            { "data[0][name]", "sEcho"},
-                            { "data[0][value]", _fy_secho++.ToString()},
-                            { "data[1][name]", "iColumns"},
-                            { "data[1][value]", "12"},
-                            { "data[2][name]", "sColumns"},
-                            { "data[2][value]", ""},
-                            { "data[3][name]", "iDisplayStart"},
-                            { "data[3][value]", result_pages.ToString()},
-                            { "data[4][name]", "iDisplayLength"},
-                            { "data[4][value]", _display_length_fy.ToString()}
+                            {"s_btype", ""},
+                            {"betNo", ""},
+                            {"name", ""},
+                            {"gpid", "0"},
+                            {"wager_settle", "0"},
+                            {"valid_inva", ""},
+                            {"start", gettotal_start_datetime},
+                            {"end", gettotal_end_datetime},
+                            {"skip", "0"},
+                            {"ftime_188", "bettime"},
+                            {"data[0][name]", "sEcho"},
+                            {"data[0][value]", _fy_secho++.ToString()},
+                            {"data[1][name]", "iColumns"},
+                            {"data[1][value]", "12"},
+                            {"data[2][name]", "sColumns"},
+                            {"data[2][value]", ""},
+                            {"data[3][name]", "iDisplayStart"},
+                            {"data[3][value]", result_pages.ToString()},
+                            {"data[4][name]", "iDisplayLength"},
+                            {"data[4][value]", _display_length_fy.ToString()}
                         };
 
                         label_fy_status.Text = "status: getting data... BET RECORD";
@@ -1504,7 +1504,7 @@ namespace Cronos_Data
                                     string first_deposit_get_replace = "";
                                     string first_deposit_get = "";
                                     
-                                    if (replace_status == "success" && !member.Contains("test") && !vip.ToString().Contains("test"))
+                                    if (replace_status == "success" && !member.ToString().ToLower().Contains("test") && !vip.ToString().ToLower().Contains("test"))
                                     {
                                         // get last deposit in temp file
                                         string memberlist_temp = Path.Combine(Path.GetTempPath(), "FY Registration Deposit.txt");
@@ -1855,7 +1855,7 @@ namespace Cronos_Data
                                     string first_deposit_get_replace = "";
                                     string first_deposit_get = "";
 
-                                    if (!member.Contains("test") && !vip.ToString().Contains("test"))
+                                    if (!member.ToString().ToLower().Contains("test") && !vip.ToString().ToLower().Contains("test"))
                                     {
                                         // get last deposit in temp file
                                         string memberlist_temp = Path.Combine(Path.GetTempPath(), "FY Registration Deposit.txt");
@@ -2103,7 +2103,7 @@ namespace Cronos_Data
                                     string pg_type = "";
                                     string bank_account_fy_temp = Path.Combine(Path.GetTempPath(), "FY Payment Type Code.txt");
 
-                                    if (!transaction_id.ToString().Contains("wrong"))
+                                    if (!transaction_id.ToString().ToLower().Contains("wrong"))
                                     {
                                         using (StreamReader sr = File.OpenText(bank_account_fy_temp))
                                         {
@@ -2242,7 +2242,7 @@ namespace Cronos_Data
                                     string pg_type = "";
                                     string bank_account_fy_temp = Path.Combine(Path.GetTempPath(), "FY Payment Type Code.txt");
 
-                                    if (!remark.ToString().Contains("wrong"))
+                                    if (!remark.ToString().ToLower().Contains("wrong"))
                                     {
                                         using (StreamReader sr = File.OpenText(bank_account_fy_temp))
                                         {
@@ -2436,7 +2436,7 @@ namespace Cronos_Data
                                     }
                                 }
 
-                                if (!member.ToString().Contains("test") || !vip.ToString().Contains("test") || !remark.ToString().Contains("test"))
+                                if (!member.ToString().ToLower().Contains("test") || !vip.ToString().ToLower().Contains("test") || !remark.ToString().ToLower().Contains("test"))
                                 {
                                     if (bonus_category == "" && purpose == "")
                                     {
