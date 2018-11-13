@@ -241,8 +241,8 @@ namespace Cronos_Data
                         if (webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/account/login"))
                         {
                             webBrowser_fy.Document.Window.ScrollTo(0, 180);
-                            //webBrowser_fy.Document.GetElementById("csname").SetAttribute("value", "central12");
-                            //webBrowser_fy.Document.GetElementById("cspwd").SetAttribute("value", "abc123");
+                            webBrowser_fy.Document.GetElementById("csname").SetAttribute("value", "central12");
+                            webBrowser_fy.Document.GetElementById("cspwd").SetAttribute("value", "abc123");
                             webBrowser_fy.Document.GetElementById("la").Enabled = false;
                             get_value = webBrowser_fy.Document.GetElementById("la").GetAttribute("value");
 
@@ -681,25 +681,25 @@ namespace Cronos_Data
                         {
                             // Manual Deposit Record
                             var reqparm = new NameValueCollection
-                        {
-                            {"s_btype", ""},
-                            {"ptype", "1212"},
-                            {"fs_ptype", "1212"},
-                            {"s_StartTime", gettotal_start_datetime},
-                            {"s_EndTime", gettotal_end_datetime},
-                            {"s_type", "1"},
-                            {"s_keyword", ""},
-                            {"data[0][name]", "sEcho"},
-                            {"data[0][value]", _fy_secho++.ToString()},
-                            {"data[1][name]", "iColumns"},
-                            {"data[1][value]", "18"},
-                            {"data[2][name]", "sColumns"},
-                            {"data[2][value]", ""},
-                            {"data[3][name]", "iDisplayStart"},
-                            {"data[3][value]", "0"},
-                            {"data[4][name]", "iDisplayLength"},
-                            {"data[4][value]", _display_length_fy.ToString()}
-                        };
+                            {
+                                {"s_btype", ""},
+                                {"ptype", "1212"},
+                                {"fs_ptype", "1212"},
+                                {"s_StartTime", gettotal_start_datetime},
+                                {"s_EndTime", gettotal_end_datetime},
+                                {"s_type", "1"},
+                                {"s_keyword", ""},
+                                {"data[0][name]", "sEcho"},
+                                {"data[0][value]", _fy_secho++.ToString()},
+                                {"data[1][name]", "iColumns"},
+                                {"data[1][value]", "18"},
+                                {"data[2][name]", "sColumns"},
+                                {"data[2][value]", ""},
+                                {"data[3][name]", "iDisplayStart"},
+                                {"data[3][value]", "0"},
+                                {"data[4][name]", "iDisplayLength"},
+                                {"data[4][value]", _display_length_fy.ToString()}
+                            };
 
                             // status
                             label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
@@ -1021,25 +1021,25 @@ namespace Cronos_Data
                             {
                                 // Manual Deposit Record
                                 var reqparm = new NameValueCollection
-                            {
-                                {"s_btype", ""},
-                                {"ptype", "1212"},
-                                {"fs_ptype", "1212"},
-                                {"s_StartTime", gettotal_start_datetime},
-                                {"s_EndTime", gettotal_end_datetime},
-                                {"s_type", "1"},
-                                {"s_keyword", ""},
-                                {"data[0][name]", "sEcho"},
-                                {"data[0][value]", _fy_secho++.ToString()},
-                                {"data[1][name]", "iColumns"},
-                                {"data[1][value]", "18"},
-                                {"data[2][name]", "sColumns"},
-                                {"data[2][value]", ""},
-                                {"data[3][name]", "iDisplayStart"},
-                                {"data[3][value]", "0"},
-                                {"data[4][name]", "iDisplayLength"},
-                                {"data[4][value]", _display_length_fy.ToString()}
-                            };
+                                {
+                                    {"s_btype", ""},
+                                    {"ptype", "1212"},
+                                    {"fs_ptype", "1212"},
+                                    {"s_StartTime", gettotal_start_datetime},
+                                    {"s_EndTime", gettotal_end_datetime},
+                                    {"s_type", "1"},
+                                    {"s_keyword", ""},
+                                    {"data[0][name]", "sEcho"},
+                                    {"data[0][value]", _fy_secho++.ToString()},
+                                    {"data[1][name]", "iColumns"},
+                                    {"data[1][value]", "18"},
+                                    {"data[2][name]", "sColumns"},
+                                    {"data[2][value]", ""},
+                                    {"data[3][name]", "iDisplayStart"},
+                                    {"data[3][value]", "0"},
+                                    {"data[4][name]", "iDisplayLength"},
+                                    {"data[4][value]", _display_length_fy.ToString()}
+                                };
 
                                 // status
                                 label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
@@ -1320,6 +1320,13 @@ namespace Cronos_Data
                                             break;
                                         }
                                     }
+                                    if (payment_type.ToString() != "")
+                                    {
+                                        if (payment_type.ToString().Substring(payment_type.ToString().Length - 1, 1) == "-")
+                                        {
+                                            payment_type = payment_type.ToString().Remove(payment_type.ToString().Length - 1);
+                                        }
+                                    }
                                     JToken status_get = jo_fy.SelectToken("$.aaData[" + ii + "][12]").ToString().Replace("\"", "");
                                     string status = Regex.Match(status_get.ToString(), "<font(.*?)>(.*?)</font>").Groups[2].Value;
                                     string replace_status = status.ToLower();
@@ -1457,8 +1464,7 @@ namespace Cronos_Data
                                         // >60
                                         duration_time = ">60min";
                                     }
-
-                                    string transaction_time = "";
+                                    
                                     string retained = "";
                                     string fd_date = "";
                                     string new_fy = "";
@@ -1678,7 +1684,37 @@ namespace Cronos_Data
                                         _fy_csv.AppendLine(header);
                                     }
 
-                                    var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19}", "FY", "\"" + month.ToString("MM/01/yyyy") + "\"", "\"" + date + "\"", "\"" + submitted_date + "\"", "\"" + updated_date + " " + updated_time + "\"", "\"" + member + "\"", "\"" + payment_type + "\"", "\"" + pg_company + "\"", "\"" + pg_type + "\"", "\"" + "'" + transaction_id.Replace(",", "") + "\"", "\"" + amount.ToString().Replace("-", "") + "\"", "\"" + "" + "\"", "\"" + "Deposit" + "\"", "\"" + duration_time + "\"", "\"" + vip + "\"", "\"" + status + "\"", "\"" + retained + "\"", "\"" + fd_date + "\"", "\"" + new_fy + "\"", "\"" + reactivated + "\"");
+                                    String date_get = DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd");
+                                    DateTime submitted_date_ = DateTime.ParseExact(submitted_date, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+                                    DateTime updated_date_ = DateTime.ParseExact(updated_date + " " + updated_time, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+                                    TimeSpan transaction_time = updated_date_ - submitted_date_;
+                                    string transaction_time_get = "";
+                                    if (transaction_time.Hours.ToString().Length == 1)
+                                    {
+                                        transaction_time_get += "0" + transaction_time.Hours + ":";
+                                    }
+                                    else
+                                    {
+                                        transaction_time_get += transaction_time.Hours + ":";
+                                    }
+                                    if (transaction_time.Minutes.ToString().Length == 1)
+                                    {
+                                        transaction_time_get += "0" + transaction_time.Minutes + ":";
+                                    }
+                                    else
+                                    {
+                                        transaction_time_get += transaction_time.Minutes + ":";
+                                    }
+                                    if (transaction_time.Seconds.ToString().Length == 1)
+                                    {
+                                        transaction_time_get += "0" + transaction_time.Seconds;
+                                    }
+                                    else
+                                    {
+                                        transaction_time_get += transaction_time.Seconds;
+                                    }
+
+                                    var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19}", "FY", "\"" + month.ToString("MM/01/yyyy") + "\"", "\"" + date_get + "\"", "\"" + submitted_date + "\"", "\"" + updated_date + " " + updated_time + "\"", "\"" + member + "\"", "\"" + payment_type + "\"", "\"" + pg_company + "\"", "\"" + pg_type + "\"", "\"" + "'" + transaction_id.Replace(",", "") + "\"", "\"" + amount.ToString().Replace("-", "") + "\"", "\"" + transaction_time_get + "\"", "\"" + "Deposit" + "\"", "\"" + duration_time + "\"", "\"" + vip + "\"", "\"" + status + "\"", "\"" + retained + "\"", "\"" + fd_date + "\"", "\"" + new_fy + "\"", "\"" + reactivated + "\"");
                                     _fy_csv.AppendLine(newLine);
                                 }
                                 else
@@ -1693,6 +1729,13 @@ namespace Cronos_Data
                                     string submitted_date = submitted_date__submitted_time.ToString().Substring(0, 10);
                                     string submitted_time = submitted_date__submitted_time.ToString().Substring(15);
                                     JToken payment_type = jo_fy.SelectToken("$.aaData[" + ii + "][7]").ToString().Replace("\"", "");
+                                    if (payment_type.ToString() != "")
+                                    {
+                                        if (payment_type.ToString().Substring(payment_type.ToString().Length - 1, 1) == "-")
+                                        {
+                                            payment_type = payment_type.ToString().Remove(payment_type.ToString().Length - 1);
+                                        }
+                                    }
                                     DateTime month = DateTime.ParseExact(submitted_date, "yyyy-MM-dd", CultureInfo.InvariantCulture);
 
                                     // Bank account
@@ -1808,8 +1851,7 @@ namespace Cronos_Data
                                         // >60
                                         duration_time = ">60min";
                                     }
-
-                                    string transaction_time = "";
+                                    
                                     string retained = "";
                                     string fd_date = "";
                                     string new_fy = "";
@@ -2015,7 +2057,37 @@ namespace Cronos_Data
                                         reactivated = "";
                                     }
 
-                                    var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19}", "FY", "\"" + month.ToString("MM/01/yyyy") + "\"", "\"" + submitted_date + "\"", "\"" + submitted_date + " " + submitted_time + "\"", "\"" + submitted_date + " " + submitted_time + "\"", "\"" + member + "\"", "\"" + payment_type + "\"", "\"" + pg_company + "\"", "\"" + pg_type + "\"", "\"" + remark.ToString().Replace(",", "") + "\"", "\"" + amount.ToString().Replace("-", "") + "\"", "\"" + "" + "\"", "\"" + "Deposit" + "\"", "\"" + duration_time + "\"", "\"" + vip + "\"", "\"" + "Success" + "\"", "\"" + retained + "\"", "\"" + fd_date + "\"", "\"" + new_fy + "\"", "\"" + reactivated + "\"");
+                                    String date_get = DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd");
+                                    DateTime submitted_date_ = DateTime.ParseExact(submitted_date + " " + submitted_time, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+                                    DateTime updated_date_ = DateTime.ParseExact(submitted_date + " " + submitted_time, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+                                    TimeSpan transaction_time = updated_date_ - submitted_date_;
+                                    string transaction_time_get = "";
+                                    if (transaction_time.Hours.ToString().Length == 1)
+                                    {
+                                        transaction_time_get += "0" + transaction_time.Hours + ":";
+                                    }
+                                    else
+                                    {
+                                        transaction_time_get += transaction_time.Hours + ":";
+                                    }
+                                    if (transaction_time.Minutes.ToString().Length == 1)
+                                    {
+                                        transaction_time_get += "0" + transaction_time.Minutes + ":";
+                                    }
+                                    else
+                                    {
+                                        transaction_time_get += transaction_time.Minutes + ":";
+                                    }
+                                    if (transaction_time.Seconds.ToString().Length == 1)
+                                    {
+                                        transaction_time_get += "0" + transaction_time.Seconds;
+                                    }
+                                    else
+                                    {
+                                        transaction_time_get += transaction_time.Seconds;
+                                    }
+
+                                    var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19}", "FY", "\"" + month.ToString("MM/01/yyyy") + "\"", "\"" + date_get + "\"", "\"" + submitted_date + " " + submitted_time + "\"", "\"" + submitted_date + " " + submitted_time + "\"", "\"" + member + "\"", "\"" + payment_type + "\"", "\"" + pg_company + "\"", "\"" + pg_type + "\"", "\"" + remark.ToString().Replace(",", "") + "\"", "\"" + amount.ToString().Replace("-", "") + "\"", "\"" + transaction_time_get + "\"", "\"" + "Deposit" + "\"", "\"" + duration_time + "\"", "\"" + vip + "\"", "\"" + "Success" + "\"", "\"" + retained + "\"", "\"" + fd_date + "\"", "\"" + new_fy + "\"", "\"" + reactivated + "\"");
                                     _fy_csv.AppendLine(newLine);
                                 }
                             }
@@ -2053,6 +2125,13 @@ namespace Cronos_Data
                                         {
                                             payment_type = obj;
                                             break;
+                                        }
+                                    }
+                                    if (payment_type.ToString() != "")
+                                    {
+                                        if (payment_type.ToString().Substring(payment_type.ToString().Length - 1, 1) == "-")
+                                        {
+                                            payment_type = payment_type.ToString().Remove(payment_type.ToString().Length - 1);
                                         }
                                     }
                                     JToken updated_date__updated_time = jo_fy.SelectToken("$.aaData[" + ii + "][13]").ToString().Replace("\"", "");
@@ -2183,7 +2262,37 @@ namespace Cronos_Data
                                         duration_time = ">60min";
                                     }
 
-                                    var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19}", "FY", "\"" + month.ToString("MM/01/yyyy") + "\"", "\"" + date + "\"", "\"" + submitted_date + " " + submitted_time + "\"", "\"" + updated_date__updated_time + "\"", "\"" + member + "\"", "\"" + payment_type + "\"", "\"" + pg_company + "\"", "\"" + pg_type + "\"", "\"" + "'" + transaction_id + "\"", "\"" + amount.ToString().Replace("-", "") + "\"", "\"" + "" + "\"", "\"" + "Withdrawal" + "\"", "\"" + duration_time + "\"", "\"" + vip + "\"", "\"" + status + "\"", "\"" + "" + "\"", "\"" + "" + "\"", "\"" + "" + "\"", "\"" + "" + "\"");
+                                    String date_get = DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd");
+                                    DateTime submitted_date_ = DateTime.ParseExact(submitted_date + " " + submitted_time, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+                                    DateTime updated_date_ = DateTime.ParseExact(updated_date__updated_time.ToString(), "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+                                    TimeSpan transaction_time = updated_date_ - submitted_date_;
+                                    string transaction_time_get = "";
+                                    if (transaction_time.Hours.ToString().Length == 1)
+                                    {
+                                        transaction_time_get += "0" + transaction_time.Hours + ":";
+                                    }
+                                    else
+                                    {
+                                        transaction_time_get += transaction_time.Hours + ":";
+                                    }
+                                    if (transaction_time.Minutes.ToString().Length == 1)
+                                    {
+                                        transaction_time_get += "0" + transaction_time.Minutes + ":";
+                                    }
+                                    else
+                                    {
+                                        transaction_time_get += transaction_time.Minutes + ":";
+                                    }
+                                    if (transaction_time.Seconds.ToString().Length == 1)
+                                    {
+                                        transaction_time_get += "0" + transaction_time.Seconds;
+                                    }
+                                    else
+                                    {
+                                        transaction_time_get += transaction_time.Seconds;
+                                    }
+
+                                    var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19}", "FY", "\"" + month.ToString("MM/01/yyyy") + "\"", "\"" + date_get + "\"", "\"" + submitted_date + " " + submitted_time + "\"", "\"" + updated_date__updated_time + "\"", "\"" + member + "\"", "\"" + payment_type + "\"", "\"" + pg_company + "\"", "\"" + pg_type + "\"", "\"" + "'" + transaction_id + "\"", "\"" + amount.ToString().Replace("-", "") + "\"", "\"" + transaction_time_get + "\"", "\"" + "Withdrawal" + "\"", "\"" + duration_time + "\"", "\"" + vip + "\"", "\"" + status + "\"", "\"" + "" + "\"", "\"" + "" + "\"", "\"" + "" + "\"", "\"" + "" + "\"");
                                     _fy_csv.AppendLine(newLine);
                                 }
                                 else
@@ -2198,6 +2307,13 @@ namespace Cronos_Data
                                     string submitted_date = submitted_date__submitted_time.ToString().Substring(0, 10);
                                     string submitted_time = submitted_date__submitted_time.ToString().Substring(15);
                                     JToken payment_type = jo_fy.SelectToken("$.aaData[" + ii + "][7]").ToString().Replace("\"", "");
+                                    if (payment_type.ToString() != "")
+                                    {
+                                        if (payment_type.ToString().Substring(payment_type.ToString().Length - 1, 1) == "-")
+                                        {
+                                            payment_type = payment_type.ToString().Remove(payment_type.ToString().Length - 1);
+                                        }
+                                    }
                                     DateTime month = DateTime.ParseExact(submitted_date, "yyyy-MM-dd", CultureInfo.InvariantCulture);
 
                                     // Bank account
@@ -2322,7 +2438,37 @@ namespace Cronos_Data
                                         duration_time = ">60min";
                                     }
 
-                                    var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19}", "FY", "\"" + month.ToString("MM/01/yyyy") + "\"", "\"" + submitted_date + "\"", "\"" + submitted_date + " " + submitted_time + "\"", "\"" + submitted_date + " " + submitted_time + "\"", "\"" + member + "\"", "\"" + payment_type + "\"", "\"" + pg_company + "\"", "\"" + pg_type + "\"", "\"" + remark + "\"", "\"" + amount.ToString().Replace("-", "") + "\"", "\"" + "" + "\"", "\"" + "Withdrawal" + "\"", "\"" + duration_time + "\"", "\"" + vip + "\"", "\"" + "Success" + "\"", "\"" + "" + "\"", "\"" + "" + "\"", "\"" + "" + "\"", "\"" + "" + "\"");
+                                    String date_get = DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd");
+                                    DateTime submitted_date_ = DateTime.ParseExact(submitted_date + " " + submitted_time, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+                                    DateTime updated_date_ = DateTime.ParseExact(submitted_date + " " + submitted_time, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+                                    TimeSpan transaction_time = updated_date_ - submitted_date_;
+                                    string transaction_time_get = "";
+                                    if (transaction_time.Hours.ToString().Length == 1)
+                                    {
+                                        transaction_time_get += "0" + transaction_time.Hours + ":";
+                                    }
+                                    else
+                                    {
+                                        transaction_time_get += transaction_time.Hours + ":";
+                                    }
+                                    if (transaction_time.Minutes.ToString().Length == 1)
+                                    {
+                                        transaction_time_get += "0" + transaction_time.Minutes + ":";
+                                    }
+                                    else
+                                    {
+                                        transaction_time_get += transaction_time.Minutes + ":";
+                                    }
+                                    if (transaction_time.Seconds.ToString().Length == 1)
+                                    {
+                                        transaction_time_get += "0" + transaction_time.Seconds;
+                                    }
+                                    else
+                                    {
+                                        transaction_time_get += transaction_time.Seconds;
+                                    }
+
+                                    var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19}", "FY", "\"" + month.ToString("MM/01/yyyy") + "\"", "\"" + date_get + "\"", "\"" + submitted_date + " " + submitted_time + "\"", "\"" + submitted_date + " " + submitted_time + "\"", "\"" + member + "\"", "\"" + payment_type + "\"", "\"" + pg_company + "\"", "\"" + pg_type + "\"", "\"" + remark + "\"", "\"" + amount.ToString().Replace("-", "") + "\"", "\"" + transaction_time_get + "\"", "\"" + "Withdrawal" + "\"", "\"" + duration_time + "\"", "\"" + vip + "\"", "\"" + "Success" + "\"", "\"" + "" + "\"", "\"" + "" + "\"", "\"" + "" + "\"", "\"" + "" + "\"");
                                     _fy_csv.AppendLine(newLine);
                                 }
                             }
@@ -2701,6 +2847,7 @@ namespace Cronos_Data
                                         worksheet.Columns[2].NumberFormat = "MMM-yy";
                                         worksheet.Columns[4].NumberFormat = "hh:mm:ss AM/PM";
                                         worksheet.Columns[5].NumberFormat = "hh:mm:ss AM/PM";
+                                        worksheet.Columns[12].NumberFormat = "HH:mm";
                                         //worksheet.Columns[8].Replace(" ", "");
                                         worksheet.Columns[8].NumberFormat = "@";
                                         //asd123
@@ -2796,6 +2943,7 @@ namespace Cronos_Data
                                         worksheet.Columns[2].NumberFormat = "MMM-yy";
                                         worksheet.Columns[4].NumberFormat = "hh:mm:ss AM/PM";
                                         worksheet.Columns[5].NumberFormat = "hh:mm:ss AM/PM";
+                                        worksheet.Columns[12].NumberFormat = "HH:mm";
                                         //worksheet.Columns[8].Replace(" ", "");
                                         //worksheet.Columns[8].NumberFormat = "@";
                                         Excel.Range usedRange = worksheet.UsedRange;
@@ -2886,6 +3034,7 @@ namespace Cronos_Data
                                         worksheet.Columns[2].NumberFormat = "MMM-yy";
                                         worksheet.Columns[4].NumberFormat = "hh:mm:ss AM/PM";
                                         worksheet.Columns[5].NumberFormat = "hh:mm:ss AM/PM";
+                                        worksheet.Columns[12].NumberFormat = "HH:mm";
                                         //worksheet.Columns[8].Replace(" ", "");
                                         worksheet.Columns[8].NumberFormat = "@";
                                         Excel.Range usedRange = worksheet.UsedRange;
@@ -2972,6 +3121,7 @@ namespace Cronos_Data
                                         worksheet.Columns[2].NumberFormat = "MMM-yy";
                                         worksheet.Columns[4].NumberFormat = "hh:mm:ss AM/PM";
                                         worksheet.Columns[5].NumberFormat = "hh:mm:ss AM/PM";
+                                        worksheet.Columns[12].NumberFormat = "HH:mm";
                                         //worksheet.Columns[8].Replace(" ", "");
                                         //worksheet.Columns[8].NumberFormat = "@";
                                         Excel.Range usedRange = worksheet.UsedRange;
@@ -3393,6 +3543,7 @@ namespace Cronos_Data
                         worksheet.Columns[2].NumberFormat = "MMM-yy";
                         worksheet.Columns[4].NumberFormat = "hh:mm:ss AM/PM";
                         worksheet.Columns[5].NumberFormat = "hh:mm:ss AM/PM";
+                        worksheet.Columns[12].NumberFormat = "HH:mm";
                         //worksheet.Columns[8].Replace(" ", "");
                         worksheet.Columns[8].NumberFormat = "@";
                         //asd123
@@ -3482,6 +3633,7 @@ namespace Cronos_Data
                         worksheet.Columns[2].NumberFormat = "MMM-yy";
                         worksheet.Columns[4].NumberFormat = "hh:mm:ss AM/PM";
                         worksheet.Columns[5].NumberFormat = "hh:mm:ss AM/PM";
+                        worksheet.Columns[12].NumberFormat = "HH:mm";
                         //worksheet.Columns[8].Replace(" ", "");
                         worksheet.Columns[8].NumberFormat = "@";
                         Excel.Range usedRange = worksheet.UsedRange;
@@ -3572,6 +3724,7 @@ namespace Cronos_Data
                         worksheet.Columns[2].NumberFormat = "MMM-yy";
                         worksheet.Columns[4].NumberFormat = "hh:mm:ss AM/PM";
                         worksheet.Columns[5].NumberFormat = "hh:mm:ss AM/PM";
+                        worksheet.Columns[12].NumberFormat = "HH:mm";
                         //worksheet.Columns[8].Replace(" ", "");
                         worksheet.Columns[8].NumberFormat = "@";
                         Excel.Range usedRange = worksheet.UsedRange;
@@ -3658,6 +3811,7 @@ namespace Cronos_Data
                         worksheet.Columns[2].NumberFormat = "MMM-yy";
                         worksheet.Columns[4].NumberFormat = "hh:mm:ss AM/PM";
                         worksheet.Columns[5].NumberFormat = "hh:mm:ss AM/PM";
+                        worksheet.Columns[12].NumberFormat = "HH:mm";
                         //worksheet.Columns[8].Replace(" ", "");
                         worksheet.Columns[8].NumberFormat = "@";
                         Excel.Range usedRange = worksheet.UsedRange;
@@ -4787,8 +4941,8 @@ namespace Cronos_Data
 
                     using (SqlTransaction transaction = conn.BeginTransaction())
                     {
-                        String insertCommand = @"INSERT INTO [testrain].[dbo].[FY.Payment Logs] ([Month], [Date], [Submitted Date], [Member], [Amount], [Payment Type], [Status], [Updated Date], [Duration Time], [VIP], [Transaction Type], [Transaction ID], [Brand], [PG Company], [PG Type], [Retained], [FD Date], [New], [Reactivated], [File Name]) ";
-                        insertCommand += @"VALUES (@month, @date, @submitted_date, @member, @amount, @payment_type, @status, @updated_date, @duration_time, @vip, @transaction_type, @transaction_id, @brand, @pg_company, @pg_type, @retained, @fd_date ,@new, @reactivated, @file_name)";
+                        String insertCommand = @"INSERT INTO [testrain].[dbo].[FY.Payment Logs] ([Month], [Date], [Submitted Date], [Member], [Amount], [Payment Type], [Status], [Updated Date], [Transaction Time], [Duration Time], [VIP], [Transaction Type], [Transaction ID], [Brand], [PG Company], [PG Type], [Retained], [FD Date], [New], [Reactivated], [File Name]) ";
+                        insertCommand += @"VALUES (@month, @date, @submitted_date, @member, @amount, @payment_type, @status, @updated_date, @transaction_time, @duration_time, @vip, @transaction_type, @transaction_id, @brand, @pg_company, @pg_type, @retained, @fd_date ,@new, @reactivated, @file_name)";
 
                         String[] fileContent = File.ReadAllLines(path);
 
@@ -4836,6 +4990,7 @@ namespace Cronos_Data
                                         // Updated Date
                                         command.Parameters.Add("updated_date", SqlDbType.DateTime).Value = columns[3].Replace("\"", "");
                                         // Transaction Time
+                                        command.Parameters.Add("transaction_time", SqlDbType.DateTime).Value = "1899-12-30 " +  columns[10].Replace("\"", "");
                                         // Duration Time
                                         command.Parameters.Add("duration_time", SqlDbType.NVarChar).Value = columns[12].Replace("\"", "");
                                         // VIP
@@ -5059,7 +5214,7 @@ namespace Cronos_Data
                             }
                         }
 
-                        transaction.Commit();
+                        transaction.Commit(); 
                     }
 
                     conn.Close();
@@ -5078,6 +5233,7 @@ namespace Cronos_Data
         {
             button_fy_proceed.Text = "SENDING...";
             button_fy_proceed.Enabled = false;
+            WindowState = FormWindowState.Normal;
             label_fy_locatefolder.Enabled = false;
             label_fy_insert.Visible = true;
 
@@ -5232,169 +5388,6 @@ namespace Cronos_Data
             }
 
             return true;
-        }
-
-        private void InsertMemberList_FY(string path)
-        {
-            button_fy_proceed.Text = "SENDING...";
-            button_fy_proceed.Enabled = false;
-            label_fy_locatefolder.Enabled = false;
-            label_fy_insert.Visible = true;
-
-            try
-            {
-                string connection = "Data Source=192.168.10.252;User ID=sa;password=Test@123;Initial Catalog=testrain;Integrated Security=True;Trusted_Connection=false;";
-
-                using (SqlConnection conn = new SqlConnection(connection))
-                {
-                    conn.Open();
-
-                    using (SqlTransaction transaction = conn.BeginTransaction())
-                    {
-                        String insertCommand = @"INSERT INTO [testrain].[dbo].[FY.Registration Report] ([Username], [Name], [Registration Date], [Month Reg], [VIP Level], [Status], [Contact Number], [Email], [First Deposit Date], [First Deposit Month], [Last Deposit Date], [Last Login Date], [IP Address], [Source], [Date Registered], [Brand], [File Name]) ";
-                        insertCommand += @"VALUES (@username, @name, @registration_date, @month_reg, @vip, @status, @contact_number, @email, @fd, @fdm, @ld, @ll, @ip, @source, @date_registered, @brand, @file_name)";
-
-                        String[] fileContent = File.ReadAllLines(path);
-                        string last_date = "";
-                        using (SqlCommand command = conn.CreateCommand())
-                        {
-                            command.CommandText = insertCommand;
-                            command.CommandType = CommandType.Text;
-                            command.Transaction = transaction;
-
-                            int count = 0;
-                            int display_count = 0;
-                            foreach (String dataLine in fileContent)
-                            {
-                                if (dataLine.Length > 1)
-                                {
-                                    Application.DoEvents();
-                                    count++;
-
-                                    if (count != 1)
-                                    {
-                                        display_count++;
-                                        label_fy_insert.Text = display_count.ToString("N0");
-
-                                        String[] columns = dataLine.Split("\",\"");
-                                        command.Parameters.Clear();
-
-                                        // Username
-                                        columns[0] = columns[0].Replace("\"", "");
-                                        columns[0] = columns[0].Replace("FY,", "");
-                                        command.Parameters.Add("username", SqlDbType.NVarChar).Value = columns[0].Replace("\"", "");
-                                        // Name
-                                        command.Parameters.Add("name", SqlDbType.NVarChar).Value = columns[1].Replace("\"", "");
-                                        // Registration Date
-                                        command.Parameters.Add("registration_date", SqlDbType.DateTime).Value = columns[9].Replace("\"", "") + " 00:00:00";
-                                        // Month Reg
-                                        command.Parameters.Add("month_reg", SqlDbType.DateTime).Value = columns[10].Replace("\"", "") + " 00:00:00";
-                                        // VIP
-                                        command.Parameters.Add("vip", SqlDbType.NVarChar).Value = columns[8].Replace("\"", "");
-                                        // Status
-                                        command.Parameters.Add("status", SqlDbType.NVarChar).Value = columns[2].Replace("\"", "");
-                                        // Contact Number
-                                        if (columns[6].Replace("\"", "") != "")
-                                        {
-                                            command.Parameters.Add("contact_number", SqlDbType.Float).Value = columns[6].Replace("\"", "");
-                                        }
-                                        else
-                                        {
-                                            command.Parameters.Add("contact_number", SqlDbType.Float).Value = DBNull.Value;
-                                        }
-                                        // Email
-                                        if (columns[7].Replace("\"", "") != "")
-                                        {
-                                            command.Parameters.Add("email", SqlDbType.NVarChar).Value = columns[7].Replace("\"", "");
-                                        }
-                                        else
-                                        {
-                                            command.Parameters.Add("email", SqlDbType.NVarChar).Value = DBNull.Value;
-                                        }
-                                        // FD
-                                        if (columns[11].Replace("\"", "") != "")
-                                        {
-                                            command.Parameters.Add("fd", SqlDbType.DateTime).Value = columns[11].Replace("\"", "");
-                                        }
-                                        else
-                                        {
-                                            command.Parameters.Add("fd", SqlDbType.DateTime).Value = DBNull.Value;
-                                        }
-                                        // FDM
-                                        if (columns[12].Replace("\"", "") != "")
-                                        {
-                                            command.Parameters.Add("fdm", SqlDbType.DateTime).Value = columns[12].Replace("\"", "") + " 00:00:00";
-                                        }
-                                        else
-                                        {
-                                            command.Parameters.Add("fdm", SqlDbType.DateTime).Value = DBNull.Value;
-                                        }
-                                        // LD
-                                        if (columns[5].Replace("\"", "") != "")
-                                        {
-                                            command.Parameters.Add("ld", SqlDbType.DateTime).Value = columns[5].Replace("\"", "");
-                                        }
-                                        else
-                                        {
-                                            command.Parameters.Add("ld", SqlDbType.DateTime).Value = DBNull.Value;
-                                        }
-                                        // LL
-                                        if (columns[4].Replace("\"", "") != "")
-                                        {
-                                            command.Parameters.Add("ll", SqlDbType.DateTime).Value = columns[4].Replace("\"", "");
-                                        }
-                                        else
-                                        {
-                                            command.Parameters.Add("ll", SqlDbType.DateTime).Value = DBNull.Value;
-                                        }
-                                        // IP
-                                        //MessageBox.Show(columns[14].Replace("\"", ""));
-                                        command.Parameters.Add("ip", SqlDbType.NVarChar).Value = columns[14].Replace("\"", "");
-                                        // Source
-                                        //MessageBox.Show(columns[13].Replace("\"", ""));
-                                        command.Parameters.Add("source", SqlDbType.NVarChar).Value = columns[13].Replace("\"", "");
-                                        // Date Registered
-                                        //MessageBox.Show(columns[3].Replace("\"", ""));
-                                        command.Parameters.Add("date_registered", SqlDbType.DateTime).Value = columns[3].Replace("\"", "");
-                                        // Brand
-                                        command.Parameters.Add("brand", SqlDbType.NVarChar).Value = "FY";
-                                        // File Name
-                                        command.Parameters.Add("file_name", SqlDbType.NVarChar).Value = _fy_folder_path_result_xlsx;
-
-                                        command.ExecuteNonQuery();
-                                    }
-                                }
-                            }
-
-                            label_fy_finish_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
-                            timer_fy.Stop();
-                            panel_fy_datetime.Location = new Point(5, 226);
-                            pictureBox_fy_loader.Visible = false;
-
-                            button_fy_proceed.Text = "PROCEED";
-                            button_fy_proceed.Enabled = true;
-                            label_fy_locatefolder.Enabled = true;
-
-                            if (File.Exists(_fy_folder_path_result))
-                            {
-                                File.Delete(_fy_folder_path_result);
-                            }
-                        }
-
-                        isFYRegistrationDone = true;
-                        transaction.Commit();
-                    }
-
-                    conn.Close();
-                }
-            }
-            catch (Exception err)
-            {
-                MessageBox.Show(err.ToString());
-                button_fy_proceed.Text = "PROCEED";
-                button_fy_proceed.Enabled = true;
-                label_fy_locatefolder.Enabled = true;
-            }
         }
 
         private void GetMemberList_FY()
@@ -6376,21 +6369,155 @@ namespace Cronos_Data
             label_version.Visible = true;
             timer_landing.Stop();
         }
-        
+
         private void button1_Click(object sender, EventArgs e)
         {
-            //string csv_file_path = @"C:\Users\adulay\Desktop\Cronos Data\FY\2018-11-07\Bet Record\FY_BetRecord_2018-11-06_01.txt";
-            //DataTable csvData = GetDataTabletFromCSVFile(csv_file_path);
-            //InsertDataIntoSQLServerUsingSQLBulkCopy(csvData);
-            //MessageBox.Show(csvData.Rows.Count.ToString());
-            //Console.WriteLine("Rows count:" + csvData.Rows.Count);
+            var lines = File.ReadAllLines(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\FY_BetRecord_2018-11-13_01.txt");
+            if (lines.Count() == 0) return;
+            //var columns = lines[0].Split(',');
+            var table = new DataTable();
+            //foreach (var c in columns)
+            //{
+            //    table.Columns.Add(c);
+            //}
 
-            //SaveAsTurnOver_FY("1");
+            //for (int i = 1; i < lines.Count() - 1; i++)
+            //{
+            //    Application.DoEvents();
+            //    label1.Text = i.ToString();
+            //    //MessageBox.Show(lines[i].ToString());
+            //}
 
-            //string path = Path.Combine(Path.GetTempPath(), "FY Turnover.txt");
-            //InsertTurnoverRecord_FY(path, @"C:\Users\adulay\Desktop\Cronos Data\FY\2018-11-07\Turnover Record\FY_TurnoverRecord_2018-11-07_1.xlsx");
+            //var connection = @"Data Source=192.168.10.252;User ID=sa;password=Test@123;Initial Catalog=testrain;Integrated Security=True;Trusted_Connection=false;";
+            //var sqlBulk = new SqlBulkCopy(connection);
+            //sqlBulk.DestinationTableName = "[testrain].[dbo].[FY.Bet Record]";
+            //sqlBulk.WriteToServer(table);
+            //MessageBox.Show("done");
 
-            comboBox_fy_list.SelectedIndex = 1;
+
+
+
+
+
+
+
+            string header = "Date,Category,Platform,Username,Bet No,Bet Time,Game,Settlement,VIP,Bet Amount,Payout,Company WL,Turnover,Status,File Name";
+            var columns = header.Split(',');
+            foreach (var c in columns)
+            {
+                table.Columns.Add(c);
+            }
+
+            for (int i = 1; i < lines.Count(); i++)
+            {
+                Application.DoEvents();
+                label1.Text = i.ToString("N0");
+                string[] get_column = lines[i].Split(",\"");
+                
+                string category_get = "";
+                string gameplatform_temp = Path.Combine(Path.GetTempPath(), "FY Game Platform Code.txt");
+                if (File.Exists(gameplatform_temp))
+                {
+                    using (StreamReader sr = File.OpenText(gameplatform_temp))
+                    {
+                        string s = String.Empty;
+                        while ((s = sr.ReadLine()) != null)
+                        {
+                            int gameplatform_i = 0;
+                            string[] results = s.Split("*|*");
+                            foreach (string result in results)
+                            {
+                                Application.DoEvents();
+                                gameplatform_i++;
+
+                                if (gameplatform_i == 1)
+                                {
+                                    if (result.Trim() == get_column[3].Replace("\"", "").Trim())
+                                    {
+                                        int memberlist_i_inner = 0;
+                                        string[] results_inner = s.Split("*|*");
+                                        foreach (string result_inner in results_inner)
+                                        {
+                                            Application.DoEvents();
+                                            memberlist_i_inner++;
+
+                                            if (memberlist_i_inner == 4)
+                                            {
+                                                category_get = result_inner;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }            
+                
+                DataRow row = table.NewRow();
+                // Date
+                row[0] = get_column[1].Replace("\"", "") + " 00:00:00";
+                // Category
+                row[1] = category_get;
+                // Platform
+                row[2] = get_column[3].Replace("\"", "");
+                // Username
+                row[3] = get_column[4].Replace("\"", "");
+                // Bet Number
+                get_column[5] = get_column[5].Replace("\"", "");
+                get_column[5] = get_column[5].Replace("'", "");
+                if (IsDigitsOnly(get_column[5]))
+                {
+                    row[4] = get_column[5];
+                }
+                else
+                {
+                    row[4] = DBNull.Value;
+                }
+                // Bet Time
+                row[5] = get_column[6].Replace("\"", "");
+                // Game
+                row[6] = get_column[7].Replace("\"", "");
+                // Settlement
+                row[7] = get_column[8].Replace("\"", "");
+                // VIP
+                row[8] = get_column[2].Replace("\"", "");
+                // Bet Amount
+                row[9] = get_column[9].Replace("\"", "");
+                // Payout
+                row[10] = get_column[10].Replace("\"", "");
+                // Company WL
+                row[11] = get_column[11].Replace("\"", "");
+                // Turnover
+                row[12] = get_column[12].Replace("\"", "");
+                // Status
+                row[13] = get_column[13].Replace("\"", "");
+                // File Name
+                row[14] = "test";
+                table.Rows.Add(row);
+            }
+
+            var connection = @"Data Source=192.168.10.252;User ID=sa;password=Test@123;Initial Catalog=testrain;Integrated Security=True;Trusted_Connection=false;";
+            var sqlBulk = new SqlBulkCopy(connection);
+            sqlBulk.DestinationTableName = "[testrain].[dbo].[FY.Bet Record]";
+            sqlBulk.WriteToServer(table);
+            MessageBox.Show("done");
+        }
+
+        static string ConvertStringArrayToString(string[] array)
+        {
+            // Concatenate all the elements into a StringBuilder.
+            StringBuilder builder = new StringBuilder();
+            int count = 0;
+            foreach (string value in array)
+            {
+                count++;
+                builder.Append(value);
+                if (count != 15)
+                {
+                    builder.Append("*|*");
+                }
+            }
+            return builder.ToString();
         }
     }
 }
