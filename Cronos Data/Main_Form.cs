@@ -32,7 +32,7 @@ namespace Cronos_Data
         public const int WM_NCLBUTTONDOWN = 0xA1;
         public const int HT_CAPTION = 0x2;
         private bool isClose;
-        System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+        Timer timer = new Timer();
 
         // FY ---
         List<FY_BetRecord> _fy_bet_records = new List<FY_BetRecord>();
@@ -5956,8 +5956,8 @@ namespace Cronos_Data
                     if (lines[i].Length > 0)
                     {
                         Application.DoEvents();
-                        display_count_fy++;
-                        label_fy_insert.Text = display_count_fy.ToString("N0");
+                        display_count_turnover_fy++;
+                        label_fy_insert.Text = display_count_turnover_fy.ToString("N0");
 
                         string[] get_column = lines[i].Split(",");
 
