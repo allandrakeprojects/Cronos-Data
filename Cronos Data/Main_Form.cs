@@ -240,8 +240,8 @@ namespace Cronos_Data
                         if (webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/account/login"))
                         {
                             webBrowser_fy.Document.Window.ScrollTo(0, 180);
-                            webBrowser_fy.Document.GetElementById("csname").SetAttribute("value", "central12");
-                            webBrowser_fy.Document.GetElementById("cspwd").SetAttribute("value", "abc123");
+                            //webBrowser_fy.Document.GetElementById("csname").SetAttribute("value", "central12");
+                            //webBrowser_fy.Document.GetElementById("cspwd").SetAttribute("value", "abc123");
                             webBrowser_fy.Document.GetElementById("la").Enabled = false;
                             get_value = webBrowser_fy.Document.GetElementById("la").GetAttribute("value");
 
@@ -5110,7 +5110,7 @@ namespace Cronos_Data
                         // Username
                         row[2] = get_column[3].Replace("\"", "");
                         // VIP
-                        row[3] = get_column[7].Replace("\"", "");
+                        row[3] = get_column[8].Replace("\"", "");
                         // Amount
                         row[4] = get_column[6].Replace("\"", "");
                         // Bonus Category
@@ -5120,7 +5120,7 @@ namespace Cronos_Data
                         // Transaction ID
                         row[7] = DBNull.Value;
                         // Updated By
-                        row[8] = DBNull.Value;
+                        row[8] = "System";
                         // Bonus Code
                         get_column[7] = get_column[7].Replace("\"", "");
                         get_column[7] = get_column[7].Replace(";", "");
@@ -5128,7 +5128,7 @@ namespace Cronos_Data
                         // Transaction Time
                         row[10] = DBNull.Value;
                         // Product
-                        row[11] = DBNull.Value;
+                        row[11] = "Main Wallet";
                         // Brand
                         row[12] = "FY";
                         // File Name
@@ -6037,107 +6037,6 @@ namespace Cronos_Data
                 MessageBox.Show("Please call IT Support, thank you!\n\n" + err.ToString(), "FY", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         
         // Drag Header to Move
         private void panel_header_MouseDown(object sender, MouseEventArgs e)
@@ -6281,116 +6180,6 @@ namespace Cronos_Data
             //label_updates.Visible = true;
             label_version.Visible = true;
             timer_landing.Stop();
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\FY Turnover.txt";
-            InsertTurnoverReportTest_FY(path);
-        }
-        
-        private void InsertTurnoverReportTest_FY(string path)
-        {
-            button_fy_proceed.Text = "SENDING...";
-            button_fy_proceed.Enabled = false;
-            WindowState = FormWindowState.Normal;
-            label_fy_locatefolder.Enabled = false;
-            label_fy_insert.Visible = true;
-
-            try
-            {
-                var lines = File.ReadAllLines(path);
-                if (lines.Count() == 0) return;
-                var table = new DataTable();
-                string header = "Brand,Provider,Category,Month,Date,Member,Currency,Stake,Stake Ex# Draw,Bet Count,Company Winloss,VIP,Retained,Reg Month,First Dep Month,New Based on Reg,New based on Dep,Real Player,File Name";
-                var columns = header.Split(',');
-                foreach (var c in columns)
-                {
-                    table.Columns.Add(c);
-                }
-
-                for (int i = 1; i < lines.Count(); i++)
-                {
-                    Application.DoEvents();
-                    display_count_fy++;
-                    label_fy_insert.Text = display_count_fy.ToString("N0");
-
-                    string[] get_column = lines[i].Split(",");
-
-                    DataRow row = table.NewRow();
-                    // Brand
-                    row[0] = "FY";
-                    // Provider
-                    row[1] = get_column[1].Replace("\"", "");
-                    // Category
-                    row[2] = get_column[2];
-                    // Month
-                    row[3] = get_column[3].Replace("\"", "");
-                    // Date
-                    row[4] = get_column[4].Replace("\"", "");
-                    // Member
-                    row[5] = get_column[5].Replace("\"", "");
-                    // Currency
-                    row[6] = get_column[6].Replace("\"", "");
-                    // Stake
-                    row[7] = get_column[7].Replace("\"", "");
-                    // Stake Ex Draw
-                    row[8] = get_column[8].Replace("\"", "");
-                    // Bet Count
-                    row[9] = get_column[9].Replace("\"", "");
-                    // Company WL
-                    row[10] = get_column[10].Replace("\"", "");
-                    // VIP
-                    row[11] = get_column[11].Replace("\"", "");
-                    // Retained
-                    row[12] = get_column[12].Replace("\"", "");
-                    // Register Month
-                    if (get_column[13].Replace("\"", "") != "")
-                    {
-                        row[13] = get_column[13].Replace("\"", "");
-                    }
-                    else
-                    {
-                        row[13] = DBNull.Value;
-                    }
-                    // First Deposit Date
-                    if (get_column[14].Replace("\"", "") != "")
-                    {
-                        row[14] = get_column[14].Replace("\"", "");
-                    }
-                    else
-                    {
-                        row[14] = DBNull.Value;
-                    }
-                    // New Based on Registration
-                    row[15] = get_column[15].Replace("\"", "");
-                    // New Based on Department
-                    row[16] = get_column[16].Replace("\"", "");
-                    // Real Player
-                    row[17] = get_column[17].Replace("\"", "");
-                    // File Name
-                    row[18] = "test";
-
-                    table.Rows.Add(row);
-                }
-
-                var connection = @"Data Source=192.168.10.252;User ID=sa;password=Test@123;Initial Catalog=testrain;Integrated Security=True;Trusted_Connection=false;";
-                var sqlBulk = new SqlBulkCopy(connection);
-                sqlBulk.DestinationTableName = "[testrain].[dbo].[FY.Turnover Report]";
-                sqlBulk.WriteToServer(table);
-
-                if (File.Exists(path))
-                {
-                    File.Delete(path);
-                }
-            }
-            catch (Exception err)
-            {
-                button_fy_proceed.Text = "PROCEED";
-                button_fy_proceed.Enabled = true;
-                label_fy_locatefolder.Enabled = true;
-                MessageBox.Show("Please call IT Support, thank you!\n\n" + err.ToString(), "FY", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
         }
     }
 }
