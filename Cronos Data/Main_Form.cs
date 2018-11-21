@@ -2707,14 +2707,21 @@ namespace Cronos_Data
                         }
                         else if (selected_index == 2)
                         {
-                            // asdasd
-                            // asd Bet Record
+                            // Bet Record
                             JToken game_platform = jo_fy.SelectToken("$.aaData[" + ii + "][0]");
                             JToken player_id = jo_fy.SelectToken("$.aaData[" + ii + "][1][0]");
                             JToken player_name = jo_fy.SelectToken("$.aaData[" + ii + "][1][1]");
                             JToken bet_no = jo_fy.SelectToken("$.aaData[" + ii + "][2]").ToString().Replace("BetTransaction:", "");
                             JToken bet_time = jo_fy.SelectToken("$.aaData[" + ii + "][3]");
-                            JToken bet_type = jo_fy.SelectToken("$.aaData[" + ii + "][4]").ToString().Replace("<br/>", "").PadRight(225).Substring(0, 225).Trim();
+                            JToken bet_type = jo_fy.SelectToken("$.aaData[" + ii + "][4]").ToString().PadRight(225).Substring(0, 225).Trim();
+                            Regex regex = new Regex(@"<div\b[^>]*>(.*?)<\/div>");
+                            string bet_type_replace = regex.Replace(bet_type.ToString(), "<div></div>");
+                            bet_type_replace = bet_type_replace.Replace("<br/>", "");
+                            bet_type_replace = bet_type_replace.Replace("<div>", "");
+                            bet_type_replace = bet_type_replace.Replace("</div>", "");
+                            bet_type_replace = bet_type_replace.Replace(",", "");
+                            bet_type_replace = bet_type_replace.Replace("，", "");
+                            bet_type = bet_type_replace;
                             String result_bet_type = Regex.Replace(bet_type.ToString(), @"<[^>]*>", String.Empty);
                             JToken game_result = jo_fy.SelectToken("$.aaData[" + ii + "][5]").ToString().Replace("<br>", "");
                             JToken stake_amount_color = jo_fy.SelectToken("$.aaData[" + ii + "][6][0]");
