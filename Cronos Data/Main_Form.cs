@@ -291,6 +291,7 @@ namespace Cronos_Data
                                     label_fy_status.Visible = true;
                                     timer_fy.Start();
                                     isButtonStart_fy = true;
+                                    button_filelocation.Enabled = false;
                                     FY_GetPlayerListsAsync();
                                 }
                             }
