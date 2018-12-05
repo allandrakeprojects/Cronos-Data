@@ -58,5 +58,17 @@ namespace FY_Cronos_Data.Properties {
                 this["tf_bettime"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ______midnight_time {
+            get {
+                return ((string)(this["______midnight_time"]));
+            }
+            set {
+                this["______midnight_time"] = value;
+            }
+        }
     }
 }

@@ -67,9 +67,12 @@
             this.button_fy_start = new System.Windows.Forms.Button();
             this.timer_fy_detect_inserted_in_excel = new System.Windows.Forms.Timer(this.components);
             this.timer_fy_start = new System.Windows.Forms.Timer(this.components);
-            this.button_filelocation = new System.Windows.Forms.Button();
             this.timer_fy = new System.Windows.Forms.Timer(this.components);
             this.panel_footer = new System.Windows.Forms.Panel();
+            this.label_status = new System.Windows.Forms.Label();
+            this.label_status_1 = new System.Windows.Forms.Label();
+            this.label_cycle_in = new System.Windows.Forms.Label();
+            this.label_cycle_in_1 = new System.Windows.Forms.Label();
             this.label_version = new System.Windows.Forms.Label();
             this.label_updates = new System.Windows.Forms.Label();
             this.panel_landing = new System.Windows.Forms.Panel();
@@ -83,6 +86,8 @@
             this.timer_fy_start_button = new System.Windows.Forms.Timer(this.components);
             this.label_fy_count = new System.Windows.Forms.Label();
             this.label_getdatacount_fy = new System.Windows.Forms.Label();
+            this.timer_midnight = new System.Windows.Forms.Timer(this.components);
+            this.timer_cycle_in = new System.Windows.Forms.Timer(this.components);
             this.panel_header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_minimize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_close)).BeginInit();
@@ -169,7 +174,7 @@
             this.label_filelocation.Name = "label_filelocation";
             this.label_filelocation.Size = new System.Drawing.Size(580, 13);
             this.label_filelocation.TabIndex = 3;
-            this.label_filelocation.Text = "-";
+            this.label_filelocation.Text = "\\\\\\\\192.168.10.22\\\\ssi-reporting";
             this.label_filelocation.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.label_filelocation.Visible = false;
             this.label_filelocation.MouseDown += new System.Windows.Forms.MouseEventHandler(this.label_filelocation_MouseDown);
@@ -178,7 +183,7 @@
             // 
             this.label_title_fy.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_title_fy.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(30)))), ((int)(((byte)(112)))));
-            this.label_title_fy.Location = new System.Drawing.Point(3, 3);
+            this.label_title_fy.Location = new System.Drawing.Point(3, 4);
             this.label_title_fy.Name = "label_title_fy";
             this.label_title_fy.Size = new System.Drawing.Size(528, 30);
             this.label_title_fy.TabIndex = 2;
@@ -192,7 +197,7 @@
             this.panel_fy.Controls.Add(this.webBrowser_fy);
             this.panel_fy.Controls.Add(this.panel_fy_filter);
             this.panel_fy.Enabled = false;
-            this.panel_fy.Location = new System.Drawing.Point(17, 88);
+            this.panel_fy.Location = new System.Drawing.Point(17, 70);
             this.panel_fy.Name = "panel_fy";
             this.panel_fy.Size = new System.Drawing.Size(534, 408);
             this.panel_fy.TabIndex = 4;
@@ -532,24 +537,6 @@
             this.timer_fy_start.Interval = 30000;
             this.timer_fy_start.Tick += new System.EventHandler(this.timer_fy_start_Tick);
             // 
-            // button_filelocation
-            // 
-            this.button_filelocation.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(122)))), ((int)(((byte)(159)))));
-            this.button_filelocation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button_filelocation.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_filelocation.ForeColor = System.Drawing.Color.White;
-            this.button_filelocation.Image = global::FY_Cronos_Data.Properties.Resources.folder;
-            this.button_filelocation.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button_filelocation.Location = new System.Drawing.Point(217, 52);
-            this.button_filelocation.Name = "button_filelocation";
-            this.button_filelocation.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
-            this.button_filelocation.Size = new System.Drawing.Size(134, 30);
-            this.button_filelocation.TabIndex = 6;
-            this.button_filelocation.Text = "File Location";
-            this.button_filelocation.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button_filelocation.UseVisualStyleBackColor = false;
-            this.button_filelocation.Click += new System.EventHandler(this.button_filelocation_Click);
-            // 
             // timer_fy
             // 
             this.timer_fy.Interval = 1000;
@@ -558,13 +545,65 @@
             // panel_footer
             // 
             this.panel_footer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(122)))), ((int)(((byte)(159)))));
+            this.panel_footer.Controls.Add(this.label_status);
+            this.panel_footer.Controls.Add(this.label_status_1);
+            this.panel_footer.Controls.Add(this.label_cycle_in);
+            this.panel_footer.Controls.Add(this.label_cycle_in_1);
             this.panel_footer.Controls.Add(this.label_version);
             this.panel_footer.Controls.Add(this.label_updates);
             this.panel_footer.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel_footer.Location = new System.Drawing.Point(0, 505);
+            this.panel_footer.Location = new System.Drawing.Point(0, 487);
             this.panel_footer.Name = "panel_footer";
-            this.panel_footer.Size = new System.Drawing.Size(569, 20);
+            this.panel_footer.Size = new System.Drawing.Size(569, 27);
             this.panel_footer.TabIndex = 4;
+            // 
+            // label_status
+            // 
+            this.label_status.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_status.ForeColor = System.Drawing.Color.White;
+            this.label_status.Location = new System.Drawing.Point(50, 0);
+            this.label_status.Name = "label_status";
+            this.label_status.Size = new System.Drawing.Size(57, 27);
+            this.label_status.TabIndex = 3;
+            this.label_status.Text = "-";
+            this.label_status.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label_status.Visible = false;
+            // 
+            // label_status_1
+            // 
+            this.label_status_1.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_status_1.ForeColor = System.Drawing.Color.White;
+            this.label_status_1.Location = new System.Drawing.Point(-1, 1);
+            this.label_status_1.Name = "label_status_1";
+            this.label_status_1.Size = new System.Drawing.Size(69, 27);
+            this.label_status_1.TabIndex = 4;
+            this.label_status_1.Text = "Status:";
+            this.label_status_1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label_status_1.Visible = false;
+            // 
+            // label_cycle_in
+            // 
+            this.label_cycle_in.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_cycle_in.ForeColor = System.Drawing.Color.White;
+            this.label_cycle_in.Location = new System.Drawing.Point(157, 0);
+            this.label_cycle_in.Name = "label_cycle_in";
+            this.label_cycle_in.Size = new System.Drawing.Size(147, 27);
+            this.label_cycle_in.TabIndex = 1;
+            this.label_cycle_in.Text = "-";
+            this.label_cycle_in.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label_cycle_in.Visible = false;
+            // 
+            // label_cycle_in_1
+            // 
+            this.label_cycle_in_1.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_cycle_in_1.ForeColor = System.Drawing.Color.White;
+            this.label_cycle_in_1.Location = new System.Drawing.Point(105, 1);
+            this.label_cycle_in_1.Name = "label_cycle_in_1";
+            this.label_cycle_in_1.Size = new System.Drawing.Size(69, 27);
+            this.label_cycle_in_1.TabIndex = 2;
+            this.label_cycle_in_1.Text = "Cycle In:";
+            this.label_cycle_in_1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label_cycle_in_1.Visible = false;
             // 
             // label_version
             // 
@@ -572,12 +611,13 @@
             this.label_version.AutoSize = true;
             this.label_version.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_version.ForeColor = System.Drawing.Color.White;
-            this.label_version.Location = new System.Drawing.Point(512, 4);
+            this.label_version.Location = new System.Drawing.Point(512, 8);
             this.label_version.Name = "label_version";
             this.label_version.Size = new System.Drawing.Size(43, 13);
             this.label_version.TabIndex = 1;
             this.label_version.Text = "v1.0.4";
             this.label_version.Visible = false;
+            this.label_version.Click += new System.EventHandler(this.label_version_Click);
             // 
             // label_updates
             // 
@@ -586,7 +626,7 @@
             this.label_updates.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label_updates.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_updates.ForeColor = System.Drawing.Color.White;
-            this.label_updates.Location = new System.Drawing.Point(406, 3);
+            this.label_updates.Location = new System.Drawing.Point(406, 7);
             this.label_updates.Name = "label_updates";
             this.label_updates.Size = new System.Drawing.Size(99, 13);
             this.label_updates.TabIndex = 0;
@@ -597,9 +637,9 @@
             // panel_landing
             // 
             this.panel_landing.Controls.Add(this.pictureBox_landing);
-            this.panel_landing.Location = new System.Drawing.Point(1, 19);
+            this.panel_landing.Location = new System.Drawing.Point(1, 21);
             this.panel_landing.Name = "panel_landing";
-            this.panel_landing.Size = new System.Drawing.Size(567, 485);
+            this.panel_landing.Size = new System.Drawing.Size(567, 472);
             this.panel_landing.TabIndex = 31;
             // 
             // pictureBox_landing
@@ -650,21 +690,32 @@
             // 
             // label_getdatacount_fy
             // 
-            this.label_getdatacount_fy.Location = new System.Drawing.Point(15, 60);
+            this.label_getdatacount_fy.Location = new System.Drawing.Point(15, 47);
             this.label_getdatacount_fy.Name = "label_getdatacount_fy";
-            this.label_getdatacount_fy.Size = new System.Drawing.Size(534, 29);
+            this.label_getdatacount_fy.Size = new System.Drawing.Size(534, 20);
             this.label_getdatacount_fy.TabIndex = 34;
             this.label_getdatacount_fy.Text = "-";
             this.label_getdatacount_fy.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // timer_midnight
+            // 
+            this.timer_midnight.Enabled = true;
+            this.timer_midnight.Interval = 10000;
+            this.timer_midnight.Tick += new System.EventHandler(this.timer_midnight_Tick);
+            // 
+            // timer_cycle_in
+            // 
+            this.timer_cycle_in.Enabled = true;
+            this.timer_cycle_in.Interval = 1000;
+            this.timer_cycle_in.Tick += new System.EventHandler(this.timer_cycle_in_Tick);
             // 
             // Main_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(569, 525);
+            this.ClientSize = new System.Drawing.Size(569, 514);
             this.Controls.Add(this.panel_landing);
-            this.Controls.Add(this.button_filelocation);
             this.Controls.Add(this.button_fy_start);
             this.Controls.Add(this.label_fy_count);
             this.Controls.Add(this.button_fy_stop);
@@ -709,7 +760,6 @@
         private System.Windows.Forms.Panel panel_fy;
         private System.Windows.Forms.WebBrowser webBrowser_fy;
         private System.Windows.Forms.Label label_title;
-        private System.Windows.Forms.Button button_filelocation;
         private System.Windows.Forms.ComboBox comboBox_fy;
         private System.Windows.Forms.DateTimePicker dateTimePicker_start_fy;
         private System.Windows.Forms.Label label_start_fy;
@@ -757,5 +807,11 @@
         private System.Windows.Forms.Label label_fy_total_records_1;
         private System.Windows.Forms.Label label_fy_status;
         private System.Windows.Forms.Panel panel;
+        private System.Windows.Forms.Timer timer_midnight;
+        private System.Windows.Forms.Label label_cycle_in;
+        private System.Windows.Forms.Label label_cycle_in_1;
+        private System.Windows.Forms.Timer timer_cycle_in;
+        private System.Windows.Forms.Label label_status;
+        private System.Windows.Forms.Label label_status_1;
     }
 }

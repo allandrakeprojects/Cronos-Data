@@ -161,6 +161,9 @@
     <None Include="Resources\FY Cronos Data.ico" />
     <None Include="Resources\FY Cronos Data.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cronos_data.wav" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
