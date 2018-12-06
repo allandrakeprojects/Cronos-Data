@@ -617,7 +617,6 @@
             this.label_version.TabIndex = 1;
             this.label_version.Text = "v1.0.4";
             this.label_version.Visible = false;
-            this.label_version.Click += new System.EventHandler(this.label_version_Click);
             // 
             // label_updates
             // 

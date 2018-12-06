@@ -7225,10 +7225,5 @@ namespace Cronos_Data
                 label_cycle_in.Text = "-";
             }
         }
-
-        private void label_version_Click(object sender, EventArgs e)
-        {
-            dateTimePicker_end_fy.Text = "2018-12-05 23:59:59";
-        }
     }
 }
