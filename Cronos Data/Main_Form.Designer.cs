@@ -615,7 +615,7 @@
             this.label_version.Name = "label_version";
             this.label_version.Size = new System.Drawing.Size(43, 13);
             this.label_version.TabIndex = 1;
-            this.label_version.Text = "v1.0.4";
+            this.label_version.Text = "v1.0.5";
             this.label_version.Visible = false;
             // 
             // label_updates

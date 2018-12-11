@@ -70,5 +70,29 @@ namespace FY_Cronos_Data.Properties {
                 this["______midnight_time"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ______start_detect {
+            get {
+                return ((string)(this["______start_detect"]));
+            }
+            set {
+                this["______start_detect"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ______turnover_count {
+            get {
+                return ((string)(this["______turnover_count"]));
+            }
+            set {
+                this["______turnover_count"] = value;
+            }
+        }
     }
 }

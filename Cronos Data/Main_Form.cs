@@ -13,6 +13,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Mail;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -255,7 +256,7 @@ namespace Cronos_Data
                             if (get_value == "")
                             {
                                 MessageBox.Show("Please call IT Support, thank you!", "FY Cronos Data", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                isClose = false;
+                                isClose = true;
                                 Environment.Exit(0);
                             }
 
@@ -266,6 +267,14 @@ namespace Cronos_Data
                                 {
                                     player.Stop();
                                 }
+                            }
+
+                            // start detect
+                            if (FY_Cronos_Data.Properties.Settings.Default.______start_detect == "")
+                            {
+                                // done
+                                FY_Cronos_Data.Properties.Settings.Default.______start_detect = "0";
+                                FY_Cronos_Data.Properties.Settings.Default.Save();
                             }
                         }
 
@@ -279,11 +288,36 @@ namespace Cronos_Data
                                 __isLogin = true;
 
                                 string date = DateTime.Now.ToString("yyyy-MM-dd");
-                                string get_path = label_filelocation.Text + "\\Cronos Data\\FY\\" + date;
-                                if (Directory.Exists(get_path))
+                                string get_path = label_filelocation.Text + "\\Cronos Data\\FY\\" + date + "\\FY Registration.xlsx";
+                                if (File.Exists(get_path))
                                 {
                                     // added auto
-                                    button_fy_start.PerformClick();
+                                    // start detect
+                                    // done
+                                    if (FY_Cronos_Data.Properties.Settings.Default.______start_detect == "0")
+                                    {
+                                        label_status.Text = "Waiting";
+                                        button_fy_start.Enabled = false;
+                                        panel_fy_filter.Enabled = false;
+                                    }
+                                    // payment
+                                    else if (FY_Cronos_Data.Properties.Settings.Default.______start_detect == "1")
+                                    {
+                                        comboBox_fy_list.SelectedIndex = 0;
+                                        button_fy_start.PerformClick();
+                                    }
+                                    // bonus
+                                    else if (FY_Cronos_Data.Properties.Settings.Default.______start_detect == "2")
+                                    {
+                                        comboBox_fy_list.SelectedIndex = 1;
+                                        button_fy_start.PerformClick();
+                                    }
+                                    // bet record
+                                    else if (FY_Cronos_Data.Properties.Settings.Default.______start_detect == "3")
+                                    {
+                                        comboBox_fy_list.SelectedIndex = 2;
+                                        button_fy_start.PerformClick();
+                                    }
                                 }
                                 else
                                 {
@@ -315,8 +349,8 @@ namespace Cronos_Data
                                 __isLogin = true;
 
                                 string date = DateTime.Now.ToString("yyyy-MM-dd");
-                                string get_path = label_filelocation.Text + "\\Cronos Data\\FY\\" + date;
-                                if (Directory.Exists(get_path))
+                                string get_path = label_filelocation.Text + "\\Cronos Data\\FY\\" + date + "\\FY Registration.xlsx";
+                                if (File.Exists(get_path))
                                 {
                                     label_fy_insert.Visible = false;
                                     panel_fy_status.Visible = false;
@@ -438,7 +472,7 @@ namespace Cronos_Data
                     catch (Exception err)
                     {
                         MessageBox.Show("No internet connection detected. Please call IT Support, thank you!", "FY Cronos Data", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        isClose = false;
+                        isClose = true;
                         Environment.Exit(0);
                     }
                 }
@@ -538,12 +572,17 @@ namespace Cronos_Data
                 jo_fy = JObject.Parse(deserializeObject.ToString());
                 JToken count = jo_fy.SelectToken("$.aaData");
                 _result_count_json_fy = count.Count();
-
+                
                 FY_PlayerListAsync();
             }
             catch (Exception err)
             {
-                MessageBox.Show(err.ToString());
+                string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
+                var st = new StackTrace(err, true);
+                var frame = st.GetFrame(0);
+                var line = frame.GetFileLineNumber();
+                SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robisons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: "+ line + "<br/>Message: <b>" + err.ToString() +"</b></body></html>");
+                send_email = 0;
             }
         }
         
@@ -993,7 +1032,12 @@ namespace Cronos_Data
             }
             catch (Exception err)
             {
-
+                string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
+                var st = new StackTrace(err, true);
+                var frame = st.GetFrame(0);
+                var line = frame.GetFileLineNumber();
+                SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robisons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + line + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
+                send_email = 0;
             }
         }
 
@@ -1090,69 +1134,7 @@ namespace Cronos_Data
                 }
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        
         private async Task FY_GetTotal(string start_datetime, string end_datetime)
         {
             try
@@ -1170,37 +1152,41 @@ namespace Cronos_Data
                 int selected_index = comboBox_fy_list.SelectedIndex;
                 if (selected_index == 0)
                 {
+                    // payment
+                    FY_Cronos_Data.Properties.Settings.Default.______start_detect = "1";
+                    FY_Cronos_Data.Properties.Settings.Default.Save();
+                    
                     if (!_isSecondRequestFinish_fy)
                     {
                         if (!_isSecondRequest_fy)
                         {
                             // Deposit Record
                             var reqparm = new NameValueCollection
-                        {
-                            {"s_btype", ""},
-                            {"s_StartTime", start_datetime},
-                            {"s_EndTime", end_datetime},
-                            {"dno", ""},
-                            {"s_dpttype", "0"},
-                            {"s_type", "1"},
-                            {"s_transtype", "0"},
-                            {"s_ppid", "0"},
-                            {"s_payoption", "0"},
-                            {"groupid", "0"},
-                            {"s_keyword", ""},
-                            {"s_playercurrency", "ALL"},
-                            {"skip", "0"},
-                            {"data[0][name]", "sEcho"},
-                            {"data[0][value]", _fy_secho++.ToString()},
-                            {"data[1][name]", "iColumns"},
-                            {"data[1][value]", "17"},
-                            {"data[2][name]", "sColumns"},
-                            {"data[2][value]", ""},
-                            {"data[3][name]", "iDisplayStart"},
-                            {"data[3][value]", "0"},
-                            {"data[4][name]", "iDisplayLength"},
-                            {"data[4][value]", "1"}
-                        };
+                            {
+                                {"s_btype", ""},
+                                {"s_StartTime", start_datetime},
+                                {"s_EndTime", end_datetime},
+                                {"dno", ""},
+                                {"s_dpttype", "0"},
+                                {"s_type", "1"},
+                                {"s_transtype", "0"},
+                                {"s_ppid", "0"},
+                                {"s_payoption", "0"},
+                                {"groupid", "0"},
+                                {"s_keyword", ""},
+                                {"s_playercurrency", "ALL"},
+                                {"skip", "0"},
+                                {"data[0][name]", "sEcho"},
+                                {"data[0][value]", _fy_secho++.ToString()},
+                                {"data[1][name]", "iColumns"},
+                                {"data[1][value]", "17"},
+                                {"data[2][name]", "sColumns"},
+                                {"data[2][value]", ""},
+                                {"data[3][name]", "iDisplayStart"},
+                                {"data[3][value]", "0"},
+                                {"data[4][name]", "iDisplayLength"},
+                                {"data[4][value]", "1"}
+                            };
 
                             // status
                             label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
@@ -1220,26 +1206,26 @@ namespace Cronos_Data
                         {
                             // Manual Deposit Record
                             var reqparm = new NameValueCollection
-                        {
-                            {"s_btype", ""},
-                            {"ptype", "1212"},
-                            {"fs_ptype", "1212"},
-                            {"s_StartTime", start_datetime},
-                            {"s_EndTime", end_datetime},
-                            {"s_type", "1"},
-                            {"s_keyword", ""},
-                            {"s_playercurrency", "ALL"},
-                            {"data[0][name]", "sEcho"},
-                            {"data[0][value]", _fy_secho++.ToString()},
-                            {"data[1][name]", "iColumns"},
-                            {"data[1][value]", "18"},
-                            {"data[2][name]", "sColumns"},
-                            {"data[2][value]", ""},
-                            {"data[3][name]", "iDisplayStart"},
-                            {"data[3][value]", "0"},
-                            {"data[4][name]", "iDisplayLength"},
-                            {"data[4][value]", "1"}
-                        };
+                            {
+                                {"s_btype", ""},
+                                {"ptype", "1212"},
+                                {"fs_ptype", "1212"},
+                                {"s_StartTime", start_datetime},
+                                {"s_EndTime", end_datetime},
+                                {"s_type", "1"},
+                                {"s_keyword", ""},
+                                {"s_playercurrency", "ALL"},
+                                {"data[0][name]", "sEcho"},
+                                {"data[0][value]", _fy_secho++.ToString()},
+                                {"data[1][name]", "iColumns"},
+                                {"data[1][value]", "18"},
+                                {"data[2][name]", "sColumns"},
+                                {"data[2][value]", ""},
+                                {"data[3][name]", "iDisplayStart"},
+                                {"data[3][value]", "0"},
+                                {"data[4][name]", "iDisplayLength"},
+                                {"data[4][value]", "1"}
+                            };
 
                             // status
                             label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
@@ -1255,29 +1241,29 @@ namespace Cronos_Data
                         {
                             // Withdrawal Record
                             var reqparm = new NameValueCollection
-                        {
-                            {"s_btype", ""},
-                            {"s_StartTime", start_datetime},
-                            {"s_EndTime", end_datetime},
-                            {"s_wtdAmtFr", ""},
-                            {"s_wtdAmtTo", ""},
-                            {"s_dpttype", "0"},
-                            {"skip", "0"},
-                            {"s_type", "1"},
-                            {"s_keyword", "0"},
-                            {"s_playercurrency", "ALL"},
-                            {"wttype", "0"},
-                            {"data[0][name]", "sEcho"},
-                            {"data[0][value]", _fy_secho++.ToString()},
-                            {"data[1][name]", "iColumns"},
-                            {"data[1][value]", "18"},
-                            {"data[2][name]", "sColumns"},
-                            {"data[2][value]", ""},
-                            {"data[3][name]", "iDisplayStart"},
-                            {"data[3][value]", "0"},
-                            {"data[4][name]", "iDisplayLength"},
-                            {"data[4][value]", "1"}
-                        };
+                            {
+                                {"s_btype", ""},
+                                {"s_StartTime", start_datetime},
+                                {"s_EndTime", end_datetime},
+                                {"s_wtdAmtFr", ""},
+                                {"s_wtdAmtTo", ""},
+                                {"s_dpttype", "0"},
+                                {"skip", "0"},
+                                {"s_type", "1"},
+                                {"s_keyword", "0"},
+                                {"s_playercurrency", "ALL"},
+                                {"wttype", "0"},
+                                {"data[0][name]", "sEcho"},
+                                {"data[0][value]", _fy_secho++.ToString()},
+                                {"data[1][name]", "iColumns"},
+                                {"data[1][value]", "18"},
+                                {"data[2][name]", "sColumns"},
+                                {"data[2][value]", ""},
+                                {"data[3][name]", "iDisplayStart"},
+                                {"data[3][value]", "0"},
+                                {"data[4][name]", "iDisplayLength"},
+                                {"data[4][value]", "1"}
+                            };
 
                             // status
                             label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
@@ -1290,26 +1276,26 @@ namespace Cronos_Data
                         {
                             // Manual Withdrawal Record
                             var reqparm = new NameValueCollection
-                        {
-                            {"s_btype", ""},
-                            {"ptype", "1313"},
-                            {"fs_ptype", "1313"},
-                            {"s_StartTime", start_datetime},
-                            {"s_EndTime", end_datetime},
-                            {"s_type", "1"},
-                            {"s_keyword", ""},
-                            {"s_playercurrency", "ALL"},
-                            {"data[0][name]", "sEcho"},
-                            {"data[0][value]", _fy_secho++.ToString()},
-                            {"data[1][name]", "iColumns"},
-                            {"data[1][value]", "18"},
-                            {"data[2][name]", "sColumns"},
-                            {"data[2][value]", ""},
-                            {"data[3][name]", "iDisplayStart"},
-                            {"data[3][value]", "0"},
-                            {"data[4][name]", "iDisplayLength"},
-                            {"data[4][value]", "1"}
-                        };
+                            {
+                                {"s_btype", ""},
+                                {"ptype", "1313"},
+                                {"fs_ptype", "1313"},
+                                {"s_StartTime", start_datetime},
+                                {"s_EndTime", end_datetime},
+                                {"s_type", "1"},
+                                {"s_keyword", ""},
+                                {"s_playercurrency", "ALL"},
+                                {"data[0][name]", "sEcho"},
+                                {"data[0][value]", _fy_secho++.ToString()},
+                                {"data[1][name]", "iColumns"},
+                                {"data[1][value]", "18"},
+                                {"data[2][name]", "sColumns"},
+                                {"data[2][value]", ""},
+                                {"data[3][name]", "iDisplayStart"},
+                                {"data[3][value]", "0"},
+                                {"data[4][name]", "iDisplayLength"},
+                                {"data[4][value]", "1"}
+                            };
 
                             // status
                             label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
@@ -1326,27 +1312,27 @@ namespace Cronos_Data
                     {
                         // Manual Bonus Report
                         var reqparm = new NameValueCollection
-                    {
-                        {"s_btype", ""},
-                        {"ptype", "1411"},
-                        {"fs_ptype", "1411"},
-                        {"s_StartTime", start_datetime},
-                        {"s_EndTime", end_datetime},
-                        {"s_type", "1"},
-                        {"s_keyword", "0"},
-                        {"s_playercurrency", "ALL"},
-                        {"wttype", "0"},
-                        {"data[0][name]", "sEcho"},
-                        {"data[0][value]", _fy_secho++.ToString()},
-                        {"data[1][name]", "iColumns"},
-                        {"data[1][value]", "18"},
-                        {"data[2][name]", "sColumns"},
-                        {"data[2][value]", ""},
-                        {"data[3][name]", "iDisplayStart"},
-                        {"data[3][value]", "0"},
-                        {"data[4][name]", "iDisplayLength"},
-                        {"data[4][value]", "1"}
-                    };
+                        {
+                            {"s_btype", ""},
+                            {"ptype", "1411"},
+                            {"fs_ptype", "1411"},
+                            {"s_StartTime", start_datetime},
+                            {"s_EndTime", end_datetime},
+                            {"s_type", "1"},
+                            {"s_keyword", "0"},
+                            {"s_playercurrency", "ALL"},
+                            {"wttype", "0"},
+                            {"data[0][name]", "sEcho"},
+                            {"data[0][value]", _fy_secho++.ToString()},
+                            {"data[1][name]", "iColumns"},
+                            {"data[1][value]", "18"},
+                            {"data[2][name]", "sColumns"},
+                            {"data[2][value]", ""},
+                            {"data[3][name]", "iDisplayStart"},
+                            {"data[3][value]", "0"},
+                            {"data[4][name]", "iDisplayLength"},
+                            {"data[4][value]", "1"}
+                        };
 
                         // status
                         label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
@@ -1360,24 +1346,24 @@ namespace Cronos_Data
                         // Generated Bonus Report
                         DateTime start_datetime_replace = DateTime.ParseExact(start_datetime, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
                         var reqparm = new NameValueCollection
-                    {
-                        {"s_btype", ""},
-                        {"skip", "0"},
-                        {"s_StartTime", start_datetime_replace.AddDays(-1).ToString("yyyy-MM-dd HH:mm:ss")},
-                        {"s_EndTime", end_datetime},
-                        {"s_type", "0"},
-                        {"s_keyword", "0"},
-                        {"data[0][name]", "sEcho"},
-                        {"data[0][value]", _fy_secho++.ToString()},
-                        {"data[1][name]", "iColumns"},
-                        {"data[1][value]", "18"},
-                        {"data[2][name]", "sColumns"},
-                        {"data[2][value]", ""},
-                        {"data[3][name]", "iDisplayStart"},
-                        {"data[3][value]", "0"},
-                        {"data[4][name]", "iDisplayLength"},
-                        {"data[4][value]", "1"}
-                    };
+                        {
+                            {"s_btype", ""},
+                            {"skip", "0"},
+                            {"s_StartTime", start_datetime_replace.AddDays(-1).ToString("yyyy-MM-dd HH:mm:ss")},
+                            {"s_EndTime", end_datetime},
+                            {"s_type", "0"},
+                            {"s_keyword", "0"},
+                            {"data[0][name]", "sEcho"},
+                            {"data[0][value]", _fy_secho++.ToString()},
+                            {"data[1][name]", "iColumns"},
+                            {"data[1][value]", "18"},
+                            {"data[2][name]", "sColumns"},
+                            {"data[2][value]", ""},
+                            {"data[3][name]", "iDisplayStart"},
+                            {"data[3][value]", "0"},
+                            {"data[4][name]", "iDisplayLength"},
+                            {"data[4][value]", "1"}
+                        };
 
                         // status
                         label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
@@ -1391,28 +1377,28 @@ namespace Cronos_Data
                 {
                     // Bet Record
                     var reqparm = new NameValueCollection
-                {
-                    {"s_btype", ""},
-                    {"betNo", ""},
-                    {"name", ""},
-                    {"gpid", "0"},
-                    {"wager_settle", "0"},
-                    {"valid_inva", ""},
-                    {"start",  start_datetime},
-                    {"end", end_datetime},
-                    {"skip", "0"},
-                    {"ftime_188", "bettime"},
-                    {"data[0][name]", "sEcho"},
-                    {"data[0][value]", _fy_secho++.ToString()},
-                    {"data[1][name]", "iColumns"},
-                    {"data[1][value]", "12"},
-                    {"data[2][name]", "sColumns"},
-                    {"data[2][value]", ""},
-                    {"data[3][name]", "iDisplayStart"},
-                    {"data[3][value]", "0"},
-                    {"data[4][name]", "iDisplayLength"},
-                    {"data[4][value]", "1"}
-                };
+                    {
+                        {"s_btype", ""},
+                        {"betNo", ""},
+                        {"name", ""},
+                        {"gpid", "0"},
+                        {"wager_settle", "0"},
+                        {"valid_inva", ""},
+                        {"start",  start_datetime},
+                        {"end", end_datetime},
+                        {"skip", "0"},
+                        {"ftime_188", "bettime"},
+                        {"data[0][name]", "sEcho"},
+                        {"data[0][value]", _fy_secho++.ToString()},
+                        {"data[1][name]", "iColumns"},
+                        {"data[1][value]", "12"},
+                        {"data[2][name]", "sColumns"},
+                        {"data[2][value]", ""},
+                        {"data[3][name]", "iDisplayStart"},
+                        {"data[3][value]", "0"},
+                        {"data[4][name]", "iDisplayLength"},
+                        {"data[4][value]", "1"}
+                    };
 
                     // status
                     label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
@@ -1451,7 +1437,12 @@ namespace Cronos_Data
             }
             catch (Exception err)
             {
-
+                string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
+                var st = new StackTrace(err, true);
+                var frame = st.GetFrame(0);
+                var line = frame.GetFileLineNumber();
+                SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robisons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + line + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
+                send_email = 0;
             }
         }
         
@@ -1774,7 +1765,6 @@ namespace Cronos_Data
                 if (__isLogin)
                 {
                     detect_fy++;
-                    // asd label2.Text = "detect ghghghghg" + detect_fy;
                     await GetDataFYAsync();
                 }
             }
@@ -3651,8 +3641,24 @@ namespace Cronos_Data
                             // provider
                             // category
 
-                            Turnover_FY(player_name.ToString(), stake_amount.ToString().Replace(",", ""), win_amount.ToString().Replace(",", ""), company_win_loss.ToString().Replace(",", ""), valid_bet.ToString().Replace(",", ""), bet_time_date, month.ToString("MM/01/yyyy"), vip, game_platform.ToString());
-                            
+                            if (!__turnover_detect)
+                            {
+                                int _fy_get_ii_display_result = _fy_get_ii_display;
+                                int get = _fy_get_ii_display_result+=1;
+                                FY_Cronos_Data.Properties.Settings.Default.______turnover_count = get.ToString();
+                                FY_Cronos_Data.Properties.Settings.Default.Save();
+
+                                Turnover_FY(player_name.ToString(), stake_amount.ToString().Replace(",", ""), win_amount.ToString().Replace(",", ""), company_win_loss.ToString().Replace(",", ""), valid_bet.ToString().Replace(",", ""), bet_time_date, month.ToString("MM/01/yyyy"), vip, game_platform.ToString());
+                            }
+                            else
+                            {
+                                if (FY_Cronos_Data.Properties.Settings.Default.______turnover_count == _fy_get_ii_display.ToString())
+                                {
+                                    Turnover_FY(player_name.ToString(), stake_amount.ToString().Replace(",", ""), win_amount.ToString().Replace(",", ""), company_win_loss.ToString().Replace(",", ""), valid_bet.ToString().Replace(",", ""), bet_time_date, month.ToString("MM/01/yyyy"), vip, game_platform.ToString());
+                                    __turnover_detect = false;
+                                }
+                            }
+
                             if (_fy_get_ii == 1)
                             {
                                 var header = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13}", "Month", "Date", "VIP", "Game Platform", "Username", "Bet No", "Bet Time", "Bet Type", "Game Result", "Stake Amount", "Win Amount", "Company Win/Loss", "Valid Bet", "Valid/Invalid");
@@ -5005,7 +5011,7 @@ namespace Cronos_Data
                 app.Quit();
                 Marshal.ReleaseComObject(app);
                                 
-                SaveAsTurnOver_FY(replace);
+                SaveAsTurnOver_FY();
                 display_count_turnover_fy = 0;
                 //if (File.Exists(_fy_folder_path_result))
                 //{
@@ -5685,9 +5691,24 @@ namespace Cronos_Data
                     else if (selected_index == 2)
                     {
                         string path_turnover = Path.Combine(Path.GetTempPath(), "FY Turnover.txt");
-                        if (File.Exists(path_turnover))
+
+                        if (FY_Cronos_Data.Properties.Settings.Default.______turnover_count == "")
                         {
-                            File.Delete(path_turnover);
+                            FY_Cronos_Data.Properties.Settings.Default.______turnover_count = "0";
+                            FY_Cronos_Data.Properties.Settings.Default.Save();
+                        }
+
+                        if (FY_Cronos_Data.Properties.Settings.Default.______turnover_count == "0")
+                        {
+                            __turnover_detect = false;
+                            if (File.Exists(path_turnover))
+                            {
+                                File.Delete(path_turnover);
+                            }
+                        }
+                        else
+                        {
+                            __turnover_detect = true;
                         }
 
                         // Bet Record
@@ -5932,7 +5953,7 @@ namespace Cronos_Data
                             row[20] = DBNull.Value;
                         }
                         // File Name
-                        row[21] = path;
+                        row[21] = path.Replace(".txt", ".xlsx");
                         
                         table.Rows.Add(row);
                     }
@@ -5952,14 +5973,18 @@ namespace Cronos_Data
                 button_fy_proceed.Enabled = true;
                 label_fy_locatefolder.Enabled = true;
 
-                if (File.Exists(_fy_folder_path_result))
+                if (File.Exists(path))
                 {
-                    File.Delete(_fy_folder_path_result);
+                    File.Delete(path);
                 }
 
                 // added auto
                 if (!isStopClick_fy)
                 {
+                    // bonus
+                    FY_Cronos_Data.Properties.Settings.Default.______start_detect = "2";
+                    FY_Cronos_Data.Properties.Settings.Default.Save();
+                    
                     button_fy_proceed.PerformClick();
                     comboBox_fy_list.SelectedIndex = 1;
                     button_fy_start.PerformClick();
@@ -5970,7 +5995,16 @@ namespace Cronos_Data
                 button_fy_proceed.Text = "PROCEED";
                 button_fy_proceed.Enabled = true;
                 label_fy_locatefolder.Enabled = true;
-                MessageBox.Show("Please call IT Support, thank you!\n\n" + err.ToString(), "FY Cronos Data", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                
+                string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
+                var st = new StackTrace(err, true);
+                var frame = st.GetFrame(0);
+                var line = frame.GetFileLineNumber();
+                SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robisons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + line + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
+                send_email = 0;
+
+                isClose = true;
+                Environment.Exit(0);
             }
         }
 
@@ -6035,7 +6069,7 @@ namespace Cronos_Data
                         // Brand
                         row[12] = "FY";
                         // File Name
-                        row[13] = path;
+                        row[13] = path.Replace(".txt", ".xlsx");
 
                         table.Rows.Add(row);
                     }
@@ -6055,14 +6089,18 @@ namespace Cronos_Data
                 button_fy_proceed.Enabled = true;
                 label_fy_locatefolder.Enabled = true;
 
-                if (File.Exists(_fy_folder_path_result))
+                if (File.Exists(path))
                 {
-                    File.Delete(_fy_folder_path_result);
+                    File.Delete(path);
                 }
 
                 // added auto
                 if (!isStopClick_fy)
                 {
+                    // bet record
+                    FY_Cronos_Data.Properties.Settings.Default.______start_detect = "3";
+                    FY_Cronos_Data.Properties.Settings.Default.Save();
+                    
                     button_fy_proceed.PerformClick();
                     comboBox_fy_list.SelectedIndex = 2;
                     button_fy_start.PerformClick();
@@ -6073,7 +6111,16 @@ namespace Cronos_Data
                 button_fy_proceed.Text = "PROCEED";
                 button_fy_proceed.Enabled = true;
                 label_fy_locatefolder.Enabled = true;
-                MessageBox.Show("Please call IT Support, thank you!\n\n" + err.ToString(), "FY Cronos Data", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
+                var st = new StackTrace(err, true);
+                var frame = st.GetFrame(0);
+                var line = frame.GetFileLineNumber();
+                SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robisons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + line + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
+                send_email = 0;
+
+                isClose = true;
+                Environment.Exit(0);
             }
         }
 
@@ -6185,7 +6232,7 @@ namespace Cronos_Data
                         // Status
                         row[13] = get_column[13].Replace("\"", "");
                         // File Name
-                        row[14] = path;
+                        row[14] = path.Replace(".txt", ".xlsx");
                         
                         table.Rows.Add(row);
                     }
@@ -6210,9 +6257,22 @@ namespace Cronos_Data
                     button_fy_proceed.PerformClick();
                     panel_fy_filter.Enabled = false;
                     button_fy_start.Enabled = false;
+                    
+                    // done
+                    FY_Cronos_Data.Properties.Settings.Default.______start_detect = "0";
+                    FY_Cronos_Data.Properties.Settings.Default.Save();
+                    
                     comboBox_fy_list.SelectedIndex = 0;
                     label_status.Text = "Waiting";
                     _fy_current_datetime = "";
+
+                    FY_Cronos_Data.Properties.Settings.Default.______turnover_count = "0";
+                    FY_Cronos_Data.Properties.Settings.Default.Save();
+                }
+
+                if (File.Exists(path))
+                {
+                    File.Delete(path);
                 }
             }
             catch (Exception err)
@@ -6220,8 +6280,16 @@ namespace Cronos_Data
                 button_fy_proceed.Text = "PROCEED";
                 button_fy_proceed.Enabled = true;
                 label_fy_locatefolder.Enabled = true;
-                MessageBox.Show(sdsdsdsds);
-                MessageBox.Show("Please call IT Support, thank you!\n\n" + err.ToString(), "FY Cronos Data", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
+                var st = new StackTrace(err, true);
+                var frame = st.GetFrame(0);
+                var line = frame.GetFileLineNumber();
+                SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robisons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + line + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
+                send_email = 0;
+
+                isClose = true;
+                Environment.Exit(0);
             }
         }
 
@@ -6437,7 +6505,15 @@ namespace Cronos_Data
             }
             catch (Exception err)
             {
-                MessageBox.Show(err.ToString());
+                string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
+                var st = new StackTrace(err, true);
+                var frame = st.GetFrame(0);
+                var line = frame.GetFileLineNumber();
+                SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robisons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + line + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
+                send_email = 0;
+
+                isClose = true;
+                Environment.Exit(0);
             }
         }
 
@@ -6490,7 +6566,15 @@ namespace Cronos_Data
             }
             catch (Exception err)
             {
-                MessageBox.Show(err.ToString());
+                string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
+                var st = new StackTrace(err, true);
+                var frame = st.GetFrame(0);
+                var line = frame.GetFileLineNumber();
+                SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robisons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + line + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
+                send_email = 0;
+
+                isClose = true;
+                Environment.Exit(0);
             }
         }
 
@@ -6543,7 +6627,15 @@ namespace Cronos_Data
             }
             catch (Exception err)
             {
-                MessageBox.Show(err.ToString());
+                string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
+                var st = new StackTrace(err, true);
+                var frame = st.GetFrame(0);
+                var line = frame.GetFileLineNumber();
+                SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robisons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + line + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
+                send_email = 0;
+
+                isClose = true;
+                Environment.Exit(0);
             }
         }
 
@@ -6598,7 +6690,15 @@ namespace Cronos_Data
             }
             catch (Exception err)
             {
-                MessageBox.Show(err.ToString());
+                string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
+                var st = new StackTrace(err, true);
+                var frame = st.GetFrame(0);
+                var line = frame.GetFileLineNumber();
+                SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robisons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + line + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
+                send_email = 0;
+
+                isClose = true;
+                Environment.Exit(0);
             }
         }
 
@@ -6772,7 +6872,7 @@ namespace Cronos_Data
             }
         }
 
-        private void SaveAsTurnOver_FY(string count_get)
+        private void SaveAsTurnOver_FY()
         {
             try
             {
@@ -6782,9 +6882,9 @@ namespace Cronos_Data
                     Directory.CreateDirectory(label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Turnover Record");
                 }
 
-                string _fy_filename = "FY_TurnoverRecord_" + _fy_current_datetime.ToString() + "_" + count_get + ".xlsx";
-                string _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Turnover Record\\FY_TurnoverRecord_" + _fy_current_datetime.ToString() + "_" + count_get + ".txt";
-                string _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Turnover Record\\FY_TurnoverRecord_" + _fy_current_datetime.ToString() + "_" + count_get + ".xlsx";
+                string _fy_filename = "FY_TurnoverRecord_" + _fy_current_datetime.ToString() + "_1.xlsx";
+                string _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Turnover Record\\FY_TurnoverRecord_" + _fy_current_datetime.ToString() + "_1.txt";
+                string _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Turnover Record\\FY_TurnoverRecord_" + _fy_current_datetime.ToString() + "_1.xlsx";
                 string _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\Turnover Record\\";
 
                 if (File.Exists(_fy_folder_path_result))
@@ -6856,7 +6956,12 @@ namespace Cronos_Data
             }
             catch (Exception err)
             {
-
+                string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
+                var st = new StackTrace(err, true);
+                var frame = st.GetFrame(0);
+                var line = frame.GetFileLineNumber();
+                SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robisons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + line + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
+                send_email = 0;
             }
         }
 
@@ -6963,7 +7068,16 @@ namespace Cronos_Data
                 button_fy_proceed.Text = "PROCEED";
                 button_fy_proceed.Enabled = true;
                 label_fy_locatefolder.Enabled = true;
-                MessageBox.Show("Please call IT Support, thank you!\n\n" + err.ToString(), "FY Cronos Data", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
+                var st = new StackTrace(err, true);
+                var frame = st.GetFrame(0);
+                var line = frame.GetFileLineNumber();
+                SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robisons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + line + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
+                send_email = 0;
+
+                isClose = true;
+                Environment.Exit(0);
             }
         }
         
@@ -7120,45 +7234,15 @@ namespace Cronos_Data
             {
                 DateTime today = DateTime.Now;
                 DateTime date = today.AddDays(1);
-                FY_Cronos_Data.Properties.Settings.Default.______midnight_time = date.ToString("yyyy-MM-dd 00");
+                FY_Cronos_Data.Properties.Settings.Default.______midnight_time = date.ToString("yyyy-MM-dd 00:30");
                 FY_Cronos_Data.Properties.Settings.Default.Save();
             }
             else
             {
                 DateTime today = DateTime.Now;
-                if (FY_Cronos_Data.Properties.Settings.Default.______midnight_time == today.ToString("yyyy-MM-dd HH"))
+                if (FY_Cronos_Data.Properties.Settings.Default.______midnight_time == today.ToString("yyyy-MM-dd HH:mm"))
                 {
-                    FY_Cronos_Data.Properties.Settings.Default.______midnight_time = "";
-                    FY_Cronos_Data.Properties.Settings.Default.Save();
-
-                    getmemberlist_fy.Clear();
-                    __getcontactemail.Clear();
-                    GetMemberList_FY();
-                    GetBonusCode_FY();
-                    GetGamePlatform_FY();
-                    GetPaymentType_FY();
-
-                    string start_datetime_ = dateTimePicker_start_fy.Text;
-                    DateTime start_ = DateTime.Parse(start_datetime_).AddDays(1);
-
-                    string end_datetime_ = dateTimePicker_end_fy.Text;
-                    DateTime end_ = DateTime.Parse(end_datetime_).AddDays(1);
-
-                    dateTimePicker_start_fy.Text = start_.ToString("yyyy-MM-dd 00:00:00");
-                    dateTimePicker_end_fy.Text = end_.ToString("yyyy-MM-dd 23:59:59");
-
-                    button_fy_start.Enabled = true;
-                    button_fy_start.PerformClick();
-                }
-                else
-                {
-                    string start_datetime = today.ToString("yyyy-MM-dd HH");
-                    DateTime start = DateTime.ParseExact(start_datetime, "yyyy-MM-dd HH", CultureInfo.InvariantCulture);
-
-                    string end_datetime = FY_Cronos_Data.Properties.Settings.Default.______midnight_time;
-                    DateTime end = DateTime.ParseExact(end_datetime, "yyyy-MM-dd HH", CultureInfo.InvariantCulture);
-
-                    if (start > end)
+                    if (FY_Cronos_Data.Properties.Settings.Default.______start_detect == "0")
                     {
                         FY_Cronos_Data.Properties.Settings.Default.______midnight_time = "";
                         FY_Cronos_Data.Properties.Settings.Default.Save();
@@ -7179,8 +7263,82 @@ namespace Cronos_Data
                         dateTimePicker_start_fy.Text = start_.ToString("yyyy-MM-dd 00:00:00");
                         dateTimePicker_end_fy.Text = end_.ToString("yyyy-MM-dd 23:59:59");
 
-                        button_fy_start.Enabled = true;
-                        button_fy_start.PerformClick();
+                        //button_fy_start.Enabled = true;
+                        //button_fy_start.PerformClick();
+
+                        // registration member list
+                        panel_fy_status.Visible = true;
+                        label_fy_page_count_1.Visible = true;
+                        label_fy_total_records_1.Visible = true;
+                        label_fy_page_count.Visible = true;
+                        label_fy_currentrecord.Visible = true;
+                        panel_fy_datetime.Visible = true;
+                        panel_fy_status.BringToFront();
+                        button_fy_start.Visible = false;
+                        panel_fy_filter.Visible = false;
+                        pictureBox_fy_loader.Visible = true;
+                        _fy_current_datetime = "";
+                        label_fy_start_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
+                        _fy_start_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+                        label_fy_status.Visible = true;
+                        timer_fy.Start();
+                        isButtonStart_fy = true;
+                        FY_GetPlayerListsAsync();
+                    }
+                }
+                else
+                {
+                    string start_datetime = today.ToString("yyyy-MM-dd HH:mm");
+                    DateTime start = DateTime.ParseExact(start_datetime, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
+
+                    string end_datetime = FY_Cronos_Data.Properties.Settings.Default.______midnight_time;
+                    DateTime end = DateTime.ParseExact(end_datetime, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
+
+                    if (start > end)
+                    {
+                        if (FY_Cronos_Data.Properties.Settings.Default.______start_detect == "0")
+                        {
+                            FY_Cronos_Data.Properties.Settings.Default.______midnight_time = "";
+                            FY_Cronos_Data.Properties.Settings.Default.Save();
+
+                            getmemberlist_fy.Clear();
+                            __getcontactemail.Clear();
+                            GetMemberList_FY();
+                            GetBonusCode_FY();
+                            GetGamePlatform_FY();
+                            GetPaymentType_FY();
+
+                            string start_datetime_ = dateTimePicker_start_fy.Text;
+                            DateTime start_ = DateTime.Parse(start_datetime_).AddDays(1);
+
+                            string end_datetime_ = dateTimePicker_end_fy.Text;
+                            DateTime end_ = DateTime.Parse(end_datetime_).AddDays(1);
+
+                            dateTimePicker_start_fy.Text = start_.ToString("yyyy-MM-dd 00:00:00");
+                            dateTimePicker_end_fy.Text = end_.ToString("yyyy-MM-dd 23:59:59");
+
+                            //button_fy_start.Enabled = true;
+                            //button_fy_start.PerformClick();
+
+                            // registration member list
+                            panel_fy_status.Visible = true;
+                            label_fy_page_count_1.Visible = true;
+                            label_fy_total_records_1.Visible = true;
+                            label_fy_page_count.Visible = true;
+                            label_fy_currentrecord.Visible = true;
+                            panel_fy_datetime.Visible = true;
+                            panel_fy_status.BringToFront();
+                            button_fy_start.Visible = false;
+                            panel_fy_filter.Visible = false;
+                            pictureBox_fy_loader.Visible = true;
+                            _fy_current_datetime = "";
+                            label_fy_start_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
+                            _fy_start_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+                            label_fy_status.Visible = true;
+                            timer_fy.Start();
+                            isButtonStart_fy = true;
+                            FY_GetPlayerListsAsync();
+                        }
                     }
                 }
             }
@@ -7192,7 +7350,7 @@ namespace Cronos_Data
             if (FY_Cronos_Data.Properties.Settings.Default.______midnight_time != "")
             {
                 string cyclein_parse = FY_Cronos_Data.Properties.Settings.Default.______midnight_time;
-                DateTime cyclein = DateTime.ParseExact(cyclein_parse, "yyyy-MM-dd HH", CultureInfo.InvariantCulture);
+                DateTime cyclein = DateTime.ParseExact(cyclein_parse, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
 
                 string start_parse = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                 DateTime start = DateTime.ParseExact(start_parse, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
@@ -7223,6 +7381,60 @@ namespace Cronos_Data
             else
             {
                 label_cycle_in.Text = "-";
+            }
+        }
+
+        int send_email = 0;
+        private bool __turnover_detect = false;
+
+        private void SendEmail2(string get_message)
+        {
+            try
+            {
+                int port = 587;
+                string host = "smtp.gmail.com";
+                string username = "drake@18tech.com";
+                string password = "Wcfajmeojnapa1";
+                string mailFrom = "noreply@mail.com";
+                string mailTo = "drake@18tech.com";
+                string mailTitle = "FY Cronos Data";
+                string mailMessage = get_message;
+
+                using (SmtpClient client = new SmtpClient())
+                {
+                    MailAddress from = new MailAddress(mailFrom);
+                    MailMessage message = new MailMessage
+                    {
+                        From = from
+                    };
+                    message.To.Add(mailTo);
+                    message.Subject = mailTitle;
+                    message.Body = mailMessage;
+                    message.IsBodyHtml = true;
+                    client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    client.UseDefaultCredentials = false;
+                    client.Host = host;
+                    client.Port = port;
+                    client.EnableSsl = true;
+                    client.Credentials = new NetworkCredential
+                    {
+                        UserName = username,
+                        Password = password
+                    };
+                    client.Send(message);
+                }
+            }
+            catch (Exception err)
+            {
+                send_email++;
+                if (send_email <= 5)
+                {
+                    SendEmail2(get_message);
+                }
+                else
+                {
+                    MessageBox.Show(err.ToString());
+                }
             }
         }
     }
