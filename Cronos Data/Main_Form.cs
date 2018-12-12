@@ -219,6 +219,10 @@ namespace Cronos_Data
                 dateTimePicker_end_fy.Value = datetime_end_fy;
             }
         }
+        static int LineNumber([System.Runtime.CompilerServices.CallerLineNumber] int lineNumber = 0)
+        {
+            return lineNumber;
+        }
 
         // Loaded
         private async void webBrowser_fy_DocumentCompletedAsync(object sender, WebBrowserDocumentCompletedEventArgs e)
@@ -231,15 +235,16 @@ namespace Cronos_Data
                     {
                         if (webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/account/login"))
                         {
-                            System.Media.SoundPlayer player = new System.Media.SoundPlayer(FY_Cronos_Data.Properties.Resources.cronos_data);
-                            bool isPlaying = false;
                             if (__isStart)
                             {
                                 button_fy_stop.PerformClick();
                                 button_fy_start.Visible = false;
                                 timer_fy_start.Stop();
-                                player.PlayLooping();
-                                isPlaying = true;
+
+                                string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
+                                SendEmail("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Message: <b>The application have been logout, please re-login again.</b></body></html>");
+                                SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + LineNumber() + "<br/>Message: <b>The application have been logout, please re-login again.</b></body></html>");
+                                send_email = 0;
                             }
                             
                             label_status.Text = "Logout";
@@ -258,15 +263,6 @@ namespace Cronos_Data
                                 MessageBox.Show("Please call IT Support, thank you!", "FY Cronos Data", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                 isClose = true;
                                 Environment.Exit(0);
-                            }
-
-                            if (isPlaying)
-                            {
-                                DialogResult dr = MessageBox.Show("You've been logout please login again.", "FY Cronos Data", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                if (dr == DialogResult.OK)
-                                {
-                                    player.Stop();
-                                }
                             }
 
                             // start detect
@@ -581,7 +577,7 @@ namespace Cronos_Data
                 var st = new StackTrace(err, true);
                 var frame = st.GetFrame(0);
                 var line = frame.GetFileLineNumber();
-                SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robisons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: "+ line + "<br/>Message: <b>" + err.ToString() +"</b></body></html>");
+                SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: "+ line + "<br/>Message: <b>" + err.ToString() +"</b></body></html>");
                 send_email = 0;
             }
         }
@@ -1036,7 +1032,7 @@ namespace Cronos_Data
                 var st = new StackTrace(err, true);
                 var frame = st.GetFrame(0);
                 var line = frame.GetFileLineNumber();
-                SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robisons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + line + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
+                SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + line + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
                 send_email = 0;
             }
         }
@@ -1441,7 +1437,7 @@ namespace Cronos_Data
                 var st = new StackTrace(err, true);
                 var frame = st.GetFrame(0);
                 var line = frame.GetFileLineNumber();
-                SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robisons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + line + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
+                SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + line + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
                 send_email = 0;
             }
         }
@@ -6000,7 +5996,8 @@ namespace Cronos_Data
                 var st = new StackTrace(err, true);
                 var frame = st.GetFrame(0);
                 var line = frame.GetFileLineNumber();
-                SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robisons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + line + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
+                SendEmail("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Message: <b>There's a problem to the server, please re-open the application.</b></body></html>");
+                SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + line + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
                 send_email = 0;
 
                 isClose = true;
@@ -6116,7 +6113,8 @@ namespace Cronos_Data
                 var st = new StackTrace(err, true);
                 var frame = st.GetFrame(0);
                 var line = frame.GetFileLineNumber();
-                SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robisons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + line + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
+                SendEmail("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Message: <b>There's a problem to the server, please re-open the application.</b></body></html>");
+                SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + line + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
                 send_email = 0;
 
                 isClose = true;
@@ -6285,7 +6283,8 @@ namespace Cronos_Data
                 var st = new StackTrace(err, true);
                 var frame = st.GetFrame(0);
                 var line = frame.GetFileLineNumber();
-                SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robisons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + line + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
+                SendEmail("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Message: <b>There's a problem to the server, please re-open the application.</b></body></html>");
+                SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + line + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
                 send_email = 0;
 
                 isClose = true;
@@ -6509,7 +6508,8 @@ namespace Cronos_Data
                 var st = new StackTrace(err, true);
                 var frame = st.GetFrame(0);
                 var line = frame.GetFileLineNumber();
-                SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robisons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + line + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
+                SendEmail("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Message: <b>There's a problem to the server, please re-open the application.</b></body></html>");
+                SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + line + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
                 send_email = 0;
 
                 isClose = true;
@@ -6570,7 +6570,8 @@ namespace Cronos_Data
                 var st = new StackTrace(err, true);
                 var frame = st.GetFrame(0);
                 var line = frame.GetFileLineNumber();
-                SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robisons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + line + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
+                SendEmail("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Message: <b>There's a problem to the server, please re-open the application.</b></body></html>");
+                SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + line + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
                 send_email = 0;
 
                 isClose = true;
@@ -6631,7 +6632,8 @@ namespace Cronos_Data
                 var st = new StackTrace(err, true);
                 var frame = st.GetFrame(0);
                 var line = frame.GetFileLineNumber();
-                SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robisons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + line + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
+                SendEmail("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Message: <b>There's a problem to the server, please re-open the application.</b></body></html>");
+                SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + line + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
                 send_email = 0;
 
                 isClose = true;
@@ -6694,7 +6696,8 @@ namespace Cronos_Data
                 var st = new StackTrace(err, true);
                 var frame = st.GetFrame(0);
                 var line = frame.GetFileLineNumber();
-                SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robisons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + line + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
+                SendEmail("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Message: <b>There's a problem to the server, please re-open the application.</b></body></html>");
+                SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + line + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
                 send_email = 0;
 
                 isClose = true;
@@ -6960,7 +6963,7 @@ namespace Cronos_Data
                 var st = new StackTrace(err, true);
                 var frame = st.GetFrame(0);
                 var line = frame.GetFileLineNumber();
-                SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robisons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + line + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
+                SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + line + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
                 send_email = 0;
             }
         }
@@ -7073,7 +7076,8 @@ namespace Cronos_Data
                 var st = new StackTrace(err, true);
                 var frame = st.GetFrame(0);
                 var line = frame.GetFileLineNumber();
-                SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robisons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + line + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
+                SendEmail("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Message: <b>There's a problem to the server, please re-open the application.</b></body></html>");
+                SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + line + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
                 send_email = 0;
 
                 isClose = true;
@@ -7387,6 +7391,57 @@ namespace Cronos_Data
         int send_email = 0;
         private bool __turnover_detect = false;
 
+        private void SendEmail(string get_message)
+        {
+            try
+            {
+                int port = 587;
+                string host = "smtp.gmail.com";
+                string username = "drake@18tech.com";
+                string password = "@ccess123418tech";
+                string mailFrom = "noreply@mail.com";
+                string mailTo = "it@18tech.com";
+                string mailTitle = "FY Cronos Data";
+                string mailMessage = get_message;
+
+                using (SmtpClient client = new SmtpClient())
+                {
+                    MailAddress from = new MailAddress(mailFrom);
+                    MailMessage message = new MailMessage
+                    {
+                        From = from
+                    };
+                    message.To.Add(mailTo);
+                    message.Subject = mailTitle;
+                    message.Body = mailMessage;
+                    message.IsBodyHtml = true;
+                    client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    client.UseDefaultCredentials = false;
+                    client.Host = host;
+                    client.Port = port;
+                    client.EnableSsl = true;
+                    client.Credentials = new NetworkCredential
+                    {
+                        UserName = username,
+                        Password = password
+                    };
+                    client.Send(message);
+                }
+            }
+            catch (Exception err)
+            {
+                send_email++;
+                if (send_email <= 5)
+                {
+                    SendEmail(get_message);
+                }
+                else
+                {
+                    MessageBox.Show(err.ToString());
+                }
+            }
+        }
+        
         private void SendEmail2(string get_message)
         {
             try
@@ -7394,7 +7449,7 @@ namespace Cronos_Data
                 int port = 587;
                 string host = "smtp.gmail.com";
                 string username = "drake@18tech.com";
-                string password = "Wcfajmeojnapa1";
+                string password = "@ccess123418tech";
                 string mailFrom = "noreply@mail.com";
                 string mailTo = "drake@18tech.com";
                 string mailTitle = "FY Cronos Data";
