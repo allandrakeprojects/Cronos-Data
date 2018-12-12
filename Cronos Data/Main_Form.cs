@@ -574,10 +574,7 @@ namespace Cronos_Data
             catch (Exception err)
             {
                 string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
-                var st = new StackTrace(err, true);
-                var frame = st.GetFrame(0);
-                var line = frame.GetFileLineNumber();
-                SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: "+ line + "<br/>Message: <b>" + err.ToString() +"</b></body></html>");
+                SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + LineNumber() + "<br/>Message: <b>" + err.ToString() +"</b></body></html>");
                 send_email = 0;
             }
         }
@@ -1029,9 +1026,6 @@ namespace Cronos_Data
             catch (Exception err)
             {
                 string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
-                var st = new StackTrace(err, true);
-                var frame = st.GetFrame(0);
-                var line = frame.GetFileLineNumber();
                 SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + line + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
                 send_email = 0;
             }
@@ -1434,9 +1428,6 @@ namespace Cronos_Data
             catch (Exception err)
             {
                 string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
-                var st = new StackTrace(err, true);
-                var frame = st.GetFrame(0);
-                var line = frame.GetFileLineNumber();
                 SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + line + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
                 send_email = 0;
             }
@@ -5993,9 +5984,6 @@ namespace Cronos_Data
                 label_fy_locatefolder.Enabled = true;
                 
                 string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
-                var st = new StackTrace(err, true);
-                var frame = st.GetFrame(0);
-                var line = frame.GetFileLineNumber();
                 SendEmail("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Message: <b>There's a problem to the server, please re-open the application.</b></body></html>");
                 SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + line + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
                 send_email = 0;
@@ -6110,9 +6098,6 @@ namespace Cronos_Data
                 label_fy_locatefolder.Enabled = true;
 
                 string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
-                var st = new StackTrace(err, true);
-                var frame = st.GetFrame(0);
-                var line = frame.GetFileLineNumber();
                 SendEmail("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Message: <b>There's a problem to the server, please re-open the application.</b></body></html>");
                 SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + line + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
                 send_email = 0;
@@ -6280,9 +6265,6 @@ namespace Cronos_Data
                 label_fy_locatefolder.Enabled = true;
 
                 string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
-                var st = new StackTrace(err, true);
-                var frame = st.GetFrame(0);
-                var line = frame.GetFileLineNumber();
                 SendEmail("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Message: <b>There's a problem to the server, please re-open the application.</b></body></html>");
                 SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + line + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
                 send_email = 0;
@@ -6505,9 +6487,6 @@ namespace Cronos_Data
             catch (Exception err)
             {
                 string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
-                var st = new StackTrace(err, true);
-                var frame = st.GetFrame(0);
-                var line = frame.GetFileLineNumber();
                 SendEmail("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Message: <b>There's a problem to the server, please re-open the application.</b></body></html>");
                 SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + line + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
                 send_email = 0;
@@ -6567,9 +6546,6 @@ namespace Cronos_Data
             catch (Exception err)
             {
                 string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
-                var st = new StackTrace(err, true);
-                var frame = st.GetFrame(0);
-                var line = frame.GetFileLineNumber();
                 SendEmail("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Message: <b>There's a problem to the server, please re-open the application.</b></body></html>");
                 SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + line + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
                 send_email = 0;
@@ -6629,9 +6605,6 @@ namespace Cronos_Data
             catch (Exception err)
             {
                 string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
-                var st = new StackTrace(err, true);
-                var frame = st.GetFrame(0);
-                var line = frame.GetFileLineNumber();
                 SendEmail("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Message: <b>There's a problem to the server, please re-open the application.</b></body></html>");
                 SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + line + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
                 send_email = 0;
@@ -6693,9 +6666,6 @@ namespace Cronos_Data
             catch (Exception err)
             {
                 string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
-                var st = new StackTrace(err, true);
-                var frame = st.GetFrame(0);
-                var line = frame.GetFileLineNumber();
                 SendEmail("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Message: <b>There's a problem to the server, please re-open the application.</b></body></html>");
                 SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + line + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
                 send_email = 0;
@@ -6960,9 +6930,6 @@ namespace Cronos_Data
             catch (Exception err)
             {
                 string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
-                var st = new StackTrace(err, true);
-                var frame = st.GetFrame(0);
-                var line = frame.GetFileLineNumber();
                 SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + line + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
                 send_email = 0;
             }
@@ -7073,9 +7040,6 @@ namespace Cronos_Data
                 label_fy_locatefolder.Enabled = true;
 
                 string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
-                var st = new StackTrace(err, true);
-                var frame = st.GetFrame(0);
-                var line = frame.GetFileLineNumber();
                 SendEmail("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Message: <b>There's a problem to the server, please re-open the application.</b></body></html>");
                 SendEmail2("<html><body>Brand: <font color='#DE1E70'>-----FY-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + line + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
                 send_email = 0;
