@@ -7471,7 +7471,7 @@ namespace Cronos_Data
             }
         }
 
-        private void timer_clear_memory_Tick(object sender, EventArgs e)
+        private void timer_flush_memory_Tick(object sender, EventArgs e)
         {
             FlushMemory();
         }
@@ -7483,7 +7483,7 @@ namespace Cronos_Data
             {
                 prs.MinWorkingSet = (IntPtr)(300000);
             }
-            catch (Exception exception)
+            catch (Exception err)
             {
                 // leave blank
             }

@@ -88,7 +88,7 @@
             this.label_getdatacount_fy = new System.Windows.Forms.Label();
             this.timer_midnight = new System.Windows.Forms.Timer(this.components);
             this.timer_cycle_in = new System.Windows.Forms.Timer(this.components);
-            this.timer_clear_memory = new System.Windows.Forms.Timer(this.components);
+            this.timer_flush_memory = new System.Windows.Forms.Timer(this.components);
             this.panel_header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_minimize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_close)).BeginInit();
@@ -709,11 +709,11 @@
             this.timer_cycle_in.Interval = 1000;
             this.timer_cycle_in.Tick += new System.EventHandler(this.timer_cycle_in_Tick);
             // 
-            // timer_clear_memory
+            // timer_flush_memory
             // 
-            this.timer_clear_memory.Enabled = true;
-            this.timer_clear_memory.Interval = 2000;
-            this.timer_clear_memory.Tick += new System.EventHandler(this.timer_clear_memory_Tick);
+            this.timer_flush_memory.Enabled = true;
+            this.timer_flush_memory.Interval = 2000;
+            this.timer_flush_memory.Tick += new System.EventHandler(this.timer_flush_memory_Tick);
             // 
             // Main_Form
             // 
@@ -819,6 +819,6 @@
         private System.Windows.Forms.Timer timer_cycle_in;
         private System.Windows.Forms.Label label_status;
         private System.Windows.Forms.Label label_status_1;
-        private System.Windows.Forms.Timer timer_clear_memory;
+        private System.Windows.Forms.Timer timer_flush_memory;
     }
 }
