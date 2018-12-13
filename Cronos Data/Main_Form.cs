@@ -250,9 +250,6 @@ namespace Cronos_Data
                                 SendEmail("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + LineNumber() + "<br/>Message: <b>The application have been logout, please re-login again.</b></body></html>");
                                 SendEmail2("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Message: <b>The application have been logout, please re-login again.</b></body></html>");
                                 __send_email = 0;
-
-                                isClose = false;
-                                Environment.Exit(0);
                             }
                             
                             label_status.Text = "Logout";
@@ -311,18 +308,21 @@ namespace Cronos_Data
                                     // payment
                                     else if (FY_Cronos_Data.Properties.Settings.Default.______start_detect == "1")
                                     {
+                                        label_status.Text = "Running";
                                         comboBox_fy_list.SelectedIndex = 0;
                                         button_fy_start.PerformClick();
                                     }
                                     // bonus
                                     else if (FY_Cronos_Data.Properties.Settings.Default.______start_detect == "2")
                                     {
+                                        label_status.Text = "Running";
                                         comboBox_fy_list.SelectedIndex = 1;
                                         button_fy_start.PerformClick();
                                     }
                                     // bet record
                                     else if (FY_Cronos_Data.Properties.Settings.Default.______start_detect == "3")
                                     {
+                                        label_status.Text = "Running";
                                         comboBox_fy_list.SelectedIndex = 2;
                                         button_fy_start.PerformClick();
                                     }
@@ -330,6 +330,7 @@ namespace Cronos_Data
                                 else
                                 {
                                     // registration member list
+                                    label_status.Text = "Running";
                                     panel_fy_status.Visible = true;
                                     label_fy_page_count_1.Visible = true;
                                     label_fy_total_records_1.Visible = true;
@@ -471,10 +472,10 @@ namespace Cronos_Data
                                     isButtonStart_fy = true;
                                     FY_GetPlayerListsAsync();
                                 }
+                                
+                                label_status.Text = "Running";
+                                timer_fy_start.Start();
                             }
-
-                            label_status.Text = "Running";
-                            timer_fy_start.Start();
                         }
                     }
                     catch (Exception err)
@@ -7467,6 +7468,24 @@ namespace Cronos_Data
                 {
                     MessageBox.Show(err.ToString());
                 }
+            }
+        }
+
+        private void timer_clear_memory_Tick(object sender, EventArgs e)
+        {
+            FlushMemory();
+        }
+
+        public static void FlushMemory()
+        {
+            Process prs = Process.GetCurrentProcess();
+            try
+            {
+                prs.MinWorkingSet = (IntPtr)(300000);
+            }
+            catch (Exception exception)
+            {
+                // leave blank
             }
         }
     }
