@@ -6268,6 +6268,10 @@ namespace Cronos_Data
 
                     FY_Cronos_Data.Properties.Settings.Default.______turnover_count = "0";
                     FY_Cronos_Data.Properties.Settings.Default.Save();
+
+                    SendEmail("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>Message: <b>Reports has been completed.</b></body></html>");
+                    SendEmail3("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>Message: <b>Reports has been completed.</b></body></html>");
+                    __send_email = 0;
                 }
 
                 if (File.Exists(path))
@@ -7471,6 +7475,57 @@ namespace Cronos_Data
             }
         }
 
+        private void SendEmail3(string get_message)
+        {
+            try
+            {
+                int port = 587;
+                string host = "smtp.gmail.com";
+                string username = "drake@18tech.com";
+                string password = "@ccess123418tech";
+                string mailFrom = "noreply@mail.com";
+                string mailTo = "christian@18tech.com";
+                string mailTitle = "FY Cronos Data";
+                string mailMessage = get_message;
+
+                using (SmtpClient client = new SmtpClient())
+                {
+                    MailAddress from = new MailAddress(mailFrom);
+                    MailMessage message = new MailMessage
+                    {
+                        From = from
+                    };
+                    message.To.Add(mailTo);
+                    message.Subject = mailTitle;
+                    message.Body = mailMessage;
+                    message.IsBodyHtml = true;
+                    client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    client.UseDefaultCredentials = false;
+                    client.Host = host;
+                    client.Port = port;
+                    client.EnableSsl = true;
+                    client.Credentials = new NetworkCredential
+                    {
+                        UserName = username,
+                        Password = password
+                    };
+                    client.Send(message);
+                }
+            }
+            catch (Exception err)
+            {
+                __send_email++;
+                if (__send_email <= 5)
+                {
+                    SendEmail3(get_message);
+                }
+                else
+                {
+                    MessageBox.Show(err.ToString());
+                }
+            }
+        }
+        
         private void timer_flush_memory_Tick(object sender, EventArgs e)
         {
             FlushMemory();
