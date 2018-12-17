@@ -7549,57 +7549,6 @@ namespace Cronos_Data
             }
         }
 
-        private void SendEmail4(string get_message)
-        {
-            try
-            {
-                int port = 587;
-                string host = "smtp.gmail.com";
-                string username = "drake@18tech.com";
-                string password = "@ccess123418tech";
-                string mailFrom = "noreply@mail.com";
-                string mailTo = "rhona@18tech.com";
-                string mailTitle = "FY Cronos Data";
-                string mailMessage = get_message;
-
-                using (SmtpClient client = new SmtpClient())
-                {
-                    MailAddress from = new MailAddress(mailFrom);
-                    MailMessage message = new MailMessage
-                    {
-                        From = from
-                    };
-                    message.To.Add(mailTo);
-                    message.Subject = mailTitle;
-                    message.Body = mailMessage;
-                    message.IsBodyHtml = true;
-                    client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                    client.UseDefaultCredentials = false;
-                    client.Host = host;
-                    client.Port = port;
-                    client.EnableSsl = true;
-                    client.Credentials = new NetworkCredential
-                    {
-                        UserName = username,
-                        Password = password
-                    };
-                    client.Send(message);
-                }
-            }
-            catch (Exception err)
-            {
-                __send_email++;
-                if (__send_email <= 5)
-                {
-                    SendEmail4(get_message);
-                }
-                else
-                {
-                    MessageBox.Show(err.ToString());
-                }
-            }
-        }
-
         private void timer_flush_memory_Tick(object sender, EventArgs e)
         {
             FlushMemory();
