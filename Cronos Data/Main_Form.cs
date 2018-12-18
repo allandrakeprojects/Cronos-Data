@@ -55,7 +55,7 @@ namespace Cronos_Data
         private bool __turnover_detect = false;
         private int _fy_row = 1;
         private int _fy_row_count = 1;
-        private int __send_email = 0;
+        private int __send = 0;
         private bool _isDone_fy = false;
         private string _fy_filename = "";
         private string _fy_folder_path_result;
@@ -247,9 +247,9 @@ namespace Cronos_Data
                                 timer_fy_start.Stop();
 
                                 string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
+                                SendITSupport("The application have been logout, please re-login again.");
                                 SendEmail("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + LineNumber() + "<br/>Message: <b>The application have been logout, please re-login again.</b></body></html>");
-                                SendEmail2("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Message: <b>The application have been logout, please re-login again.</b></body></html>");
-                                __send_email = 0;
+                                __send = 0;
                             }
                             
                             label_status.Text = "Logout";
@@ -266,9 +266,9 @@ namespace Cronos_Data
                             if (get_value == "")
                             {
                                 string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
+                                SendITSupport("There's a problem to the server, please re-open the application.");
                                 SendEmail("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + LineNumber() + "<br/>Message: <b>There's a problem to the server, please re-open the application.</b></body></html>");
-                                SendEmail2("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Message: <b>There's a problem to the server, please re-open the application.</b></body></html>");
-                                __send_email = 0;
+                                __send = 0;
 
                                 isClose = false;
                                 Environment.Exit(0);
@@ -329,6 +329,7 @@ namespace Cronos_Data
                                 }
                                 else
                                 {
+                                    getmemberlist_fy.Clear();
                                     // registration member list
                                     label_status.Text = "Running";
                                     panel_fy_status.Visible = true;
@@ -481,9 +482,9 @@ namespace Cronos_Data
                     catch (Exception err)
                     {
                         string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
+                        SendITSupport("There's a problem to the server, please re-open the application.");
                         SendEmail("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + LineNumber() + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
-                        SendEmail2("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Message: <b>There's a problem to the server, please re-open the application.</b></body></html>");
-                        __send_email = 0;
+                        __send = 0;
 
                         isClose = false;
                         Environment.Exit(0);
@@ -592,7 +593,7 @@ namespace Cronos_Data
             {
                 string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
                 SendEmail("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + LineNumber() + "<br/>Message: <b>" + err.ToString() +"</b></body></html>");
-                __send_email = 0;
+                __send = 0;
             }
         }
         
@@ -642,7 +643,30 @@ namespace Cronos_Data
                         if (vip.ToString().Contains("label"))
                         {
                             string vip_get = Regex.Match(vip.ToString(), "<label(.*?)>(.*?)</label>").Groups[2].Value;
-                            vip = vip_get;
+                            if (vip_get.ToLower().Contains("vip 1"))
+                            {
+                                vip = "VIP 1";
+                            }
+                            else if (vip_get.ToLower().Contains("vip 2"))
+                            {
+                                vip = "VIP 2";
+                            }
+                            else if (vip_get.ToLower().Contains("vip 3"))
+                            {
+                                vip = "VIP 3";
+                            }
+                            else if (vip_get.ToLower().Contains("vip 4"))
+                            {
+                                vip = "VIP 4";
+                            }
+                            else if (vip_get.ToLower().Contains("vip 5"))
+                            {
+                                vip = "VIP 5";
+                            }
+                            else
+                            {
+                                vip = vip_get;
+                            }
                         }
                         JToken last_login_date___ip = jo_fy.SelectToken("$.aaData[" + ii + "][11]");
                         string last_login_date = last_login_date___ip.ToString().Substring(0, 19);
@@ -653,11 +677,11 @@ namespace Cronos_Data
                         string register_domain = date_register__register_domain.ToString().Substring(27);
                         JToken status = jo_fy.SelectToken("$.aaData[" + ii + "][13]").ToString().Replace("\"", "");
                         DateTime month_registration = Convert.ToDateTime(date_register);
-
-                        // uncomment
-                        //getmemberlist_fy.Add(username);
-                        //getmemberlist_fy.Add(vip.ToString());
                         
+                        // update 12/18 uncomment - uncomment
+                        getmemberlist_fy.Add(username);
+                        getmemberlist_fy.Add(vip.ToString());
+
                         string cn = "";
                         string ea = "";
 
@@ -1044,7 +1068,7 @@ namespace Cronos_Data
             {
                 string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
                 SendEmail("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + LineNumber() + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
-                __send_email = 0;
+                __send = 0;
             }
         }
 
@@ -1446,7 +1470,7 @@ namespace Cronos_Data
             {
                 string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
                 SendEmail("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + LineNumber() + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
-                __send_email = 0;
+                __send = 0;
             }
         }
         
@@ -6016,11 +6040,11 @@ namespace Cronos_Data
                 button_fy_proceed.Text = "PROCEED";
                 button_fy_proceed.Enabled = true;
                 label_fy_locatefolder.Enabled = true;
-                
+
                 string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
+                SendITSupport("There's a problem to the server, please re-open the application.");
                 SendEmail("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + LineNumber() + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
-                SendEmail2("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Message: <b>There's a problem to the server, please re-open the application.</b></body></html>");
-                __send_email = 0;
+                __send = 0;
 
                 isClose = false;
                 Environment.Exit(0);
@@ -6132,9 +6156,9 @@ namespace Cronos_Data
                 label_fy_locatefolder.Enabled = true;
 
                 string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
+                SendITSupport("There's a problem to the server, please re-open the application.");
                 SendEmail("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + LineNumber() + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
-                SendEmail2("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Message: <b>There's a problem to the server, please re-open the application.</b></body></html>");
-                __send_email = 0;
+                __send = 0;
 
                 isClose = false;
                 Environment.Exit(0);
@@ -6286,9 +6310,10 @@ namespace Cronos_Data
                     FY_Cronos_Data.Properties.Settings.Default.______turnover_count = "0";
                     FY_Cronos_Data.Properties.Settings.Default.Save();
 
+                    string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
+                    SendReportsTeam("Reports has been completed.");
                     SendEmail("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>Message: <b>Reports has been completed.</b></body></html>");
-                    SendEmail3("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>Message: <b>Reports has been completed.</b></body></html>");
-                    __send_email = 0;
+                    __send = 0;
                 }
 
                 if (File.Exists(path))
@@ -6303,9 +6328,9 @@ namespace Cronos_Data
                 label_fy_locatefolder.Enabled = true;
 
                 string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
+                SendITSupport("There's a problem to the server, please re-open the application.");
                 SendEmail("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + LineNumber() + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
-                SendEmail2("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Message: <b>There's a problem to the server, please re-open the application.</b></body></html>");
-                __send_email = 0;
+                __send = 0;
 
                 isClose = false;
                 Environment.Exit(0);
@@ -6360,6 +6385,7 @@ namespace Cronos_Data
 
                                 if (i == 0)
                                 {
+                                    // update 12/18 uncomment
                                     getmemberlist_fy.Add(reader[i].ToString());
                                     __getcontactemail.Add(reader[i].ToString());
                                     columns_deposit += reader[i].ToString() + "*|*";
@@ -6408,6 +6434,7 @@ namespace Cronos_Data
                                 }
                                 else if (i == 4)
                                 {
+                                    // update 12/18 uncomment
                                     getmemberlist_fy.Add(reader[i].ToString());
                                 }
                                 else if (i == 6)
@@ -6525,9 +6552,9 @@ namespace Cronos_Data
             catch (Exception err)
             {
                 string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
+                SendITSupport("There's a problem to the server, please re-open the application.");
                 SendEmail("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + LineNumber() + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
-                SendEmail2("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Message: <b>There's a problem to the server, please re-open the application.</b></body></html>");
-                __send_email = 0;
+                __send = 0;
 
                 isClose = false;
                 Environment.Exit(0);
@@ -6584,9 +6611,9 @@ namespace Cronos_Data
             catch (Exception err)
             {
                 string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
+                SendITSupport("There's a problem to the server, please re-open the application.");
                 SendEmail("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + LineNumber() + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
-                SendEmail2("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Message: <b>There's a problem to the server, please re-open the application.</b></body></html>");
-                __send_email = 0;
+                __send = 0;
 
                 isClose = false;
                 Environment.Exit(0);
@@ -6643,9 +6670,9 @@ namespace Cronos_Data
             catch (Exception err)
             {
                 string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
+                SendITSupport("There's a problem to the server, please re-open the application.");
                 SendEmail("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + LineNumber() + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
-                SendEmail2("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Message: <b>There's a problem to the server, please re-open the application.</b></body></html>");
-                __send_email = 0;
+                __send = 0;
 
                 isClose = false;
                 Environment.Exit(0);
@@ -6704,9 +6731,9 @@ namespace Cronos_Data
             catch (Exception err)
             {
                 string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
+                SendITSupport("There's a problem to the server, please re-open the application.");
                 SendEmail("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + LineNumber() + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
-                SendEmail2("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Message: <b>There's a problem to the server, please re-open the application.</b></body></html>");
-                __send_email = 0;
+                __send = 0;
 
                 isClose = false;
                 Environment.Exit(0);
@@ -6968,8 +6995,9 @@ namespace Cronos_Data
             catch (Exception err)
             {
                 string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
+                SendITSupport("There's a problem to the server, please re-open the application.");
                 SendEmail("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + LineNumber() + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
-                __send_email = 0;
+                __send = 0;
             }
         }
 
@@ -7078,9 +7106,9 @@ namespace Cronos_Data
                 label_fy_locatefolder.Enabled = true;
 
                 string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
+                SendITSupport("There's a problem to the server, please re-open the application.");
                 SendEmail("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + LineNumber() + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
-                SendEmail2("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Message: <b>There's a problem to the server, please re-open the application.</b></body></html>");
-                __send_email = 0;
+                __send = 0;
 
                 isClose = false;
                 Environment.Exit(0);
@@ -7255,7 +7283,7 @@ namespace Cronos_Data
 
                         getmemberlist_fy.Clear();
                         __getcontactemail.Clear();
-                        GetMemberList_FY();
+                        //GetMemberList_FY();
                         GetBonusCode_FY();
                         GetGamePlatform_FY();
                         GetPaymentType_FY();
@@ -7309,7 +7337,7 @@ namespace Cronos_Data
 
                             getmemberlist_fy.Clear();
                             __getcontactemail.Clear();
-                            GetMemberList_FY();
+                            //GetMemberList_FY();
                             GetBonusCode_FY();
                             GetGamePlatform_FY();
                             GetPaymentType_FY();
@@ -7429,8 +7457,8 @@ namespace Cronos_Data
             }
             catch (Exception err)
             {
-                __send_email++;
-                if (__send_email <= 5)
+                __send++;
+                if (__send <= 5)
                 {
                     SendEmail(get_message);
                 }
@@ -7440,53 +7468,35 @@ namespace Cronos_Data
                 }
             }
         }
-        
-        private void SendEmail2(string get_message)
+
+        private void SendITSupport(string message)
         {
             try
             {
-                int port = 587;
-                string host = "smtp.gmail.com";
-                string username = "drake@18tech.com";
-                string password = "@ccess123418tech";
-                string mailFrom = "noreply@mail.com";
-                string[] mailTo = { "it@18tech.com", "jeremy@18tech.com", "dennis@18tech.com", "ludz@18tech.com", "marvinherbosa@18tech.com", "jaysonrelampagos@18tech.com" };
-                string mailTitle = "FY Cronos Data";
-                string mailMessage = get_message;
-
-                using (SmtpClient client = new SmtpClient())
+                string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
+                string urlString = "https://api.telegram.org/bot{0}/sendMessage?chat_id={1}&text={2}";
+                string apiToken = "762890741:AAFwjSml3OgWrN07G_41YgIIzFAyxYLGE8Q";
+                string chatId = "@cronos_data_it_support";
+                string text = "Brand:%20-----" + __brand_code + "-----%0AIP:%20192.168.10.252%0ALocation:%20Robinsons%20Summit%20Office%0ADate%20and%20Time:%20[" + datetime + "]%0AMessage:%20" + message + "";
+                urlString = String.Format(urlString, apiToken, chatId, text);
+                WebRequest request = WebRequest.Create(urlString);
+                Stream rs = request.GetResponse().GetResponseStream();
+                StreamReader reader = new StreamReader(rs);
+                string line = "";
+                StringBuilder sb = new StringBuilder();
+                while (line != null)
                 {
-                    MailAddress from = new MailAddress(mailFrom);
-                    MailMessage message = new MailMessage
-                    {
-                        From = from
-                    };
-                    foreach (var m in mailTo)
-                    {
-                        message.To.Add(m);
-                    }
-                    message.Subject = mailTitle;
-                    message.Body = mailMessage;
-                    message.IsBodyHtml = true;
-                    client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                    client.UseDefaultCredentials = false;
-                    client.Host = host;
-                    client.Port = port;
-                    client.EnableSsl = true;
-                    client.Credentials = new NetworkCredential
-                    {
-                        UserName = username,
-                        Password = password
-                    };
-                    client.Send(message);
+                    line = reader.ReadLine();
+                    if (line != null)
+                        sb.Append(line);
                 }
             }
             catch (Exception err)
             {
-                __send_email++;
-                if (__send_email <= 5)
+                __send++;
+                if (__send <= 5)
                 {
-                    SendEmail2(get_message);
+                    SendITSupport(message);
                 }
                 else
                 {
@@ -7495,52 +7505,34 @@ namespace Cronos_Data
             }
         }
 
-        private void SendEmail3(string get_message)
+        private void SendReportsTeam(string message)
         {
             try
             {
-                int port = 587;
-                string host = "smtp.gmail.com";
-                string username = "drake@18tech.com";
-                string password = "@ccess123418tech";
-                string mailFrom = "noreply@mail.com";
-                string[] mailTo = { "christian@18tech.com", "rhona@18tech.com", "raf@18tech.com" };
-                string mailTitle = "FY Cronos Data";
-                string mailMessage = get_message;
-
-                using (SmtpClient client = new SmtpClient())
+                string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
+                string urlString = "https://api.telegram.org/bot{0}/sendMessage?chat_id={1}&text={2}";
+                string apiToken = "762890741:AAFwjSml3OgWrN07G_41YgIIzFAyxYLGE8Q";
+                string chatId = "@cronos_data_reports_team";
+                string text = "Brand:%20-----" + __brand_code + "-----%0ATime:%20[" + datetime + "]%0AMessage:%20" + message + "";
+                urlString = String.Format(urlString, apiToken, chatId, text);
+                WebRequest request = WebRequest.Create(urlString);
+                Stream rs = request.GetResponse().GetResponseStream();
+                StreamReader reader = new StreamReader(rs);
+                string line = "";
+                StringBuilder sb = new StringBuilder();
+                while (line != null)
                 {
-                    MailAddress from = new MailAddress(mailFrom);
-                    MailMessage message = new MailMessage
-                    {
-                        From = from
-                    };
-                    foreach (var m in mailTo)
-                    {
-                        message.To.Add(m);
-                    }
-                    message.Subject = mailTitle;
-                    message.Body = mailMessage;
-                    message.IsBodyHtml = true;
-                    client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                    client.UseDefaultCredentials = false;
-                    client.Host = host;
-                    client.Port = port;
-                    client.EnableSsl = true;
-                    client.Credentials = new NetworkCredential
-                    {
-                        UserName = username,
-                        Password = password
-                    };
-                    client.Send(message);
+                    line = reader.ReadLine();
+                    if (line != null)
+                        sb.Append(line);
                 }
             }
             catch (Exception err)
             {
-                __send_email++;
-                if (__send_email <= 5)
+                __send++;
+                if (__send <= 5)
                 {
-                    SendEmail3(get_message);
+                    SendReportsTeam(message);
                 }
                 else
                 {
