@@ -678,9 +678,9 @@ namespace Cronos_Data
                         JToken status = jo_fy.SelectToken("$.aaData[" + ii + "][13]").ToString().Replace("\"", "");
                         DateTime month_registration = Convert.ToDateTime(date_register);
                         
-                        // update 12/18 uncomment - uncomment
-                        getmemberlist_fy.Add(username);
-                        getmemberlist_fy.Add(vip.ToString());
+                        // 12/18
+                        //getmemberlist_fy.Add(username);
+                        //getmemberlist_fy.Add(vip.ToString());
 
                         string cn = "";
                         string ea = "";
@@ -6385,7 +6385,7 @@ namespace Cronos_Data
 
                                 if (i == 0)
                                 {
-                                    // update 12/18 uncomment
+                                    // 12/18
                                     getmemberlist_fy.Add(reader[i].ToString());
                                     __getcontactemail.Add(reader[i].ToString());
                                     columns_deposit += reader[i].ToString() + "*|*";
@@ -6434,7 +6434,7 @@ namespace Cronos_Data
                                 }
                                 else if (i == 4)
                                 {
-                                    // update 12/18 uncomment
+                                    // 12/18
                                     getmemberlist_fy.Add(reader[i].ToString());
                                 }
                                 else if (i == 6)
@@ -7283,7 +7283,7 @@ namespace Cronos_Data
 
                         getmemberlist_fy.Clear();
                         __getcontactemail.Clear();
-                        //GetMemberList_FY();
+                        GetMemberList_FY();
                         GetBonusCode_FY();
                         GetGamePlatform_FY();
                         GetPaymentType_FY();
@@ -7337,7 +7337,7 @@ namespace Cronos_Data
 
                             getmemberlist_fy.Clear();
                             __getcontactemail.Clear();
-                            //GetMemberList_FY();
+                            GetMemberList_FY();
                             GetBonusCode_FY();
                             GetGamePlatform_FY();
                             GetPaymentType_FY();
