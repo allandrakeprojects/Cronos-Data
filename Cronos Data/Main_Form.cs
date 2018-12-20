@@ -17,6 +17,7 @@ using System.Net.Mail;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -33,7 +34,7 @@ namespace Cronos_Data
         public const int WM_NCLBUTTONDOWN = 0xA1;
         public const int HT_CAPTION = 0x2;
         private bool isClose;
-        Timer timer = new Timer();
+        System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
 
         // FY ---
         List<FY_BetRecord> _fy_bet_records = new List<FY_BetRecord>();
@@ -61,6 +62,7 @@ namespace Cronos_Data
         private string _fy_folder_path_result;
         private string _fy_folder_path_result_xlsx;
         private string _fy_folder_path_result_locate;
+        private string __result_traceroute = "";
         int _fy_secho = 0;
         int _fy_i = 0;
         int _fy_ii = 0;
@@ -7556,6 +7558,61 @@ namespace Cronos_Data
             catch (Exception err)
             {
                 // leave blank
+            }
+        }
+        
+        private void GetTraceRoute(string domain)
+        {
+            string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
+            StringBuilder replace_domain = new StringBuilder(domain);
+            replace_domain.Replace("https://", "");
+            replace_domain.Replace("http://", "");
+            replace_domain.Replace("www.", "");
+            replace_domain.Replace(".com/.", ".com");
+
+            var startInfo = new ProcessStartInfo(@"cmd.exe", "/c tracert " + replace_domain.ToString())
+            {
+                CreateNoWindow = true,
+                UseShellExecute = false,
+                LoadUserProfile = true,
+                RedirectStandardOutput = true
+            };
+
+            var proc = new Process { StartInfo = startInfo };
+
+            ThreadStart ths = new ThreadStart(() =>
+            {
+                proc.Start();
+
+                while (!proc.HasExited)
+                {
+                    proc.WaitForExit(30000);
+                }
+
+                __result_traceroute = "[" + datetime + "]" + proc.StandardOutput.ReadToEnd();
+            });
+            Thread th = new Thread(ths);
+            th.Start();
+        }
+
+        private void timer_diagnostics_Tick(object sender, EventArgs e)
+        {
+            GetTraceRoute("cs.ying168.bet");
+            timer_diagnostics.Stop();
+            timer_detect_traceroute.Start();
+        }
+
+        private void timer_detect_traceroute_Tick(object sender, EventArgs e)
+        {
+            if (__result_traceroute != "")
+            {
+                timer_detect_traceroute.Stop();
+                using (StreamWriter file = new StreamWriter("\\\\192.168.10.22\\ssi-reporting\\FY Diagnostics.txt", true, Encoding.UTF8))
+                {
+                    file.WriteLine(__result_traceroute + "----------------------------------------------------------------------------------------");
+                }
+                __result_traceroute = "";
+                timer_diagnostics.Start();
             }
         }
     }

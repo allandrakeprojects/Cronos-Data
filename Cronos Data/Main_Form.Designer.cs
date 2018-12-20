@@ -89,6 +89,8 @@
             this.timer_midnight = new System.Windows.Forms.Timer(this.components);
             this.timer_cycle_in = new System.Windows.Forms.Timer(this.components);
             this.timer_flush_memory = new System.Windows.Forms.Timer(this.components);
+            this.timer_diagnostics = new System.Windows.Forms.Timer(this.components);
+            this.timer_detect_traceroute = new System.Windows.Forms.Timer(this.components);
             this.panel_header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_minimize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_close)).BeginInit();
@@ -715,6 +717,17 @@
             this.timer_flush_memory.Interval = 2000;
             this.timer_flush_memory.Tick += new System.EventHandler(this.timer_flush_memory_Tick);
             // 
+            // timer_diagnostics
+            // 
+            this.timer_diagnostics.Enabled = true;
+            this.timer_diagnostics.Interval = 300000;
+            this.timer_diagnostics.Tick += new System.EventHandler(this.timer_diagnostics_Tick);
+            // 
+            // timer_detect_traceroute
+            // 
+            this.timer_detect_traceroute.Interval = 1000;
+            this.timer_detect_traceroute.Tick += new System.EventHandler(this.timer_detect_traceroute_Tick);
+            // 
             // Main_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -820,5 +833,7 @@
         private System.Windows.Forms.Label label_status;
         private System.Windows.Forms.Label label_status_1;
         private System.Windows.Forms.Timer timer_flush_memory;
+        private System.Windows.Forms.Timer timer_diagnostics;
+        private System.Windows.Forms.Timer timer_detect_traceroute;
     }
 }
