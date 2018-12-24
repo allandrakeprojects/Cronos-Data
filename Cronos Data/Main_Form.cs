@@ -241,11 +241,7 @@ namespace Cronos_Data
                     try
                     {
                         if (webBrowser_fy.Url.ToString().Equals("http://cshk.ying168.bet/account/login"))
-                        {
-                            FY_Cronos_Data.Properties.Settings.Default.______start_detect = "0";
-                            FY_Cronos_Data.Properties.Settings.Default.______turnover_count = "0";
-                            FY_Cronos_Data.Properties.Settings.Default.Save();
-                            
+                        {                            
                             if (__isStart)
                             {
                                 button_fy_stop.PerformClick();
@@ -600,6 +596,9 @@ namespace Cronos_Data
                 string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
                 SendEmail("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + LineNumber() + "<br/>Message: <b>" + err.ToString() +"</b></body></html>");
                 __send = 0;
+
+                isClose = false;
+                Environment.Exit(0);
             }
         }
         
@@ -1075,6 +1074,9 @@ namespace Cronos_Data
                 string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
                 SendEmail("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + LineNumber() + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
                 __send = 0;
+
+                isClose = false;
+                Environment.Exit(0);
             }
         }
 
@@ -1477,6 +1479,9 @@ namespace Cronos_Data
                 string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
                 SendEmail("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + LineNumber() + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
                 __send = 0;
+
+                isClose = false;
+                Environment.Exit(0);
             }
         }
         
@@ -6147,7 +6152,7 @@ namespace Cronos_Data
                 if (!isStopClick_fy)
                 {
                     // bet record
-                    FY_Cronos_Data.Properties.Settings.Default.______start_detect = "0";
+                    FY_Cronos_Data.Properties.Settings.Default.______start_detect = "3";
                     FY_Cronos_Data.Properties.Settings.Default.Save();
                     
                     button_fy_proceed.PerformClick();
@@ -7004,6 +7009,9 @@ namespace Cronos_Data
                 SendITSupport("There's a problem to the server, please re-open the application.");
                 SendEmail("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + LineNumber() + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
                 __send = 0;
+
+                isClose = false;
+                Environment.Exit(0);
             }
         }
 
