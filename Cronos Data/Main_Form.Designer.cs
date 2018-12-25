@@ -69,6 +69,7 @@
             this.timer_fy_start = new System.Windows.Forms.Timer(this.components);
             this.timer_fy = new System.Windows.Forms.Timer(this.components);
             this.panel_footer = new System.Windows.Forms.Panel();
+            this.button1 = new System.Windows.Forms.Button();
             this.label_status = new System.Windows.Forms.Label();
             this.label_status_1 = new System.Windows.Forms.Label();
             this.label_cycle_in = new System.Windows.Forms.Label();
@@ -91,7 +92,6 @@
             this.timer_flush_memory = new System.Windows.Forms.Timer(this.components);
             this.timer_diagnostics = new System.Windows.Forms.Timer(this.components);
             this.timer_detect_traceroute = new System.Windows.Forms.Timer(this.components);
-            this.button1 = new System.Windows.Forms.Button();
             this.panel_header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_minimize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_close)).BeginInit();
@@ -562,6 +562,18 @@
             this.panel_footer.Size = new System.Drawing.Size(569, 27);
             this.panel_footer.TabIndex = 4;
             // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(122)))), ((int)(((byte)(159)))));
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.ForeColor = System.Drawing.Color.White;
+            this.button1.Location = new System.Drawing.Point(433, 6);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 16);
+            this.button1.TabIndex = 1;
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // label_status
             // 
             this.label_status.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -729,18 +741,6 @@
             // 
             this.timer_detect_traceroute.Interval = 1000;
             this.timer_detect_traceroute.Tick += new System.EventHandler(this.timer_detect_traceroute_Tick);
-            // 
-            // button1
-            // 
-            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(122)))), ((int)(((byte)(159)))));
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Location = new System.Drawing.Point(433, 6);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 16);
-            this.button1.TabIndex = 1;
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // Main_Form
             // 
