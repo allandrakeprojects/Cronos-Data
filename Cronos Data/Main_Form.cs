@@ -7475,6 +7475,7 @@ namespace Cronos_Data
             label_status_1.Visible = true;
             label_cycle_in.Visible = true;
             label_cycle_in_1.Visible = true;
+            button1.Visible = true;
             timer_landing.Stop();
         }
 
