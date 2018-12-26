@@ -92,6 +92,11 @@
             this.timer_flush_memory = new System.Windows.Forms.Timer(this.components);
             this.timer_diagnostics = new System.Windows.Forms.Timer(this.components);
             this.timer_detect_traceroute = new System.Windows.Forms.Timer(this.components);
+            this.label_gp_name = new System.Windows.Forms.Label();
+            this.label_gp_name_01 = new System.Windows.Forms.Label();
+            this.label_gp_count = new System.Windows.Forms.Label();
+            this.label_gp_count_01 = new System.Windows.Forms.Label();
+            this.label_total_betrecord = new System.Windows.Forms.Label();
             this.panel_header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_minimize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_close)).BeginInit();
@@ -210,6 +215,11 @@
             // panel_fy_status
             // 
             this.panel_fy_status.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.panel_fy_status.Controls.Add(this.label_total_betrecord);
+            this.panel_fy_status.Controls.Add(this.label_gp_count);
+            this.panel_fy_status.Controls.Add(this.label_gp_count_01);
+            this.panel_fy_status.Controls.Add(this.label_gp_name);
+            this.panel_fy_status.Controls.Add(this.label_gp_name_01);
             this.panel_fy_status.Controls.Add(this.label_fy_insert);
             this.panel_fy_status.Controls.Add(this.button_fy_proceed);
             this.panel_fy_status.Controls.Add(this.label_fy_locatefolder);
@@ -742,6 +752,58 @@
             this.timer_detect_traceroute.Interval = 1000;
             this.timer_detect_traceroute.Tick += new System.EventHandler(this.timer_detect_traceroute_Tick);
             // 
+            // label_gp_name
+            // 
+            this.label_gp_name.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_gp_name.Location = new System.Drawing.Point(258, 148);
+            this.label_gp_name.Name = "label_gp_name";
+            this.label_gp_name.Size = new System.Drawing.Size(250, 18);
+            this.label_gp_name.TabIndex = 35;
+            this.label_gp_name.Text = "-";
+            this.label_gp_name.Visible = false;
+            // 
+            // label_gp_name_01
+            // 
+            this.label_gp_name_01.AutoSize = true;
+            this.label_gp_name_01.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_gp_name_01.Location = new System.Drawing.Point(132, 147);
+            this.label_gp_name_01.Name = "label_gp_name_01";
+            this.label_gp_name_01.Size = new System.Drawing.Size(78, 18);
+            this.label_gp_name_01.TabIndex = 36;
+            this.label_gp_name_01.Text = "GP Name:";
+            this.label_gp_name_01.Visible = false;
+            // 
+            // label_gp_count
+            // 
+            this.label_gp_count.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_gp_count.Location = new System.Drawing.Point(258, 178);
+            this.label_gp_count.Name = "label_gp_count";
+            this.label_gp_count.Size = new System.Drawing.Size(250, 18);
+            this.label_gp_count.TabIndex = 37;
+            this.label_gp_count.Text = "-";
+            this.label_gp_count.Visible = false;
+            // 
+            // label_gp_count_01
+            // 
+            this.label_gp_count_01.AutoSize = true;
+            this.label_gp_count_01.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_gp_count_01.Location = new System.Drawing.Point(132, 176);
+            this.label_gp_count_01.Name = "label_gp_count_01";
+            this.label_gp_count_01.Size = new System.Drawing.Size(78, 18);
+            this.label_gp_count_01.TabIndex = 38;
+            this.label_gp_count_01.Text = "GP Count:";
+            this.label_gp_count_01.Visible = false;
+            // 
+            // label_total_betrecord
+            // 
+            this.label_total_betrecord.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_total_betrecord.Location = new System.Drawing.Point(258, 206);
+            this.label_total_betrecord.Name = "label_total_betrecord";
+            this.label_total_betrecord.Size = new System.Drawing.Size(250, 18);
+            this.label_total_betrecord.TabIndex = 39;
+            this.label_total_betrecord.Text = "-";
+            this.label_total_betrecord.Visible = false;
+            // 
             // Main_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -850,5 +912,10 @@
         private System.Windows.Forms.Timer timer_diagnostics;
         private System.Windows.Forms.Timer timer_detect_traceroute;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label label_gp_name;
+        private System.Windows.Forms.Label label_gp_name_01;
+        private System.Windows.Forms.Label label_gp_count;
+        private System.Windows.Forms.Label label_gp_count_01;
+        private System.Windows.Forms.Label label_total_betrecord;
     }
 }
