@@ -7410,8 +7410,6 @@ namespace Cronos_Data
                     Environment.Exit(0);
                 }
             }
-
-            Environment.Exit(0);
         }
 
         // Minimize
