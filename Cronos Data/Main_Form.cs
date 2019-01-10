@@ -251,7 +251,7 @@ namespace Cronos_Data
                                 timer_fy_start.Stop();
 
                                 string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
-                                SendITSupport("The application have been logout, please re-login again.");
+                                //SendITSupport("The application have been logout, please re-login again.");
                                 SendEmail("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + LineNumber() + "<br/>Message: <b>The application have been logout, please re-login again.</b></body></html>");
                                 __send = 0;
                             }
@@ -270,7 +270,7 @@ namespace Cronos_Data
                             if (get_value == "")
                             {
                                 string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
-                                SendITSupport("There's a problem to the server, please re-open the application.");
+                                //SendITSupport("There's a problem to the server, please re-open the application.");
                                 SendEmail("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + LineNumber() + "<br/>Message: <b>There's a problem to the server, please re-open the application.</b></body></html>");
                                 __send = 0;
 
@@ -586,7 +586,7 @@ namespace Cronos_Data
                     catch (Exception err)
                     {
                         string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
-                        SendITSupport("There's a problem to the server, please re-open the application.");
+                        //SendITSupport("There's a problem to the server, please re-open the application.");
                         SendEmail("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + LineNumber() + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
                         __send = 0;
 
@@ -3634,8 +3634,10 @@ namespace Cronos_Data
                                 JToken submitted_date__submitted_time = jo_fy.SelectToken("$.aaData[" + ii + "][10]");
                                 string submitted_date = submitted_date__submitted_time.ToString().Substring(0, 10);
                                 string submitted_time = submitted_date__submitted_time.ToString().Substring(15);
+                                DateTime submitted_time_replace = DateTime.ParseExact(submitted_time, "HH:mm:ss", CultureInfo.InvariantCulture);
+                                submitted_time = submitted_time_replace.ToString("hh:mm:ss");
                                 DateTime month = DateTime.ParseExact(submitted_date, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-
+                                
                                 string replace_remark = "";
                                 foreach (char c in remark.ToString())
                                 {
@@ -3769,11 +3771,13 @@ namespace Cronos_Data
 
                                 if (_fy_get_ii == 1)
                                 {
-                                    var header = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8}", "Brand", "Month", "Date", "Username", "Bonus Category", "Purpose", "Amount", "Remark", "VIP Level");
+                                    // updated 01/10/2019
+                                    var header = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}", "Brand", "Month", "Date", "Transaction Time", "Username", "Bonus Category", "Purpose", "Amount", "Remark", "VIP Level");
                                     _fy_csv.AppendLine(header);
                                 }
 
-                                var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8}", "FY", "\"" + month.ToString("MM/01/yyyy") + "\"", "\"" + submitted_date + "\"", "\"" + member + "\"", "\"" + bonus_category + "\"", "\"" + purpose + "\"", "\"" + amount + "\"", "\"" + remark + "\"", "\"" + vip + "\"");
+                                // updated 01/10/2019
+                                var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}", "FY", "\"" + month.ToString("MM/01/yyyy") + "\"", "\"" + submitted_date + "\"", "\"" + submitted_time + "\"", "\"" + member + "\"", "\"" + bonus_category + "\"", "\"" + purpose + "\"", "\"" + amount + "\"", "\"" + remark + "\"", "\"" + vip + "\"");
                                 _fy_csv.AppendLine(newLine);
                             }
                             else
@@ -3851,7 +3855,8 @@ namespace Cronos_Data
                                     purpose = "Retention";
                                 }
 
-                                var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8}", "FY", "\"" + month.ToString("MM/01/yyyy") + "\"", "\"" + submitted_date + "\"", "\"" + member + "\"", "\"" + bonus_category + "\"", "\"" + purpose + "\"", "\"" + amount + "\"", "\"" + game_platform + "\"", "\"" + vip + "\"");
+                                // updated 01/10/2019
+                                var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}", "FY", "\"" + month.ToString("MM/01/yyyy") + "\"", "\"" + submitted_date + "\"", "\"" + "00:00:00" + "\"", "\"" + member + "\"", "\"" + bonus_category + "\"", "\"" + purpose + "\"", "\"" + amount + "\"", "\"" + game_platform + "\"", "\"" + vip + "\"");
                                 _fy_csv.AppendLine(newLine);
                             }
                         }
@@ -3863,33 +3868,44 @@ namespace Cronos_Data
                             JToken player_name = jo_fy.SelectToken("$.aaData[" + ii + "][1][1]");
                             JToken bet_no = jo_fy.SelectToken("$.aaData[" + ii + "][2]").ToString().Replace("BetTransaction:", "");
                             JToken bet_time = jo_fy.SelectToken("$.aaData[" + ii + "][3]");
+                            
+                            // updated 01/10/2019
                             JToken bet_type = jo_fy.SelectToken("$.aaData[" + ii + "][4]").ToString();
-                            var match = Regex.Match(bet_type.ToString(), @"<div\b[^>]*>(.*?)<\/div>");
-                            if (match.Success)
+                            if (!game_platform.Contains("VR"))
                             {
-                                string bet_type_replace = match.Groups[1].Value;
-                                bet_type_replace = bet_type_replace.Replace("<br/>", "");
-                                bet_type_replace = bet_type_replace.Replace("<div>", "");
-                                bet_type_replace = bet_type_replace.Replace("</div>", "");
-                                bet_type_replace = bet_type_replace.Replace("<span>", "");
-                                bet_type_replace = bet_type_replace.Replace("</span>", "");
-                                bet_type_replace = bet_type_replace.Replace(",", "");
-                                bet_type_replace = bet_type_replace.Replace("，", "");
-                                bet_type = bet_type_replace.PadRight(225).Substring(0, 225).Trim();
+                                var match = Regex.Match(bet_type.ToString(), @"<div\b[^>]*>(.*?)<\/div>");
+                                if (match.Success)
+                                {
+                                    string bet_type_replace = match.Groups[1].Value;
+                                    bet_type_replace = bet_type_replace.Replace("<br/>", "");
+                                    bet_type_replace = bet_type_replace.Replace("<div>", "");
+                                    bet_type_replace = bet_type_replace.Replace("</div>", "");
+                                    bet_type_replace = bet_type_replace.Replace("<span>", "");
+                                    bet_type_replace = bet_type_replace.Replace("</span>", "");
+                                    bet_type_replace = bet_type_replace.Replace(",", "");
+                                    bet_type_replace = bet_type_replace.Replace("，", "");
+                                    bet_type = bet_type_replace.PadRight(225).Substring(0, 225).Trim();
+                                }
+                                else
+                                {
+                                    string bet_type_replace = bet_type.ToString();
+                                    bet_type_replace = bet_type_replace.Replace("<br/>", "");
+                                    bet_type_replace = bet_type_replace.Replace("<div>", "");
+                                    bet_type_replace = bet_type_replace.Replace("</div>", "");
+                                    bet_type_replace = bet_type_replace.Replace("<span>", "");
+                                    bet_type_replace = bet_type_replace.Replace("</span>", "");
+                                    bet_type_replace = bet_type_replace.Replace(",", "");
+                                    bet_type_replace = bet_type_replace.Replace("，", "");
+                                    bet_type = bet_type_replace.PadRight(225).Substring(0, 225).Trim();
+                                }
                             }
                             else
                             {
-                                string bet_type_replace = bet_type.ToString();
-                                bet_type_replace = bet_type_replace.Replace("<br/>", "");
-                                bet_type_replace = bet_type_replace.Replace("<div>", "");
-                                bet_type_replace = bet_type_replace.Replace("</div>", "");
-                                bet_type_replace = bet_type_replace.Replace("<span>", "");
-                                bet_type_replace = bet_type_replace.Replace("</span>", "");
-                                bet_type_replace = bet_type_replace.Replace(",", "");
-                                bet_type_replace = bet_type_replace.Replace("，", "");
-                                bet_type = bet_type_replace.PadRight(225).Substring(0, 225).Trim();
+                                string[] bet_type_get = bet_type.ToString().Split("<br/>");
+                                bet_type = bet_type_get[0];
                             }
                             String result_bet_type = Regex.Replace(bet_type.ToString(), @"<[^>]*>", String.Empty);
+                            
                             JToken game_result = jo_fy.SelectToken("$.aaData[" + ii + "][5]").ToString().Replace("<br>", "");
                             JToken stake_amount_color = jo_fy.SelectToken("$.aaData[" + ii + "][6][0]");
                             JToken stake_amount = jo_fy.SelectToken("$.aaData[" + ii + "][6][1]");
@@ -6249,7 +6265,7 @@ namespace Cronos_Data
                 label_fy_locatefolder.Enabled = true;
 
                 string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
-                SendITSupport("There's a problem to the server, please re-open the application.");
+                //SendITSupport("There's a problem to the server, please re-open the application.");
                 SendEmail("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + LineNumber() + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
                 __send = 0;
 
@@ -6268,67 +6284,68 @@ namespace Cronos_Data
 
             try
             {
-                var lines = File.ReadAllLines(path);
-                if (lines.Count() == 0) return;
-                var table = new DataTable();
-                string header = "Month,Date,Username,VIP,Amount,Bonus Category,Purpose,Transaction ID,Updated by,Bonus Code,Transaction Time,Product,Brand,File Name";
-                var columns = header.Split(',');
-                foreach (var c in columns)
-                {
-                    table.Columns.Add(c);
-                }
+                // updated 01/10/2019
+                //var lines = File.ReadAllLines(path);
+                //if (lines.Count() == 0) return;
+                //var table = new DataTable();
+                //string header = "Month,Date,Username,VIP,Amount,Bonus Category,Purpose,Transaction ID,Updated by,Bonus Code,Transaction Time,Product,Brand,File Name";
+                //var columns = header.Split(',');
+                //foreach (var c in columns)
+                //{
+                //    table.Columns.Add(c);
+                //}
 
-                for (int i = 1; i < lines.Count(); i++)
-                {
-                    if (lines[i].Length > 0)
-                    {
-                        Application.DoEvents();
-                        display_count_fy++;
-                        label_fy_insert.Text = display_count_fy.ToString("N0");
+                //for (int i = 1; i < lines.Count(); i++)
+                //{
+                //    if (lines[i].Length > 0)
+                //    {
+                //        Application.DoEvents();
+                //        display_count_fy++;
+                //        label_fy_insert.Text = display_count_fy.ToString("N0");
 
-                        string[] get_column = lines[i].Split(",\"");
+                //        string[] get_column = lines[i].Split(",\"");
 
-                        DataRow row = table.NewRow();
-                        // Month
-                        DateTime month = DateTime.ParseExact(get_column[1].Replace("\"", ""), "MM/dd/yyyy", CultureInfo.InvariantCulture);
-                        row[0] = month.ToString("yyyy-MM-dd 00:00:00");
-                        // Date
-                        row[1] = get_column[2].Replace("\"", "") + " 00:00:00";
-                        // Username
-                        row[2] = get_column[3].Replace("\"", "");
-                        // VIP
-                        row[3] = get_column[8].Replace("\"", "");
-                        // Amount
-                        row[4] = get_column[6].Replace("\"", "");
-                        // Bonus Category
-                        row[5] = get_column[4].Replace("\"", "");
-                        // Purpose
-                        row[6] = get_column[5].Replace("\"", "");
-                        // Transaction ID
-                        row[7] = DBNull.Value;
-                        // Updated By
-                        row[8] = "System";
-                        // Bonus Code
-                        get_column[7] = get_column[7].Replace("\"", "");
-                        get_column[7] = get_column[7].Replace(";", "");
-                        row[9] = get_column[7];
-                        // Transaction Time
-                        row[10] = DBNull.Value;
-                        // Product
-                        row[11] = "Main Wallet";
-                        // Brand
-                        row[12] = "FY";
-                        // File Name
-                        row[13] = path.Replace(".txt", ".xlsx");
+                //        DataRow row = table.NewRow();
+                //        // Month
+                //        DateTime month = DateTime.ParseExact(get_column[1].Replace("\"", ""), "MM/dd/yyyy", CultureInfo.InvariantCulture);
+                //        row[0] = month.ToString("yyyy-MM-dd 00:00:00");
+                //        // Date
+                //        row[1] = get_column[2].Replace("\"", "") + " 00:00:00";
+                //        // Username
+                //        row[2] = get_column[3].Replace("\"", "");
+                //        // VIP
+                //        row[3] = get_column[8].Replace("\"", "");
+                //        // Amount
+                //        row[4] = get_column[6].Replace("\"", "");
+                //        // Bonus Category
+                //        row[5] = get_column[4].Replace("\"", "");
+                //        // Purpose
+                //        row[6] = get_column[5].Replace("\"", "");
+                //        // Transaction ID
+                //        row[7] = DBNull.Value;
+                //        // Updated By
+                //        row[8] = "System";
+                //        // Bonus Code
+                //        get_column[7] = get_column[7].Replace("\"", "");
+                //        get_column[7] = get_column[7].Replace(";", "");
+                //        row[9] = get_column[7];
+                //        // Transaction Time
+                //        row[10] = DBNull.Value;
+                //        // Product
+                //        row[11] = "Main Wallet";
+                //        // Brand
+                //        row[12] = "FY";
+                //        // File Name
+                //        row[13] = path.Replace(".txt", ".xlsx");
 
-                        table.Rows.Add(row);
-                    }
-                }
+                //        table.Rows.Add(row);
+                //    }
+                //}
 
-                var connection = @"Data Source=192.168.10.252;User ID=sa;password=Test@123;Initial Catalog=testrain;Integrated Security=True;Trusted_Connection=false;";
-                var sqlBulk = new SqlBulkCopy(connection);
-                sqlBulk.DestinationTableName = "[testrain].[dbo].[FY.Bonus Report]";
-                sqlBulk.WriteToServer(table);
+                //var connection = @"Data Source=192.168.10.252;User ID=sa;password=Test@123;Initial Catalog=testrain;Integrated Security=True;Trusted_Connection=false;";
+                //var sqlBulk = new SqlBulkCopy(connection);
+                //sqlBulk.DestinationTableName = "[testrain].[dbo].[FY.Bonus Report]";
+                //sqlBulk.WriteToServer(table);
 
                 label_fy_finish_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
                 timer_fy.Stop();
@@ -6363,7 +6380,7 @@ namespace Cronos_Data
                 label_fy_locatefolder.Enabled = true;
 
                 string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
-                SendITSupport("There's a problem to the server, please re-open the application.");
+                //SendITSupport("There's a problem to the server, please re-open the application.");
                 SendEmail("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + LineNumber() + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
                 __send = 0;
 
@@ -6526,7 +6543,7 @@ namespace Cronos_Data
                     label_gp_count.Text = "-";
                     label_total_betrecord.Text = "-";
                     
-                    SendITSupport("Reports has been completed.");
+                    //SendITSupport("Reports has been completed.");
                     SendReportsTeam("Reports has been completed.");
                     SendEmail("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>Message: <b>Reports has been completed.</b></body></html>");
                     __send = 0;
@@ -6544,7 +6561,7 @@ namespace Cronos_Data
                 label_fy_locatefolder.Enabled = true;
 
                 string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
-                SendITSupport("There's a problem to the server, please re-open the application.");
+                //SendITSupport("There's a problem to the server, please re-open the application.");
                 SendEmail("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + LineNumber() + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
                 __send = 0;
 
@@ -6768,7 +6785,7 @@ namespace Cronos_Data
             catch (Exception err)
             {
                 string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
-                SendITSupport("There's a problem to the server, please re-open the application.");
+                //SendITSupport("There's a problem to the server, please re-open the application.");
                 SendEmail("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + LineNumber() + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
                 __send = 0;
 
@@ -6827,7 +6844,7 @@ namespace Cronos_Data
             catch (Exception err)
             {
                 string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
-                SendITSupport("There's a problem to the server, please re-open the application.");
+                //SendITSupport("There's a problem to the server, please re-open the application.");
                 SendEmail("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + LineNumber() + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
                 __send = 0;
 
@@ -6886,7 +6903,7 @@ namespace Cronos_Data
             catch (Exception err)
             {
                 string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
-                SendITSupport("There's a problem to the server, please re-open the application.");
+                //SendITSupport("There's a problem to the server, please re-open the application.");
                 SendEmail("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + LineNumber() + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
                 __send = 0;
 
@@ -6947,7 +6964,7 @@ namespace Cronos_Data
             catch (Exception err)
             {
                 string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
-                SendITSupport("There's a problem to the server, please re-open the application.");
+                //SendITSupport("There's a problem to the server, please re-open the application.");
                 SendEmail("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + LineNumber() + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
                 __send = 0;
 
@@ -7211,7 +7228,7 @@ namespace Cronos_Data
             catch (Exception err)
             {
                 string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
-                SendITSupport("There's a problem to the server, please re-open the application.");
+                //SendITSupport("There's a problem to the server, please re-open the application.");
                 SendEmail("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + LineNumber() + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
                 __send = 0;
 
@@ -7325,7 +7342,7 @@ namespace Cronos_Data
                 label_fy_locatefolder.Enabled = true;
 
                 string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
-                SendITSupport("There's a problem to the server, please re-open the application.");
+                //SendITSupport("There's a problem to the server, please re-open the application.");
                 SendEmail("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>IP: 192.168.10.252<br/>Location: Robinsons Summit Office<br/>Date and Time: [" + datetime + "]<br/>Line Number: " + LineNumber() + "<br/>Message: <b>" + err.ToString() + "</b></body></html>");
                 __send = 0;
 
@@ -7714,7 +7731,7 @@ namespace Cronos_Data
                 __send++;
                 if (__send <= 5)
                 {
-                    SendITSupport(message);
+                    //SendITSupport(message);
                 }
                 else
                 {
