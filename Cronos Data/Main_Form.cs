@@ -2376,7 +2376,10 @@ namespace Cronos_Data
                 if (__isLogin)
                 {
                     _fy_pages_count++;
-                    SendITSupport("Game Platform Error: " + label_gp_name.Text);
+                    if (label_gp_name.Text != "-")
+                    {
+                        SendReportsTeam("Game Platform Error -" + label_gp_name.Text + "-");
+                    }
                     await GetDataFYPagesAsync();
                 }
 
@@ -6103,7 +6106,7 @@ namespace Cronos_Data
             WindowState = FormWindowState.Normal;
             label_fy_locatefolder.Enabled = false;
             label_fy_insert.Visible = true;
-
+    
             try
             {
                 var lines = File.ReadAllLines(path);
@@ -6116,102 +6119,102 @@ namespace Cronos_Data
                     table.Columns.Add(c);
                 }
 
-                for (int i = 1; i < lines.Count(); i++)
-                {
-                    if (lines[i].Length > 0)
-                    {
-                        Application.DoEvents();
-                        display_count_fy++;
-                        label_fy_insert.Text = display_count_fy.ToString("N0");
+                //for (int i = 1; i < lines.Count(); i++)
+                //{
+                //    if (lines[i].Length > 0)
+                //    {
+                //        Application.DoEvents();
+                //        display_count_fy++;
+                //        label_fy_insert.Text = display_count_fy.ToString("N0");
 
-                        string[] get_column = lines[i].Split(",\"");
+                //        string[] get_column = lines[i].Split(",\"");
 
-                        DataRow row = table.NewRow();
-                        // Month
-                        DateTime month = DateTime.ParseExact(get_column[1].Replace("\"", ""), "MM/dd/yyyy", CultureInfo.InvariantCulture);
-                        row[0] = month.ToString("yyyy-MM-dd 00:00:00");
-                        // Date
-                        row[1] = get_column[2].Replace("\"", "") + " 00:00:00";
-                        // Submitted Date
-                        row[2] = get_column[3].Replace("\"", "");
-                        // Member
-                        row[3] = get_column[5].Replace("\"", "");
-                        // Amount
-                        row[4] = get_column[10].Replace("\"", "");
-                        // Payment Type
-                        row[5] = get_column[6].Replace("\"", "");
-                        // Status
-                        row[6] = get_column[15].Replace("\"", "");
-                        // Updated Date
-                        row[7] = get_column[4].Replace("\"", "");
-                        // Transaction Time
-                        row[8] = "1899-12-30 " + get_column[11].Replace("\"", "");
-                        // Duration Time
-                        row[9] = get_column[13].Replace("\"", "");
-                        // VIP
-                        row[10] = get_column[14].Replace("\"", "");
-                        // Transaction Type
-                        row[11] = get_column[12].Replace("\"", "");
-                        // Transaction ID
-                        get_column[9] = get_column[9].Replace("\"", "");
-                        get_column[9] = get_column[9].Replace("'", "");
-                        row[12] = get_column[9];
-                        // Time
-                        row[13] = DBNull.Value;
-                        // Brand
-                        row[14] = "FY";
-                        // PG Company
-                        row[15] = get_column[7].Replace("\"", "");
-                        // PG Type
-                        row[16] = get_column[8].Replace("\"", "");
-                        // Retained
-                        if (get_column[16].Replace("\"", "").Trim() != "")
-                        {
-                            row[17] = get_column[16].Replace("\"", "");
-                        }
-                        else
-                        {
-                            row[17] = DBNull.Value;
-                        }
-                        // FD Date
-                        if (get_column[17].Replace("\"", "") != "" && get_column[17].Replace("\"", "") != "fd date")
-                        {
-                            DateTime fd_date_ = DateTime.ParseExact(get_column[17].Replace("\"", ""), "MM/dd/yyyy", CultureInfo.InvariantCulture);
-                            row[18] = fd_date_.ToString("yyyy-MM-dd 00:00:00");
-                        }
-                        else
-                        {
-                            row[18] = DBNull.Value;
-                        }
-                        // New
-                        if (get_column[18].Replace("\"", "").Trim() != "")
-                        {
-                            row[19] = get_column[18].Replace("\"", "");
-                        }
-                        else
-                        {
-                            row[19] = DBNull.Value;
-                        }
-                        // Reactivated
-                        if (get_column[19].Replace("\"", "").Trim() != "")
-                        {
-                            row[20] = get_column[19].Replace("\"", "");
-                        }
-                        else
-                        {
-                            row[20] = DBNull.Value;
-                        }
-                        // File Name
-                        row[21] = path.Replace(".txt", ".xlsx");
+                //        DataRow row = table.NewRow();
+                //        // Month
+                //        DateTime month = DateTime.ParseExact(get_column[1].Replace("\"", ""), "MM/dd/yyyy", CultureInfo.InvariantCulture);
+                //        row[0] = month.ToString("yyyy-MM-dd 00:00:00");
+                //        // Date
+                //        row[1] = get_column[2].Replace("\"", "") + " 00:00:00";
+                //        // Submitted Date
+                //        row[2] = get_column[3].Replace("\"", "");
+                //        // Member
+                //        row[3] = get_column[5].Replace("\"", "");
+                //        // Amount
+                //        row[4] = get_column[10].Replace("\"", "");
+                //        // Payment Type
+                //        row[5] = get_column[6].Replace("\"", "");
+                //        // Status
+                //        row[6] = get_column[15].Replace("\"", "");
+                //        // Updated Date
+                //        row[7] = get_column[4].Replace("\"", "");
+                //        // Transaction Time
+                //        row[8] = "1899-12-30 " + get_column[11].Replace("\"", "");
+                //        // Duration Time
+                //        row[9] = get_column[13].Replace("\"", "");
+                //        // VIP
+                //        row[10] = get_column[14].Replace("\"", "");
+                //        // Transaction Type
+                //        row[11] = get_column[12].Replace("\"", "");
+                //        // Transaction ID
+                //        get_column[9] = get_column[9].Replace("\"", "");
+                //        get_column[9] = get_column[9].Replace("'", "");
+                //        row[12] = get_column[9];
+                //        // Time
+                //        row[13] = DBNull.Value;
+                //        // Brand
+                //        row[14] = "FY";
+                //        // PG Company
+                //        row[15] = get_column[7].Replace("\"", "");
+                //        // PG Type
+                //        row[16] = get_column[8].Replace("\"", "");
+                //        // Retained
+                //        if (get_column[16].Replace("\"", "").Trim() != "")
+                //        {
+                //            row[17] = get_column[16].Replace("\"", "");
+                //        }
+                //        else
+                //        {
+                //            row[17] = DBNull.Value;
+                //        }
+                //        // FD Date
+                //        if (get_column[17].Replace("\"", "") != "" && get_column[17].Replace("\"", "") != "fd date")
+                //        {
+                //            DateTime fd_date_ = DateTime.ParseExact(get_column[17].Replace("\"", ""), "MM/dd/yyyy", CultureInfo.InvariantCulture);
+                //            row[18] = fd_date_.ToString("yyyy-MM-dd 00:00:00");
+                //        }
+                //        else
+                //        {
+                //            row[18] = DBNull.Value;
+                //        }
+                //        // New
+                //        if (get_column[18].Replace("\"", "").Trim() != "")
+                //        {
+                //            row[19] = get_column[18].Replace("\"", "");
+                //        }
+                //        else
+                //        {
+                //            row[19] = DBNull.Value;
+                //        }
+                //        // Reactivated
+                //        if (get_column[19].Replace("\"", "").Trim() != "")
+                //        {
+                //            row[20] = get_column[19].Replace("\"", "");
+                //        }
+                //        else
+                //        {
+                //            row[20] = DBNull.Value;
+                //        }
+                //        // File Name
+                //        row[21] = path.Replace(".txt", ".xlsx");
                         
-                        table.Rows.Add(row);
-                    }
-                }
+                //        table.Rows.Add(row);
+                //    }
+                //}
 
-                var connection = @"Data Source=192.168.10.252;User ID=sa;password=Test@123;Initial Catalog=testrain;Integrated Security=True;Trusted_Connection=false;";
-                var sqlBulk = new SqlBulkCopy(connection);
-                sqlBulk.DestinationTableName = "[testrain].[dbo].[FY.Payment Logs]";
-                sqlBulk.WriteToServer(table);
+                //var connection = @"Data Source=192.168.10.252;User ID=sa;password=Test@123;Initial Catalog=testrain;Integrated Security=True;Trusted_Connection=false;";
+                //var sqlBulk = new SqlBulkCopy(connection);
+                //sqlBulk.DestinationTableName = "[testrain].[dbo].[FY.Payment Logs]";
+                //sqlBulk.WriteToServer(table);
                 
                 label_fy_finish_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
                 timer_fy.Stop();
@@ -6523,7 +6526,7 @@ namespace Cronos_Data
                     label_gp_count.Text = "-";
                     label_total_betrecord.Text = "-";
                     
-                    string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
+                    SendITSupport("Reports has been completed.");
                     SendReportsTeam("Reports has been completed.");
                     SendEmail("<html><body>Brand: <font color='" + __brand_color + "'>-----" + __brand_code + "-----</font><br/>Message: <b>Reports has been completed.</b></body></html>");
                     __send = 0;
