@@ -97,6 +97,8 @@
             this.timer_flush_memory = new System.Windows.Forms.Timer(this.components);
             this.timer_diagnostics = new System.Windows.Forms.Timer(this.components);
             this.timer_detect_traceroute = new System.Windows.Forms.Timer(this.components);
+            this.timer_diagnostics_itsupport = new System.Windows.Forms.Timer(this.components);
+            this.timer_detect_traceroute_itsupport = new System.Windows.Forms.Timer(this.components);
             this.panel_header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_minimize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_close)).BeginInit();
@@ -805,6 +807,17 @@
             this.timer_detect_traceroute.Interval = 1000;
             this.timer_detect_traceroute.Tick += new System.EventHandler(this.timer_detect_traceroute_Tick);
             // 
+            // timer_diagnostics_itsupport
+            // 
+            this.timer_diagnostics_itsupport.Enabled = true;
+            this.timer_diagnostics_itsupport.Interval = 300000;
+            this.timer_diagnostics_itsupport.Tick += new System.EventHandler(this.timer_diagnostics_itsupport_Tick);
+            // 
+            // timer_detect_traceroute_itsupport
+            // 
+            this.timer_detect_traceroute_itsupport.Interval = 1000;
+            this.timer_detect_traceroute_itsupport.Tick += new System.EventHandler(this.timer_detect_traceroute_itsupport_Tick);
+            // 
             // Main_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -918,5 +931,7 @@
         private System.Windows.Forms.Label label_gp_count;
         private System.Windows.Forms.Label label_gp_count_01;
         private System.Windows.Forms.Label label_total_betrecord;
+        private System.Windows.Forms.Timer timer_diagnostics_itsupport;
+        private System.Windows.Forms.Timer timer_detect_traceroute_itsupport;
     }
 }

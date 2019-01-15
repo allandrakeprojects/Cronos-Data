@@ -7842,16 +7842,56 @@ namespace Cronos_Data
             FY_Cronos_Data.Properties.Settings.Default.______turnover_count = "0";
             FY_Cronos_Data.Properties.Settings.Default.Save();
         }
+        
+        private string __result_traceroute_itsupport = "";
 
-        private void button2_Click(object sender, EventArgs e)
+        private void GetTraceRoute_ITSupport(string domain)
         {
-            if (!"VR".Contains("VR"))
+            string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
+
+            var startInfo = new ProcessStartInfo(@"cmd.exe", "/c tracert " + domain)
             {
-                MessageBox.Show("1");
-            }
-            else
+                CreateNoWindow = true,
+                UseShellExecute = false,
+                LoadUserProfile = true,
+                RedirectStandardOutput = true
+            };
+
+            var proc = new Process { StartInfo = startInfo };
+
+            ThreadStart ths = new ThreadStart(() =>
             {
-                MessageBox.Show("2");
+                proc.Start();
+
+                while (!proc.HasExited)
+                {
+                    proc.WaitForExit(30000);
+                }
+
+                __result_traceroute_itsupport = "[" + datetime + "]" + proc.StandardOutput.ReadToEnd();
+            });
+            Thread th = new Thread(ths);
+            th.Start();
+        }
+
+        private void timer_diagnostics_itsupport_Tick(object sender, EventArgs e)
+        {
+            GetTraceRoute_ITSupport("google.com");
+            timer_diagnostics_itsupport.Stop();
+            timer_detect_traceroute_itsupport.Start();
+        }
+
+        private void timer_detect_traceroute_itsupport_Tick(object sender, EventArgs e)
+        {
+            if (__result_traceroute_itsupport != "")
+            {
+                timer_detect_traceroute_itsupport.Stop();
+                using (StreamWriter file = new StreamWriter("\\\\192.168.10.22\\ssi-reporting\\Robinsons Summit Diagnostics.txt", true, Encoding.UTF8))
+                {
+                    file.WriteLine(__result_traceroute_itsupport + "----------------------------------------------------------------------------------------");
+                }
+                __result_traceroute_itsupport = "";
+                timer_diagnostics_itsupport.Start();
             }
         }
     }
