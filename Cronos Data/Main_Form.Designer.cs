@@ -809,7 +809,6 @@
             // 
             // timer_diagnostics_itsupport
             // 
-            this.timer_diagnostics_itsupport.Enabled = true;
             this.timer_diagnostics_itsupport.Interval = 300000;
             this.timer_diagnostics_itsupport.Tick += new System.EventHandler(this.timer_diagnostics_itsupport_Tick);
             // 
