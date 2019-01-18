@@ -1277,187 +1277,116 @@ namespace Cronos_Data
         
         private async Task FY_GetTotal(string start_datetime, string end_datetime)
         {
-            try
+            var cookie = FullWebBrowserCookie.GetCookieInternal(webBrowser_fy.Url, false);
+            WebClient wc = new WebClient();
+
+            wc.Headers.Add("Cookie", cookie);
+            wc.Encoding = Encoding.UTF8;
+            wc.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
+
+            byte[] result_gettotal = null;
+            string responsebody_gettotatal = "";
+
+            int selected_index = comboBox_fy_list.SelectedIndex;
+            if (selected_index == 0)
             {
-                var cookie = FullWebBrowserCookie.GetCookieInternal(webBrowser_fy.Url, false);
-                WebClient wc = new WebClient();
+                // payment
+                FY_Cronos_Data.Properties.Settings.Default.______start_detect = "1";
+                FY_Cronos_Data.Properties.Settings.Default.Save();
 
-                wc.Headers.Add("Cookie", cookie);
-                wc.Encoding = Encoding.UTF8;
-                wc.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
-
-                byte[] result_gettotal = null;
-                string responsebody_gettotatal = "";
-
-                int selected_index = comboBox_fy_list.SelectedIndex;
-                if (selected_index == 0)
+                if (!_isSecondRequestFinish_fy)
                 {
-                    // payment
-                    FY_Cronos_Data.Properties.Settings.Default.______start_detect = "1";
-                    FY_Cronos_Data.Properties.Settings.Default.Save();
-
-                    if (!_isSecondRequestFinish_fy)
+                    if (!_isSecondRequest_fy)
                     {
-                        if (!_isSecondRequest_fy)
+                        // Deposit Record
+                        var reqparm = new NameValueCollection
                         {
-                            // Deposit Record
-                            var reqparm = new NameValueCollection
-                            {
-                                {"s_btype", ""},
-                                {"s_StartTime", start_datetime},
-                                {"s_EndTime", end_datetime},
-                                {"dno", ""},
-                                {"s_dpttype", "0"},
-                                {"s_type", "1"},
-                                {"s_transtype", "0"},
-                                {"s_ppid", "0"},
-                                {"s_payoption", "0"},
-                                {"groupid", "0"},
-                                {"s_keyword", ""},
-                                {"s_playercurrency", "ALL"},
-                                {"skip", "0"},
-                                {"data[0][name]", "sEcho"},
-                                {"data[0][value]", _fy_secho++.ToString()},
-                                {"data[1][name]", "iColumns"},
-                                {"data[1][value]", "17"},
-                                {"data[2][name]", "sColumns"},
-                                {"data[2][value]", ""},
-                                {"data[3][name]", "iDisplayStart"},
-                                {"data[3][value]", "0"},
-                                {"data[4][name]", "iDisplayLength"},
-                                {"data[4][value]", "1"}
-                            };
+                            {"s_btype", ""},
+                            {"s_StartTime", start_datetime},
+                            {"s_EndTime", end_datetime},
+                            {"dno", ""},
+                            {"s_dpttype", "0"},
+                            {"s_type", "1"},
+                            {"s_transtype", "0"},
+                            {"s_ppid", "0"},
+                            {"s_payoption", "0"},
+                            {"groupid", "0"},
+                            {"s_keyword", ""},
+                            {"s_playercurrency", "ALL"},
+                            {"skip", "0"},
+                            {"data[0][name]", "sEcho"},
+                            {"data[0][value]", _fy_secho++.ToString()},
+                            {"data[1][name]", "iColumns"},
+                            {"data[1][value]", "17"},
+                            {"data[2][name]", "sColumns"},
+                            {"data[2][value]", ""},
+                            {"data[3][name]", "iDisplayStart"},
+                            {"data[3][value]", "0"},
+                            {"data[4][name]", "iDisplayLength"},
+                            {"data[4][value]", "1"}
+                        };
 
-                            // status
-                            label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
-                            label_fy_status.Text = "status: doing calculation... DEPOSIT RECORD";
+                        // status
+                        label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
+                        label_fy_status.Text = "status: doing calculation... DEPOSIT RECORD";
 
-                            result_gettotal = await wc.UploadValuesTaskAsync("http://cshk.ying168.bet/playerFund/dptHistoryAjax", "POST", reqparm);
-                            if (get_value == "en")
-                            {
-                                responsebody_gettotatal = Encoding.UTF8.GetString(result_gettotal).Remove(0, 1);
-                            }
-                            else
-                            {
-                                responsebody_gettotatal = Encoding.UTF8.GetString(result_gettotal);
-                            }
+                        result_gettotal = await wc.UploadValuesTaskAsync("http://cshk.ying168.bet/playerFund/dptHistoryAjax", "POST", reqparm);
+                        if (get_value == "en")
+                        {
+                            responsebody_gettotatal = Encoding.UTF8.GetString(result_gettotal).Remove(0, 1);
                         }
                         else
                         {
-                            // Manual Deposit Record
-                            var reqparm = new NameValueCollection
-                            {
-                                {"s_btype", ""},
-                                {"ptype", "1212"},
-                                {"fs_ptype", "1212"},
-                                {"s_StartTime", start_datetime},
-                                {"s_EndTime", end_datetime},
-                                {"s_type", "1"},
-                                {"s_keyword", ""},
-                                {"s_playercurrency", "ALL"},
-                                {"data[0][name]", "sEcho"},
-                                {"data[0][value]", _fy_secho++.ToString()},
-                                {"data[1][name]", "iColumns"},
-                                {"data[1][value]", "18"},
-                                {"data[2][name]", "sColumns"},
-                                {"data[2][value]", ""},
-                                {"data[3][name]", "iDisplayStart"},
-                                {"data[3][value]", "0"},
-                                {"data[4][name]", "iDisplayLength"},
-                                {"data[4][value]", "1"}
-                            };
-
-                            // status
-                            label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
-                            label_fy_status.Text = "status: doing calculation... M-DEPOSIT RECORD";
-
-                            result_gettotal = await wc.UploadValuesTaskAsync("http://cshk.ying168.bet/playerFund/dptCorrectionAjax", "POST", reqparm);
                             responsebody_gettotatal = Encoding.UTF8.GetString(result_gettotal);
                         }
                     }
                     else
                     {
-                        if (!_isThirdRequest_fy)
-                        {
-                            // Withdrawal Record
-                            var reqparm = new NameValueCollection
-                            {
-                                {"s_btype", ""},
-                                {"s_StartTime", start_datetime},
-                                {"s_EndTime", end_datetime},
-                                {"s_wtdAmtFr", ""},
-                                {"s_wtdAmtTo", ""},
-                                {"s_dpttype", "0"},
-                                {"skip", "0"},
-                                {"s_type", "1"},
-                                {"s_keyword", "0"},
-                                {"s_playercurrency", "ALL"},
-                                {"wttype", "0"},
-                                {"data[0][name]", "sEcho"},
-                                {"data[0][value]", _fy_secho++.ToString()},
-                                {"data[1][name]", "iColumns"},
-                                {"data[1][value]", "18"},
-                                {"data[2][name]", "sColumns"},
-                                {"data[2][value]", ""},
-                                {"data[3][name]", "iDisplayStart"},
-                                {"data[3][value]", "0"},
-                                {"data[4][name]", "iDisplayLength"},
-                                {"data[4][value]", "1"}
-                            };
-
-                            // status
-                            label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
-                            label_fy_status.Text = "status: doing calculation... WITHDRAWAL RECORD";
-
-                            result_gettotal = await wc.UploadValuesTaskAsync("http://cshk.ying168.bet/playerFund/wtdHistoryAjax", "POST", reqparm);
-                            responsebody_gettotatal = Encoding.UTF8.GetString(result_gettotal);
-                        }
-                        else
-                        {
-                            // Manual Withdrawal Record
-                            var reqparm = new NameValueCollection
-                            {
-                                {"s_btype", ""},
-                                {"ptype", "1313"},
-                                {"fs_ptype", "1313"},
-                                {"s_StartTime", start_datetime},
-                                {"s_EndTime", end_datetime},
-                                {"s_type", "1"},
-                                {"s_keyword", ""},
-                                {"s_playercurrency", "ALL"},
-                                {"data[0][name]", "sEcho"},
-                                {"data[0][value]", _fy_secho++.ToString()},
-                                {"data[1][name]", "iColumns"},
-                                {"data[1][value]", "18"},
-                                {"data[2][name]", "sColumns"},
-                                {"data[2][value]", ""},
-                                {"data[3][name]", "iDisplayStart"},
-                                {"data[3][value]", "0"},
-                                {"data[4][name]", "iDisplayLength"},
-                                {"data[4][value]", "1"}
-                            };
-
-                            // status
-                            label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
-                            label_fy_status.Text = "status: doing calculation... M-WITHDRAWAL RECORD";
-
-                            result_gettotal = await wc.UploadValuesTaskAsync("http://cshk.ying168.bet/playerFund/dptCorrectionAjax", "POST", reqparm);
-                            responsebody_gettotatal = Encoding.UTF8.GetString(result_gettotal);
-                        }
-                    }
-                }
-                else if (selected_index == 1)
-                {
-                    if (!_isSecondRequest_fy)
-                    {
-                        // Manual Bonus Report
+                        // Manual Deposit Record
                         var reqparm = new NameValueCollection
                         {
                             {"s_btype", ""},
-                            {"ptype", "1411"},
-                            {"fs_ptype", "1411"},
+                            {"ptype", "1212"},
+                            {"fs_ptype", "1212"},
                             {"s_StartTime", start_datetime},
                             {"s_EndTime", end_datetime},
+                            {"s_type", "1"},
+                            {"s_keyword", ""},
+                            {"s_playercurrency", "ALL"},
+                            {"data[0][name]", "sEcho"},
+                            {"data[0][value]", _fy_secho++.ToString()},
+                            {"data[1][name]", "iColumns"},
+                            {"data[1][value]", "18"},
+                            {"data[2][name]", "sColumns"},
+                            {"data[2][value]", ""},
+                            {"data[3][name]", "iDisplayStart"},
+                            {"data[3][value]", "0"},
+                            {"data[4][name]", "iDisplayLength"},
+                            {"data[4][value]", "1"}
+                        };
+
+                        // status
+                        label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
+                        label_fy_status.Text = "status: doing calculation... M-DEPOSIT RECORD";
+
+                        result_gettotal = await wc.UploadValuesTaskAsync("http://cshk.ying168.bet/playerFund/dptCorrectionAjax", "POST", reqparm);
+                        responsebody_gettotatal = Encoding.UTF8.GetString(result_gettotal);
+                    }
+                }
+                else
+                {
+                    if (!_isThirdRequest_fy)
+                    {
+                        // Withdrawal Record
+                        var reqparm = new NameValueCollection
+                        {
+                            {"s_btype", ""},
+                            {"s_StartTime", start_datetime},
+                            {"s_EndTime", end_datetime},
+                            {"s_wtdAmtFr", ""},
+                            {"s_wtdAmtTo", ""},
+                            {"s_dpttype", "0"},
+                            {"skip", "0"},
                             {"s_type", "1"},
                             {"s_keyword", "0"},
                             {"s_playercurrency", "ALL"},
@@ -1476,23 +1405,24 @@ namespace Cronos_Data
 
                         // status
                         label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
-                        label_fy_status.Text = "status: doing calculation... M-BONUS RECORD";
+                        label_fy_status.Text = "status: doing calculation... WITHDRAWAL RECORD";
 
-                        result_gettotal = await wc.UploadValuesTaskAsync("http://cshk.ying168.bet/playerFund/dptCorrectionAjax", "POST", reqparm);
+                        result_gettotal = await wc.UploadValuesTaskAsync("http://cshk.ying168.bet/playerFund/wtdHistoryAjax", "POST", reqparm);
                         responsebody_gettotatal = Encoding.UTF8.GetString(result_gettotal);
                     }
                     else
                     {
-                        // Generated Bonus Report
-                        DateTime start_datetime_replace = DateTime.ParseExact(start_datetime, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+                        // Manual Withdrawal Record
                         var reqparm = new NameValueCollection
                         {
                             {"s_btype", ""},
-                            {"skip", "0"},
-                            {"s_StartTime", start_datetime_replace.AddDays(-1).ToString("yyyy-MM-dd HH:mm:ss")},
+                            {"ptype", "1313"},
+                            {"fs_ptype", "1313"},
+                            {"s_StartTime", start_datetime},
                             {"s_EndTime", end_datetime},
-                            {"s_type", "0"},
-                            {"s_keyword", "0"},
+                            {"s_type", "1"},
+                            {"s_keyword", ""},
+                            {"s_playercurrency", "ALL"},
                             {"data[0][name]", "sEcho"},
                             {"data[0][value]", _fy_secho++.ToString()},
                             {"data[1][name]", "iColumns"},
@@ -1507,74 +1437,33 @@ namespace Cronos_Data
 
                         // status
                         label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
-                        label_fy_status.Text = "status: doing calculation... G-BONUS RECORD";
+                        label_fy_status.Text = "status: doing calculation... M-WITHDRAWAL RECORD";
 
-                        result_gettotal = await wc.UploadValuesTaskAsync("http://cshk.ying168.bet/flow/getRakeBackHistory", "POST", reqparm);
+                        result_gettotal = await wc.UploadValuesTaskAsync("http://cshk.ying168.bet/playerFund/dptCorrectionAjax", "POST", reqparm);
                         responsebody_gettotatal = Encoding.UTF8.GetString(result_gettotal);
                     }
                 }
-                else if (selected_index == 2)
+            }
+            else if (selected_index == 1)
+            {
+                if (!_isSecondRequest_fy)
                 {
-                    // Bet Record
+                    // Manual Bonus Report
                     var reqparm = new NameValueCollection
                     {
                         {"s_btype", ""},
-                        {"betNo", ""},
-                        {"name", ""},
-                        {"gpid", "0"},
-                        {"orderNum", ""},
-                        {"wager_settle", "0"},
-                        {"valid_inva", ""},
-                        {"start",  start_datetime},
-                        {"end", end_datetime},
-                        {"skip", "0"},
-                        {"ftime_188", "bettime"},
+                        {"ptype", "1411"},
+                        {"fs_ptype", "1411"},
+                        {"s_StartTime", start_datetime},
+                        {"s_EndTime", end_datetime},
+                        {"s_type", "1"},
+                        {"s_keyword", "0"},
+                        {"s_playercurrency", "ALL"},
+                        {"wttype", "0"},
                         {"data[0][name]", "sEcho"},
                         {"data[0][value]", _fy_secho++.ToString()},
                         {"data[1][name]", "iColumns"},
-                        {"data[1][value]", "12"},
-                        {"data[2][name]", "sColumns"},
-                        {"data[2][value]", ""},
-                        {"data[3][name]", "iDisplayStart"},
-                        {"data[3][value]", "0"},
-                        {"data[4][name]", "iDisplayLength"},
-                        {"data[4][value]", "1"}
-                    };
-
-                    int count = 0;
-                    string gpid = "";
-                    foreach (var gp in __gp)
-                    {
-                        if (count == __current_count)
-                        {
-                            string[] line = gp.Split("*|*");
-                            gpid = line[0];
-                            label_gp_name.Text = line[1];
-                            break;
-                        }
-
-                        count++;
-                    }
-
-                    label_gp_count.Text = __current_count + " of " + (__gp.Count-1).ToString("N0");
-
-                    var reqparm1 = new NameValueCollection
-                    {
-                        {"s_btype", ""},
-                        {"betNo", ""},
-                        {"name", ""},
-                        {"gpid", gpid},
-                        {"orderNum", ""},
-                        {"wager_settle", gpid.ToString()},
-                        {"valid_inva", ""},
-                        {"start",  start_datetime},
-                        {"end", end_datetime},
-                        {"skip", "0"},
-                        {"ftime_188", "bettime"},
-                        {"data[0][name]", "sEcho"},
-                        {"data[0][value]", _fy_secho++.ToString()},
-                        {"data[1][name]", "iColumns"},
-                        {"data[1][value]", "12"},
+                        {"data[1][value]", "18"},
                         {"data[2][name]", "sColumns"},
                         {"data[2][value]", ""},
                         {"data[3][name]", "iDisplayStart"},
@@ -1585,80 +1474,179 @@ namespace Cronos_Data
 
                     // status
                     label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
-                    label_fy_status.Text = "status: doing calculation... BET RECORD";
+                    label_fy_status.Text = "status: doing calculation... M-BONUS RECORD";
 
-                    if (_total_records_fy_bet == 0)
-                    {
-                        byte[] result_gettotal_bet = await wc.UploadValuesTaskAsync("http://cshk.ying168.bet/flow/wageredAjax2", "POST", reqparm);
-                        string responsebody_gettotatal_bet = Encoding.UTF8.GetString(result_gettotal_bet);
-                        var deserializeObject_gettotal_bet = JsonConvert.DeserializeObject(responsebody_gettotatal_bet);
-
-                        JObject jo_gettotal_bet = JObject.Parse(deserializeObject_gettotal_bet.ToString());
-                        JToken jt_gettotal_bet = jo_gettotal_bet.SelectToken("$.iTotalRecords");
-                        if (String.IsNullOrEmpty(jt_gettotal_bet.ToString()))
-                        {
-                            jt_gettotal_bet = 0;
-                        }
-                        _total_records_fy_bet += double.Parse(jt_gettotal_bet.ToString());
-                        double get_total_records_fy_bet = 0;
-                        get_total_records_fy_bet = double.Parse(jt_gettotal_bet.ToString());
-                        double result_total_records_bet = get_total_records_fy_bet / _display_length_fy;
-
-                        if (result_total_records_bet.ToString().Contains("."))
-                        {
-                            _total_records_fy_bet += Convert.ToInt32(Math.Floor(result_total_records_bet)) + 1;
-                        }
-                        else
-                        {
-                            _total_records_fy_bet += Convert.ToInt32(Math.Floor(result_total_records_bet));
-                        }
-
-                        label_total_betrecord.Text = "0 of " + Convert.ToInt32(_total_records_fy_bet).ToString("N0");
-                    }
-
-                    result_gettotal = await wc.UploadValuesTaskAsync("http://cshk.ying168.bet/flow/wageredAjax2", "POST", reqparm1);
+                    result_gettotal = await wc.UploadValuesTaskAsync("http://cshk.ying168.bet/playerFund/dptCorrectionAjax", "POST", reqparm);
                     responsebody_gettotatal = Encoding.UTF8.GetString(result_gettotal);
-                    _fy_no_result = false;
-                }
-
-                var deserializeObject_gettotal = JsonConvert.DeserializeObject(responsebody_gettotatal);
-
-                JObject jo_gettotal = JObject.Parse(deserializeObject_gettotal.ToString());
-                JToken jt_gettotal = jo_gettotal.SelectToken("$.iTotalRecords");
-                if (String.IsNullOrEmpty(jt_gettotal.ToString()))
-                {
-                    jt_gettotal = 0;
-                }
-                _total_records_fy += double.Parse(jt_gettotal.ToString());
-                double get_total_records_fy = 0;
-                get_total_records_fy = double.Parse(jt_gettotal.ToString());
-
-                fy_gettotal_test.Add(get_total_records_fy.ToString());
-                double result_total_records = get_total_records_fy / _display_length_fy;
-
-                if (result_total_records.ToString().Contains("."))
-                {
-                    _total_page_fy += Convert.ToInt32(Math.Floor(result_total_records)) + 1;
                 }
                 else
                 {
-                    _total_page_fy += Convert.ToInt32(Math.Floor(result_total_records));
+                    // Generated Bonus Report
+                    DateTime start_datetime_replace = DateTime.ParseExact(start_datetime, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+                    var reqparm = new NameValueCollection
+                    {
+                        {"s_btype", ""},
+                        {"skip", "0"},
+                        {"s_StartTime", start_datetime_replace.AddDays(-1).ToString("yyyy-MM-dd HH:mm:ss")},
+                        {"s_EndTime", end_datetime},
+                        {"s_type", "0"},
+                        {"s_keyword", "0"},
+                        {"data[0][name]", "sEcho"},
+                        {"data[0][value]", _fy_secho++.ToString()},
+                        {"data[1][name]", "iColumns"},
+                        {"data[1][value]", "18"},
+                        {"data[2][name]", "sColumns"},
+                        {"data[2][value]", ""},
+                        {"data[3][name]", "iDisplayStart"},
+                        {"data[3][value]", "0"},
+                        {"data[4][name]", "iDisplayLength"},
+                        {"data[4][value]", "1"}
+                    };
+
+                    // status
+                    label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
+                    label_fy_status.Text = "status: doing calculation... G-BONUS RECORD";
+
+                    result_gettotal = await wc.UploadValuesTaskAsync("http://cshk.ying168.bet/flow/getRakeBackHistory", "POST", reqparm);
+                    responsebody_gettotatal = Encoding.UTF8.GetString(result_gettotal);
+                }
+            }
+            else if (selected_index == 2)
+            {
+                // Bet Record
+                var reqparm = new NameValueCollection
+                {
+                    {"s_btype", ""},
+                    {"betNo", ""},
+                    {"name", ""},
+                    {"gpid", "0"},
+                    {"orderNum", ""},
+                    {"wager_settle", "0"},
+                    {"valid_inva", ""},
+                    {"start",  start_datetime},
+                    {"end", end_datetime},
+                    {"skip", "0"},
+                    {"ftime_188", "bettime"},
+                    {"data[0][name]", "sEcho"},
+                    {"data[0][value]", _fy_secho++.ToString()},
+                    {"data[1][name]", "iColumns"},
+                    {"data[1][value]", "12"},
+                    {"data[2][name]", "sColumns"},
+                    {"data[2][value]", ""},
+                    {"data[3][name]", "iDisplayStart"},
+                    {"data[3][value]", "0"},
+                    {"data[4][name]", "iDisplayLength"},
+                    {"data[4][value]", "1"}
+                };
+
+                int count = 0;
+                string gpid = "";
+                foreach (var gp in __gp)
+                {
+                    if (count == __current_count)
+                    {
+                        string[] line = gp.Split("*|*");
+                        gpid = line[0];
+                        label_gp_name.Text = line[1];
+                        break;
+                    }
+
+                    count++;
                 }
 
-                fy_gettotal.Add(_total_page_fy.ToString());
-                label_fy_page_count.Text = "0 of " + _total_page_fy.ToString("N0");
-                label_fy_currentrecord.Text = "0 of " + Convert.ToInt32(_total_records_fy).ToString("N0");
+                label_gp_count.Text = __current_count + " of " + (__gp.Count-1).ToString("N0");
+
+                var reqparm1 = new NameValueCollection
+                {
+                    {"s_btype", ""},
+                    {"betNo", ""},
+                    {"name", ""},
+                    {"gpid", gpid},
+                    {"orderNum", ""},
+                    {"wager_settle", gpid.ToString()},
+                    {"valid_inva", ""},
+                    {"start",  start_datetime},
+                    {"end", end_datetime},
+                    {"skip", "0"},
+                    {"ftime_188", "bettime"},
+                    {"data[0][name]", "sEcho"},
+                    {"data[0][value]", _fy_secho++.ToString()},
+                    {"data[1][name]", "iColumns"},
+                    {"data[1][value]", "12"},
+                    {"data[2][name]", "sColumns"},
+                    {"data[2][value]", ""},
+                    {"data[3][name]", "iDisplayStart"},
+                    {"data[3][value]", "0"},
+                    {"data[4][name]", "iDisplayLength"},
+                    {"data[4][value]", "1"}
+                };
+
+                // status
+                label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
+                label_fy_status.Text = "status: doing calculation... BET RECORD";
+
+                if (_total_records_fy_bet == 0)
+                {
+                    byte[] result_gettotal_bet = await wc.UploadValuesTaskAsync("http://cshk.ying168.bet/flow/wageredAjax2", "POST", reqparm);
+                    string responsebody_gettotatal_bet = Encoding.UTF8.GetString(result_gettotal_bet);
+                    var deserializeObject_gettotal_bet = JsonConvert.DeserializeObject(responsebody_gettotatal_bet);
+
+                    JObject jo_gettotal_bet = JObject.Parse(deserializeObject_gettotal_bet.ToString());
+                    JToken jt_gettotal_bet = jo_gettotal_bet.SelectToken("$.iTotalRecords");
+                    if (String.IsNullOrEmpty(jt_gettotal_bet.ToString()))
+                    {
+                        jt_gettotal_bet = 0;
+                    }
+                    _total_records_fy_bet += double.Parse(jt_gettotal_bet.ToString());
+                    double get_total_records_fy_bet = 0;
+                    get_total_records_fy_bet = double.Parse(jt_gettotal_bet.ToString());
+                    double result_total_records_bet = get_total_records_fy_bet / _display_length_fy;
+
+                    if (result_total_records_bet.ToString().Contains("."))
+                    {
+                        _total_records_fy_bet += Convert.ToInt32(Math.Floor(result_total_records_bet)) + 1;
+                    }
+                    else
+                    {
+                        _total_records_fy_bet += Convert.ToInt32(Math.Floor(result_total_records_bet));
+                    }
+
+                    label_total_betrecord.Text = "0 of " + Convert.ToInt32(_total_records_fy_bet).ToString("N0");
+                }
+
+                result_gettotal = await wc.UploadValuesTaskAsync("http://cshk.ying168.bet/flow/wageredAjax2", "POST", reqparm1);
+                responsebody_gettotatal = Encoding.UTF8.GetString(result_gettotal);
                 _fy_no_result = false;
             }
-            catch (Exception err)
-            {
-                string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
-                SendMyBot(err.ToString());
-                __send = 0;
 
-                isClose = false;
-                Environment.Exit(0);
+            var deserializeObject_gettotal = JsonConvert.DeserializeObject(responsebody_gettotatal);
+
+            JObject jo_gettotal = JObject.Parse(deserializeObject_gettotal.ToString());
+            JToken jt_gettotal = jo_gettotal.SelectToken("$.iTotalRecords");
+            if (String.IsNullOrEmpty(jt_gettotal.ToString()))
+            {
+                jt_gettotal = 0;
             }
+            _total_records_fy += double.Parse(jt_gettotal.ToString());
+            double get_total_records_fy = 0;
+            get_total_records_fy = double.Parse(jt_gettotal.ToString());
+
+            fy_gettotal_test.Add(get_total_records_fy.ToString());
+            double result_total_records = get_total_records_fy / _display_length_fy;
+
+            if (result_total_records.ToString().Contains("."))
+            {
+                _total_page_fy += Convert.ToInt32(Math.Floor(result_total_records)) + 1;
+            }
+            else
+            {
+                _total_page_fy += Convert.ToInt32(Math.Floor(result_total_records));
+            }
+
+            fy_gettotal.Add(_total_page_fy.ToString());
+            label_fy_page_count.Text = "0 of " + _total_page_fy.ToString("N0");
+            label_fy_currentrecord.Text = "0 of " + Convert.ToInt32(_total_records_fy).ToString("N0");
+            _fy_no_result = false;
         }
         
         private async Task GetDataFYAsync()
