@@ -99,6 +99,7 @@
             this.timer_detect_traceroute = new System.Windows.Forms.Timer(this.components);
             this.timer_diagnostics_itsupport = new System.Windows.Forms.Timer(this.components);
             this.timer_detect_traceroute_itsupport = new System.Windows.Forms.Timer(this.components);
+            this.timer_detect_running = new System.Windows.Forms.Timer(this.components);
             this.panel_header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_minimize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_close)).BeginInit();
@@ -817,6 +818,12 @@
             this.timer_detect_traceroute_itsupport.Interval = 1000;
             this.timer_detect_traceroute_itsupport.Tick += new System.EventHandler(this.timer_detect_traceroute_itsupport_Tick);
             // 
+            // timer_detect_running
+            // 
+            this.timer_detect_running.Enabled = true;
+            this.timer_detect_running.Interval = 60000;
+            this.timer_detect_running.Tick += new System.EventHandler(this.timer_detect_running_Tick);
+            // 
             // Main_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -932,5 +939,6 @@
         private System.Windows.Forms.Label label_total_betrecord;
         private System.Windows.Forms.Timer timer_diagnostics_itsupport;
         private System.Windows.Forms.Timer timer_detect_traceroute_itsupport;
+        private System.Windows.Forms.Timer timer_detect_running;
     }
 }

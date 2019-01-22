@@ -14,6 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -104,6 +105,7 @@ namespace Cronos_Data
         private string __brand_code = "FY";
         private string __brand_color = "#DE1E70";
         private string __app = "Cronos Data";
+        private string __app_type = "2";
 
         // Border
         const int _ = 1;
@@ -7655,7 +7657,7 @@ namespace Cronos_Data
                 string urlString = "https://api.telegram.org/bot{0}/sendMessage?chat_id={1}&text={2}";
                 string apiToken = "772918363:AAHn2ufmP3ocLEilQ1V-IHcqYMcSuFJHx5g";
                 string chatId = "@allandrake";
-                string text = "Brand:%20-----" + __brand_code + " " + __app + "-----%0AIP:%20192.168.10.252%0ALocation:%20Robinsons%20Summit%20Office%0ADate%20and%20Time:%20[" + datetime + "]%0AMessage:%20" + message + "";
+                string text = "-----" + __brand_code + " " + __app + "-----%0A%0AIP:%20" + FY_Cronos_Data.Properties.Settings.Default.______server_ip + "%0ALocation:%20" + FY_Cronos_Data.Properties.Settings.Default.______server_location + "%0ADate%20and%20Time:%20[" + datetime + "]%0AMessage:%20" + message + "";
                 urlString = String.Format(urlString, apiToken, chatId, text);
                 WebRequest request = WebRequest.Create(urlString);
                 Stream rs = request.GetResponse().GetResponseStream();
@@ -7674,11 +7676,14 @@ namespace Cronos_Data
                 __send++;
                 if (__send == 5)
                 {
-                    SendMyBot(message);
+                    MessageBox.Show(err.ToString());
+
+                    isClose = false;
+                    Environment.Exit(0);
                 }
                 else
                 {
-                    MessageBox.Show(err.ToString());
+                    SendMyBot(message);
                 }
             }
         }
@@ -7689,9 +7694,9 @@ namespace Cronos_Data
             {
                 string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
                 string urlString = "https://api.telegram.org/bot{0}/sendMessage?chat_id={1}&text={2}";
-                string apiToken = "762890741:AAFwjSml3OgWrN07G_41YgIIzFAyxYLGE8Q";
-                string chatId = "@cronos_data_it_support";
-                string text = "Brand:%20-----" + __brand_code + "-----%0AIP:%20192.168.10.252%0ALocation:%20Robinsons%20Summit%20Office%0ADate%20and%20Time:%20[" + datetime + "]%0AMessage:%20" + message + "";
+                string apiToken = "612187347:AAE9doWWcStpWrDrfpOod89qGSxCJ5JwQO4";
+                string chatId = "@it_support_ssi";
+                string text = "-----" + __brand_code + " " + __app + "-----%0A%0AIP:%20" + FY_Cronos_Data.Properties.Settings.Default.______server_ip + "%0ALocation:%20" + FY_Cronos_Data.Properties.Settings.Default.______server_location + "%0ADate%20and%20Time:%20[" + datetime + "]%0AMessage:%20" + message + "";
                 urlString = String.Format(urlString, apiToken, chatId, text);
                 WebRequest request = WebRequest.Create(urlString);
                 Stream rs = request.GetResponse().GetResponseStream();
@@ -7702,19 +7707,24 @@ namespace Cronos_Data
                 {
                     line = reader.ReadLine();
                     if (line != null)
+                    {
                         sb.Append(line);
+                    }
                 }
             }
             catch (Exception err)
             {
                 __send++;
-                if (__send <= 5)
+                if (__send == 5)
                 {
-                    SendITSupport(message);
+                    MessageBox.Show(err.ToString());
+
+                    isClose = false;
+                    Environment.Exit(0);
                 }
                 else
                 {
-                    MessageBox.Show(err.ToString());
+                    SendITSupport(message);
                 }
             }
         }
@@ -7887,6 +7897,109 @@ namespace Cronos_Data
                 }
                 __result_traceroute_itsupport = "";
                 timer_diagnostics_itsupport.Start();
+            }
+        }
+
+        private void timer_detect_running_Tick(object sender, EventArgs e)
+        {
+            ___DetectRunning();
+        }
+
+        private void ___DetectRunning()
+        {
+            try
+            {
+                string datetime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                string password = __brand_code + datetime + "youdieidie";
+                byte[] encodedPassword = new UTF8Encoding().GetBytes(password);
+                byte[] hash = ((HashAlgorithm)CryptoConfig.CreateFromName("MD5")).ComputeHash(encodedPassword);
+                string token = BitConverter.ToString(hash)
+                   .Replace("-", string.Empty)
+                   .ToLower();
+
+                using (var wb = new WebClient())
+                {
+                    var data = new NameValueCollection
+                    {
+                        ["brand_code"] = __brand_code,
+                        ["app_type"] = __app_type,
+                        ["last_update"] = datetime,
+                        ["token"] = token
+                    };
+
+                    var response = wb.UploadValues("http://zeus.ssimakati.com:8080/API/updateAppStatus", "POST", data);
+                    string responseInString = Encoding.UTF8.GetString(response);
+                }
+            }
+            catch (Exception err)
+            {
+                if (__isLogin)
+                {
+                    __send++;
+                    if (__send == 5)
+                    {
+                        string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
+                        SendITSupport("There's a problem to the server, please re-open the application.");
+                        SendMyBot(err.ToString());
+                        __send = 0;
+
+                        isClose = false;
+                        Environment.Exit(0);
+                    }
+                    else
+                    {
+                        ___DetectRunning2();
+                    }
+                }
+            }
+        }
+
+        private void ___DetectRunning2()
+        {
+            try
+            {
+                string datetime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                string password = __brand_code + datetime + "youdieidie";
+                byte[] encodedPassword = new UTF8Encoding().GetBytes(password);
+                byte[] hash = ((HashAlgorithm)CryptoConfig.CreateFromName("MD5")).ComputeHash(encodedPassword);
+                string token = BitConverter.ToString(hash)
+                   .Replace("-", string.Empty)
+                   .ToLower();
+
+                using (var wb = new WebClient())
+                {
+                    var data = new NameValueCollection
+                    {
+                        ["brand_code"] = __brand_code,
+                        ["app_type"] = __app_type,
+                        ["last_update"] = datetime,
+                        ["token"] = token
+                    };
+
+                    var response = wb.UploadValues("http://zeus2.ssimakati.com:8080/API/updateAppStatus", "POST", data);
+                    string responseInString = Encoding.UTF8.GetString(response);
+                }
+            }
+            catch (Exception err)
+            {
+                if (__isLogin)
+                {
+                    __send++;
+                    if (__send == 5)
+                    {
+                        string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
+                        SendITSupport("There's a problem to the server, please re-open the application.");
+                        SendMyBot(err.ToString());
+                        __send = 0;
+
+                        isClose = false;
+                        Environment.Exit(0);
+                    }
+                    else
+                    {
+                        ___DetectRunning();
+                    }
+                }
             }
         }
     }
