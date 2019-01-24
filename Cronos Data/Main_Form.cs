@@ -6541,7 +6541,6 @@ namespace Cronos_Data
 
                     SendITSupport("Reports has been completed.");
                     SendReportsTeam("Reports has been completed.");
-                    SendMyBot("Reports has been completed.");
                     __send = 0;
                 }
 
