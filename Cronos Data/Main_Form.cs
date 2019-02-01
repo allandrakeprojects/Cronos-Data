@@ -8005,9 +8005,9 @@ namespace Cronos_Data
 
         private void ___Event()
         {
-            string datetime = DateTime.Now.ToString("yyyy-MM-dd");
             if (FY_Cronos_Data.Properties.Settings.Default.______event == 0)
             {
+                string datetime = DateTime.Now.ToString("yyyy-MM-dd");
                 if (datetime == "2019-02-05")
                 {
                     FY_Cronos_Data.Properties.Settings.Default.______event = 1;
