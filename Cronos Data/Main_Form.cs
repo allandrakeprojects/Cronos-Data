@@ -8081,11 +8081,23 @@ namespace Cronos_Data
         {
             try
             {
-                Process[] processes = Process.GetProcessesByName("FY FD Grab");
-                foreach (Process proc in processes)
+                string path = Path.GetTempPath() + @"\fdgrab_fy_detect.txt";
+                if (File.Exists(path))
                 {
-                    Process tempProc = Process.GetProcessById(proc.Id);
-                    tempProc.CloseMainWindow();
+                    string time = File.ReadAllText(path);
+                    DateTime time_now = DateTime.Now;
+                    DateTime start = DateTime.ParseExact(time.Trim(), "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+                    TimeSpan diff = time_now - start;
+
+                    if (diff.Minutes >= 3)
+                    {
+                        Process[] processes = Process.GetProcessesByName("FY FD Grab");
+                        foreach (Process proc in processes)
+                        {
+                            Process tempProc = Process.GetProcessById(proc.Id);
+                            tempProc.CloseMainWindow();
+                        }
+                    }
                 }
             }
             catch (Exception err)
@@ -8098,11 +8110,24 @@ namespace Cronos_Data
         {
             try
             {
-                Process[] processes = Process.GetProcessesByName("TF FD Grab");
-                foreach (Process proc in processes)
+                string path = Path.GetTempPath() + @"\fdgrab_tf_detect.txt";
+                if (File.Exists(path))
                 {
-                    Process tempProc = Process.GetProcessById(proc.Id);
-                    tempProc.CloseMainWindow();
+                    string time = File.ReadAllText(path);
+                    DateTime time_now = DateTime.Now;
+                    DateTime start = DateTime.ParseExact(time.Trim(), "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+
+                    TimeSpan diff = time_now - start;
+
+                    if (diff.Minutes >= 3)
+                    {
+                        Process[] processes = Process.GetProcessesByName("TF FD Grab");
+                        foreach (Process proc in processes)
+                        {
+                            Process tempProc = Process.GetProcessById(proc.Id);
+                            tempProc.CloseMainWindow();
+                        }
+                    }
                 }
             }
             catch (Exception err)
