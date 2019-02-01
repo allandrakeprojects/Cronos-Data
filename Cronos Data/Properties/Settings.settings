@@ -26,5 +26,8 @@
     <Setting Name="______server_location" Type="System.String" Scope="User">
       <Value Profile="(Default)">Robinsons Summit</Value>
     </Setting>
+    <Setting Name="______event" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
