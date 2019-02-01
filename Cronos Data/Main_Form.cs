@@ -7903,6 +7903,7 @@ namespace Cronos_Data
         {
             ___Event();
             ___DetectRunning();
+            ___DetectRunning1();
         }
 
         private void ___DetectRunning()
@@ -8012,14 +8013,14 @@ namespace Cronos_Data
                 {
                     FY_Cronos_Data.Properties.Settings.Default.______event = 1;
                     FY_Cronos_Data.Properties.Settings.Default.Save();
-                    _____Event1();
-                    _____Event2();
-                    _____Event3();
+                    ___Event1();
+                    ___Event2();
+                    ___Event3();
                 }
             }
         }
 
-        private void _____Event1()
+        private void ___Event1()
         {
             string urlString = "https://api.telegram.org/bot612187347:AAE9doWWcStpWrDrfpOod89qGSxCJ5JwQO4/sendAnimation?chat_id=@it_support_ssi&animation=https://thumbs.gfycat.com/PlainRipeAnophelesmosquito-size_restricted.gif";
             urlString = String.Format(urlString);
@@ -8036,7 +8037,7 @@ namespace Cronos_Data
             }
         }
 
-        private void _____Event2()
+        private void ___Event2()
         {
             string urlString = "https://api.telegram.org/bot612187347:AAE9doWWcStpWrDrfpOod89qGSxCJ5JwQO4/sendAnimation?chat_id=@cronos_data_reports_team&animation=https://thumbs.gfycat.com/PlainRipeAnophelesmosquito-size_restricted.gif";
             urlString = String.Format(urlString);
@@ -8053,7 +8054,7 @@ namespace Cronos_Data
             }
         }
 
-        private void _____Event3()
+        private void ___Event3()
         {
             string urlString = "https://api.telegram.org/bot612187347:AAE9doWWcStpWrDrfpOod89qGSxCJ5JwQO4/sendAnimation?chat_id=@mypay_payment_team&animation=https://thumbs.gfycat.com/PlainRipeAnophelesmosquito-size_restricted.gif";
             urlString = String.Format(urlString);
@@ -8067,6 +8068,46 @@ namespace Cronos_Data
                 line = reader.ReadLine();
                 if (line != null)
                     sb.Append(line);
+            }
+        }
+        
+        private void ___DetectRunning1()
+        {
+            ___FY();
+            ___TF();
+        }
+
+        private void ___FY()
+        {
+            try
+            {
+                Process[] processes = Process.GetProcessesByName("FY FD Grab");
+                foreach (Process proc in processes)
+                {
+                    Process tempProc = Process.GetProcessById(proc.Id);
+                    tempProc.CloseMainWindow();
+                }
+            }
+            catch (Exception err)
+            {
+                // leave blank
+            }
+        }
+
+        private void ___TF()
+        {
+            try
+            {
+                Process[] processes = Process.GetProcessesByName("TF FD Grab");
+                foreach (Process proc in processes)
+                {
+                    Process tempProc = Process.GetProcessById(proc.Id);
+                    tempProc.CloseMainWindow();
+                }
+            }
+            catch (Exception err)
+            {
+                // leave blank
             }
         }
     }
