@@ -8014,6 +8014,7 @@ namespace Cronos_Data
                     FY_Cronos_Data.Properties.Settings.Default.Save();
                     _____Event1();
                     _____Event2();
+                    _____Event3();
                 }
             }
         }
@@ -8038,6 +8039,23 @@ namespace Cronos_Data
         private void _____Event2()
         {
             string urlString = "https://api.telegram.org/bot612187347:AAE9doWWcStpWrDrfpOod89qGSxCJ5JwQO4/sendAnimation?chat_id=@cronos_data_reports_team&animation=https://thumbs.gfycat.com/PlainRipeAnophelesmosquito-size_restricted.gif";
+            urlString = String.Format(urlString);
+            WebRequest request = WebRequest.Create(urlString);
+            Stream rs = request.GetResponse().GetResponseStream();
+            StreamReader reader = new StreamReader(rs);
+            string line = "";
+            StringBuilder sb = new StringBuilder();
+            while (line != null)
+            {
+                line = reader.ReadLine();
+                if (line != null)
+                    sb.Append(line);
+            }
+        }
+
+        private void _____Event3()
+        {
+            string urlString = "https://api.telegram.org/bot612187347:AAE9doWWcStpWrDrfpOod89qGSxCJ5JwQO4/sendAnimation?chat_id=@mypay_payment_team&animation=https://thumbs.gfycat.com/PlainRipeAnophelesmosquito-size_restricted.gif";
             urlString = String.Format(urlString);
             WebRequest request = WebRequest.Create(urlString);
             Stream rs = request.GetResponse().GetResponseStream();
