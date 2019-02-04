@@ -491,7 +491,10 @@ namespace Cronos_Data
                             HtmlElement selectF8 = webBrowser_fy.Document.GetElementById("gpid");
                             foreach (HtmlElement item in selectF8.Children)
                             {
-                                __gp.Add(item.GetAttribute("value") + "*|*" + item.InnerText);
+                                if (item.InnerText != "乐游棋牌")
+                                {
+                                    __gp.Add(item.GetAttribute("value") + "*|*" + item.InnerText);
+                                }
                             }
 
                             string start_datetime = dateTimePicker_start_fy.Text;
