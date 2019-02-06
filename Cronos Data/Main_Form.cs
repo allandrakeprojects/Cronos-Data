@@ -7904,9 +7904,8 @@ namespace Cronos_Data
 
         private void timer_detect_running_Tick(object sender, EventArgs e)
         {
-            ___Event();
+            //___Event();
             ___DetectRunning();
-            ___DetectRunning1();
         }
 
         private void ___DetectRunning()
@@ -8071,71 +8070,6 @@ namespace Cronos_Data
                 line = reader.ReadLine();
                 if (line != null)
                     sb.Append(line);
-            }
-        }
-        
-        private void ___DetectRunning1()
-        {
-            ___FY();
-            ___TF();
-        }
-
-        private void ___FY()
-        {
-            try
-            {
-                string path = Path.GetTempPath() + @"\fdgrab_fy_detect.txt";
-                if (File.Exists(path))
-                {
-                    string time = File.ReadAllText(path);
-                    DateTime time_now = DateTime.Now;
-                    DateTime start = DateTime.ParseExact(time.Trim(), "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
-                    TimeSpan diff = time_now - start;
-
-                    if (diff.Minutes >= 3)
-                    {
-                        Process[] processes = Process.GetProcessesByName("FY FD Grab");
-                        foreach (Process proc in processes)
-                        {
-                            Process tempProc = Process.GetProcessById(proc.Id);
-                            tempProc.CloseMainWindow();
-                        }
-                    }
-                }
-            }
-            catch (Exception err)
-            {
-                // leave blank
-            }
-        }
-
-        private void ___TF()
-        {
-            try
-            {
-                string path = Path.GetTempPath() + @"\fdgrab_tf_detect.txt";
-                if (File.Exists(path))
-                {
-                    string time = File.ReadAllText(path);
-                    DateTime time_now = DateTime.Now;
-                    DateTime start = DateTime.ParseExact(time.Trim(), "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
-
-                    TimeSpan diff = time_now - start;
-
-                    if (diff.Minutes >= 3)
-                    {
-                        Process[] processes = Process.GetProcessesByName("TF FD Grab");
-                        foreach (Process proc in processes)
-                        {
-                            Process tempProc = Process.GetProcessById(proc.Id);
-                            tempProc.CloseMainWindow();
-                        }
-                    }
-                }
-            }
-            catch (Exception err)
-            {
-                // leave blank
             }
         }
     }
