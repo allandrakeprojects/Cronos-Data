@@ -3695,77 +3695,88 @@ namespace Cronos_Data
                                 }
 
                                 // added asdasd
-                                if (!member.ToString().ToLower().Contains("test") && !vip.ToString().ToLower().Contains("test") && !remark.ToString().ToLower().Contains("test") && !remark.ToString().ToLower().Contains("quot"))
+                                try
                                 {
-                                    if (bonus_category == "" && purpose == "")
+                                    if (!member.ToString().ToLower().Contains("test") && !vip.ToString().ToLower().Contains("test") && !remark.ToString().ToLower().Contains("test") && !remark.ToString().ToLower().Contains("quot"))
                                     {
-                                        string get1 = replace_remark.Substring(6, 3);
-                                        string get2 = get1.Substring(0, 2);
-                                        string get3 = get1.Substring(2);
-                                        string get4 = get1.Substring(0, 2);
-
-                                        if (get2 == "FD" || get2 == "RA")
+                                        if (bonus_category == "" && purpose == "")
                                         {
-                                            get1 = replace_remark.Substring(6, 4);
-                                            get2 = get1.Substring(0, 3);
-                                            get3 = get1.Substring(3);
-                                        }
+                                            string get1 = replace_remark.Substring(6, 3);
+                                            string get2 = get1.Substring(0, 2);
+                                            string get3 = get1.Substring(2);
+                                            string get4 = get1.Substring(0, 2);
 
-                                        ArrayList items_code = new ArrayList(new string[] { "AD", "FDB", "DP", "PZ", "RF", "RAF", "RB", "SU", "TO", "RR", "CB", "GW", "RW", "TE" });
-                                        ArrayList items_bonus_category = new ArrayList(new string[] { "Adjustment", "FDB", "Deposit", "Prize", "Refer friend", "Refer friend", "Reload", "Signup Bonus", "Turnover", "Rebate", "Cashback", "Goodwill Bonus", "Reward", "Test" });
-                                        int count_ = 0;
-                                        foreach (var item in items_code)
-                                        {
-                                            if (get2 == item.ToString())
-                                            {
-                                                bonus_category = items_bonus_category[count_].ToString();
-                                                break;
-                                            }
-
-                                            count_++;
-                                        }
-
-                                        if (get3 == "0")
-                                        {
-                                            if (get4 == "FD" || get4 == "RA")
-                                            {
-                                                get1 = replace_remark.Substring(6, 5);
-                                                get2 = get1.Substring(0, 4);
-                                                get3 = get1.Substring(4);
-                                            }
-                                            else
+                                            if (get2 == "FD" || get2 == "RA")
                                             {
                                                 get1 = replace_remark.Substring(6, 4);
                                                 get2 = get1.Substring(0, 3);
                                                 get3 = get1.Substring(3);
                                             }
-                                        }
 
-                                        ArrayList items_code_ = new ArrayList(new string[] { "0", "1", "2", "3", "4" });
-                                        ArrayList items_bonus_category_ = new ArrayList(new string[] { "Retention", "Acquisition", "Conversion", "Retention", "Reactivation" });
-                                        int count__ = 0;
-                                        foreach (var item in items_code_)
-                                        {
-                                            if (get3 == item.ToString())
+                                            ArrayList items_code = new ArrayList(new string[] { "AD", "FDB", "DP", "PZ", "RF", "RAF", "RB", "SU", "TO", "RR", "CB", "GW", "RW", "TE" });
+                                            ArrayList items_bonus_category = new ArrayList(new string[] { "Adjustment", "FDB", "Deposit", "Prize", "Refer friend", "Refer friend", "Reload", "Signup Bonus", "Turnover", "Rebate", "Cashback", "Goodwill Bonus", "Reward", "Test" });
+                                            int count_ = 0;
+                                            foreach (var item in items_code)
                                             {
-                                                purpose = items_bonus_category_[count__].ToString();
-                                                break;
+                                                if (get2 == item.ToString())
+                                                {
+                                                    bonus_category = items_bonus_category[count_].ToString();
+                                                    break;
+                                                }
+
+                                                count_++;
                                             }
 
-                                            count__++;
-                                        }
+                                            if (get3 == "0")
+                                            {
+                                                if (get4 == "FD" || get4 == "RA")
+                                                {
+                                                    get1 = replace_remark.Substring(6, 5);
+                                                    get2 = get1.Substring(0, 4);
+                                                    get3 = get1.Substring(4);
+                                                }
+                                                else
+                                                {
+                                                    get1 = replace_remark.Substring(6, 4);
+                                                    get2 = get1.Substring(0, 3);
+                                                    get3 = get1.Substring(3);
+                                                }
+                                            }
 
-                                        if (bonus_category == "" && purpose == "")
-                                        {
-                                            bonus_category = "Rebate";
-                                            purpose = "Retention";
+                                            ArrayList items_code_ = new ArrayList(new string[] { "0", "1", "2", "3", "4" });
+                                            ArrayList items_bonus_category_ = new ArrayList(new string[] { "Retention", "Acquisition", "Conversion", "Retention", "Reactivation" });
+                                            int count__ = 0;
+                                            foreach (var item in items_code_)
+                                            {
+                                                if (get3 == item.ToString())
+                                                {
+                                                    purpose = items_bonus_category_[count__].ToString();
+                                                    break;
+                                                }
+
+                                                count__++;
+                                            }
+
+                                            if (bonus_category == "" && purpose == "")
+                                            {
+                                                bonus_category = "Rebate";
+                                                purpose = "Retention";
+                                            }
                                         }
                                     }
+                                    else
+                                    {
+                                        bonus_category = "Other";
+                                        purpose = "Adjustment";
+                                    }
                                 }
-                                else
+                                catch (Exception err)
                                 {
                                     bonus_category = "Other";
                                     purpose = "Adjustment";
+
+                                    SendMyBot(err.ToString());
+                                    __send = 0;
                                 }
 
                                 if (_fy_get_ii == 1)
