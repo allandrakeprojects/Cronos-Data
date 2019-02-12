@@ -99,6 +99,7 @@ namespace Cronos_Data
         List<String> getmemberlist_fy = new List<String>();
         List<String> __getcontactemail = new List<String>();
         List<String> __gp = new List<String>();
+        List<String> __gp_list = new List<String>();
         private bool isBetRecordInsert = false;
         private bool isStopClick_fy = false;
         private string get_value;
@@ -2377,7 +2378,22 @@ namespace Cronos_Data
                     __page_count = false;
                     if (label_gp_name.Text != "-")
                     {
-                        SendReportsTeam("Game Platform Error -" + label_gp_name.Text + "-");
+                        if (!__gp_list.Any())
+                        {
+                            __gp_list.Add(label_gp_name.Text);
+                            SendReportsTeam("Game Platform Error -" + label_gp_name.Text + "-");
+                        }
+                        else
+                        {
+                            foreach (var gp in __gp_list)
+                            {
+                                if (gp != label_gp_name.Text)
+                                {
+                                    __gp_list.Add(label_gp_name.Text);
+                                    SendReportsTeam("Game Platform Error -" + label_gp_name.Text + "-");
+                                }
+                            }
+                        }
                     }
                     await GetDataFYPagesAsync();
                 }
