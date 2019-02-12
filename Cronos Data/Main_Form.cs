@@ -3695,7 +3695,7 @@ namespace Cronos_Data
                                 }
 
                                 // added asdasd
-                                if (!member.ToString().ToLower().Contains("test") && !vip.ToString().ToLower().Contains("test") && !remark.ToString().ToLower().Contains("test") && remark.ToString().ToLower().Contains("qout"))
+                                if (!member.ToString().ToLower().Contains("test") && !vip.ToString().ToLower().Contains("test") && !remark.ToString().ToLower().Contains("test") && !remark.ToString().ToLower().Contains("quot"))
                                 {
                                     if (bonus_category == "" && purpose == "")
                                     {
