@@ -2385,14 +2385,17 @@ namespace Cronos_Data
                         }
                         else
                         {
+                            List<String> __gp_list_temp = new List<String>();
                             foreach (var gp in __gp_list)
                             {
                                 if (gp != label_gp_name.Text)
                                 {
-                                    __gp_list.Add(label_gp_name.Text);
+                                    __gp_list_temp.Add(label_gp_name.Text);
                                     SendReportsTeam("Game Platform Error -" + label_gp_name.Text + "-");
                                 }
                             }
+                            __gp_list.AddRange(__gp_list_temp.ToList());
+                            __gp_list_temp.Clear();
                         }
                     }
                     await GetDataFYPagesAsync();
@@ -6569,6 +6572,7 @@ namespace Cronos_Data
                     label_gp_count.Text = "-";
                     label_total_betrecord.Text = "-";
 
+                    __gp_list.Clear();
                     SendITSupport("Reports has been completed.");
                     SendReportsTeam("Reports has been completed.");
                     __send = 0;
