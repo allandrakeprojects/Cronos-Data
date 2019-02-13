@@ -42,7 +42,7 @@ namespace Cronos_Data
         List<String> fy_gettotal = new List<String>();
         List<String> fy_gettotal_test = new List<String>();
         private double _total_records_fy;
-        private double _display_length_fy = 500;
+        private double _display_length_fy = 5000;
         private double _limit_fy = 250000;
         private int _total_page_fy;
         private int _result_count_json_fy;
@@ -51,6 +51,7 @@ namespace Cronos_Data
         private int _fy_pages_count_display = 0;
         private int _fy_pages_count_last;
         private int _fy_pages_count = 0;
+        private double __detect_gp = 0;
         private double _total_records_fy_bet = 0;
         private bool _detect_fy = false;
         private bool _fy_inserted_in_excel = true;
@@ -1968,7 +1969,7 @@ namespace Cronos_Data
                         {"data[2][name]", "sColumns"},
                         {"data[2][value]", ""},
                         {"data[3][name]", "iDisplayStart"},
-                        {"data[3][value]", "0"},
+                        {"data[3][value]", __detect_gp.ToString()},
                         {"data[4][name]", "iDisplayLength"},
                         {"data[4][value]", _display_length_fy.ToString()}
                     };
@@ -1990,6 +1991,11 @@ namespace Cronos_Data
                 if (__isLogin)
                 {
                     detect_fy++;
+                    __detect_gp += _display_length_fy;
+                    _fy_pages_count++;
+                    _fy_pages_count_display++;
+                    label_fy_page_count.Text = _fy_pages_count_display.ToString("N0") + " of " + _total_page_fy.ToString("N0");
+                    SendReportsTeam("—> \nGame Platform Error: -" + label_gp_name.Text + "-\nPer page: " + _display_length_fy.ToString("N0") + "\nPage: " + _fy_pages_count_display.ToString("N0") + " of " + _total_page_fy.ToString("N0"));
                     await GetDataFYAsync();
                 }
             }
