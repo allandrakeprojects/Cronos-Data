@@ -42,7 +42,7 @@ namespace Cronos_Data
         List<String> fy_gettotal = new List<String>();
         List<String> fy_gettotal_test = new List<String>();
         private double _total_records_fy;
-        private double _display_length_fy = 5000;
+        private double _display_length_fy = 500;
         private double _limit_fy = 250000;
         private int _total_page_fy;
         private int _result_count_json_fy;
@@ -99,7 +99,6 @@ namespace Cronos_Data
         List<String> getmemberlist_fy = new List<String>();
         List<String> __getcontactemail = new List<String>();
         List<String> __gp = new List<String>();
-        List<String> __gp_list = new List<String>();
         private bool isBetRecordInsert = false;
         private bool isStopClick_fy = false;
         private string get_value;
@@ -492,10 +491,7 @@ namespace Cronos_Data
                             HtmlElement selectF8 = webBrowser_fy.Document.GetElementById("gpid");
                             foreach (HtmlElement item in selectF8.Children)
                             {
-                                if (item.InnerText != "乐游棋牌")
-                                {
-                                    __gp.Add(item.GetAttribute("value") + "*|*" + item.InnerText);
-                                }
+                                __gp.Add(item.GetAttribute("value") + "*|*" + item.InnerText);
                             }
 
                             string start_datetime = dateTimePicker_start_fy.Text;
@@ -2378,25 +2374,8 @@ namespace Cronos_Data
                     __page_count = false;
                     if (label_gp_name.Text != "-")
                     {
-                        if (!__gp_list.Any())
-                        {
-                            __gp_list.Add(label_gp_name.Text);
-                            SendReportsTeam("Game Platform Error -" + label_gp_name.Text + "-");
-                        }
-                        else
-                        {
-                            List<String> __gp_list_temp = new List<String>();
-                            foreach (var gp in __gp_list)
-                            {
-                                if (gp != label_gp_name.Text)
-                                {
-                                    __gp_list_temp.Add(label_gp_name.Text);
-                                    SendReportsTeam("Game Platform Error -" + label_gp_name.Text + "-");
-                                }
-                            }
-                            __gp_list.AddRange(__gp_list_temp.ToList());
-                            __gp_list_temp.Clear();
-                        }
+                        int page = _fy_pages_count_display + 1;
+                        SendReportsTeam("—> \nGame Platform Error: -" + label_gp_name.Text + "-\nPer page: " + _display_length_fy.ToString("N0") + "\nPage: " + page.ToString("N0") + " of " + _total_page_fy.ToString("N0"));
                     }
                     await GetDataFYPagesAsync();
                 }
@@ -6571,8 +6550,7 @@ namespace Cronos_Data
                     label_gp_name.Text = "-";
                     label_gp_count.Text = "-";
                     label_total_betrecord.Text = "-";
-
-                    __gp_list.Clear();
+                    
                     SendITSupport("Reports has been completed.");
                     SendReportsTeam("Reports has been completed.");
                     __send = 0;
