@@ -1997,7 +1997,10 @@ namespace Cronos_Data
                     {
                         detect_fy++;
                         __current_count++;
-                        SendReportsTeam("—> \nGame Platform Error: -" + label_gp_name.Text);
+                        if (label_gp_name.Text != "-")
+                        {
+                            SendReportsTeam("—> \nGame Platform Error: -" + label_gp_name.Text + "-");
+                        }
                         await GetDataFYAsync();
                         __send_gp = 0;
                     }
@@ -2393,8 +2396,7 @@ namespace Cronos_Data
                         __page_count = false;
                         if (label_gp_name.Text != "-")
                         {
-                            int page = _fy_pages_count_display + 1;
-                            SendReportsTeam("—> \nGame Platform Error: -" + label_gp_name.Text + "-\nPer page: " + _display_length_fy.ToString("N0") + "\nPage: " + page.ToString("N0") + " of " + _total_page_fy.ToString("N0"));
+                            SendReportsTeam("—> \nGame Platform Error: -" + label_gp_name.Text + "-\nPer page: " + _display_length_fy.ToString("N0") + "\nPage: " + label_fy_page_count.Text);
                         }
                         await GetDataFYPagesAsync();
                         __send_gp = 0;
