@@ -59,6 +59,7 @@ namespace Cronos_Data
         private int _fy_row = 1;
         private int _fy_row_count = 1;
         private int __send = 0;
+        private int __send_gp = 0;
         private bool _isDone_fy = false;
         private bool __page_count = true;
         private string _fy_filename = "";
@@ -1990,13 +1991,21 @@ namespace Cronos_Data
             {
                 if (__isLogin)
                 {
-                    detect_fy++;
-                    __detect_gp += _display_length_fy;
-                    _fy_pages_count++;
-                    _fy_pages_count_display++;
-                    label_fy_page_count.Text = _fy_pages_count_display.ToString("N0") + " of " + _total_page_fy.ToString("N0");
-                    SendReportsTeam("—> \nGame Platform Error: -" + label_gp_name.Text + "-\nPer page: " + _display_length_fy.ToString("N0") + "\nPage: " + _fy_pages_count_display.ToString("N0") + " of " + _total_page_fy.ToString("N0"));
-                    await GetDataFYAsync();
+                    // asdasdasd
+                    __send_gp++;
+                    if (__send_gp == 5)
+                    {
+                        detect_fy++;
+                        __current_count++;
+                        SendReportsTeam("—> \nGame Platform Error: -" + label_gp_name.Text);
+                        await GetDataFYAsync();
+                        __send_gp = 0;
+                    }
+                    else
+                    {
+                        Thread.Sleep(5000);
+                        await GetDataFYAsync();
+                    }
                 }
             }
         }
@@ -2376,14 +2385,25 @@ namespace Cronos_Data
             {
                 if (__isLogin)
                 {
-                    _fy_pages_count++;
-                    __page_count = false;
-                    if (label_gp_name.Text != "-")
+                    // asdasdasd
+                    __send_gp++;
+                    if (__send_gp == 5)
                     {
-                        int page = _fy_pages_count_display + 1;
-                        SendReportsTeam("—> \nGame Platform Error: -" + label_gp_name.Text + "-\nPer page: " + _display_length_fy.ToString("N0") + "\nPage: " + page.ToString("N0") + " of " + _total_page_fy.ToString("N0"));
+                        _fy_pages_count++;
+                        __page_count = false;
+                        if (label_gp_name.Text != "-")
+                        {
+                            int page = _fy_pages_count_display + 1;
+                            SendReportsTeam("—> \nGame Platform Error: -" + label_gp_name.Text + "-\nPer page: " + _display_length_fy.ToString("N0") + "\nPage: " + page.ToString("N0") + " of " + _total_page_fy.ToString("N0"));
+                        }
+                        await GetDataFYPagesAsync();
+                        __send_gp = 0;
                     }
-                    await GetDataFYPagesAsync();
+                    else
+                    {
+                        Thread.Sleep(5000);
+                        await GetDataFYPagesAsync();
+                    }
                 }
 
                 //if (__isLogin)
