@@ -164,6 +164,12 @@
   <ItemGroup>
     <None Include="Resources\cronos_data.wav" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\navigate_down.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\navigate_up.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

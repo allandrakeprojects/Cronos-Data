@@ -108,19 +108,10 @@ namespace Cronos_Data
         private string __brand_color = "#DE1E70";
         private string __app = "Cronos Data";
         private string __app_type = "2";
+        Form __mainFormHandler;
 
-        // Border
-        const int _ = 1;
-        new Rectangle Top { get { return new Rectangle(0, 0, this.ClientSize.Width, _); } }
-        new Rectangle Left { get { return new Rectangle(0, 0, _, this.ClientSize.Height); } }
-        new Rectangle Bottom { get { return new Rectangle(0, this.ClientSize.Height - _, this.ClientSize.Width, _); } }
-        new Rectangle Right { get { return new Rectangle(this.ClientSize.Width - _, 0, _, ClientSize.Height); } }
-
-        // Minimize Click in Taskbar
-        const int WS_MINIMIZEBOX = 0x20000;
-        const int CS_DBLCLKS = 0x8;
-
-        // Rounded Border Radius
+        // Form Shadow
+        private bool m_aeroEnabled;
         [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
         private static extern IntPtr CreateRoundRectRgn
         (
@@ -131,11 +122,109 @@ namespace Cronos_Data
             int nWidthEllipse,
             int nHeightEllipse
         );
+        [DllImport("dwmapi.dll")]
+        public static extern int DwmExtendFrameIntoClientArea(IntPtr hWnd, ref MARGINS pMarInset);
+        [DllImport("dwmapi.dll")]
+        public static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, ref int attrValue, int attrSize);
+        [DllImport("dwmapi.dll")]
+        public static extern int DwmIsCompositionEnabled(ref int pfEnabled);
+        private const int CS_DROPSHADOW = 0x00020000;
+        private const int WM_NCPAINT = 0x0085;
+        private const int WM_ACTIVATEAPP = 0x001C;
+        private const int WM_NCHITTEST = 0x84;
+        private const int HTCLIENT = 0x1;
+        private const int HTCAPTION = 0x2;
+        private const int WS_MINIMIZEBOX = 0x20000;
+        private const int CS_DBLCLKS = 0x8;
+        public struct MARGINS
+        {
+            public int leftWidth;
+            public int rightWidth;
+            public int topHeight;
+            public int bottomHeight;
+        }
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                m_aeroEnabled = CheckAeroEnabled();
+
+                CreateParams cp = base.CreateParams;
+                if (!m_aeroEnabled)
+                    cp.ClassStyle |= CS_DROPSHADOW;
+
+                cp.Style |= WS_MINIMIZEBOX;
+                cp.ClassStyle |= CS_DBLCLKS;
+                return cp;
+            }
+        }
+        private bool CheckAeroEnabled()
+        {
+            if (Environment.OSVersion.Version.Major >= 6)
+            {
+                int enabled = 0;
+                DwmIsCompositionEnabled(ref enabled);
+                return (enabled == 1) ? true : false;
+            }
+            return false;
+        }
+        protected override void WndProc(ref Message m)
+        {
+            switch (m.Msg)
+            {
+                case WM_NCPAINT:
+                    if (m_aeroEnabled)
+                    {
+                        var v = 2;
+                        DwmSetWindowAttribute(Handle, 2, ref v, 4);
+                        MARGINS margins = new MARGINS()
+                        {
+                            bottomHeight = 1,
+                            leftWidth = 0,
+                            rightWidth = 0,
+                            topHeight = 0
+                        };
+                        DwmExtendFrameIntoClientArea(Handle, ref margins);
+
+                    }
+                    break;
+                default:
+                    break;
+            }
+            base.WndProc(ref m);
+
+            if (m.Msg == WM_NCHITTEST && (int)m.Result == HTCLIENT)
+                m.Result = (IntPtr)HTCAPTION;
+        }
+        // ----- Form Shadow
+
+        //// Border
+        //const int _ = 1;
+        //new Rectangle Top { get { return new Rectangle(0, 0, this.ClientSize.Width, _); } }
+        //new Rectangle Left { get { return new Rectangle(0, 0, _, this.ClientSize.Height); } }
+        //new Rectangle Bottom { get { return new Rectangle(0, this.ClientSize.Height - _, this.ClientSize.Width, _); } }
+        //new Rectangle Right { get { return new Rectangle(this.ClientSize.Width - _, 0, _, ClientSize.Height); } }
+
+        //// Minimize Click in Taskbar
+        //const int WS_MINIMIZEBOX = 0x20000;
+        //const int CS_DBLCLKS = 0x8;
+
+        //// Rounded Border Radius
+        //[DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
+        //private static extern IntPtr CreateRoundRectRgn
+        //(
+        //    int nLeftRect,
+        //    int nTopRect,
+        //    int nRightRect,
+        //    int nBottomRect,
+        //    int nWidthEllipse,
+        //    int nHeightEllipse
+        //);
 
         public Main_Form()
         {
             InitializeComponent();
-            Region = new Region(RoundedRectangle.Create(new Rectangle(0, 0, Size.Width, Size.Height), 8, RoundedRectangle.RectangleCorners.TopRight | RoundedRectangle.RectangleCorners.TopLeft | RoundedRectangle.RectangleCorners.BottomLeft | RoundedRectangle.RectangleCorners.BottomRight));
+            //Region = new Region(RoundedRectangle.Create(new Rectangle(0, 0, Size.Width, Size.Height), 8, RoundedRectangle.RectangleCorners.TopRight | RoundedRectangle.RectangleCorners.TopLeft | RoundedRectangle.RectangleCorners.BottomLeft | RoundedRectangle.RectangleCorners.BottomRight));
 
             Opacity = 0;
             timer.Interval = 20;
@@ -255,6 +344,11 @@ namespace Cronos_Data
                                 button_fy_start.Visible = false;
                                 timer_fy_start.Stop();
 
+                                __mainFormHandler = Application.OpenForms[0];
+                                __mainFormHandler.Size = new Size(569, 514);
+                                panel_loader.Visible = false;
+                                label_navigate_up.Enabled = true;
+
                                 string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
                                 SendITSupport("The application have been logout, please re-login again.");
                                 SendMyBot("The application have been logout, please re-login again.");
@@ -293,6 +387,11 @@ namespace Cronos_Data
 
                         if (webBrowser_fy.Url.ToString().Equals("http://cshk.ying168.bet/player/list") || webBrowser_fy.Url.ToString().Equals("http://cshk.ying168.bet/site/index") || webBrowser_fy.Url.ToString().Equals("http://cshk.ying168.bet/player/online") || webBrowser_fy.Url.ToString().Equals("http://cshk.ying168.bet/message/platform"))
                         {
+                            __mainFormHandler = Application.OpenForms[0];
+                            __mainFormHandler.Size = new Size(569, 208);
+                            panel_loader.Visible = true;
+                            label_navigate_up.Enabled = false;
+
                             if (!isButtonStart_fy)
                             {
                                 button_fy_start.Visible = true;
@@ -7416,27 +7515,27 @@ namespace Cronos_Data
             }
         }
 
-        // Border
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            SolidBrush defaultColor = new SolidBrush(Color.FromArgb(78, 122, 159));
-            e.Graphics.FillRectangle(defaultColor, Top);
-            e.Graphics.FillRectangle(defaultColor, Left);
-            e.Graphics.FillRectangle(defaultColor, Right);
-            e.Graphics.FillRectangle(defaultColor, Bottom);
-        }
+        //// Border
+        //protected override void OnPaint(PaintEventArgs e)
+        //{
+        //    SolidBrush defaultColor = new SolidBrush(Color.FromArgb(78, 122, 159));
+        //    e.Graphics.FillRectangle(defaultColor, Top);
+        //    e.Graphics.FillRectangle(defaultColor, Left);
+        //    e.Graphics.FillRectangle(defaultColor, Right);
+        //    e.Graphics.FillRectangle(defaultColor, Bottom);
+        //}
 
-        // Minimize Click in Taskbar
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                CreateParams cp = base.CreateParams;
-                cp.Style |= WS_MINIMIZEBOX;
-                cp.ClassStyle |= CS_DBLCLKS;
-                return cp;
-            }
-        }
+        //// Minimize Click in Taskbar
+        //protected override CreateParams CreateParams
+        //{
+        //    get
+        //    {
+        //        CreateParams cp = base.CreateParams;
+        //        cp.Style |= WS_MINIMIZEBOX;
+        //        cp.ClassStyle |= CS_DBLCLKS;
+        //        return cp;
+        //    }
+        //}
 
         public object RoundedCorners { get; private set; }
 
@@ -8108,6 +8207,22 @@ namespace Cronos_Data
                 if (line != null)
                     sb.Append(line);
             }
+        }
+
+        private void label_navigate_up_Click(object sender, EventArgs e)
+        {
+            __mainFormHandler = Application.OpenForms[0];
+            __mainFormHandler.Size = new Size(569, 208);
+            panel_loader.Visible = true;
+            label_navigate_up.Enabled = false;
+        }
+
+        private void label_navigate_down_Click(object sender, EventArgs e)
+        {
+            __mainFormHandler = Application.OpenForms[0];
+            __mainFormHandler.Size = new Size(569, 514);
+            panel_loader.Visible = false;
+            label_navigate_up.Enabled = true;
         }
     }
 }

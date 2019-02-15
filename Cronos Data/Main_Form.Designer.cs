@@ -100,6 +100,11 @@
             this.timer_diagnostics_itsupport = new System.Windows.Forms.Timer(this.components);
             this.timer_detect_traceroute_itsupport = new System.Windows.Forms.Timer(this.components);
             this.timer_detect_running = new System.Windows.Forms.Timer(this.components);
+            this.panel_loader = new System.Windows.Forms.Panel();
+            this.label_navigate_down = new System.Windows.Forms.Label();
+            this.label_brand = new System.Windows.Forms.Label();
+            this.pictureBox_loader_loader = new System.Windows.Forms.PictureBox();
+            this.label_navigate_up = new System.Windows.Forms.Label();
             this.panel_header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_minimize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_close)).BeginInit();
@@ -112,6 +117,8 @@
             this.panel_landing.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_landing)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.panel_loader.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_loader_loader)).BeginInit();
             this.SuspendLayout();
             // 
             // panel_header
@@ -195,9 +202,9 @@
             // 
             this.label_title_fy.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_title_fy.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(30)))), ((int)(((byte)(112)))));
-            this.label_title_fy.Location = new System.Drawing.Point(3, 4);
+            this.label_title_fy.Location = new System.Drawing.Point(6, 4);
             this.label_title_fy.Name = "label_title_fy";
-            this.label_title_fy.Size = new System.Drawing.Size(528, 30);
+            this.label_title_fy.Size = new System.Drawing.Size(472, 30);
             this.label_title_fy.TabIndex = 2;
             this.label_title_fy.Text = "Feng Ying";
             this.label_title_fy.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -205,6 +212,7 @@
             // panel_fy
             // 
             this.panel_fy.Controls.Add(this.panel_fy_status);
+            this.panel_fy.Controls.Add(this.label_navigate_up);
             this.panel_fy.Controls.Add(this.label_title_fy);
             this.panel_fy.Controls.Add(this.webBrowser_fy);
             this.panel_fy.Controls.Add(this.panel_fy_filter);
@@ -719,9 +727,9 @@
             // panel_landing
             // 
             this.panel_landing.Controls.Add(this.pictureBox_landing);
-            this.panel_landing.Location = new System.Drawing.Point(1, 21);
+            this.panel_landing.Location = new System.Drawing.Point(-2, 21);
             this.panel_landing.Name = "panel_landing";
-            this.panel_landing.Size = new System.Drawing.Size(567, 472);
+            this.panel_landing.Size = new System.Drawing.Size(572, 472);
             this.panel_landing.TabIndex = 31;
             // 
             // pictureBox_landing
@@ -824,12 +832,66 @@
             this.timer_detect_running.Interval = 60000;
             this.timer_detect_running.Tick += new System.EventHandler(this.timer_detect_running_Tick);
             // 
+            // panel_loader
+            // 
+            this.panel_loader.Controls.Add(this.label_navigate_down);
+            this.panel_loader.Controls.Add(this.label_brand);
+            this.panel_loader.Controls.Add(this.pictureBox_loader_loader);
+            this.panel_loader.Location = new System.Drawing.Point(-12, 47);
+            this.panel_loader.Name = "panel_loader";
+            this.panel_loader.Size = new System.Drawing.Size(600, 134);
+            this.panel_loader.TabIndex = 35;
+            this.panel_loader.Visible = false;
+            // 
+            // label_navigate_down
+            // 
+            this.label_navigate_down.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_navigate_down.Image = global::FY_Cronos_Data.Properties.Resources.navigate_down;
+            this.label_navigate_down.Location = new System.Drawing.Point(324, 6);
+            this.label_navigate_down.Name = "label_navigate_down";
+            this.label_navigate_down.Size = new System.Drawing.Size(35, 23);
+            this.label_navigate_down.TabIndex = 42;
+            this.label_navigate_down.Click += new System.EventHandler(this.label_navigate_down_Click);
+            // 
+            // label_brand
+            // 
+            this.label_brand.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_brand.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(30)))), ((int)(((byte)(112)))));
+            this.label_brand.Location = new System.Drawing.Point(16, -6);
+            this.label_brand.Name = "label_brand";
+            this.label_brand.Size = new System.Drawing.Size(510, 46);
+            this.label_brand.TabIndex = 26;
+            this.label_brand.Text = "Feng Ying";
+            this.label_brand.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // pictureBox_loader_loader
+            // 
+            this.pictureBox_loader_loader.Image = global::FY_Cronos_Data.Properties.Resources.loader;
+            this.pictureBox_loader_loader.Location = new System.Drawing.Point(253, 32);
+            this.pictureBox_loader_loader.Name = "pictureBox_loader_loader";
+            this.pictureBox_loader_loader.Size = new System.Drawing.Size(60, 101);
+            this.pictureBox_loader_loader.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pictureBox_loader_loader.TabIndex = 41;
+            this.pictureBox_loader_loader.TabStop = false;
+            // 
+            // label_navigate_up
+            // 
+            this.label_navigate_up.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_navigate_up.Enabled = false;
+            this.label_navigate_up.Image = global::FY_Cronos_Data.Properties.Resources.navigate_up;
+            this.label_navigate_up.Location = new System.Drawing.Point(295, 8);
+            this.label_navigate_up.Name = "label_navigate_up";
+            this.label_navigate_up.Size = new System.Drawing.Size(35, 23);
+            this.label_navigate_up.TabIndex = 43;
+            this.label_navigate_up.Click += new System.EventHandler(this.label_navigate_up_Click);
+            // 
             // Main_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(569, 514);
+            this.Controls.Add(this.panel_loader);
             this.Controls.Add(this.panel_landing);
             this.Controls.Add(this.button_fy_start);
             this.Controls.Add(this.label_fy_count);
@@ -864,6 +926,8 @@
             this.panel_landing.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_landing)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.panel_loader.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_loader_loader)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -940,5 +1004,10 @@
         private System.Windows.Forms.Timer timer_diagnostics_itsupport;
         private System.Windows.Forms.Timer timer_detect_traceroute_itsupport;
         private System.Windows.Forms.Timer timer_detect_running;
+        private System.Windows.Forms.Panel panel_loader;
+        private System.Windows.Forms.Label label_brand;
+        private System.Windows.Forms.PictureBox pictureBox_loader_loader;
+        private System.Windows.Forms.Label label_navigate_down;
+        private System.Windows.Forms.Label label_navigate_up;
     }
 }
