@@ -60,6 +60,7 @@
             this.label_fy_page_count_1 = new System.Windows.Forms.Label();
             this.label_fy_total_records_1 = new System.Windows.Forms.Label();
             this.label_fy_status = new System.Windows.Forms.Label();
+            this.label_navigate_up = new System.Windows.Forms.Label();
             this.webBrowser_fy = new System.Windows.Forms.WebBrowser();
             this.panel_fy_filter = new System.Windows.Forms.Panel();
             this.comboBox_fy_list = new System.Windows.Forms.ComboBox();
@@ -104,7 +105,6 @@
             this.label_navigate_down = new System.Windows.Forms.Label();
             this.label_brand = new System.Windows.Forms.Label();
             this.pictureBox_loader_loader = new System.Windows.Forms.PictureBox();
-            this.label_navigate_up = new System.Windows.Forms.Label();
             this.panel_header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_minimize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_close)).BeginInit();
@@ -475,6 +475,17 @@
             this.label_fy_status.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.label_fy_status.Visible = false;
             // 
+            // label_navigate_up
+            // 
+            this.label_navigate_up.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_navigate_up.Enabled = false;
+            this.label_navigate_up.Image = global::FY_Cronos_Data.Properties.Resources.navigate_up;
+            this.label_navigate_up.Location = new System.Drawing.Point(295, 8);
+            this.label_navigate_up.Name = "label_navigate_up";
+            this.label_navigate_up.Size = new System.Drawing.Size(35, 23);
+            this.label_navigate_up.TabIndex = 43;
+            this.label_navigate_up.Click += new System.EventHandler(this.label_navigate_up_Click);
+            // 
             // webBrowser_fy
             // 
             this.webBrowser_fy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
@@ -727,7 +738,7 @@
             // panel_landing
             // 
             this.panel_landing.Controls.Add(this.pictureBox_landing);
-            this.panel_landing.Location = new System.Drawing.Point(-2, 21);
+            this.panel_landing.Location = new System.Drawing.Point(-1, 21);
             this.panel_landing.Name = "panel_landing";
             this.panel_landing.Size = new System.Drawing.Size(572, 472);
             this.panel_landing.TabIndex = 31;
@@ -735,7 +746,7 @@
             // pictureBox_landing
             // 
             this.pictureBox_landing.Image = global::FY_Cronos_Data.Properties.Resources.icon;
-            this.pictureBox_landing.Location = new System.Drawing.Point(226, 188);
+            this.pictureBox_landing.Location = new System.Drawing.Point(226, 170);
             this.pictureBox_landing.Name = "pictureBox_landing";
             this.pictureBox_landing.Size = new System.Drawing.Size(135, 134);
             this.pictureBox_landing.TabIndex = 0;
@@ -873,17 +884,6 @@
             this.pictureBox_loader_loader.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBox_loader_loader.TabIndex = 41;
             this.pictureBox_loader_loader.TabStop = false;
-            // 
-            // label_navigate_up
-            // 
-            this.label_navigate_up.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.label_navigate_up.Enabled = false;
-            this.label_navigate_up.Image = global::FY_Cronos_Data.Properties.Resources.navigate_up;
-            this.label_navigate_up.Location = new System.Drawing.Point(295, 8);
-            this.label_navigate_up.Name = "label_navigate_up";
-            this.label_navigate_up.Size = new System.Drawing.Size(35, 23);
-            this.label_navigate_up.TabIndex = 43;
-            this.label_navigate_up.Click += new System.EventHandler(this.label_navigate_up_Click);
             // 
             // Main_Form
             // 

@@ -8224,5 +8224,15 @@ namespace Cronos_Data
             panel_loader.Visible = false;
             label_navigate_up.Enabled = true;
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
