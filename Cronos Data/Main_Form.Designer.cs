@@ -202,7 +202,7 @@
             // 
             this.label_title_fy.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_title_fy.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(30)))), ((int)(((byte)(112)))));
-            this.label_title_fy.Location = new System.Drawing.Point(6, 4);
+            this.label_title_fy.Location = new System.Drawing.Point(10, 4);
             this.label_title_fy.Name = "label_title_fy";
             this.label_title_fy.Size = new System.Drawing.Size(472, 30);
             this.label_title_fy.TabIndex = 2;
@@ -480,7 +480,7 @@
             this.label_navigate_up.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label_navigate_up.Enabled = false;
             this.label_navigate_up.Image = global::FY_Cronos_Data.Properties.Resources.navigate_up;
-            this.label_navigate_up.Location = new System.Drawing.Point(295, 8);
+            this.label_navigate_up.Location = new System.Drawing.Point(299, 8);
             this.label_navigate_up.Name = "label_navigate_up";
             this.label_navigate_up.Size = new System.Drawing.Size(35, 23);
             this.label_navigate_up.TabIndex = 43;
@@ -858,7 +858,7 @@
             // 
             this.label_navigate_down.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label_navigate_down.Image = global::FY_Cronos_Data.Properties.Resources.navigate_down;
-            this.label_navigate_down.Location = new System.Drawing.Point(324, 6);
+            this.label_navigate_down.Location = new System.Drawing.Point(328, 6);
             this.label_navigate_down.Name = "label_navigate_down";
             this.label_navigate_down.Size = new System.Drawing.Size(35, 23);
             this.label_navigate_down.TabIndex = 42;
@@ -868,7 +868,7 @@
             // 
             this.label_brand.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_brand.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(30)))), ((int)(((byte)(112)))));
-            this.label_brand.Location = new System.Drawing.Point(16, -6);
+            this.label_brand.Location = new System.Drawing.Point(20, -6);
             this.label_brand.Name = "label_brand";
             this.label_brand.Size = new System.Drawing.Size(510, 46);
             this.label_brand.TabIndex = 26;
@@ -878,7 +878,7 @@
             // pictureBox_loader_loader
             // 
             this.pictureBox_loader_loader.Image = global::FY_Cronos_Data.Properties.Resources.loader;
-            this.pictureBox_loader_loader.Location = new System.Drawing.Point(253, 32);
+            this.pictureBox_loader_loader.Location = new System.Drawing.Point(258, 32);
             this.pictureBox_loader_loader.Name = "pictureBox_loader_loader";
             this.pictureBox_loader_loader.Size = new System.Drawing.Size(60, 101);
             this.pictureBox_loader_loader.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
