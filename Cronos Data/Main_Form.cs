@@ -108,7 +108,7 @@ namespace Cronos_Data
         private string __brand_color = "#DE1E70";
         private string __app = "Cronos Data";
         private string __app_type = "2";
-        Form __mainFormHandler;
+        Form __mainForm_handler;
 
         // Form Shadow
         private bool m_aeroEnabled;
@@ -247,7 +247,7 @@ namespace Cronos_Data
         private void Main_Form_Load(object sender, EventArgs e)
         {
             // FY
-            webBrowser_fy.Navigate("http://cshk.ying168.bet/account/login");
+            webBrowser_fy.Navigate("http://cs.ying168.bet/account/login");
             comboBox_fy.SelectedIndex = 0;
             comboBox_fy_list.SelectedIndex = 0;
             dateTimePicker_start_fy.Format = DateTimePickerFormat.Custom;
@@ -336,7 +336,7 @@ namespace Cronos_Data
                 {
                     try
                     {
-                        if (webBrowser_fy.Url.ToString().Equals("http://cshk.ying168.bet/account/login"))
+                        if (webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/account/login"))
                         {
                             if (__isStart)
                             {
@@ -344,8 +344,8 @@ namespace Cronos_Data
                                 button_fy_start.Visible = false;
                                 timer_fy_start.Stop();
 
-                                __mainFormHandler = Application.OpenForms[0];
-                                __mainFormHandler.Size = new Size(569, 514);
+                                __mainForm_handler = Application.OpenForms[0];
+                                __mainForm_handler.Size = new Size(569, 514);
                                 panel_loader.Visible = false;
                                 label_navigate_up.Enabled = true;
 
@@ -385,10 +385,10 @@ namespace Cronos_Data
                             }
                         }
 
-                        if (webBrowser_fy.Url.ToString().Equals("http://cshk.ying168.bet/player/list") || webBrowser_fy.Url.ToString().Equals("http://cshk.ying168.bet/site/index") || webBrowser_fy.Url.ToString().Equals("http://cshk.ying168.bet/player/online") || webBrowser_fy.Url.ToString().Equals("http://cshk.ying168.bet/message/platform"))
+                        if (webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/player/list") || webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/site/index") || webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/player/online") || webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/message/platform"))
                         {
-                            __mainFormHandler = Application.OpenForms[0];
-                            __mainFormHandler.Size = new Size(569, 208);
+                            __mainForm_handler = Application.OpenForms[0];
+                            __mainForm_handler.Size = new Size(569, 208);
                             panel_loader.Visible = true;
                             label_navigate_up.Enabled = false;
 
@@ -586,7 +586,7 @@ namespace Cronos_Data
                             }
                         }
 
-                        if (webBrowser_fy.Url.ToString().Equals("http://cshk.ying168.bet/flow/wagered2"))
+                        if (webBrowser_fy.Url.ToString().Equals("http://cs.ying168.bet/flow/wagered2"))
                         {
                             __gp.Clear();
                             HtmlElement selectF8 = webBrowser_fy.Document.GetElementById("gpid");
@@ -739,7 +739,7 @@ namespace Cronos_Data
                     { "data[4][value]", "1"}
                 };
 
-                byte[] result_gettotal = await wc.UploadValuesTaskAsync("http://cshk.ying168.bet/player/listAjax1", "POST", reqparm_gettotal);
+                byte[] result_gettotal = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/player/listAjax1", "POST", reqparm_gettotal);
                 string responsebody_gettotatal = Encoding.UTF8.GetString(result_gettotal);
                 var deserializeObject_gettotal = JsonConvert.DeserializeObject(responsebody_gettotatal);
                 JObject jo_gettotal = JObject.Parse(deserializeObject_gettotal.ToString());
@@ -786,7 +786,7 @@ namespace Cronos_Data
 
                 label_fy_status.Text = "status: getting data... --- MEMBER LIST";
 
-                byte[] result = await wc.UploadValuesTaskAsync("http://cshk.ying168.bet/player/listAjax1", "POST", reqparm);
+                byte[] result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/player/listAjax1", "POST", reqparm);
                 string responsebody = Encoding.UTF8.GetString(result);
                 var deserializeObject = JsonConvert.DeserializeObject(responsebody);
 
@@ -968,7 +968,7 @@ namespace Cronos_Data
                             }
 
                             _fy_folder_path_result = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\FY Registration " + __pageCountPlayer + ".txt";
-                            _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\FY Registration " + __pageCountPlayer + ".xlsxxt";
+                            _fy_folder_path_result_xlsx = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime + "\\FY Registration " + __pageCountPlayer + ".xlsx";
                             _fy_folder_path_result_locate = label_filelocation.Text + "\\Cronos Data\\FY\\" + _fy_current_datetime;
 
                             if (File.Exists(_fy_folder_path_result))
@@ -1114,7 +1114,7 @@ namespace Cronos_Data
                 label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
                 label_fy_status.Text = "status: getting data... --- MEMBER LIST";
 
-                byte[] result = await wc.UploadValuesTaskAsync("http://cshk.ying168.bet/player/listAjax1", "POST", reqparm);
+                byte[] result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/player/listAjax1", "POST", reqparm);
                 string responsebody = Encoding.UTF8.GetString(result);
                 if (_fy_pages_count_display != _total_page_fy)
                 {
@@ -1295,7 +1295,7 @@ namespace Cronos_Data
                 wc.Headers.Add("Cookie", cookie);
                 wc.Encoding = Encoding.UTF8;
                 wc.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
-                string result_gettotal_responsebody = await wc.DownloadStringTaskAsync("http://cshk.ying168.bet/player/playerDetailBox?id=" + id);
+                string result_gettotal_responsebody = await wc.DownloadStringTaskAsync("http://cs.ying168.bet/player/playerDetailBox?id=" + id);
 
                 int i_label = 0;
                 int cn = 0;
@@ -1434,7 +1434,7 @@ namespace Cronos_Data
                         label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
                         label_fy_status.Text = "status: doing calculation... DEPOSIT RECORD";
 
-                        result_gettotal = await wc.UploadValuesTaskAsync("http://cshk.ying168.bet/playerFund/dptHistoryAjax", "POST", reqparm);
+                        result_gettotal = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/dptHistoryAjax", "POST", reqparm);
                         if (get_value == "en")
                         {
                             responsebody_gettotatal = Encoding.UTF8.GetString(result_gettotal).Remove(0, 1);
@@ -1473,7 +1473,7 @@ namespace Cronos_Data
                         label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
                         label_fy_status.Text = "status: doing calculation... M-DEPOSIT RECORD";
 
-                        result_gettotal = await wc.UploadValuesTaskAsync("http://cshk.ying168.bet/playerFund/dptCorrectionAjax", "POST", reqparm);
+                        result_gettotal = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/dptCorrectionAjax", "POST", reqparm);
                         responsebody_gettotatal = Encoding.UTF8.GetString(result_gettotal);
                     }
                 }
@@ -1511,7 +1511,7 @@ namespace Cronos_Data
                         label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
                         label_fy_status.Text = "status: doing calculation... WITHDRAWAL RECORD";
 
-                        result_gettotal = await wc.UploadValuesTaskAsync("http://cshk.ying168.bet/playerFund/wtdHistoryAjax", "POST", reqparm);
+                        result_gettotal = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/wtdHistoryAjax", "POST", reqparm);
                         responsebody_gettotatal = Encoding.UTF8.GetString(result_gettotal);
                     }
                     else
@@ -1543,7 +1543,7 @@ namespace Cronos_Data
                         label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
                         label_fy_status.Text = "status: doing calculation... M-WITHDRAWAL RECORD";
 
-                        result_gettotal = await wc.UploadValuesTaskAsync("http://cshk.ying168.bet/playerFund/dptCorrectionAjax", "POST", reqparm);
+                        result_gettotal = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/dptCorrectionAjax", "POST", reqparm);
                         responsebody_gettotatal = Encoding.UTF8.GetString(result_gettotal);
                     }
                 }
@@ -1580,7 +1580,7 @@ namespace Cronos_Data
                     label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
                     label_fy_status.Text = "status: doing calculation... M-BONUS RECORD";
 
-                    result_gettotal = await wc.UploadValuesTaskAsync("http://cshk.ying168.bet/playerFund/dptCorrectionAjax", "POST", reqparm);
+                    result_gettotal = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/dptCorrectionAjax", "POST", reqparm);
                     responsebody_gettotatal = Encoding.UTF8.GetString(result_gettotal);
                 }
                 else
@@ -1611,7 +1611,7 @@ namespace Cronos_Data
                     label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
                     label_fy_status.Text = "status: doing calculation... G-BONUS RECORD";
 
-                    result_gettotal = await wc.UploadValuesTaskAsync("http://cshk.ying168.bet/flow/getRakeBackHistory", "POST", reqparm);
+                    result_gettotal = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/flow/getRakeBackHistory", "POST", reqparm);
                     responsebody_gettotatal = Encoding.UTF8.GetString(result_gettotal);
                 }
             }
@@ -1691,7 +1691,7 @@ namespace Cronos_Data
 
                 if (_total_records_fy_bet == 0)
                 {
-                    byte[] result_gettotal_bet = await wc.UploadValuesTaskAsync("http://cshk.ying168.bet/flow/wageredAjax2", "POST", reqparm);
+                    byte[] result_gettotal_bet = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/flow/wageredAjax2", "POST", reqparm);
                     string responsebody_gettotatal_bet = Encoding.UTF8.GetString(result_gettotal_bet);
                     var deserializeObject_gettotal_bet = JsonConvert.DeserializeObject(responsebody_gettotatal_bet);
 
@@ -1718,7 +1718,7 @@ namespace Cronos_Data
                     label_total_betrecord.Text = "0 of " + Convert.ToInt32(_total_records_fy_bet).ToString("N0");
                 }
 
-                result_gettotal = await wc.UploadValuesTaskAsync("http://cshk.ying168.bet/flow/wageredAjax2", "POST", reqparm1);
+                result_gettotal = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/flow/wageredAjax2", "POST", reqparm1);
                 responsebody_gettotatal = Encoding.UTF8.GetString(result_gettotal);
                 _fy_no_result = false;
             }
@@ -1847,7 +1847,7 @@ namespace Cronos_Data
 
                             label_fy_status.Text = "status: getting data... DEPOSIT RECORD";
 
-                            result = await wc.UploadValuesTaskAsync("http://cshk.ying168.bet/playerFund/dptHistoryAjax", "POST", reqparm);
+                            result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/dptHistoryAjax", "POST", reqparm);
                             if (get_value == "en")
                             {
                                 responsebody = Encoding.UTF8.GetString(result).Remove(0, 1);
@@ -1885,7 +1885,7 @@ namespace Cronos_Data
                             label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
                             label_fy_status.Text = "status: getting data... M-DEPOSIT RECORD";
 
-                            result = await wc.UploadValuesTaskAsync("http://cshk.ying168.bet/playerFund/dptCorrectionAjax", "POST", reqparm);
+                            result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/dptCorrectionAjax", "POST", reqparm);
                             responsebody = Encoding.UTF8.GetString(result);
                         }
                     }
@@ -1923,7 +1923,7 @@ namespace Cronos_Data
                             label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
                             label_fy_status.Text = "status: getting data... WITHDRAWAL RECORD";
 
-                            result = await wc.UploadValuesTaskAsync("http://cshk.ying168.bet/playerFund/wtdHistoryAjax", "POST", reqparm);
+                            result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/wtdHistoryAjax", "POST", reqparm);
                             responsebody = Encoding.UTF8.GetString(result);
                         }
                         else
@@ -1956,7 +1956,7 @@ namespace Cronos_Data
                             label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
                             label_fy_status.Text = "status: getting data... M-WITHDRAWAL RECORD";
 
-                            result = await wc.UploadValuesTaskAsync("http://cshk.ying168.bet/playerFund/dptCorrectionAjax", "POST", reqparm);
+                            result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/dptCorrectionAjax", "POST", reqparm);
                             responsebody = Encoding.UTF8.GetString(result);
                         }
                     }
@@ -1993,7 +1993,7 @@ namespace Cronos_Data
                         label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
                         label_fy_status.Text = "status: getting data... M-BONUS RECORD";
 
-                        result = await wc.UploadValuesTaskAsync("http://cshk.ying168.bet/playerFund/dptCorrectionAjax", "POST", reqparm);
+                        result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/dptCorrectionAjax", "POST", reqparm);
                         responsebody = Encoding.UTF8.GetString(result);
                     }
                     else
@@ -2024,7 +2024,7 @@ namespace Cronos_Data
                         label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
                         label_fy_status.Text = "status: getting data... G-BONUS RECORD";
 
-                        result = await wc.UploadValuesTaskAsync("http://cshk.ying168.bet/flow/getRakeBackHistory", "POST", reqparm);
+                        result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/flow/getRakeBackHistory", "POST", reqparm);
                         responsebody = Encoding.UTF8.GetString(result);
                     }
                 }
@@ -2076,7 +2076,7 @@ namespace Cronos_Data
 
                     label_fy_status.Text = "status: getting data... BET RECORD";
 
-                    result = await wc.UploadValuesTaskAsync("http://cshk.ying168.bet/flow/wageredAjax2", "POST", reqparm);
+                    result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/flow/wageredAjax2", "POST", reqparm);
                     responsebody = Encoding.UTF8.GetString(result);
                 }
 
@@ -2228,7 +2228,7 @@ namespace Cronos_Data
 
                                 label_fy_status.Text = "status: getting data... DEPOSIT RECORD";
 
-                                result = await wc.UploadValuesTaskAsync("http://cshk.ying168.bet/playerFund/dptHistoryAjax", "POST", reqparm);
+                                result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/dptHistoryAjax", "POST", reqparm);
                                 if (get_value == "en")
                                 {
                                     responsebody = Encoding.UTF8.GetString(result).Remove(0, 1);
@@ -2266,7 +2266,7 @@ namespace Cronos_Data
                                 label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
                                 label_fy_status.Text = "status: getting data... M-DEPOSIT RECORD";
 
-                                result = await wc.UploadValuesTaskAsync("http://cshk.ying168.bet/playerFund/dptCorrectionAjax", "POST", reqparm);
+                                result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/dptCorrectionAjax", "POST", reqparm);
                                 responsebody = Encoding.UTF8.GetString(result);
                             }
                         }
@@ -2304,7 +2304,7 @@ namespace Cronos_Data
                                 label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
                                 label_fy_status.Text = "status: getting data... WITHDRAWAL RECORD";
 
-                                result = await wc.UploadValuesTaskAsync("http://cshk.ying168.bet/playerFund/wtdHistoryAjax", "POST", reqparm);
+                                result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/wtdHistoryAjax", "POST", reqparm);
                                 responsebody = Encoding.UTF8.GetString(result);
                             }
                             else
@@ -2337,7 +2337,7 @@ namespace Cronos_Data
                                 label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
                                 label_fy_status.Text = "status: getting data... M-WITHDRAWAL RECORD";
 
-                                result = await wc.UploadValuesTaskAsync("http://cshk.ying168.bet/playerFund/dptCorrectionAjax", "POST", reqparm);
+                                result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/dptCorrectionAjax", "POST", reqparm);
                                 responsebody = Encoding.UTF8.GetString(result);
                             }
                         }
@@ -2374,7 +2374,7 @@ namespace Cronos_Data
                             label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
                             label_fy_status.Text = "status: getting data... M-BONUS RECORD";
 
-                            result = await wc.UploadValuesTaskAsync("http://cshk.ying168.bet/playerFund/dptCorrectionAjax", "POST", reqparm);
+                            result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/playerFund/dptCorrectionAjax", "POST", reqparm);
                             responsebody = Encoding.UTF8.GetString(result);
                         }
                         else
@@ -2405,7 +2405,7 @@ namespace Cronos_Data
                             label_fy_status.ForeColor = Color.FromArgb(78, 122, 159);
                             label_fy_status.Text = "status: getting data... G-BONUS RECORD";
 
-                            result = await wc.UploadValuesTaskAsync("http://cshk.ying168.bet/flow/getRakeBackHistory", "POST", reqparm);
+                            result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/flow/getRakeBackHistory", "POST", reqparm);
                             responsebody = Encoding.UTF8.GetString(result);
                         }
                     }
@@ -2457,7 +2457,7 @@ namespace Cronos_Data
 
                         label_fy_status.Text = "status: getting data... BET RECORD";
 
-                        result = await wc.UploadValuesTaskAsync("http://cshk.ying168.bet/flow/wageredAjax2", "POST", reqparm);
+                        result = await wc.UploadValuesTaskAsync("http://cs.ying168.bet/flow/wageredAjax2", "POST", reqparm);
                         responsebody = Encoding.UTF8.GetString(result);
                     }
 
@@ -3827,6 +3827,7 @@ namespace Cronos_Data
                                         if (bonus_category == "" && purpose == "")
                                         {
                                             string get1 = replace_remark.Substring(6, 3);
+
                                             string get2 = get1.Substring(0, 2);
                                             string get3 = get1.Substring(2);
                                             string get4 = get1.Substring(0, 2);
@@ -5949,7 +5950,7 @@ namespace Cronos_Data
 
         private void timer_fy_start_Tick(object sender, EventArgs e)
         {
-            webBrowser_fy.Navigate("http://cshk.ying168.bet/player/listAjax1");
+            webBrowser_fy.Navigate("http://cs.ying168.bet/player/listAjax1");
         }
 
         private async void button_fy_start_ClickAsync(object sender, EventArgs e)
@@ -6169,7 +6170,7 @@ namespace Cronos_Data
                         // end
 
                         timer_fy_start.Stop();
-                        webBrowser_fy.Navigate("http://cshk.ying168.bet/flow/wagered2");
+                        webBrowser_fy.Navigate("http://cs.ying168.bet/flow/wagered2");
                         timer_fy_start.Start();
                     }
                 }
@@ -7957,7 +7958,7 @@ namespace Cronos_Data
 
         private void timer_diagnostics_Tick(object sender, EventArgs e)
         {
-            GetTraceRoute("cshk.ying168.bet");
+            GetTraceRoute("cs.ying168.bet");
             timer_diagnostics.Stop();
             timer_detect_traceroute.Start();
         }
@@ -8211,16 +8212,16 @@ namespace Cronos_Data
 
         private void label_navigate_up_Click(object sender, EventArgs e)
         {
-            __mainFormHandler = Application.OpenForms[0];
-            __mainFormHandler.Size = new Size(569, 208);
+            __mainForm_handler = Application.OpenForms[0];
+            __mainForm_handler.Size = new Size(569, 208);
             panel_loader.Visible = true;
             label_navigate_up.Enabled = false;
         }
 
         private void label_navigate_down_Click(object sender, EventArgs e)
         {
-            __mainFormHandler = Application.OpenForms[0];
-            __mainFormHandler.Size = new Size(569, 514);
+            __mainForm_handler = Application.OpenForms[0];
+            __mainForm_handler.Size = new Size(569, 514);
             panel_loader.Visible = false;
             label_navigate_up.Enabled = true;
         }
