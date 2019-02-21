@@ -347,7 +347,7 @@ namespace Cronos_Data
                                 __mainForm_handler = Application.OpenForms[0];
                                 __mainForm_handler.Size = new Size(569, 514);
                                 panel_loader.Visible = false;
-                                label_navigate_up.Enabled = true;
+                                label_navigate_up.Enabled = false;
 
                                 string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
                                 SendITSupport("The application have been logout, please re-login again.");
@@ -8067,7 +8067,7 @@ namespace Cronos_Data
                         ["token"] = token
                     };
 
-                    var response = wb.UploadValues("http://zeus.ssimakati.com:8080/API/updateAppStatus", "POST", data);
+                    var response = wb.UploadValues("http://zeus.ssitex.com:8080/API/updateAppStatus", "POST", data);
                     string responseInString = Encoding.UTF8.GetString(response);
                 }
             }
@@ -8116,7 +8116,7 @@ namespace Cronos_Data
                         ["token"] = token
                     };
 
-                    var response = wb.UploadValues("http://zeus2.ssimakati.com:8080/API/updateAppStatus", "POST", data);
+                    var response = wb.UploadValues("http://zeus2.ssitex.com:8080/API/updateAppStatus", "POST", data);
                     string responseInString = Encoding.UTF8.GetString(response);
                 }
             }
