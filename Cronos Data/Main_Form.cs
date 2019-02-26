@@ -5,7 +5,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Drawing;
@@ -6261,15 +6260,15 @@ namespace Cronos_Data
 
             try
             {
-                var lines = File.ReadAllLines(path);
-                if (lines.Count() == 0) return;
-                var table = new DataTable();
-                string header = "Month,Date,Submitted Date,Member,Amount,Payment Type,Status,Updated Date,Transaction Time,Duration Time,VIP,Transaction Type,Transaction ID,Time,Brand,PG Company,PG Type,Retained,FD Date,New,Reactivated,File Name";
-                var columns = header.Split(',');
-                foreach (var c in columns)
-                {
-                    table.Columns.Add(c);
-                }
+                //var lines = File.ReadAllLines(path);
+                //if (lines.Count() == 0) return;
+                //var table = new DataTable();
+                //string header = "Month,Date,Submitted Date,Member,Amount,Payment Type,Status,Updated Date,Transaction Time,Duration Time,VIP,Transaction Type,Transaction ID,Time,Brand,PG Company,PG Type,Retained,FD Date,New,Reactivated,File Name";
+                //var columns = header.Split(',');
+                //foreach (var c in columns)
+                //{
+                //    table.Columns.Add(c);
+                //}
 
                 //for (int i = 1; i < lines.Count(); i++)
                 //{
@@ -6535,114 +6534,114 @@ namespace Cronos_Data
             string sdsdsdsds = "";
             try
             {
-                var lines = File.ReadAllLines(path);
-                if (lines.Count() == 0) return;
-                var table = new DataTable();
-                string header = "Date,Category,Platform,Username,Bet No,Bet Time,Game,Settlement,VIP,Bet Amount,Payout,Company WL,Turnover,Status,File Name";
-                var columns = header.Split(',');
-                foreach (var c in columns)
-                {
-                    table.Columns.Add(c);
-                }
+                //var lines = File.ReadAllLines(path);
+                //if (lines.Count() == 0) return;
+                //var table = new DataTable();
+                //string header = "Date,Category,Platform,Username,Bet No,Bet Time,Game,Settlement,VIP,Bet Amount,Payout,Company WL,Turnover,Status,File Name";
+                //var columns = header.Split(',');
+                //foreach (var c in columns)
+                //{
+                //    table.Columns.Add(c);
+                //}
 
-                for (int i = 1; i < lines.Count(); i++)
-                {
-                    if (lines[i].Length > 0)
-                    {
-                        Application.DoEvents();
-                        display_count_fy++;
-                        label_fy_insert.Text = display_count_fy.ToString("N0");
-                        string[] get_column = lines[i].Split(",\"");
+                //for (int i = 1; i < lines.Count(); i++)
+                //{
+                //    if (lines[i].Length > 0)
+                //    {
+                //        Application.DoEvents();
+                //        display_count_fy++;
+                //        label_fy_insert.Text = display_count_fy.ToString("N0");
+                //        string[] get_column = lines[i].Split(",\"");
 
-                        string category_get = "";
-                        string gameplatform_temp = Path.Combine(Path.GetTempPath(), "FY Game Platform Code.txt");
-                        if (File.Exists(gameplatform_temp))
-                        {
-                            using (StreamReader sr = File.OpenText(gameplatform_temp))
-                            {
-                                string s = String.Empty;
-                                while ((s = sr.ReadLine()) != null)
-                                {
-                                    int gameplatform_i = 0;
-                                    string[] results = s.Split("*|*");
-                                    foreach (string result in results)
-                                    {
-                                        Application.DoEvents();
-                                        gameplatform_i++;
+                //        string category_get = "";
+                //        string gameplatform_temp = Path.Combine(Path.GetTempPath(), "FY Game Platform Code.txt");
+                //        if (File.Exists(gameplatform_temp))
+                //        {
+                //            using (StreamReader sr = File.OpenText(gameplatform_temp))
+                //            {
+                //                string s = String.Empty;
+                //                while ((s = sr.ReadLine()) != null)
+                //                {
+                //                    int gameplatform_i = 0;
+                //                    string[] results = s.Split("*|*");
+                //                    foreach (string result in results)
+                //                    {
+                //                        Application.DoEvents();
+                //                        gameplatform_i++;
 
-                                        if (gameplatform_i == 1)
-                                        {
-                                            if (result.Trim() == get_column[3].Replace("\"", "").Trim())
-                                            {
-                                                int memberlist_i_inner = 0;
-                                                string[] results_inner = s.Split("*|*");
-                                                foreach (string result_inner in results_inner)
-                                                {
-                                                    Application.DoEvents();
-                                                    memberlist_i_inner++;
+                //                        if (gameplatform_i == 1)
+                //                        {
+                //                            if (result.Trim() == get_column[3].Replace("\"", "").Trim())
+                //                            {
+                //                                int memberlist_i_inner = 0;
+                //                                string[] results_inner = s.Split("*|*");
+                //                                foreach (string result_inner in results_inner)
+                //                                {
+                //                                    Application.DoEvents();
+                //                                    memberlist_i_inner++;
 
-                                                    if (memberlist_i_inner == 4)
-                                                    {
-                                                        category_get = result_inner;
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                //                                    if (memberlist_i_inner == 4)
+                //                                    {
+                //                                        category_get = result_inner;
+                //                                    }
+                //                                }
+                //                            }
+                //                        }
+                //                    }
+                //                }
+                //            }
+                //        }
 
-                        DataRow row = table.NewRow();
-                        // Date
-                        row[0] = get_column[1].Replace("\"", "") + " 00:00:00";
-                        // Category
-                        row[1] = category_get;
-                        // Platform
-                        row[2] = get_column[3].Replace("\"", "");
-                        // Username
-                        row[3] = get_column[4].Replace("\"", "");
-                        // Bet Number
-                        get_column[5] = get_column[5].Replace("\"", "");
-                        get_column[5] = get_column[5].Replace("'", "");
-                        if (IsDigitsOnly(get_column[5]))
-                        {
-                            row[4] = get_column[5].Trim();
-                            sdsdsdsds = get_column[5];
-                        }
-                        else
-                        {
-                            row[4] = DBNull.Value;
-                        }
-                        // Bet Time
-                        row[5] = get_column[6].Replace("\"", "");
-                        // Game
-                        row[6] = get_column[7].Replace("\"", "");
-                        // Settlement
-                        row[7] = get_column[8].Replace("\"", "");
-                        // VIP
-                        row[8] = get_column[2].Replace("\"", "");
-                        // Bet Amount
-                        row[9] = get_column[9].Replace("\"", "");
-                        // Payout
-                        row[10] = get_column[10].Replace("\"", "");
-                        // Company WL
-                        row[11] = get_column[11].Replace("\"", "");
-                        // Turnover
-                        row[12] = get_column[12].Replace("\"", "");
-                        // Status
-                        row[13] = get_column[13].Replace("\"", "");
-                        // File Name
-                        row[14] = path.Replace(".txt", ".xlsx");
+                //        DataRow row = table.NewRow();
+                //        // Date
+                //        row[0] = get_column[1].Replace("\"", "") + " 00:00:00";
+                //        // Category
+                //        row[1] = category_get;
+                //        // Platform
+                //        row[2] = get_column[3].Replace("\"", "");
+                //        // Username
+                //        row[3] = get_column[4].Replace("\"", "");
+                //        // Bet Number
+                //        get_column[5] = get_column[5].Replace("\"", "");
+                //        get_column[5] = get_column[5].Replace("'", "");
+                //        if (IsDigitsOnly(get_column[5]))
+                //        {
+                //            row[4] = get_column[5].Trim();
+                //            sdsdsdsds = get_column[5];
+                //        }
+                //        else
+                //        {
+                //            row[4] = DBNull.Value;
+                //        }
+                //        // Bet Time
+                //        row[5] = get_column[6].Replace("\"", "");
+                //        // Game
+                //        row[6] = get_column[7].Replace("\"", "");
+                //        // Settlement
+                //        row[7] = get_column[8].Replace("\"", "");
+                //        // VIP
+                //        row[8] = get_column[2].Replace("\"", "");
+                //        // Bet Amount
+                //        row[9] = get_column[9].Replace("\"", "");
+                //        // Payout
+                //        row[10] = get_column[10].Replace("\"", "");
+                //        // Company WL
+                //        row[11] = get_column[11].Replace("\"", "");
+                //        // Turnover
+                //        row[12] = get_column[12].Replace("\"", "");
+                //        // Status
+                //        row[13] = get_column[13].Replace("\"", "");
+                //        // File Name
+                //        row[14] = path.Replace(".txt", ".xlsx");
 
-                        table.Rows.Add(row);
-                    }
-                }
+                //        table.Rows.Add(row);
+                //    }
+                //}
 
-                var connection = @"Data Source=192.168.10.252;User ID=sa;password=Test@123;Initial Catalog=testrain;Integrated Security=True;Trusted_Connection=false;";
-                var sqlBulk = new SqlBulkCopy(connection);
-                sqlBulk.DestinationTableName = "[testrain].[dbo].[FY.Bet Record]";
-                sqlBulk.WriteToServer(table);
+                //var connection = @"Data Source=192.168.10.252;User ID=sa;password=Test@123;Initial Catalog=testrain;Integrated Security=True;Trusted_Connection=false;";
+                //var sqlBulk = new SqlBulkCopy(connection);
+                //sqlBulk.DestinationTableName = "[testrain].[dbo].[FY.Bet Record]";
+                //sqlBulk.WriteToServer(table);
 
                 if (isBetRecordInsert)
                 {
@@ -7382,88 +7381,88 @@ namespace Cronos_Data
 
             try
             {
-                var lines = File.ReadAllLines(path);
-                if (lines.Count() == 0) return;
-                var table = new DataTable();
-                string header = "Brand,Provider,Category,Month,Date,Member,Currency,Stake,Stake Ex# Draw,Bet Count,Company Winloss,VIP,Retained,Reg Month,First Dep Month,New Based on Reg,New based on Dep,Real Player,File Name";
-                var columns = header.Split(',');
-                foreach (var c in columns)
-                {
-                    table.Columns.Add(c);
-                }
+                //var lines = File.ReadAllLines(path);
+                //if (lines.Count() == 0) return;
+                //var table = new DataTable();
+                //string header = "Brand,Provider,Category,Month,Date,Member,Currency,Stake,Stake Ex# Draw,Bet Count,Company Winloss,VIP,Retained,Reg Month,First Dep Month,New Based on Reg,New based on Dep,Real Player,File Name";
+                //var columns = header.Split(',');
+                //foreach (var c in columns)
+                //{
+                //    table.Columns.Add(c);
+                //}
 
-                for (int i = 1; i < lines.Count(); i++)
-                {
-                    if (lines[i].Length > 0)
-                    {
-                        Application.DoEvents();
-                        display_count_turnover_fy++;
-                        label_fy_insert.Text = display_count_turnover_fy.ToString("N0");
+                //for (int i = 1; i < lines.Count(); i++)
+                //{
+                //    if (lines[i].Length > 0)
+                //    {
+                //        Application.DoEvents();
+                //        display_count_turnover_fy++;
+                //        label_fy_insert.Text = display_count_turnover_fy.ToString("N0");
 
-                        string[] get_column = lines[i].Split(",");
+                //        string[] get_column = lines[i].Split(",");
 
-                        DataRow row = table.NewRow();
-                        // Brand
-                        row[0] = "FY";
-                        // Provider
-                        row[1] = get_column[1].Replace("\"", "");
-                        // Category
-                        row[2] = get_column[2];
-                        // Month
-                        row[3] = get_column[3].Replace("\"", "");
-                        // Date
-                        row[4] = get_column[4].Replace("\"", "");
-                        // Member
-                        row[5] = get_column[5].Replace("\"", "");
-                        // Currency
-                        row[6] = get_column[6].Replace("\"", "");
-                        // Stake
-                        row[7] = get_column[7].Replace("\"", "");
-                        // Stake Ex Draw
-                        row[8] = get_column[8].Replace("\"", "");
-                        // Bet Count
-                        row[9] = get_column[9].Replace("\"", "");
-                        // Company WL
-                        row[10] = get_column[10].Replace("\"", "");
-                        // VIP
-                        row[11] = get_column[11].Replace("\"", "");
-                        // Retained
-                        row[12] = get_column[12].Replace("\"", "");
-                        // Register Month
-                        if (get_column[13].Replace("\"", "") != "")
-                        {
-                            row[13] = get_column[13].Replace("\"", "");
-                        }
-                        else
-                        {
-                            row[13] = DBNull.Value;
-                        }
-                        // First Deposit Date
-                        if (get_column[14].Replace("\"", "") != "")
-                        {
-                            row[14] = get_column[14].Replace("\"", "");
-                        }
-                        else
-                        {
-                            row[14] = DBNull.Value;
-                        }
-                        // New Based on Registration
-                        row[15] = get_column[15].Replace("\"", "");
-                        // New Based on Department
-                        row[16] = get_column[16].Replace("\"", "");
-                        // Real Player
-                        row[17] = get_column[17].Replace("\"", "");
-                        // File Name
-                        row[18] = path_;
+                //        DataRow row = table.NewRow();
+                //        // Brand
+                //        row[0] = "FY";
+                //        // Provider
+                //        row[1] = get_column[1].Replace("\"", "");
+                //        // Category
+                //        row[2] = get_column[2];
+                //        // Month
+                //        row[3] = get_column[3].Replace("\"", "");
+                //        // Date
+                //        row[4] = get_column[4].Replace("\"", "");
+                //        // Member
+                //        row[5] = get_column[5].Replace("\"", "");
+                //        // Currency
+                //        row[6] = get_column[6].Replace("\"", "");
+                //        // Stake
+                //        row[7] = get_column[7].Replace("\"", "");
+                //        // Stake Ex Draw
+                //        row[8] = get_column[8].Replace("\"", "");
+                //        // Bet Count
+                //        row[9] = get_column[9].Replace("\"", "");
+                //        // Company WL
+                //        row[10] = get_column[10].Replace("\"", "");
+                //        // VIP
+                //        row[11] = get_column[11].Replace("\"", "");
+                //        // Retained
+                //        row[12] = get_column[12].Replace("\"", "");
+                //        // Register Month
+                //        if (get_column[13].Replace("\"", "") != "")
+                //        {
+                //            row[13] = get_column[13].Replace("\"", "");
+                //        }
+                //        else
+                //        {
+                //            row[13] = DBNull.Value;
+                //        }
+                //        // First Deposit Date
+                //        if (get_column[14].Replace("\"", "") != "")
+                //        {
+                //            row[14] = get_column[14].Replace("\"", "");
+                //        }
+                //        else
+                //        {
+                //            row[14] = DBNull.Value;
+                //        }
+                //        // New Based on Registration
+                //        row[15] = get_column[15].Replace("\"", "");
+                //        // New Based on Department
+                //        row[16] = get_column[16].Replace("\"", "");
+                //        // Real Player
+                //        row[17] = get_column[17].Replace("\"", "");
+                //        // File Name
+                //        row[18] = path_;
 
-                        table.Rows.Add(row);
-                    }
-                }
+                //        table.Rows.Add(row);
+                //    }
+                //}
 
-                var connection = @"Data Source=192.168.10.252;User ID=sa;password=Test@123;Initial Catalog=testrain;Integrated Security=True;Trusted_Connection=false;";
-                var sqlBulk = new SqlBulkCopy(connection);
-                sqlBulk.DestinationTableName = "[testrain].[dbo].[FY.Turnover Report]";
-                sqlBulk.WriteToServer(table);
+                //var connection = @"Data Source=192.168.10.252;User ID=sa;password=Test@123;Initial Catalog=testrain;Integrated Security=True;Trusted_Connection=false;";
+                //var sqlBulk = new SqlBulkCopy(connection);
+                //sqlBulk.DestinationTableName = "[testrain].[dbo].[FY.Turnover Report]";
+                //sqlBulk.WriteToServer(table);
 
                 if (File.Exists(path))
                 {
