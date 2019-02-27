@@ -144,6 +144,7 @@
             this.panel.Size = new System.Drawing.Size(170, 10);
             this.panel.TabIndex = 1;
             this.panel.Visible = false;
+            this.panel.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.panel_MouseDoubleClick);
             // 
             // label_title
             // 
