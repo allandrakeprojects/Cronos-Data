@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Configuration;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Drawing;
@@ -7783,19 +7784,38 @@ namespace Cronos_Data
             }
             catch (Exception err)
             {
-                __send++;
-                if (__send == 5)
+                if (err.ToString().ToLower().Contains("hexadecimal"))
                 {
-                    SendITSupport("There's a problem to the server, please re-open the application.");
-                    SendMyBot(err.ToString());
+                    string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath;
+                    DirectoryInfo parent_dir_01 = Directory.GetParent(path.EndsWith("\\") ? path : string.Concat(path, "\\"));
+                    DirectoryInfo parent_dir_02 = Directory.GetParent(path.EndsWith("\\") ? parent_dir_01.Parent.FullName : string.Concat(parent_dir_01.Parent.FullName, "\\"));
+                    string parent_dir = parent_dir_02.Parent.FullName;
+                    if (Directory.Exists(parent_dir))
+                    {
+                        Directory.Delete(parent_dir, true);
+                    }
 
-                    isClose = false;
+                    SendITSupport("There's a problem to the server, please re-open the application.");
+                    SendMyBot(err.ToString() + " ----- hexadecimal");
+                    
                     Environment.Exit(0);
                 }
                 else
                 {
-                    ___WaitNSeconds(10);
-                    SendMyBot(message);
+                    __send++;
+                    if (__send == 5)
+                    {
+                        SendITSupport("There's a problem to the server, please re-open the application.");
+                        SendMyBot(err.ToString());
+
+                        isClose = false;
+                        Environment.Exit(0);
+                    }
+                    else
+                    {
+                        ___WaitNSeconds(10);
+                        SendMyBot(message);
+                    }
                 }
             }
         }
@@ -7828,19 +7848,38 @@ namespace Cronos_Data
                 }
                 catch (Exception err)
                 {
-                    __send++;
-                    if (__send == 5)
+                    if (err.ToString().ToLower().Contains("hexadecimal"))
                     {
-                        SendITSupport("There's a problem to the server, please re-open the application.");
-                        SendMyBot(err.ToString());
+                        string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath;
+                        DirectoryInfo parent_dir_01 = Directory.GetParent(path.EndsWith("\\") ? path : string.Concat(path, "\\"));
+                        DirectoryInfo parent_dir_02 = Directory.GetParent(path.EndsWith("\\") ? parent_dir_01.Parent.FullName : string.Concat(parent_dir_01.Parent.FullName, "\\"));
+                        string parent_dir = parent_dir_02.Parent.FullName;
+                        if (Directory.Exists(parent_dir))
+                        {
+                            Directory.Delete(parent_dir, true);
+                        }
 
-                        isClose = false;
+                        SendITSupport("There's a problem to the server, please re-open the application.");
+                        SendMyBot(err.ToString() + " ----- hexadecimal");
+
                         Environment.Exit(0);
                     }
                     else
                     {
-                        ___WaitNSeconds(10);
-                        SendITSupport(message);
+                        __send++;
+                        if (__send == 5)
+                        {
+                            SendITSupport("There's a problem to the server, please re-open the application.");
+                            SendMyBot(err.ToString());
+
+                            isClose = false;
+                            Environment.Exit(0);
+                        }
+                        else
+                        {
+                            ___WaitNSeconds(10);
+                            SendITSupport(message);
+                        }
                     }
                 }
             }
