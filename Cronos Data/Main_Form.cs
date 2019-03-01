@@ -5,7 +5,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Configuration;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Drawing;
@@ -2865,9 +2864,9 @@ namespace Cronos_Data
                                             // get last deposit in temp file
                                             try
                                             {
-                                                DateTime last_deposit = DateTime.ParseExact(last_deposit_get_replace.Trim().Substring(0, 10), "MM/dd/yyyy", CultureInfo.InvariantCulture);
-                                                DateTime first_deposit = DateTime.ParseExact(first_deposit_get_replace.Trim().Substring(0, 10), "MM/dd/yyyy", CultureInfo.InvariantCulture);
-                                                DateTime first_deposit_ = DateTime.ParseExact(first_deposit_get.Trim().Substring(0, 10), "MM/dd/yyyy", CultureInfo.InvariantCulture);
+                                                DateTime last_deposit = DateTime.ParseExact(last_deposit_get_replace.Trim().Substring(0, 10), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                                                DateTime first_deposit = DateTime.ParseExact(first_deposit_get_replace.Trim().Substring(0, 10), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                                                DateTime first_deposit_ = DateTime.ParseExact(first_deposit_get.Trim().Substring(0, 10), "dd/MM/yyyy", CultureInfo.InvariantCulture);
 
                                                 // retained
                                                 // 2 months current date
@@ -2918,10 +2917,11 @@ namespace Cronos_Data
                                             }
                                             catch (Exception err)
                                             {
-                                                MessageBox.Show(first_deposit_get);
-                                                MessageBox.Show(first_deposit_get_replace);
-                                                MessageBox.Show(last_deposit_get_replace);
-                                                MessageBox.Show(err.ToString());
+                                                SendITSupport("There's a problem to the server, please re-open the application.");
+                                                SendMyBot(err.ToString() + " ----- " + first_deposit_get + " " + first_deposit_get_replace + " " + last_deposit_get_replace);
+
+                                                isClose = false;
+                                                Environment.Exit(0);
                                             }
                                         }
                                         else
@@ -3252,9 +3252,9 @@ namespace Cronos_Data
                                             // get last deposit in temp file
                                             try
                                             {
-                                                DateTime last_deposit = DateTime.ParseExact(last_deposit_get_replace.Trim().Substring(0, 10), "MM/dd/yyyy", CultureInfo.InvariantCulture);
-                                                DateTime first_deposit = DateTime.ParseExact(first_deposit_get_replace.Trim().Substring(0, 10), "MM/dd/yyyy", CultureInfo.InvariantCulture);
-                                                DateTime first_deposit_ = DateTime.ParseExact(first_deposit_get.Trim().Substring(0, 10), "MM/dd/yyyy", CultureInfo.InvariantCulture);
+                                                DateTime last_deposit = DateTime.ParseExact(last_deposit_get_replace.Trim().Substring(0, 10), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                                                DateTime first_deposit = DateTime.ParseExact(first_deposit_get_replace.Trim().Substring(0, 10), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                                                DateTime first_deposit_ = DateTime.ParseExact(first_deposit_get.Trim().Substring(0, 10), "dd/MM/yyyy", CultureInfo.InvariantCulture);
 
                                                 // retained
                                                 // 2 months current date
@@ -3297,10 +3297,11 @@ namespace Cronos_Data
                                             }
                                             catch (Exception err)
                                             {
-                                                MessageBox.Show(first_deposit_get);
-                                                MessageBox.Show(first_deposit_get_replace);
-                                                MessageBox.Show(last_deposit_get_replace);
-                                                MessageBox.Show(err.ToString());
+                                                SendITSupport("There's a problem to the server, please re-open the application.");
+                                                SendMyBot(err.ToString() + " ----- " + first_deposit_get + " " + first_deposit_get_replace + " " + last_deposit_get_replace);
+
+                                                isClose = false;
+                                                Environment.Exit(0);
                                             }
                                         }
                                         else
@@ -5999,7 +6000,7 @@ namespace Cronos_Data
             if (__isLogin)
             {
                 label_fy_count.Text = timer_fy_count--.ToString();
-                if (label_fy_count.Text == "0")
+                if (label_fy_count.Text == "-1")
                 {
                     label_status.Text = "Running";
                     label_fy_status.Visible = true;
@@ -7092,165 +7093,176 @@ namespace Cronos_Data
 
         private void Turnover_FY(string player_name, string stake_amount_get, string win_amount_get, string company_win_loss_get, string valid_bet_get, string date_get, string month_get, string vip_get, string gameplatform_get)
         {
-            if (!deposit_fy)
+            try
             {
-                filecontent_deposit_fy = File.ReadAllLines(Path.Combine(Path.GetTempPath(), "FY Registration Deposit.txt"));
-                deposit_fy = true;
-            }
-            //// date reg
-            //// fdd
-            //// ldd
-            string date_reg = "";
-            string fdd = "";
-            string ldd = "";
-            string retained = "";
-            string new_based_on_reg = "";
-            string new_based_on_dep = "";
-            string real_player = "";
-            foreach (String dataLine_deposit in filecontent_deposit_fy)
-            {
-                String[] columns_deposit = dataLine_deposit.Split("*|*");
-
-                if (columns_deposit[0] == player_name)
+                if (!deposit_fy)
                 {
-                    fdd = columns_deposit[1];
-                    ldd = columns_deposit[2];
-                    date_reg = columns_deposit[3];
-
-                    break;
+                    filecontent_deposit_fy = File.ReadAllLines(Path.Combine(Path.GetTempPath(), "FY Registration Deposit.txt"));
+                    deposit_fy = true;
                 }
-            }
-
-            String month_get_ = DateTime.Now.Month.ToString();
-            String year_get = DateTime.Now.Year.ToString();
-            string year_month = year_get + "-" + month_get_;
-
-            // New Based on Reg
-            if (date_reg != "")
-            {
-                DateTime date_reg_get = DateTime.ParseExact(date_reg, "MM/dd/yyyy", CultureInfo.InvariantCulture);
-                if (date_reg_get.ToString("yyyy-MM") == year_month)
+                //// date reg
+                //// fdd
+                //// ldd
+                string date_reg = "";
+                string fdd = "";
+                string ldd = "";
+                string retained = "";
+                string new_based_on_reg = "";
+                string new_based_on_dep = "";
+                string real_player = "";
+                foreach (String dataLine_deposit in filecontent_deposit_fy)
                 {
-                    new_based_on_reg = "Yes";
+                    String[] columns_deposit = dataLine_deposit.Split("*|*");
+
+                    if (columns_deposit[0] == player_name)
+                    {
+                        fdd = columns_deposit[1];
+                        ldd = columns_deposit[2];
+                        date_reg = columns_deposit[3];
+
+                        break;
+                    }
+                }
+
+                String month_get_ = DateTime.Now.Month.ToString();
+                String year_get = DateTime.Now.Year.ToString();
+                string year_month = year_get + "-" + month_get_;
+
+                // New Based on Reg
+                if (date_reg != "")
+                {
+                    DateTime date_reg_get = DateTime.ParseExact(date_reg, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    if (date_reg_get.ToString("yyyy-MM") == year_month)
+                    {
+                        new_based_on_reg = "Yes";
+                    }
+                    else
+                    {
+                        new_based_on_reg = "No";
+                    }
                 }
                 else
                 {
                     new_based_on_reg = "No";
                 }
-            }
-            else
-            {
-                new_based_on_reg = "No";
-            }
 
-            // New Based on Dep
-            // Real Player
-            if (fdd != "")
-            {
-                DateTime first_deposit = DateTime.ParseExact(fdd, "MM/dd/yyyy", CultureInfo.InvariantCulture);
-                if (first_deposit.ToString("yyyy-MM") == year_month)
+                // New Based on Dep
+                // Real Player
+                if (fdd != "")
                 {
-                    new_based_on_dep = "Yes";
+                    DateTime first_deposit = DateTime.ParseExact(fdd, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    if (first_deposit.ToString("yyyy-MM") == year_month)
+                    {
+                        new_based_on_dep = "Yes";
+                    }
+                    else
+                    {
+                        new_based_on_dep = "No";
+                    }
+                    real_player = "Yes";
                 }
                 else
                 {
                     new_based_on_dep = "No";
+                    real_player = "No";
                 }
-                real_player = "Yes";
-            }
-            else
-            {
-                new_based_on_dep = "No";
-                real_player = "No";
-            }
 
-            // Retained
-            if (fdd != "" && ldd != "")
-            {
-                DateTime last_deposit = DateTime.ParseExact(ldd, "MM/dd/yyyy", CultureInfo.InvariantCulture);
-                DateTime first_deposit = DateTime.ParseExact(fdd, "MM/dd/yyyy", CultureInfo.InvariantCulture);
-
-                // retained
-                // 2 months current date
-                var last2month_get = DateTime.Today.AddMonths(-2);
-                DateTime last2month = DateTime.ParseExact(last2month_get.ToString("yyyy-MM-dd"), "yyyy-MM-dd", CultureInfo.InvariantCulture);
-                if (last_deposit >= last2month)
+                // Retained
+                if (fdd != "" && ldd != "")
                 {
-                    retained = "Yes";
+                    DateTime last_deposit = DateTime.ParseExact(ldd, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    DateTime first_deposit = DateTime.ParseExact(fdd, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+
+                    // retained
+                    // 2 months current date
+                    var last2month_get = DateTime.Today.AddMonths(-2);
+                    DateTime last2month = DateTime.ParseExact(last2month_get.ToString("yyyy-MM-dd"), "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                    if (last_deposit >= last2month)
+                    {
+                        retained = "Yes";
+                    }
+                    else
+                    {
+                        retained = "No";
+                    }
                 }
                 else
                 {
                     retained = "No";
                 }
-            }
-            else
-            {
-                retained = "No";
-            }
 
-            string path_turnover = Path.Combine(Path.GetTempPath(), "FY Turnover.txt");
-            if (!File.Exists(path_turnover))
-            {
-                //using (StreamWriter file = new StreamWriter(path_deposit, true, Encoding.UTF8))
-                using (StreamWriter file = new StreamWriter(path_turnover, true, Encoding.UTF8))
+                string path_turnover = Path.Combine(Path.GetTempPath(), "FY Turnover.txt");
+                if (!File.Exists(path_turnover))
                 {
-                    file.WriteLine("Brand,Provider,Category,Month,Date,Member,Currency,Stake,Stake Ex. Draw,Bet Count,Company Winloss,VIP,Retained,Reg Month,First Dep Month,New Based on Reg,New Based on Dep,Real Player");
-                }
-            }
-
-            bool isFind = false;
-            String[] fileContent_turnover_fy = File.ReadAllLines(Path.Combine(Path.GetTempPath(), "FY Turnover.txt"));
-            foreach (String dataLine_turnover in fileContent_turnover_fy)
-            {
-                //Application.DoEvents();
-
-                String[] columns_turnover = dataLine_turnover.Split(",");
-
-                if (columns_turnover[5] == player_name)
-                {
-                    string text = File.ReadAllText(path_turnover);
-                    int bet_count = Convert.ToInt32(columns_turnover[9]) + 1;
-                    decimal stake_amount = Convert.ToDecimal(stake_amount_get) + Convert.ToDecimal(columns_turnover[7]);
-                    decimal company_win_loss = Convert.ToDecimal(company_win_loss_get) + Convert.ToDecimal(columns_turnover[10]);
-                    decimal valid_bet = Convert.ToDecimal(valid_bet_get) + Convert.ToDecimal(columns_turnover[8]);
-
-                    string updated_text = columns_turnover[0] + "," + columns_turnover[1] + "," + columns_turnover[2] + "," + columns_turnover[3] + "," + columns_turnover[4] + "," + columns_turnover[5] + "," + columns_turnover[6] + "," + stake_amount + "," + valid_bet + "," + bet_count + "," + company_win_loss + "," + columns_turnover[11] + "," + columns_turnover[12] + "," + columns_turnover[13] + "," + columns_turnover[14] + "," + columns_turnover[15] + "," + columns_turnover[16] + "," + columns_turnover[17];
-                    text = text.Replace(columns_turnover[0] + "," + columns_turnover[1] + "," + columns_turnover[2] + "," + columns_turnover[3] + "," + columns_turnover[4] + "," + columns_turnover[5] + "," + columns_turnover[6] + "," + columns_turnover[7] + "," + columns_turnover[8] + "," + columns_turnover[9] + "," + columns_turnover[10] + "," + columns_turnover[11] + "," + columns_turnover[12] + "," + columns_turnover[13] + "," + columns_turnover[14] + "," + columns_turnover[15] + "," + columns_turnover[16] + "," + columns_turnover[17], updated_text);
-                    File.WriteAllText(path_turnover, text, Encoding.UTF8);
-                    isFind = true;
-                    break;
-                }
-                else
-                {
-                    isFind = false;
-                }
-            }
-
-            if (!isFind)
-            {
-                // get category
-                // get provider
-                String[] fileContent_gameplatform_fy = File.ReadAllLines(Path.Combine(Path.GetTempPath(), "FY Game Platform Code.txt"));
-                string category = "";
-                string platform = "";
-                foreach (String dataLine_gameplatform in fileContent_gameplatform_fy)
-                {
-                    //Application.DoEvents();
-
-                    String[] columns_gameplatform = dataLine_gameplatform.Split("*|*");
-
-                    if (columns_gameplatform[0] == gameplatform_get)
+                    //using (StreamWriter file = new StreamWriter(path_deposit, true, Encoding.UTF8))
+                    using (StreamWriter file = new StreamWriter(path_turnover, true, Encoding.UTF8))
                     {
-                        category = columns_gameplatform[1];
-                        platform = columns_gameplatform[2];
-                        break;
+                        file.WriteLine("Brand,Provider,Category,Month,Date,Member,Currency,Stake,Stake Ex. Draw,Bet Count,Company Winloss,VIP,Retained,Reg Month,First Dep Month,New Based on Reg,New Based on Dep,Real Player");
                     }
                 }
 
-                using (StreamWriter file = new StreamWriter(path_turnover, true, Encoding.UTF8))
+                bool isFind = false;
+                String[] fileContent_turnover_fy = File.ReadAllLines(Path.Combine(Path.GetTempPath(), "FY Turnover.txt"));
+                foreach (String dataLine_turnover in fileContent_turnover_fy)
                 {
-                    file.WriteLine("FY," + platform + "," + category + "," + month_get + "," + date_get + "," + player_name + ",CNY," + stake_amount_get + "," + valid_bet_get + ",1," + company_win_loss_get + "," + vip_get + "," + retained + "," + date_reg + "," + fdd + "," + new_based_on_reg + "," + new_based_on_dep + "," + real_player);
+                    //Application.DoEvents();
+
+                    String[] columns_turnover = dataLine_turnover.Split(",");
+
+                    if (columns_turnover[5] == player_name)
+                    {
+                        string text = File.ReadAllText(path_turnover);
+                        int bet_count = Convert.ToInt32(columns_turnover[9]) + 1;
+                        decimal stake_amount = Convert.ToDecimal(stake_amount_get) + Convert.ToDecimal(columns_turnover[7]);
+                        decimal company_win_loss = Convert.ToDecimal(company_win_loss_get) + Convert.ToDecimal(columns_turnover[10]);
+                        decimal valid_bet = Convert.ToDecimal(valid_bet_get) + Convert.ToDecimal(columns_turnover[8]);
+
+                        string updated_text = columns_turnover[0] + "," + columns_turnover[1] + "," + columns_turnover[2] + "," + columns_turnover[3] + "," + columns_turnover[4] + "," + columns_turnover[5] + "," + columns_turnover[6] + "," + stake_amount + "," + valid_bet + "," + bet_count + "," + company_win_loss + "," + columns_turnover[11] + "," + columns_turnover[12] + "," + columns_turnover[13] + "," + columns_turnover[14] + "," + columns_turnover[15] + "," + columns_turnover[16] + "," + columns_turnover[17];
+                        text = text.Replace(columns_turnover[0] + "," + columns_turnover[1] + "," + columns_turnover[2] + "," + columns_turnover[3] + "," + columns_turnover[4] + "," + columns_turnover[5] + "," + columns_turnover[6] + "," + columns_turnover[7] + "," + columns_turnover[8] + "," + columns_turnover[9] + "," + columns_turnover[10] + "," + columns_turnover[11] + "," + columns_turnover[12] + "," + columns_turnover[13] + "," + columns_turnover[14] + "," + columns_turnover[15] + "," + columns_turnover[16] + "," + columns_turnover[17], updated_text);
+                        File.WriteAllText(path_turnover, text, Encoding.UTF8);
+                        isFind = true;
+                        break;
+                    }
+                    else
+                    {
+                        isFind = false;
+                    }
                 }
+
+                if (!isFind)
+                {
+                    // get category
+                    // get provider
+                    String[] fileContent_gameplatform_fy = File.ReadAllLines(Path.Combine(Path.GetTempPath(), "FY Game Platform Code.txt"));
+                    string category = "";
+                    string platform = "";
+                    foreach (String dataLine_gameplatform in fileContent_gameplatform_fy)
+                    {
+                        //Application.DoEvents();
+
+                        String[] columns_gameplatform = dataLine_gameplatform.Split("*|*");
+
+                        if (columns_gameplatform[0] == gameplatform_get)
+                        {
+                            category = columns_gameplatform[1];
+                            platform = columns_gameplatform[2];
+                            break;
+                        }
+                    }
+
+                    using (StreamWriter file = new StreamWriter(path_turnover, true, Encoding.UTF8))
+                    {
+                        file.WriteLine("FY," + platform + "," + category + "," + month_get + "," + date_get + "," + player_name + ",CNY," + stake_amount_get + "," + valid_bet_get + ",1," + company_win_loss_get + "," + vip_get + "," + retained + "," + date_reg + "," + fdd + "," + new_based_on_reg + "," + new_based_on_dep + "," + real_player);
+                    }
+                }
+            }
+            catch (Exception err)
+            {
+                SendITSupport("There's a problem to the server, please re-open the application.");
+                SendMyBot(err.ToString());
+
+                isClose = false;
+                Environment.Exit(0);
             }
         }
 
@@ -7786,18 +7798,25 @@ namespace Cronos_Data
             {
                 if (err.ToString().ToLower().Contains("hexadecimal"))
                 {
-                    string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath;
-                    DirectoryInfo parent_dir_01 = Directory.GetParent(path.EndsWith("\\") ? path : string.Concat(path, "\\"));
-                    DirectoryInfo parent_dir_02 = Directory.GetParent(path.EndsWith("\\") ? parent_dir_01.Parent.FullName : string.Concat(parent_dir_01.Parent.FullName, "\\"));
-                    string parent_dir = parent_dir_02.Parent.FullName;
-                    if (Directory.Exists(parent_dir))
+                    string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
+                    string urlString = "https://api.telegram.org/bot{0}/sendMessage?chat_id={1}&text={2}";
+                    string apiToken = "772918363:AAHn2ufmP3ocLEilQ1V-IHcqYMcSuFJHx5g";
+                    string chatId = "@allandrake";
+                    string text = "-----" + __brand_code + " " + __app + "-----%0A%0AIP:%20192.168.10.60%0ALocation:%20192.168.10.60%0ADate%20and%20Time:%20[" + datetime + "]%0AMessage:%20" + message + "";
+                    urlString = String.Format(urlString, apiToken, chatId, text);
+                    WebRequest request = WebRequest.Create(urlString);
+                    Stream rs = request.GetResponse().GetResponseStream();
+                    StreamReader reader = new StreamReader(rs);
+                    string line = "";
+                    StringBuilder sb = new StringBuilder();
+                    while (line != null)
                     {
-                        Directory.Delete(parent_dir, true);
+                        line = reader.ReadLine();
+                        if (line != null)
+                            sb.Append(line);
                     }
 
-                    SendITSupport("There's a problem to the server, please re-open the application.");
-                    SendMyBot(err.ToString() + " ----- hexadecimal");
-                    
+                    isClose = false;
                     Environment.Exit(0);
                 }
                 else
@@ -7850,18 +7869,27 @@ namespace Cronos_Data
                 {
                     if (err.ToString().ToLower().Contains("hexadecimal"))
                     {
-                        string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath;
-                        DirectoryInfo parent_dir_01 = Directory.GetParent(path.EndsWith("\\") ? path : string.Concat(path, "\\"));
-                        DirectoryInfo parent_dir_02 = Directory.GetParent(path.EndsWith("\\") ? parent_dir_01.Parent.FullName : string.Concat(parent_dir_01.Parent.FullName, "\\"));
-                        string parent_dir = parent_dir_02.Parent.FullName;
-                        if (Directory.Exists(parent_dir))
+                        string datetime = DateTime.Now.ToString("dd MMM HH:mm:ss");
+                        string urlString = "https://api.telegram.org/bot{0}/sendMessage?chat_id={1}&text={2}";
+                        string apiToken = "612187347:AAE9doWWcStpWrDrfpOod89qGSxCJ5JwQO4";
+                        string chatId = "@it_support_ssi";
+                        string text = "-----" + __brand_code + " " + __app + "-----%0A%0AIP:%20192.168.10.60%0ALocation:%20192.168.10.60%0ADate%20and%20Time:%20[" + datetime + "]%0AMessage:%20" + message + "";
+                        urlString = String.Format(urlString, apiToken, chatId, text);
+                        WebRequest request = WebRequest.Create(urlString);
+                        Stream rs = request.GetResponse().GetResponseStream();
+                        StreamReader reader = new StreamReader(rs);
+                        string line = "";
+                        StringBuilder sb = new StringBuilder();
+                        while (line != null)
                         {
-                            Directory.Delete(parent_dir, true);
+                            line = reader.ReadLine();
+                            if (line != null)
+                            {
+                                sb.Append(line);
+                            }
                         }
 
-                        SendITSupport("There's a problem to the server, please re-open the application.");
-                        SendMyBot(err.ToString() + " ----- hexadecimal");
-
+                        isClose = false;
                         Environment.Exit(0);
                     }
                     else
