@@ -692,7 +692,6 @@
             this.label_cycle_in.Name = "label_cycle_in";
             this.label_cycle_in.Size = new System.Drawing.Size(147, 27);
             this.label_cycle_in.TabIndex = 1;
-            this.label_cycle_in.Text = "-";
             this.label_cycle_in.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.label_cycle_in.Visible = false;
             // 
