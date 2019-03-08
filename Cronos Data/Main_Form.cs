@@ -7674,61 +7674,6 @@ namespace Cronos_Data
                         FY_GetPlayerListsAsync();
                     }
                 }
-                else
-                {
-                    string start_datetime = today.ToString("yyyy-MM-dd HH:mm");
-                    DateTime start = DateTime.ParseExact(start_datetime, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
-
-                    string end_datetime = FY_Cronos_Data.Properties.Settings.Default.______midnight_time;
-                    DateTime end = DateTime.ParseExact(end_datetime, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
-
-                    if (start > end)
-                    {
-                        if (FY_Cronos_Data.Properties.Settings.Default.______start_detect == "0")
-                        {
-                            FY_Cronos_Data.Properties.Settings.Default.______midnight_time = "";
-                            FY_Cronos_Data.Properties.Settings.Default.Save();
-
-                            getmemberlist_fy.Clear();
-                            __getcontactemail.Clear();
-                            GetMemberList_FY();
-                            GetBonusCode_FY();
-                            GetGamePlatform_FY();
-                            GetPaymentType_FY();
-
-                            string start_datetime_ = dateTimePicker_start_fy.Text;
-                            DateTime start_ = DateTime.Parse(start_datetime_).AddDays(1);
-
-                            string end_datetime_ = dateTimePicker_end_fy.Text;
-                            DateTime end_ = DateTime.Parse(end_datetime_).AddDays(1);
-
-                            dateTimePicker_start_fy.Text = start_.ToString("yyyy-MM-dd 00:00:00");
-                            dateTimePicker_end_fy.Text = end_.ToString("yyyy-MM-dd 23:59:59");
-
-                            //button_fy_start.Enabled = true;
-                            //button_fy_start.PerformClick();
-
-                            // registration member list
-                            panel_fy_status.Visible = true;
-                            label_fy_page_count_1.Visible = true;
-                            label_fy_total_records_1.Visible = true;
-                            label_fy_page_count.Visible = true;
-                            label_fy_currentrecord.Visible = true;
-                            panel_fy_datetime.Visible = true;
-                            panel_fy_status.BringToFront();
-                            button_fy_start.Visible = false;
-                            panel_fy_filter.Visible = false;
-                            pictureBox_fy_loader.Visible = true;
-                            _fy_current_datetime = "";
-                            label_fy_start_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
-                            _fy_start_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
-                            label_fy_status.Visible = true;
-                            timer_fy.Start();
-                            isButtonStart_fy = true;
-                            FY_GetPlayerListsAsync();
-                        }
-                    }
-                }
             }
         }
 
@@ -7766,22 +7711,15 @@ namespace Cronos_Data
                     label_cycle_in.Text = timeRemaining.Minutes + " min(s) " + timeRemaining.Seconds + " sec(s)";
                 }
 
-                if (FY_Cronos_Data.Properties.Settings.Default.______midnight_time != "")
+                if (label_cycle_in.Text.Contains("-") && label_cycle_in.Text.Contains("min"))
                 {
-                    if (label_cycle_in.Text.Contains("-"))
-                    {
-                        panel_fy.Enabled = false;
+                    panel_fy.Enabled = false;
 
-                        DateTime today = DateTime.Now;
-                        DateTime date = today.AddDays(1);
-                        FY_Cronos_Data.Properties.Settings.Default.______midnight_time = date.ToString("yyyy-MM-dd 00:30");
-                        FY_Cronos_Data.Properties.Settings.Default.______start_detect = "1";
-                        FY_Cronos_Data.Properties.Settings.Default.Save();
-                    }
-                    else
-                    {
-                        panel_fy.Enabled = true;
-                    }
+                    DateTime today = DateTime.Now;
+                    DateTime date = today.AddDays(1);
+                    FY_Cronos_Data.Properties.Settings.Default.______midnight_time = date.ToString("yyyy-MM-dd 00:30");
+                    FY_Cronos_Data.Properties.Settings.Default.______start_detect = "1";
+                    FY_Cronos_Data.Properties.Settings.Default.Save();
                 }
             }
         }
