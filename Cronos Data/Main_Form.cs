@@ -7070,7 +7070,8 @@ namespace Cronos_Data
                         }
                     }
 
-                    label_getdatacount_fy.Text = "";
+                    label_getdatacount_fy.Visible = false;
+                    label_getdatacount_fy.Text = "-";
                     panel_fy.Enabled = true;
                     conn.Close();
                 }
@@ -7635,6 +7636,7 @@ namespace Cronos_Data
                         FY_Cronos_Data.Properties.Settings.Default.______midnight_time = "";
                         FY_Cronos_Data.Properties.Settings.Default.Save();
 
+                        label_getdatacount_fy.Visible = true;
                         getmemberlist_fy.Clear();
                         __getcontactemail.Clear();
                         GetMemberList_FY();
@@ -7720,6 +7722,13 @@ namespace Cronos_Data
                     FY_Cronos_Data.Properties.Settings.Default.______midnight_time = date.ToString("yyyy-MM-dd 00:30");
                     FY_Cronos_Data.Properties.Settings.Default.______start_detect = "1";
                     FY_Cronos_Data.Properties.Settings.Default.Save();
+                }
+                else
+                {
+                    if (label_getdatacount_fy.Visible == false)
+                    {
+                        panel_fy.Visible = true;
+                    }
                 }
             }
         }
