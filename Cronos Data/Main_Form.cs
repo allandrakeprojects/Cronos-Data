@@ -2864,9 +2864,9 @@ namespace Cronos_Data
                                             // get last deposit in temp file
                                             try
                                             {
-                                                DateTime last_deposit = DateTime.ParseExact(last_deposit_get_replace.Trim().Substring(0, 10), "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                                                DateTime first_deposit = DateTime.ParseExact(first_deposit_get_replace.Trim().Substring(0, 10), "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                                                DateTime first_deposit_ = DateTime.ParseExact(first_deposit_get.Trim().Substring(0, 10), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                                                DateTime last_deposit = DateTime.ParseExact(last_deposit_get_replace.Trim().Substring(0, 10), "MM/dd/yyyy", CultureInfo.InvariantCulture);
+                                                DateTime first_deposit = DateTime.ParseExact(first_deposit_get_replace.Trim().Substring(0, 10), "MM/dd/yyyy", CultureInfo.InvariantCulture);
+                                                DateTime first_deposit_ = DateTime.ParseExact(first_deposit_get.Trim().Substring(0, 10), "MM/dd/yyyy", CultureInfo.InvariantCulture);
 
                                                 // retained
                                                 // 2 months current date
@@ -3252,9 +3252,9 @@ namespace Cronos_Data
                                             // get last deposit in temp file
                                             try
                                             {
-                                                DateTime last_deposit = DateTime.ParseExact(last_deposit_get_replace.Trim().Substring(0, 10), "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                                                DateTime first_deposit = DateTime.ParseExact(first_deposit_get_replace.Trim().Substring(0, 10), "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                                                DateTime first_deposit_ = DateTime.ParseExact(first_deposit_get.Trim().Substring(0, 10), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                                                DateTime last_deposit = DateTime.ParseExact(last_deposit_get_replace.Trim().Substring(0, 10), "MM/dd/yyyy", CultureInfo.InvariantCulture);
+                                                DateTime first_deposit = DateTime.ParseExact(first_deposit_get_replace.Trim().Substring(0, 10), "MM/dd/yyyy", CultureInfo.InvariantCulture);
+                                                DateTime first_deposit_ = DateTime.ParseExact(first_deposit_get.Trim().Substring(0, 10), "MM/dd/yyyy", CultureInfo.InvariantCulture);
 
                                                 // retained
                                                 // 2 months current date
@@ -7132,7 +7132,7 @@ namespace Cronos_Data
                 // New Based on Reg
                 if (date_reg != "")
                 {
-                    DateTime date_reg_get = DateTime.ParseExact(date_reg, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    DateTime date_reg_get = DateTime.ParseExact(date_reg, "MM/dd/yyyy", CultureInfo.InvariantCulture);
                     if (date_reg_get.ToString("yyyy-MM") == year_month)
                     {
                         new_based_on_reg = "Yes";
@@ -7151,7 +7151,7 @@ namespace Cronos_Data
                 // Real Player
                 if (fdd != "")
                 {
-                    DateTime first_deposit = DateTime.ParseExact(fdd, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    DateTime first_deposit = DateTime.ParseExact(fdd, "MM/dd/yyyy", CultureInfo.InvariantCulture);
                     if (first_deposit.ToString("yyyy-MM") == year_month)
                     {
                         new_based_on_dep = "Yes";
@@ -7171,8 +7171,8 @@ namespace Cronos_Data
                 // Retained
                 if (fdd != "" && ldd != "")
                 {
-                    DateTime last_deposit = DateTime.ParseExact(ldd, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                    DateTime first_deposit = DateTime.ParseExact(fdd, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    DateTime last_deposit = DateTime.ParseExact(ldd, "MM/dd/yyyy", CultureInfo.InvariantCulture);
+                    DateTime first_deposit = DateTime.ParseExact(fdd, "MM/dd/yyyy", CultureInfo.InvariantCulture);
 
                     // retained
                     // 2 months current date
