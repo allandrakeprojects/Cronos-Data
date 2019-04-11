@@ -55,7 +55,7 @@ namespace Cronos_Data
         private bool _detect_fy = false;
         private bool _fy_inserted_in_excel = true;
         private bool __turnover_detect = false;
-        private bool __is_send = true;
+        private bool __is_send = false;
         private int _fy_row = 1;
         private int _fy_row_count = 1;
         private int __send = 0;
@@ -264,6 +264,7 @@ namespace Cronos_Data
 
             // asd comment
             // asdasd update
+            // update this
             GetMemberList_FY();
             GetBonusCode_FY();
             GetGamePlatform_FY();
@@ -352,6 +353,12 @@ namespace Cronos_Data
                                 SendITSupport("The application have been logout, please re-login again.");
                                 SendMyBot("The application have been logout, please re-login again.");
                                 __send = 0;
+
+                                if (!__is_send)
+                                {
+                                    isClose = false;
+                                    Environment.Exit(0);
+                                }
                             }
 
                             label_status.Text = "Logout";
@@ -3990,14 +3997,14 @@ namespace Cronos_Data
                         else if (selected_index == 2)
                         {
                             // Bet Record
-                            JToken game_platform = jo_fy.SelectToken("$.aaData[" + ii + "][0]");
-                            JToken player_id = jo_fy.SelectToken("$.aaData[" + ii + "][1][0]");
-                            JToken player_name = jo_fy.SelectToken("$.aaData[" + ii + "][1][1]");
-                            JToken bet_no = jo_fy.SelectToken("$.aaData[" + ii + "][2]").ToString().Replace("BetTransaction:", "");
-                            JToken bet_time = jo_fy.SelectToken("$.aaData[" + ii + "][3]");
+                            JToken game_platform = jo_fy.SelectToken("$.aaData[" + ii + "][1]");
+                            JToken player_id = jo_fy.SelectToken("$.aaData[" + ii + "][2][0]");
+                            JToken player_name = jo_fy.SelectToken("$.aaData[" + ii + "][2][1]");
+                            JToken bet_no = jo_fy.SelectToken("$.aaData[" + ii + "][3]").ToString().Replace("BetTransaction:", "");
+                            JToken bet_time = jo_fy.SelectToken("$.aaData[" + ii + "][4]");
 
                             // updated 01/10/2019
-                            JToken bet_type = jo_fy.SelectToken("$.aaData[" + ii + "][4]").ToString();
+                            JToken bet_type = jo_fy.SelectToken("$.aaData[" + ii + "][5]").ToString();
                             if (!game_platform.ToString().Contains("VR"))
                             {
                                 var match = Regex.Match(bet_type.ToString(), @"<div\b[^>]*>(.*?)<\/div>");
@@ -4033,17 +4040,17 @@ namespace Cronos_Data
                             }
                             String result_bet_type = Regex.Replace(bet_type.ToString(), @"<[^>]*>", String.Empty);
 
-                            JToken game_result = jo_fy.SelectToken("$.aaData[" + ii + "][5]").ToString().Replace("<br>", "");
-                            JToken stake_amount_color = jo_fy.SelectToken("$.aaData[" + ii + "][6][0]");
-                            JToken stake_amount = jo_fy.SelectToken("$.aaData[" + ii + "][6][1]");
-                            JToken win_amount_color = jo_fy.SelectToken("$.aaData[" + ii + "][7][0]");
-                            JToken win_amount = jo_fy.SelectToken("$.aaData[" + ii + "][7][1]");
-                            JToken company_win_loss_color = jo_fy.SelectToken("$.aaData[" + ii + "][8][0]");
-                            JToken company_win_loss = jo_fy.SelectToken("$.aaData[" + ii + "][8][1]");
-                            JToken valid_bet_color = jo_fy.SelectToken("$.aaData[" + ii + "][9][0]");
-                            JToken valid_bet = jo_fy.SelectToken("$.aaData[" + ii + "][9][1]");
-                            JToken valid_invalid_id = jo_fy.SelectToken("$.aaData[" + ii + "][10][0]");
-                            JToken valid_invalid = jo_fy.SelectToken("$.aaData[" + ii + "][10][1]");
+                            JToken game_result = jo_fy.SelectToken("$.aaData[" + ii + "][6]").ToString().Replace("<br>", "");
+                            JToken stake_amount_color = jo_fy.SelectToken("$.aaData[" + ii + "][7][0]");
+                            JToken stake_amount = jo_fy.SelectToken("$.aaData[" + ii + "][7][1]");
+                            JToken win_amount_color = jo_fy.SelectToken("$.aaData[" + ii + "][8][0]");
+                            JToken win_amount = jo_fy.SelectToken("$.aaData[" + ii + "][8][1]");
+                            JToken company_win_loss_color = jo_fy.SelectToken("$.aaData[" + ii + "][9][0]");
+                            JToken company_win_loss = jo_fy.SelectToken("$.aaData[" + ii + "][9][1]");
+                            JToken valid_bet_color = jo_fy.SelectToken("$.aaData[" + ii + "][10][0]");
+                            JToken valid_bet = jo_fy.SelectToken("$.aaData[" + ii + "][10][1]");
+                            JToken valid_invalid_id = jo_fy.SelectToken("$.aaData[" + ii + "][11][0]");
+                            JToken valid_invalid = jo_fy.SelectToken("$.aaData[" + ii + "][11][1]");
                             string bet_time_date = bet_time.ToString().Substring(0, 10);
                             DateTime month = DateTime.ParseExact(bet_time_date, "yyyy-MM-dd", CultureInfo.InvariantCulture);
 
