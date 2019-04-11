@@ -78,7 +78,7 @@ namespace Cronos_Data
         StringBuilder _fy_csv = new StringBuilder();
         StringBuilder _fy_csv_memberrregister_custom = new StringBuilder();
         private string _fy_start_datetime;
-        private string _fy_finish_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+        private string _fy_finish_datetime = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss");
         private bool _fy_no_result;
         private string _fy_current_datetime = "";
         private int _test_fy_gettotal_count_record;
@@ -455,7 +455,7 @@ namespace Cronos_Data
                                     pictureBox_fy_loader.Visible = true;
                                     _fy_current_datetime = "";
                                     label_fy_start_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
-                                    _fy_start_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+                                    _fy_start_datetime = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss");
                                     label_fy_status.Visible = true;
                                     timer_fy.Start();
                                     isButtonStart_fy = true;
@@ -578,7 +578,7 @@ namespace Cronos_Data
                                     pictureBox_fy_loader.Visible = true;
                                     _fy_current_datetime = "";
                                     label_fy_start_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
-                                    _fy_start_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+                                    _fy_start_datetime = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss");
                                     label_fy_status.Visible = true;
                                     timer_fy.Start();
                                     isButtonStart_fy = true;
@@ -673,7 +673,7 @@ namespace Cronos_Data
 
                             _fy_current_datetime = "";
                             label_fy_start_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
-                            _fy_start_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+                            _fy_start_datetime = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss");
                             timer_fy.Start();
                             webBrowser_fy.Stop();
                             //timer_fy_start.Stop();
@@ -2871,9 +2871,9 @@ namespace Cronos_Data
                                             // get last deposit in temp file
                                             try
                                             {
-                                                DateTime last_deposit = DateTime.ParseExact(last_deposit_get_replace.Trim().Substring(0, 10), "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                                                DateTime first_deposit = DateTime.ParseExact(first_deposit_get_replace.Trim().Substring(0, 10), "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                                                DateTime first_deposit_ = DateTime.ParseExact(first_deposit_get.Trim().Substring(0, 10), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                                                DateTime last_deposit = DateTime.ParseExact(last_deposit_get_replace.Trim().Substring(0, 10), "MM/dd/yyyy", CultureInfo.InvariantCulture);
+                                                DateTime first_deposit = DateTime.ParseExact(first_deposit_get_replace.Trim().Substring(0, 10), "MM/dd/yyyy", CultureInfo.InvariantCulture);
+                                                DateTime first_deposit_ = DateTime.ParseExact(first_deposit_get.Trim().Substring(0, 10), "MM/dd/yyyy", CultureInfo.InvariantCulture);
 
                                                 // retained
                                                 // 2 months current date
@@ -3259,9 +3259,9 @@ namespace Cronos_Data
                                             // get last deposit in temp file
                                             try
                                             {
-                                                DateTime last_deposit = DateTime.ParseExact(last_deposit_get_replace.Trim().Substring(0, 10), "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                                                DateTime first_deposit = DateTime.ParseExact(first_deposit_get_replace.Trim().Substring(0, 10), "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                                                DateTime first_deposit_ = DateTime.ParseExact(first_deposit_get.Trim().Substring(0, 10), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                                                DateTime last_deposit = DateTime.ParseExact(last_deposit_get_replace.Trim().Substring(0, 10), "MM/dd/yyyy", CultureInfo.InvariantCulture);
+                                                DateTime first_deposit = DateTime.ParseExact(first_deposit_get_replace.Trim().Substring(0, 10), "MM/dd/yyyy", CultureInfo.InvariantCulture);
+                                                DateTime first_deposit_ = DateTime.ParseExact(first_deposit_get.Trim().Substring(0, 10), "MM/dd/yyyy", CultureInfo.InvariantCulture);
 
                                                 // retained
                                                 // 2 months current date
@@ -5573,7 +5573,7 @@ namespace Cronos_Data
 
                             //_fy_current_datetime = "";
                             //label_fy_start_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
-                            //_fy_start_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+                            //_fy_start_datetime = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss");
                             //timer_fy.Start();
                             webBrowser_fy.Stop();
                             //timer_fy_start.Stop();
@@ -5654,7 +5654,7 @@ namespace Cronos_Data
 
                             //_fy_current_datetime = "";
                             //label_fy_start_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
-                            //_fy_start_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+                            //_fy_start_datetime = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss");
                             //timer_fy.Start();
                             webBrowser_fy.Stop();
                             //timer_fy_start.Stop();
@@ -5737,7 +5737,7 @@ namespace Cronos_Data
 
                             //_fy_current_datetime = "";
                             //label_fy_start_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
-                            //_fy_start_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+                            //_fy_start_datetime = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss");
                             //timer_fy.Start();
                             webBrowser_fy.Stop();
                             //timer_fy_start.Stop();
@@ -5835,7 +5835,7 @@ namespace Cronos_Data
 
                         //_fy_current_datetime = "";
                         //label_fy_start_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
-                        //_fy_start_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+                        //_fy_start_datetime = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss");
                         //timer_fy.Start();
                         webBrowser_fy.Stop();
                         //timer_fy_start.Stop();
@@ -5894,10 +5894,10 @@ namespace Cronos_Data
         private void timer_fy_Tick(object sender, EventArgs e)
         {
             string start_datetime = _fy_start_datetime;
-            DateTime start = DateTime.ParseExact(start_datetime, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+            DateTime start = DateTime.ParseExact(start_datetime, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
 
-            string finish_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
-            DateTime finish = DateTime.ParseExact(finish_datetime, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+            string finish_datetime = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss");
+            DateTime finish = DateTime.ParseExact(finish_datetime, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
 
             TimeSpan span = finish.Subtract(start);
 
@@ -6081,7 +6081,7 @@ namespace Cronos_Data
 
                         _fy_current_datetime = "";
                         label_fy_start_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
-                        _fy_start_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+                        _fy_start_datetime = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss");
                         timer_fy.Start();
                         webBrowser_fy.Stop();
                         //timer_fy_start.Stop();
@@ -6141,7 +6141,7 @@ namespace Cronos_Data
 
                         _fy_current_datetime = "";
                         label_fy_start_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
-                        _fy_start_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+                        _fy_start_datetime = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss");
                         timer_fy.Start();
                         webBrowser_fy.Stop();
                         //timer_fy_start.Stop();
@@ -7139,7 +7139,7 @@ namespace Cronos_Data
                 // New Based on Reg
                 if (date_reg != "")
                 {
-                    DateTime date_reg_get = DateTime.ParseExact(date_reg, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    DateTime date_reg_get = DateTime.ParseExact(date_reg, "MM/dd/yyyy", CultureInfo.InvariantCulture);
                     if (date_reg_get.ToString("yyyy-MM") == year_month)
                     {
                         new_based_on_reg = "Yes";
@@ -7158,7 +7158,7 @@ namespace Cronos_Data
                 // Real Player
                 if (fdd != "")
                 {
-                    DateTime first_deposit = DateTime.ParseExact(fdd, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    DateTime first_deposit = DateTime.ParseExact(fdd, "MM/dd/yyyy", CultureInfo.InvariantCulture);
                     if (first_deposit.ToString("yyyy-MM") == year_month)
                     {
                         new_based_on_dep = "Yes";
@@ -7178,8 +7178,8 @@ namespace Cronos_Data
                 // Retained
                 if (fdd != "" && ldd != "")
                 {
-                    DateTime last_deposit = DateTime.ParseExact(ldd, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                    DateTime first_deposit = DateTime.ParseExact(fdd, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    DateTime last_deposit = DateTime.ParseExact(ldd, "MM/dd/yyyy", CultureInfo.InvariantCulture);
+                    DateTime first_deposit = DateTime.ParseExact(fdd, "MM/dd/yyyy", CultureInfo.InvariantCulture);
 
                     // retained
                     // 2 months current date
@@ -7676,7 +7676,7 @@ namespace Cronos_Data
                         pictureBox_fy_loader.Visible = true;
                         _fy_current_datetime = "";
                         label_fy_start_datetime.Text = DateTime.Now.ToString("ddd, dd MMM HH:mm:ss");
-                        _fy_start_datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+                        _fy_start_datetime = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss");
                         label_fy_status.Visible = true;
                         timer_fy.Start();
                         isButtonStart_fy = true;
