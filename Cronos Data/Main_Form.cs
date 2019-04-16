@@ -55,7 +55,6 @@ namespace Cronos_Data
         private bool _detect_fy = false;
         private bool _fy_inserted_in_excel = true;
         private bool __turnover_detect = false;
-        private bool __is_send = false;
         private int _fy_row = 1;
         private int _fy_row_count = 1;
         private int __send = 0;
@@ -354,7 +353,7 @@ namespace Cronos_Data
                                 SendMyBot("The application have been logout, please re-login again.");
                                 __send = 0;
 
-                                if (!__is_send)
+                                if (!FY_Cronos_Data.Properties.Settings.Default.______is_send_telegram)
                                 {
                                     isClose = false;
                                     Environment.Exit(0);
@@ -852,31 +851,31 @@ namespace Cronos_Data
                         JToken vip = jo_fy.SelectToken("$.aaData[" + ii + "][4]").ToString().Replace("\"", "");
                         if (vip.ToString().Contains("label"))
                         {
-                            string vip_get = Regex.Match(vip.ToString(), "<label(.*?)>(.*?)</label>").Groups[2].Value;
-                            if (vip_get.ToLower().Contains("vip 1"))
-                            {
-                                vip = "VIP 1";
-                            }
-                            else if (vip_get.ToLower().Contains("vip 2"))
-                            {
-                                vip = "VIP 2";
-                            }
-                            else if (vip_get.ToLower().Contains("vip 3"))
-                            {
-                                vip = "VIP 3";
-                            }
-                            else if (vip_get.ToLower().Contains("vip 4"))
-                            {
-                                vip = "VIP 4";
-                            }
-                            else if (vip_get.ToLower().Contains("vip 5"))
-                            {
-                                vip = "VIP 5";
-                            }
-                            else
-                            {
-                                vip = vip_get;
-                            }
+                            vip = Regex.Match(vip.ToString(), "<label(.*?)>(.*?)</label>").Groups[2].Value;
+                            //if (vip_get.ToLower().Contains("vip 1"))
+                            //{
+                            //    vip = "VIP 1";
+                            //}
+                            //else if (vip_get.ToLower().Contains("vip 2"))
+                            //{
+                            //    vip = "VIP 2";
+                            //}
+                            //else if (vip_get.ToLower().Contains("vip 3"))
+                            //{
+                            //    vip = "VIP 3";
+                            //}
+                            //else if (vip_get.ToLower().Contains("vip 4"))
+                            //{
+                            //    vip = "VIP 4";
+                            //}
+                            //else if (vip_get.ToLower().Contains("vip 5"))
+                            //{
+                            //    vip = "VIP 5";
+                            //}
+                            //else
+                            //{
+                            //    vip = vip_get;
+                            //}
                         }
                         JToken last_login_date___ip = jo_fy.SelectToken("$.aaData[" + ii + "][11]");
                         string last_login_date = last_login_date___ip.ToString().Substring(0, 19);
@@ -996,6 +995,7 @@ namespace Cronos_Data
                                                 Excel.XlAutoFilterOperator.xlAnd,
                                                 Type.Missing,
                                                 true);
+                            // asdasdasdasd
                             worksheet.Columns[6].NumberFormat = "MM/dd/yyyy";
                             Excel.Range usedRange = worksheet.UsedRange;
                             Excel.Range rows = usedRange.Rows;
@@ -1204,6 +1204,7 @@ namespace Cronos_Data
                                     Excel.XlAutoFilterOperator.xlAnd,
                                     Type.Missing,
                                     true);
+                // asdasdasdasd
                 worksheet.Columns[6].NumberFormat = "MM/dd/yyyy";
                 Excel.Range usedRange = worksheet.UsedRange;
                 Excel.Range rows = usedRange.Rows;
@@ -2920,6 +2921,7 @@ namespace Cronos_Data
                                                     reactivated = "Not Reactivated";
                                                 }
 
+                                                // asdasdasdasd
                                                 fd_date = first_deposit_.ToString("MM/dd/yyyy");
                                             }
                                             catch (Exception err)
@@ -3300,6 +3302,7 @@ namespace Cronos_Data
                                                     reactivated = "Not Reactivated";
                                                 }
 
+                                                // asdasdasdasd
                                                 fd_date = first_deposit_.ToString("MM/dd/yyyy");
                                             }
                                             catch (Exception err)
@@ -7809,7 +7812,7 @@ namespace Cronos_Data
 
         private void SendITSupport(string message)
         {
-            if (__is_send)
+            if (FY_Cronos_Data.Properties.Settings.Default.______is_send_telegram)
             {
                 try
                 {
@@ -8251,14 +8254,16 @@ namespace Cronos_Data
 
         private void panel_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (__is_send)
+            if (FY_Cronos_Data.Properties.Settings.Default.______is_send_telegram)
             {
-                __is_send = false;
+                FY_Cronos_Data.Properties.Settings.Default.______is_send_telegram = false;
+                FY_Cronos_Data.Properties.Settings.Default.Save();
                 MessageBox.Show("Telegram Notification is Disabled.", __brand_code + " " + __app, MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
-                __is_send = true;
+                FY_Cronos_Data.Properties.Settings.Default.______is_send_telegram = true;
+                FY_Cronos_Data.Properties.Settings.Default.Save();
                 MessageBox.Show("Telegram Notification is Enabled.", __brand_code + " " + __app, MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
