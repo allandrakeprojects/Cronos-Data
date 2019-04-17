@@ -2110,6 +2110,8 @@ namespace Cronos_Data
             }
         }
 
+        private bool __detect_next = false;
+
         private async Task GetDataFYPagesAsync()
         {
             try
@@ -2167,6 +2169,12 @@ namespace Cronos_Data
                     wc.Headers.Add("Cookie", cookie);
                     wc.Encoding = Encoding.UTF8;
                     wc.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
+                    
+                    if (FY_Cronos_Data.Properties.Settings.Default.______start_detect == "3" && _fy_pages_count == 1 && !__detect_next)
+                    {
+                        _detect_fy = true;
+                        __detect_next = true;
+                    }
 
                     int result_pages;
 
@@ -2185,6 +2193,8 @@ namespace Cronos_Data
                         __page_count = true;
                         result_pages = (Convert.ToInt32(_display_length_fy) * _fy_pages_count);
                     }
+
+                    //label1.Text = result_pages.ToString();
 
                     byte[] result = null;
                     string responsebody = null;
@@ -2426,7 +2436,7 @@ namespace Cronos_Data
                         }
 
                         label_gp_count.Text = __current_count + " of " + (__gp.Count - 1).ToString("N0");
-
+                        
                         // Bet Record
                         var reqparm = new NameValueCollection
                         {
@@ -4803,6 +4813,7 @@ namespace Cronos_Data
                 {
                     if (comboBox_fy_list.SelectedIndex == 2)
                     {
+                        __detect_next = false;
                         __current_count++;
                         if (__current_count > (__gp.Count - 1))
                         {
@@ -4829,6 +4840,7 @@ namespace Cronos_Data
                                 FYAsync();
                             }
                         }
+                        
                     }
                     else
                     {

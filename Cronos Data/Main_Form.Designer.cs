@@ -105,6 +105,7 @@
             this.label_navigate_down = new System.Windows.Forms.Label();
             this.label_brand = new System.Windows.Forms.Label();
             this.pictureBox_loader_loader = new System.Windows.Forms.PictureBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.panel_header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_minimize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_close)).BeginInit();
@@ -124,6 +125,7 @@
             // panel_header
             // 
             this.panel_header.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(122)))), ((int)(((byte)(159)))));
+            this.panel_header.Controls.Add(this.label1);
             this.panel_header.Controls.Add(this.panel);
             this.panel_header.Controls.Add(this.label_title);
             this.panel_header.Controls.Add(this.pictureBox_minimize);
@@ -885,6 +887,16 @@
             this.pictureBox_loader_loader.TabIndex = 41;
             this.pictureBox_loader_loader.TabStop = false;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(386, 23);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "label1";
+            this.label1.Visible = false;
+            // 
             // Main_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1009,5 +1021,6 @@
         private System.Windows.Forms.PictureBox pictureBox_loader_loader;
         private System.Windows.Forms.Label label_navigate_down;
         private System.Windows.Forms.Label label_navigate_up;
+        private System.Windows.Forms.Label label1;
     }
 }
