@@ -4088,16 +4088,20 @@ namespace Cronos_Data
                             {
                                 int _fy_get_ii_display_result = _fy_get_ii_display;
                                 int get = _fy_get_ii_display_result += 1;
-                                FY_Cronos_Data.Properties.Settings.Default.______turnover_count = get.ToString();
-                                FY_Cronos_Data.Properties.Settings.Default.Save();
 
-                                Turnover_FY(player_name.ToString(), stake_amount.ToString().Replace(",", ""), win_amount.ToString().Replace(",", ""), company_win_loss.ToString().Replace(",", ""), valid_bet.ToString().Replace(",", ""), bet_time_date, month.ToString("MM/01/yyyy"), vip, game_platform.ToString());
+                                // comment detect
+                                //FY_Cronos_Data.Properties.Settings.Default.______turnover_count = get.ToString();
+                                //FY_Cronos_Data.Properties.Settings.Default.Save();
+
+                                // comment detect
+                                //Turnover_FY(player_name.ToString(), stake_amount.ToString().Replace(",", ""), win_amount.ToString().Replace(",", ""), company_win_loss.ToString().Replace(",", ""), valid_bet.ToString().Replace(",", ""), bet_time_date, month.ToString("MM/01/yyyy"), vip, game_platform.ToString());
                             }
                             else
                             {
                                 if (FY_Cronos_Data.Properties.Settings.Default.______turnover_count == _fy_get_ii_display.ToString())
                                 {
-                                    Turnover_FY(player_name.ToString(), stake_amount.ToString().Replace(",", ""), win_amount.ToString().Replace(",", ""), company_win_loss.ToString().Replace(",", ""), valid_bet.ToString().Replace(",", ""), bet_time_date, month.ToString("MM/01/yyyy"), vip, game_platform.ToString());
+                                    // comment detect
+                                    //Turnover_FY(player_name.ToString(), stake_amount.ToString().Replace(",", ""), win_amount.ToString().Replace(",", ""), company_win_loss.ToString().Replace(",", ""), valid_bet.ToString().Replace(",", ""), bet_time_date, month.ToString("MM/01/yyyy"), vip, game_platform.ToString());
                                     __turnover_detect = false;
                                 }
                             }
@@ -5495,7 +5499,8 @@ namespace Cronos_Data
                 app.Quit();
                 Marshal.ReleaseComObject(app);
 
-                SaveAsTurnOver_FY();
+                // comment detect
+                //SaveAsTurnOver_FY();
                 display_count_turnover_fy = 0;
                 //if (File.Exists(_fy_folder_path_result))
                 //{
