@@ -1616,6 +1616,7 @@ namespace Cronos_Data
             }
             else if (selected_index == 2)
             {
+                // detecthere
                 // Bet Record
                 var reqparm = new NameValueCollection
                 {
@@ -2419,6 +2420,7 @@ namespace Cronos_Data
                     }
                     else if (selected_index == 2)
                     {
+                        // detecthere
                         // 12/24
                         int count_bet = 0;
                         string gpid = "";
@@ -2528,6 +2530,7 @@ namespace Cronos_Data
             }
         }
 
+        // detecthere
         private async void FYAsync()
         {
             if (_fy_inserted_in_excel)
@@ -4810,6 +4813,7 @@ namespace Cronos_Data
                     _result_count_json_fy = 0;
 
                     // web client request
+                    // detecthere
                     await GetDataFYPagesAsync();
                 }
 
