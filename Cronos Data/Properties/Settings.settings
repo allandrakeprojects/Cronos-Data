@@ -32,5 +32,8 @@
     <Setting Name="______is_send_telegram" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="______midnight_time_hour" Type="System.String" Scope="User">
+      <Value Profile="(Default)">04:00</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

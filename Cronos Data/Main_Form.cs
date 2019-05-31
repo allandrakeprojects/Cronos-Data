@@ -7654,7 +7654,7 @@ namespace Cronos_Data
             {
                 DateTime today = DateTime.Now;
                 DateTime date = today.AddDays(1);
-                FY_Cronos_Data.Properties.Settings.Default.______midnight_time = date.ToString("yyyy-MM-dd 00:30");
+                FY_Cronos_Data.Properties.Settings.Default.______midnight_time = date.ToString("yyyy-MM-dd " + FY_Cronos_Data.Properties.Settings.Default.______midnight_time_hour);
                 FY_Cronos_Data.Properties.Settings.Default.Save();
             }
             else
@@ -7750,7 +7750,7 @@ namespace Cronos_Data
 
                     DateTime today = DateTime.Now;
                     DateTime date = today.AddDays(1);
-                    FY_Cronos_Data.Properties.Settings.Default.______midnight_time = date.ToString("yyyy-MM-dd 00:30");
+                    FY_Cronos_Data.Properties.Settings.Default.______midnight_time = date.ToString("yyyy-MM-dd " + FY_Cronos_Data.Properties.Settings.Default.______midnight_time_hour);
                     FY_Cronos_Data.Properties.Settings.Default.______start_detect = "1";
                     FY_Cronos_Data.Properties.Settings.Default.Save();
                 }
@@ -8030,7 +8030,7 @@ namespace Cronos_Data
         {
             DateTime today = DateTime.Now;
             DateTime date = today.AddDays(1);
-            FY_Cronos_Data.Properties.Settings.Default.______midnight_time = date.ToString("yyyy-MM-dd 00:30");
+            FY_Cronos_Data.Properties.Settings.Default.______midnight_time = date.ToString("yyyy-MM-dd " + FY_Cronos_Data.Properties.Settings.Default.______midnight_time_hour);
             FY_Cronos_Data.Properties.Settings.Default.______start_detect = "0";
             FY_Cronos_Data.Properties.Settings.Default.______turnover_count = "0";
             FY_Cronos_Data.Properties.Settings.Default.Save();

@@ -142,5 +142,17 @@ namespace FY_Cronos_Data.Properties {
                 this["______is_send_telegram"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("04:00")]
+        public string ______midnight_time_hour {
+            get {
+                return ((string)(this["______midnight_time_hour"]));
+            }
+            set {
+                this["______midnight_time_hour"] = value;
+            }
+        }
     }
 }
