@@ -3008,8 +3008,8 @@ namespace Cronos_Data
                                     string member = Regex.Match(member_get.ToString(), "<span(.*?)>(.*?)</span>").Groups[2].Value;
                                     JToken vip = jo_fy.SelectToken("$.aaData[" + ii + "][3]").ToString().Replace("\"", "");
                                     JToken amount = jo_fy.SelectToken("$.aaData[" + ii + "][5]").ToString().Replace("(RMB) - ¥ ", "");
-                                    JToken remark = jo_fy.SelectToken("$.aaData[" + ii + "][8]").ToString().Replace("\"", "");
-                                    JToken submitted_date__submitted_time = jo_fy.SelectToken("$.aaData[" + ii + "][10]");
+                                    JToken remark = jo_fy.SelectToken("$.aaData[" + ii + "][9]").ToString().Replace("\"", "");
+                                    JToken submitted_date__submitted_time = jo_fy.SelectToken("$.aaData[" + ii + "][11]");
                                     string submitted_date = submitted_date__submitted_time.ToString().Substring(0, 10);
                                     string submitted_time = submitted_date__submitted_time.ToString().Substring(15);
                                     JToken payment_type = jo_fy.SelectToken("$.aaData[" + ii + "][7]").ToString().Replace("\"", "");
@@ -3588,8 +3588,8 @@ namespace Cronos_Data
                                     string member = Regex.Match(member_get.ToString(), "<span(.*?)>(.*?)</span>").Groups[2].Value;
                                     JToken vip = jo_fy.SelectToken("$.aaData[" + ii + "][3]").ToString().Replace("\"", "");
                                     JToken amount = jo_fy.SelectToken("$.aaData[" + ii + "][5]").ToString().Replace("(RMB) - ¥ ", "");
-                                    JToken remark = jo_fy.SelectToken("$.aaData[" + ii + "][8]").ToString().Replace("\"", "");
-                                    JToken submitted_date__submitted_time = jo_fy.SelectToken("$.aaData[" + ii + "][10]");
+                                    JToken remark = jo_fy.SelectToken("$.aaData[" + ii + "][9]").ToString().Replace("\"", "");
+                                    JToken submitted_date__submitted_time = jo_fy.SelectToken("$.aaData[" + ii + "][11]");
                                     string submitted_date = submitted_date__submitted_time.ToString().Substring(0, 10);
                                     string submitted_time = submitted_date__submitted_time.ToString().Substring(15);
                                     JToken payment_type = jo_fy.SelectToken("$.aaData[" + ii + "][7]").ToString().Replace("\"", "");
@@ -3768,8 +3768,8 @@ namespace Cronos_Data
                                 string member = Regex.Match(member_get.ToString(), "<span(.*?)>(.*?)</span>").Groups[2].Value;
                                 JToken vip = jo_fy.SelectToken("$.aaData[" + ii + "][3]").ToString().Replace("\"", "");
                                 JToken amount = jo_fy.SelectToken("$.aaData[" + ii + "][5]").ToString().Replace("(RMB) - ¥ ", "");
-                                JToken remark = jo_fy.SelectToken("$.aaData[" + ii + "][8]").ToString().Replace("\"", "");
-                                JToken submitted_date__submitted_time = jo_fy.SelectToken("$.aaData[" + ii + "][10]");
+                                JToken remark = jo_fy.SelectToken("$.aaData[" + ii + "][9]").ToString().Replace("\"", "");
+                                JToken submitted_date__submitted_time = jo_fy.SelectToken("$.aaData[" + ii + "][11]");
                                 string submitted_date = submitted_date__submitted_time.ToString().Substring(0, 10);
                                 string submitted_time = submitted_date__submitted_time.ToString().Substring(15);
                                 DateTime submitted_time_replace = DateTime.ParseExact(submitted_time, "HH:mm:ss", CultureInfo.InvariantCulture);
